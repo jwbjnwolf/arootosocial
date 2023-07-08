@@ -436,6 +436,17 @@ section.with-sidebar > div .titlesave, section.with-sidebar > form .titlesave {
 				font-style: italic;
 			}
 
+.user-profile .fields {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+	}
+
+.user-profile .fields .entry {
+			display: flex;
+			gap: 0.5rem;
+		}
+
 form {
 	display: flex;
 	flex-direction: column;
