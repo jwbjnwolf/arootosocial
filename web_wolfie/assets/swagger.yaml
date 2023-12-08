@@ -1,176 +1,1875 @@
 basePath: /
 definitions:
+    EmojiUpdateType:
+        title: EmojiUpdateType models an admin update action to take on a custom emoji.
+        type: string
+        x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
+    InstanceConfigurationEmojis:
+        properties:
+            emoji_size_limit:
+                description: Max allowed emoji image size in bytes.
+                example: 51200
+                format: int64
+                type: integer
+                x-go-name: EmojiSizeLimit
+        title: InstanceConfigurationEmojis models instance emoji config parameters.
+        type: object
+        x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
+    Link:
+        description: See https://webfinger.net/ and https://www.rfc-editor.org/rfc/rfc6415.html#section-3.1
+        properties:
+            href:
+                type: string
+                x-go-name: Href
+            rel:
+                type: string
+                x-go-name: Rel
+            template:
+                type: string
+                x-go-name: Template
+            type:
+                type: string
+                x-go-name: Type
+        title: Link represents one 'link' in a slice of links returned from a lookup request.
+        type: object
+        x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
+    Mention:
+        properties:
+            acct:
+                description: |-
+                    The account URI as discovered via webfinger.
+                    Equal to username for local users, or username@domain for remote users.
+                example: some_user@example.org
+                type: string
+                x-go-name: Acct
+            id:
+                description: The ID of the mentioned account.
+                example: 01FBYJHQWQZAVWFRK9PDYTKGMB
+                type: string
+                x-go-name: ID
+            url:
+                description: The web URL of the mentioned account's profile.
+                example: https://example.org/@some_user
+                type: string
+                x-go-name: URL
+            username:
+                description: The username of the mentioned account.
+                example: some_user
+                type: string
+                x-go-name: Username
+        title: Mention represents a mention of another account.
+        type: object
+        x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
+    NodeInfoServices:
+        properties:
+            inbound:
+                items:
+                    type: string
+                type: array
+                x-go-name: Inbound
+            outbound:
+                items:
+                    type: string
+                type: array
+                x-go-name: Outbound
+        title: NodeInfoServices represents inbound and outbound services that this node offers connections to.
+        type: object
+        x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
+    NodeInfoSoftware:
+        properties:
+            name:
+                example: gotosocial
+                type: string
+                x-go-name: Name
+            version:
+                example: 0.1.2 1234567
+                type: string
+                x-go-name: Version
+        title: NodeInfoSoftware represents the name and version number of the software of this node.
+        type: object
+        x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
+    NodeInfoUsage:
+        properties:
+            localPosts:
+                format: int64
+                type: integer
+                x-go-name: LocalPosts
+            users:
+                $ref: '#/definitions/NodeInfoUsers'
+        title: NodeInfoUsage represents usage information about this server, such as number of users.
+        type: object
+        x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
+    NodeInfoUsers:
+        properties:
+            total:
+                format: int64
+                type: integer
+                x-go-name: Total
+        title: NodeInfoUsers represents aggregate information about the users on the server.
+        type: object
+        x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
+    Source:
+        description: Returned as an additional entity when verifying and updated credentials, as an attribute of Account.
+        properties:
+            fields:
+                description: Metadata about the account.
+                items:
+                    $ref: '#/definitions/field'
+                type: array
+                x-go-name: Fields
+            follow_requests_count:
+                description: The number of pending follow requests.
+                format: int64
+                type: integer
+                x-go-name: FollowRequestsCount
+            language:
+                description: The default posting language for new statuses.
+                type: string
+                x-go-name: Language
+            note:
+                description: Profile bio.
+                type: string
+                x-go-name: Note
+            privacy:
+                description: |-
+                    The default post privacy to be used for new statuses.
+                    public = Public post
+                    unlisted = Unlisted post
+                    private = Followers-only post
+                    direct = Direct post
+                type: string
+                x-go-name: Privacy
+            sensitive:
+                description: Whether new statuses should be marked sensitive by default.
+                type: boolean
+                x-go-name: Sensitive
+            status_content_type:
+                description: The default posting content type for new statuses.
+                type: string
+                x-go-name: StatusContentType
+        title: Source represents display or publishing preferences of user's own account.
+        type: object
+        x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
     account:
         description: The modelled account can be either a remote account, or one on this instance.
+        properties:
+            acct:
+                description: |-
+                    The account URI as discovered via webfinger.
+                    Equal to username for local users, or username@domain for remote users.
+                example: some_user@example.org
+                type: string
+                x-go-name: Acct
+            avatar:
+                description: Web location of the account's avatar.
+                example: https://example.org/media/some_user/avatar/original/avatar.jpeg
+                type: string
+                x-go-name: Avatar
+            avatar_static:
+                description: |-
+                    Web location of a static version of the account's avatar.
+                    Only relevant when the account's main avatar is a video or a gif.
+                example: https://example.org/media/some_user/avatar/static/avatar.png
+                type: string
+                x-go-name: AvatarStatic
+            bot:
+                description: Account identifies as a bot.
+                type: boolean
+                x-go-name: Bot
+            created_at:
+                description: When the account was created (ISO 8601 Datetime).
+                example: "2021-07-30T09:20:25+00:00"
+                type: string
+                x-go-name: CreatedAt
+            custom_css:
+                description: CustomCSS to include when rendering this account's profile or statuses.
+                type: string
+                x-go-name: CustomCSS
+            discoverable:
+                description: Account has opted into discovery features.
+                type: boolean
+                x-go-name: Discoverable
+            display_name:
+                description: The account's display name.
+                example: big jeff (he/him)
+                type: string
+                x-go-name: DisplayName
+            emojis:
+                description: Array of custom emojis used in this account's note or display name.
+                items:
+                    $ref: '#/definitions/emoji'
+                type: array
+                x-go-name: Emojis
+            enable_rss:
+                description: Account has enabled RSS feed.
+                type: boolean
+                x-go-name: EnableRSS
+            fields:
+                description: Additional metadata attached to this account's profile.
+                items:
+                    $ref: '#/definitions/field'
+                type: array
+                x-go-name: Fields
+            followers_count:
+                description: Number of accounts following this account, according to our instance.
+                format: int64
+                type: integer
+                x-go-name: FollowersCount
+            following_count:
+                description: Number of account's followed by this account, according to our instance.
+                format: int64
+                type: integer
+                x-go-name: FollowingCount
+            header:
+                description: Web location of the account's header image.
+                example: https://example.org/media/some_user/header/original/header.jpeg
+                type: string
+                x-go-name: Header
+            header_static:
+                description: |-
+                    Web location of a static version of the account's header.
+                    Only relevant when the account's main header is a video or a gif.
+                example: https://example.org/media/some_user/header/static/header.png
+                type: string
+                x-go-name: HeaderStatic
+            id:
+                description: The account id.
+                example: 01FBVD42CQ3ZEEVMW180SBX03B
+                type: string
+                x-go-name: ID
+            last_status_at:
+                description: When the account's most recent status was posted (ISO 8601 Datetime).
+                example: "2021-07-30T09:20:25+00:00"
+                type: string
+                x-go-name: LastStatusAt
+            locked:
+                description: Account manually approves follow requests.
+                type: boolean
+                x-go-name: Locked
+            mute_expires_at:
+                description: If this account has been muted, when will the mute expire (ISO 8601 Datetime).
+                example: "2021-07-30T09:20:25+00:00"
+                type: string
+                x-go-name: MuteExpiresAt
+            note:
+                description: Bio/description of this account.
+                type: string
+                x-go-name: Note
+            role:
+                $ref: '#/definitions/accountRole'
+            source:
+                $ref: '#/definitions/Source'
+            statuses_count:
+                description: Number of statuses posted by this account, according to our instance.
+                format: int64
+                type: integer
+                x-go-name: StatusesCount
+            suspended:
+                description: Account has been suspended by our instance.
+                type: boolean
+                x-go-name: Suspended
+            url:
+                description: Web location of the account's profile page.
+                example: https://example.org/@some_user
+                type: string
+                x-go-name: URL
+            username:
+                description: The username of the account, not including domain.
+                example: some_user
+                type: string
+                x-go-name: Username
         title: Account models a fediverse account.
+        type: object
         x-go-name: Account
         x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
     accountRelationship:
+        properties:
+            blocked_by:
+                description: This account is blocking you.
+                type: boolean
+                x-go-name: BlockedBy
+            blocking:
+                description: You are blocking this account.
+                type: boolean
+                x-go-name: Blocking
+            domain_blocking:
+                description: You are blocking this account's domain.
+                type: boolean
+                x-go-name: DomainBlocking
+            endorsed:
+                description: You are featuring this account on your profile.
+                type: boolean
+                x-go-name: Endorsed
+            followed_by:
+                description: This account follows you.
+                type: boolean
+                x-go-name: FollowedBy
+            following:
+                description: You are following this account.
+                type: boolean
+                x-go-name: Following
+            id:
+                description: The account id.
+                example: 01FBW9XGEP7G6K88VY4S9MPE1R
+                type: string
+                x-go-name: ID
+            muting:
+                description: You are muting this account.
+                type: boolean
+                x-go-name: Muting
+            muting_notifications:
+                description: You are muting notifications from this account.
+                type: boolean
+                x-go-name: MutingNotifications
+            note:
+                description: Your note on this account.
+                type: string
+                x-go-name: Note
+            notifying:
+                description: You are seeing notifications when this account posts.
+                type: boolean
+                x-go-name: Notifying
+            requested:
+                description: You have requested to follow this account, and the request is pending.
+                type: boolean
+                x-go-name: Requested
+            showing_reblogs:
+                description: You are seeing reblogs/boosts from this account in your home timeline.
+                type: boolean
+                x-go-name: ShowingReblogs
         title: Relationship represents a relationship between accounts.
+        type: object
         x-go-name: Relationship
         x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
     accountRole:
+        properties:
+            name:
+                type: string
+                x-go-name: Name
         title: AccountRole models the role of an account.
+        type: object
         x-go-name: AccountRole
         x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
     adminAccountInfo:
+        properties:
+            account:
+                $ref: '#/definitions/account'
+            approved:
+                description: Whether the account is currently approved.
+                type: boolean
+                x-go-name: Approved
+            confirmed:
+                description: Whether the account has confirmed their email address.
+                type: boolean
+                x-go-name: Confirmed
+            created_at:
+                description: When the account was first discovered. (ISO 8601 Datetime)
+                example: "2021-07-30T09:20:25+00:00"
+                type: string
+                x-go-name: CreatedAt
+            created_by_application_id:
+                description: The ID of the application that created this account.
+                type: string
+                x-go-name: CreatedByApplicationID
+            disabled:
+                description: Whether the account is currently disabled.
+                type: boolean
+                x-go-name: Disabled
+            domain:
+                description: |-
+                    The domain of the account.
+                    Null for local accounts.
+                example: example.org
+                type: string
+                x-go-name: Domain
+            email:
+                description: |-
+                    The email address associated with the account.
+                    Empty string for remote accounts or accounts with
+                    no known email address.
+                example: someone@somewhere.com
+                type: string
+                x-go-name: Email
+            id:
+                description: The ID of the account in the database.
+                example: 01GQ4PHNT622DQ9X95XQX4KKNR
+                type: string
+                x-go-name: ID
+            invite_request:
+                description: |-
+                    The reason given when requesting an invite.
+                    Null if not known / remote account.
+                example: Pleaaaaaaaaaaaaaaase!!
+                type: string
+                x-go-name: InviteRequest
+            invited_by_account_id:
+                description: The ID of the account that invited this user
+                type: string
+                x-go-name: InvitedByAccountID
+            ip:
+                description: |-
+                    The IP address last used to login to this account.
+                    Null if not known.
+                example: 192.0.2.1
+                type: string
+                x-go-name: IP
+            ips:
+                description: |-
+                    All known IP addresses associated with this account.
+                    NOT IMPLEMENTED (will always be empty array).
+                example: []
+                items: {}
+                type: array
+                x-go-name: IPs
+            locale:
+                description: The locale of the account. (ISO 639 Part 1 two-letter language code)
+                example: en
+                type: string
+                x-go-name: Locale
+            role:
+                $ref: '#/definitions/accountRole'
+            silenced:
+                description: Whether the account is currently silenced
+                type: boolean
+                x-go-name: Silenced
+            suspended:
+                description: Whether the account is currently suspended.
+                type: boolean
+                x-go-name: Suspended
+            username:
+                description: The username of the account.
+                example: dril
+                type: string
+                x-go-name: Username
         title: AdminAccountInfo models the admin view of an account's details.
+        type: object
         x-go-name: AdminAccountInfo
         x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
+    adminActionResponse:
+        description: |-
+            AdminActionResponse models the server
+            response to an admin action.
+        properties:
+            action_id:
+                description: Internal ID of the action.
+                example: 01H9QG6TZ9W5P0402VFRVM17TH
+                type: string
+                x-go-name: ActionID
+        type: object
+        x-go-name: AdminActionResponse
+        x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
     adminEmoji:
+        properties:
+            category:
+                description: Used for sorting custom emoji in the picker.
+                example: blobcats
+                type: string
+                x-go-name: Category
+            content_type:
+                description: The MIME content type of the emoji.
+                example: image/png
+                type: string
+                x-go-name: ContentType
+            disabled:
+                description: True if this emoji has been disabled by an admin action.
+                example: false
+                type: boolean
+                x-go-name: Disabled
+            domain:
+                description: The domain from which the emoji originated. Only defined for remote domains, otherwise key will not be set.
+                example: example.org
+                type: string
+                x-go-name: Domain
+            id:
+                description: The ID of the emoji.
+                example: 01GEM7SFDZ7GZNRXFVZ3X4E4N1
+                type: string
+                x-go-name: ID
+            shortcode:
+                description: The name of the custom emoji.
+                example: blobcat_uwu
+                type: string
+                x-go-name: Shortcode
+            static_url:
+                description: A link to a static copy of the custom emoji.
+                example: https://example.org/fileserver/emojis/blogcat_uwu.png
+                type: string
+                x-go-name: StaticURL
+            total_file_size:
+                description: The total file size taken up by the emoji in bytes, including static and animated versions.
+                example: 69420
+                format: int64
+                type: integer
+                x-go-name: TotalFileSize
+            updated_at:
+                description: Time when the emoji image was last updated.
+                example: "2022-10-05T09:21:26.419Z"
+                type: string
+                x-go-name: UpdatedAt
+            uri:
+                description: The ActivityPub URI of the emoji.
+                example: https://example.org/emojis/016T5Q3SQKBT337DAKVSKNXXW1
+                type: string
+                x-go-name: URI
+            url:
+                description: Web URL of the custom emoji.
+                example: https://example.org/fileserver/emojis/blogcat_uwu.gif
+                type: string
+                x-go-name: URL
+            visible_in_picker:
+                description: Emoji is visible in the emoji picker of the instance.
+                example: true
+                type: boolean
+                x-go-name: VisibleInPicker
         title: AdminEmoji models the admin view of a custom emoji.
+        type: object
         x-go-name: AdminEmoji
         x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
     adminReport:
+        properties:
+            account:
+                $ref: '#/definitions/adminAccountInfo'
+            action_taken:
+                description: Whether an action has been taken by an admin in response to this report.
+                example: false
+                type: boolean
+                x-go-name: ActionTaken
+            action_taken_at:
+                description: |-
+                    If an action was taken, at what time was this done? (ISO 8601 Datetime)
+                    Will be null if not set / no action yet taken.
+                example: "2021-07-30T09:20:25+00:00"
+                type: string
+                x-go-name: ActionTakenAt
+            action_taken_by_account:
+                $ref: '#/definitions/adminAccountInfo'
+            action_taken_comment:
+                description: |-
+                    If an action was taken, what comment was made by the admin on the taken action?
+                    Will be null if not set / no action yet taken.
+                example: Account was suspended.
+                type: string
+                x-go-name: ActionTakenComment
+            assigned_account:
+                $ref: '#/definitions/adminAccountInfo'
+            category:
+                description: Under what category was this report created?
+                example: spam
+                type: string
+                x-go-name: Category
+            comment:
+                description: |-
+                    Comment submitted when the report was created.
+                    Will be empty if no comment was submitted.
+                example: This person has been harassing me.
+                type: string
+                x-go-name: Comment
+            created_at:
+                description: The date when this report was created (ISO 8601 Datetime).
+                example: "2021-07-30T09:20:25+00:00"
+                type: string
+                x-go-name: CreatedAt
+            forwarded:
+                description: Bool to indicate that report should be federated to remote instance.
+                example: true
+                type: boolean
+                x-go-name: Forwarded
+            id:
+                description: ID of the report.
+                example: 01FBVD42CQ3ZEEVMW180SBX03B
+                type: string
+                x-go-name: ID
+            rules:
+                description: |-
+                    Array of rules that were broken according to this report.
+                    Will be empty if no rule IDs were submitted with the report.
+                items:
+                    $ref: '#/definitions/instanceRule'
+                type: array
+                x-go-name: Rules
+            statuses:
+                description: |-
+                    Array of  statuses that were submitted along with this report.
+                    Will be empty if no status IDs were submitted with the report.
+                items:
+                    $ref: '#/definitions/status'
+                type: array
+                x-go-name: Statuses
+            target_account:
+                $ref: '#/definitions/adminAccountInfo'
+            updated_at:
+                description: Time of last action on this report (ISO 8601 Datetime).
+                example: "2021-07-30T09:20:25+00:00"
+                type: string
+                x-go-name: UpdatedAt
         title: AdminReport models the admin view of a report.
+        type: object
         x-go-name: AdminReport
         x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
     advancedVisibilityFlagsForm:
         description: |-
             AdvancedVisibilityFlagsForm allows a few more advanced flags to be set on new statuses, in addition
             to the standard mastodon-compatible ones.
+        properties:
+            boostable:
+                description: This status can be boosted/reblogged.
+                type: boolean
+                x-go-name: Boostable
+            federated:
+                description: This status will be federated beyond the local timeline(s).
+                type: boolean
+                x-go-name: Federated
+            likeable:
+                description: This status can be liked/faved.
+                type: boolean
+                x-go-name: Likeable
+            replyable:
+                description: This status can be replied to.
+                type: boolean
+                x-go-name: Replyable
+        type: object
         x-go-name: AdvancedVisibilityFlagsForm
         x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
     announcement:
+        properties:
+            all_day:
+                description: Announcement doesn't have begin time and end time, but begin day and end day.
+                type: boolean
+                x-go-name: AllDay
+            content:
+                description: |-
+                    The body of the announcement.
+                    Should be HTML formatted.
+                example: <p>This is an announcement. No malarky.</p>
+                type: string
+                x-go-name: Content
+            emoji:
+                description: Emojis used in this announcement.
+                items:
+                    $ref: '#/definitions/emoji'
+                type: array
+                x-go-name: Emojis
+            ends_at:
+                description: |-
+                    When the announcement should stop being displayed (ISO 8601 Datetime).
+                    If the announcement has no end time, this will be omitted or empty.
+                example: "2021-07-30T09:20:25+00:00"
+                type: string
+                x-go-name: EndsAt
+            id:
+                description: The ID of the announcement.
+                example: 01FC30T7X4TNCZK0TH90QYF3M4
+                type: string
+                x-go-name: ID
+            mentions:
+                description: Mentions this announcement contains.
+                items:
+                    $ref: '#/definitions/Mention'
+                type: array
+                x-go-name: Mentions
+            published:
+                description: |-
+                    Announcement is 'published', ie., visible to users.
+                    Announcements that are not published should be shown only to admins.
+                type: boolean
+                x-go-name: Published
+            published_at:
+                description: When the announcement was first published (ISO 8601 Datetime).
+                example: "2021-07-30T09:20:25+00:00"
+                type: string
+                x-go-name: PublishedAt
+            reactions:
+                description: Reactions to this announcement.
+                items:
+                    $ref: '#/definitions/announcementReaction'
+                type: array
+                x-go-name: Reactions
+            read:
+                description: Requesting account has seen this announcement.
+                type: boolean
+                x-go-name: Read
+            starts_at:
+                description: |-
+                    When the announcement should begin to be displayed (ISO 8601 Datetime).
+                    If the announcement has no start time, this will be omitted or empty.
+                example: "2021-07-30T09:20:25+00:00"
+                type: string
+                x-go-name: StartsAt
+            statuses:
+                description: Statuses contained in this announcement.
+                items:
+                    $ref: '#/definitions/status'
+                type: array
+                x-go-name: Statuses
+            tags:
+                description: Tags used in this announcement.
+                items:
+                    $ref: '#/definitions/tag'
+                type: array
+                x-go-name: Tags
+            updated_at:
+                description: When the announcement was last updated (ISO 8601 Datetime).
+                example: "2021-07-30T09:20:25+00:00"
+                type: string
+                x-go-name: UpdatedAt
         title: Announcement models an admin announcement for the instance.
+        type: object
         x-go-name: Announcement
         x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
     announcementReaction:
+        properties:
+            count:
+                description: The total number of users who have added this reaction.
+                example: 5
+                format: int64
+                type: integer
+                x-go-name: Count
+            me:
+                description: This reaction belongs to the account viewing it.
+                type: boolean
+                x-go-name: Me
+            name:
+                description: The emoji used for the reaction. Either a unicode emoji, or a custom emoji's shortcode.
+                example: blobcat_uwu
+                type: string
+                x-go-name: Name
+            static_url:
+                description: |-
+                    Web link to a non-animated image of the custom emoji.
+                    Empty for unicode emojis.
+                example: https://example.org/custom_emojis/statuc/blobcat_uwu.png
+                type: string
+                x-go-name: StaticURL
+            url:
+                description: |-
+                    Web link to the image of the custom emoji.
+                    Empty for unicode emojis.
+                example: https://example.org/custom_emojis/original/blobcat_uwu.png
+                type: string
+                x-go-name: URL
         title: AnnouncementReaction models a user reaction to an announcement.
+        type: object
         x-go-name: AnnouncementReaction
         x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
     application:
+        properties:
+            client_id:
+                description: Client ID associated with this application.
+                type: string
+                x-go-name: ClientID
+            client_secret:
+                description: Client secret associated with this application.
+                type: string
+                x-go-name: ClientSecret
+            id:
+                description: The ID of the application.
+                example: 01FBVD42CQ3ZEEVMW180SBX03B
+                type: string
+                x-go-name: ID
+            name:
+                description: The name of the application.
+                example: Tusky
+                type: string
+                x-go-name: Name
+            redirect_uri:
+                description: Post-authorization redirect URI for the application (OAuth2).
+                example: https://example.org/callback?some=query
+                type: string
+                x-go-name: RedirectURI
+            vapid_key:
+                description: Push API key for this application.
+                type: string
+                x-go-name: VapidKey
+            website:
+                description: The website associated with the application (url)
+                example: https://tusky.app
+                type: string
+                x-go-name: Website
         title: Application models an api application.
+        type: object
         x-go-name: Application
         x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
     attachment:
+        properties:
+            blurhash:
+                description: |-
+                    A hash computed by the BlurHash algorithm, for generating colorful preview thumbnails when media has not been downloaded yet.
+                    See https://github.com/woltapp/blurhash
+                type: string
+                x-go-name: Blurhash
+            description:
+                description: Alt text that describes what is in the media attachment.
+                example: This is a picture of a kitten.
+                type: string
+                x-go-name: Description
+            id:
+                description: The ID of the attachment.
+                example: 01FC31DZT1AYWDZ8XTCRWRBYRK
+                type: string
+                x-go-name: ID
+            meta:
+                $ref: '#/definitions/mediaMeta'
+            preview_remote_url:
+                description: |-
+                    The location of a scaled-down preview of the attachment on the remote server.
+                    Only defined for instances other than our own.
+                example: https://some-other-server.org/attachments/small/ahhhhh.jpeg
+                type: string
+                x-go-name: PreviewRemoteURL
+            preview_url:
+                description: The location of a scaled-down preview of the attachment.
+                example: https://example.org/fileserver/some_id/attachments/some_id/small/attachment.jpeg
+                type: string
+                x-go-name: PreviewURL
+            remote_url:
+                description: |-
+                    The location of the full-size original attachment on the remote server.
+                    Only defined for instances other than our own.
+                example: https://some-other-server.org/attachments/original/ahhhhh.jpeg
+                type: string
+                x-go-name: RemoteURL
+            text_url:
+                description: |-
+                    A shorter URL for the attachment.
+                    In our case, we just give the URL again since we don't create smaller URLs.
+                type: string
+                x-go-name: TextURL
+            type:
+                description: The type of the attachment.
+                example: image
+                type: string
+                x-go-name: Type
+            url:
+                description: The location of the original full-size attachment.
+                example: https://example.org/fileserver/some_id/attachments/some_id/original/attachment.jpeg
+                type: string
+                x-go-name: URL
         title: Attachment models a media attachment.
+        type: object
         x-go-name: Attachment
         x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
     card:
+        properties:
+            author_name:
+                description: The author of the original resource.
+                example: weewee@buzzfeed.com
+                type: string
+                x-go-name: AuthorName
+            author_url:
+                description: A link to the author of the original resource.
+                example: https://buzzfeed.com/authors/weewee
+                type: string
+                x-go-name: AuthorURL
+            blurhash:
+                description: A hash computed by the BlurHash algorithm, for generating colorful preview thumbnails when media has not been downloaded yet.
+                type: string
+                x-go-name: Blurhash
+            description:
+                description: Description of preview.
+                example: Is water wet? We're not sure. In this article, we ask an expert...
+                type: string
+                x-go-name: Description
+            embed_url:
+                description: Used for photo embeds, instead of custom html.
+                type: string
+                x-go-name: EmbedURL
+            height:
+                description: Height of preview, in pixels.
+                format: int64
+                type: integer
+                x-go-name: Height
+            html:
+                description: HTML to be used for generating the preview card.
+                type: string
+                x-go-name: HTML
+            image:
+                description: Preview thumbnail.
+                example: https://example.org/fileserver/preview/thumb.jpg
+                type: string
+                x-go-name: Image
+            provider_name:
+                description: The provider of the original resource.
+                example: Buzzfeed
+                type: string
+                x-go-name: ProviderName
+            provider_url:
+                description: A link to the provider of the original resource.
+                example: https://buzzfeed.com
+                type: string
+                x-go-name: ProviderURL
+            title:
+                description: Title of linked resource.
+                example: Buzzfeed - Is Water Wet?
+                type: string
+                x-go-name: Title
+            type:
+                description: The type of the preview card.
+                example: link
+                type: string
+                x-go-name: Type
+            url:
+                description: Location of linked resource.
+                example: https://buzzfeed.com/some/fuckin/buzzfeed/article
+                type: string
+                x-go-name: URL
+            width:
+                description: Width of preview, in pixels.
+                format: int64
+                type: integer
+                x-go-name: Width
         title: Card represents a rich preview card that is generated using OpenGraph tags from a URL.
+        type: object
         x-go-name: Card
+        x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
+    debugAPUrlResponse:
+        description: |-
+            DebugAPUrlResponse provides detailed debug
+            information for an AP URL dereference request.
+        properties:
+            request_headers:
+                additionalProperties:
+                    items:
+                        type: string
+                    type: array
+                description: HTTP headers used in the outgoing request.
+                type: object
+                x-go-name: RequestHeaders
+            request_url:
+                description: Remote AP URL that was requested.
+                type: string
+                x-go-name: RequestURL
+            response_body:
+                description: |-
+                    Body returned from the remote instance.
+                    Will be stringified bytes; may be JSON,
+                    may be an error, may be both!
+                type: string
+                x-go-name: ResponseBody
+            response_code:
+                description: HTTP response code returned from the remote instance.
+                format: int64
+                type: integer
+                x-go-name: ResponseCode
+            response_headers:
+                additionalProperties:
+                    items:
+                        type: string
+                    type: array
+                description: HTTP headers returned from the remote instance.
+                type: object
+                x-go-name: ResponseHeaders
+        type: object
+        x-go-name: DebugAPUrlResponse
         x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
     domain:
         description: Domain represents a remote domain
+        properties:
+            domain:
+                description: The hostname of the domain.
+                example: example.org
+                type: string
+                x-go-name: Domain
+            public_comment:
+                description: If the domain is blocked, what's the publicly-stated reason for the block.
+                example: they smell
+                type: string
+                x-go-name: PublicComment
+            silenced_at:
+                description: Time at which this domain was silenced. Key will not be present on open domains.
+                example: "2021-07-30T09:20:25+00:00"
+                type: string
+                x-go-name: SilencedAt
+            suspended_at:
+                description: Time at which this domain was suspended. Key will not be present on open domains.
+                example: "2021-07-30T09:20:25+00:00"
+                type: string
+                x-go-name: SuspendedAt
+        type: object
         x-go-name: Domain
         x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
-    domainBlock:
-        description: DomainBlock represents a block on one domain
-        x-go-name: DomainBlock
+    domainKeysExpireRequest:
+        properties:
+            domain:
+                description: hostname/domain to expire keys for.
+                type: string
+                x-go-name: Domain
+        title: DomainBlockCreateRequest is the form submitted as a POST to /api/v1/admin/domain_keys_expire to expire a domain's public keys.
+        type: object
+        x-go-name: DomainKeysExpireRequest
         x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
-    domainBlockCreateRequest:
-        title: DomainBlockCreateRequest is the form submitted as a POST to /api/v1/admin/domain_blocks to create a new block.
-        x-go-name: DomainBlockCreateRequest
+    domainPermission:
+        properties:
+            created_at:
+                description: Time at which the permission entry was created (ISO 8601 Datetime).
+                example: "2021-07-30T09:20:25+00:00"
+                type: string
+                x-go-name: CreatedAt
+            created_by:
+                description: ID of the account that created this domain permission entry.
+                example: 01FBW2758ZB6PBR200YPDDJK4C
+                type: string
+                x-go-name: CreatedBy
+            domain:
+                description: The hostname of the domain.
+                example: example.org
+                type: string
+                x-go-name: Domain
+            id:
+                description: The ID of the domain permission entry.
+                example: 01FBW21XJA09XYX51KV5JVBW0F
+                readOnly: true
+                type: string
+                x-go-name: ID
+            obfuscate:
+                description: Obfuscate the domain name when serving this domain permission entry publicly.
+                example: false
+                type: boolean
+                x-go-name: Obfuscate
+            private_comment:
+                description: Private comment for this permission entry, visible to this instance's admins only.
+                example: they are poopoo
+                type: string
+                x-go-name: PrivateComment
+            public_comment:
+                description: If the domain is blocked, what's the publicly-stated reason for the block.
+                example: they smell
+                type: string
+                x-go-name: PublicComment
+            silenced_at:
+                description: Time at which this domain was silenced. Key will not be present on open domains.
+                example: "2021-07-30T09:20:25+00:00"
+                type: string
+                x-go-name: SilencedAt
+            subscription_id:
+                description: If applicable, the ID of the subscription that caused this domain permission entry to be created.
+                example: 01FBW25TF5J67JW3HFHZCSD23K
+                type: string
+                x-go-name: SubscriptionID
+            suspended_at:
+                description: Time at which this domain was suspended. Key will not be present on open domains.
+                example: "2021-07-30T09:20:25+00:00"
+                type: string
+                x-go-name: SuspendedAt
+        title: DomainPermission represents a permission applied to one domain (explicit block/allow).
+        type: object
+        x-go-name: DomainPermission
+        x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
+    domainPermissionCreateRequest:
+        properties:
+            domain:
+                description: |-
+                    A single domain for which this permission request should apply.
+                    Only used if import=true is NOT specified or if import=false.
+                example: example.org
+                type: string
+                x-go-name: Domain
+            domains:
+                description: |-
+                    A list of domains for which this permission request should apply.
+                    Only used if import=true is specified.
+                x-go-name: Domains
+            obfuscate:
+                description: |-
+                    Obfuscate the domain name when displaying this permission entry publicly.
+                    Ie., instead of 'example.org' show something like 'e**mpl*.or*'.
+                example: false
+                type: boolean
+                x-go-name: Obfuscate
+            private_comment:
+                description: Private comment for other admins on why this permission entry was created.
+                example: don't like 'em!!!!
+                type: string
+                x-go-name: PrivateComment
+            public_comment:
+                description: |-
+                    Public comment on why this permission entry was created.
+                    Will be visible to requesters at /api/v1/instance/peers if this endpoint is exposed.
+                example: "foss dorks \U0001F62B"
+                type: string
+                x-go-name: PublicComment
+        title: DomainPermissionRequest is the form submitted as a POST to create a new domain permission entry (allow/block).
+        type: object
+        x-go-name: DomainPermissionRequest
         x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
     emoji:
+        properties:
+            category:
+                description: Used for sorting custom emoji in the picker.
+                example: blobcats
+                type: string
+                x-go-name: Category
+            shortcode:
+                description: The name of the custom emoji.
+                example: blobcat_uwu
+                type: string
+                x-go-name: Shortcode
+            static_url:
+                description: A link to a static copy of the custom emoji.
+                example: https://example.org/fileserver/emojis/blogcat_uwu.png
+                type: string
+                x-go-name: StaticURL
+            url:
+                description: Web URL of the custom emoji.
+                example: https://example.org/fileserver/emojis/blogcat_uwu.gif
+                type: string
+                x-go-name: URL
+            visible_in_picker:
+                description: Emoji is visible in the emoji picker of the instance.
+                example: true
+                type: boolean
+                x-go-name: VisibleInPicker
         title: Emoji represents a custom emoji.
+        type: object
         x-go-name: Emoji
         x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
     emojiCategory:
+        properties:
+            id:
+                description: The ID of the custom emoji category.
+                type: string
+                x-go-name: ID
+            name:
+                description: The name of the custom emoji category.
+                type: string
+                x-go-name: Name
         title: EmojiCategory represents a custom emoji category.
+        type: object
         x-go-name: EmojiCategory
         x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
     emojiCreateRequest:
+        properties:
+            CategoryName:
+                description: |-
+                    Category in which to place the new emoji. Will be uncategorized by default.
+                    CategoryName length should not exceed 64 characters.
+                type: string
+            Image:
+                description: Image file to use for the emoji. Must be png or gif and no larger than 50kb.
+            Shortcode:
+                description: Desired shortcode for the emoji, without surrounding colons. This must be unique for the domain.
+                example: blobcat_uwu
+                type: string
         title: EmojiCreateRequest represents a request to create a custom emoji made through the admin API.
+        type: object
         x-go-name: EmojiCreateRequest
         x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
     emojiUpdateRequest:
+        properties:
+            CategoryName:
+                description: Category in which to place the emoji.
+                type: string
+            Image:
+                description: |-
+                    Image file to use for the emoji.
+                    Must be png or gif and no larger than 50kb.
+            Shortcode:
+                description: Desired shortcode for the emoji, without surrounding colons. This must be unique for the domain.
+                example: blobcat_uwu
+                type: string
+            type:
+                $ref: '#/definitions/EmojiUpdateType'
         title: EmojiUpdateRequest represents a request to update a custom emoji, made through the admin API.
+        type: object
         x-go-name: EmojiUpdateRequest
         x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
     field:
+        properties:
+            name:
+                description: The key/name of this field.
+                example: pronouns
+                type: string
+                x-go-name: Name
+            value:
+                description: The value of this field.
+                example: they/them
+                type: string
+                x-go-name: Value
+            verified_at:
+                description: If this field has been verified, when did this occur? (ISO 8601 Datetime).
+                example: "2021-07-30T09:20:25+00:00"
+                type: string
+                x-go-name: VerifiedAt
         title: Field represents a name/value pair to display on an account's profile.
+        type: object
         x-go-name: Field
         x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
     hostmeta:
         description: 'See: https://www.rfc-editor.org/rfc/rfc6415.html#section-3'
+        properties:
+            Link:
+                items:
+                    $ref: '#/definitions/Link'
+                type: array
+            XMLNS:
+                type: string
+            XMLName: {}
         title: HostMeta represents a hostmeta document.
+        type: object
         x-go-name: HostMeta
         x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
     instanceConfigurationAccounts:
+        properties:
+            allow_custom_css:
+                description: Whether or not accounts on this instance are allowed to upload custom CSS for profiles and statuses.
+                example: false
+                type: boolean
+                x-go-name: AllowCustomCSS
+            max_featured_tags:
+                description: |-
+                    The maximum number of featured tags allowed for each account.
+                    Currently not implemented, so this is hardcoded to 10.
+                format: int64
+                type: integer
+                x-go-name: MaxFeaturedTags
+            max_profile_fields:
+                description: |-
+                    The maximum number of profile fields allowed for each account.
+                    Currently not configurable, so this is hardcoded to 6. (https://github.com/superseriousbusiness/gotosocial/issues/1876)
+                format: int64
+                type: integer
+                x-go-name: MaxProfileFields
         title: InstanceConfigurationAccounts models instance account config parameters.
+        type: object
         x-go-name: InstanceConfigurationAccounts
         x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
     instanceConfigurationMediaAttachments:
+        properties:
+            image_matrix_limit:
+                description: |-
+                    Max allowed image size in pixels as height*width.
+
+                    GtS doesn't set a limit on this, but for compatibility
+                    we give Mastodon's 4096x4096px value here.
+                example: 16777216
+                format: int64
+                type: integer
+                x-go-name: ImageMatrixLimit
+            image_size_limit:
+                description: Max allowed image size in bytes
+                example: 2097152
+                format: int64
+                type: integer
+                x-go-name: ImageSizeLimit
+            supported_mime_types:
+                description: List of mime types that it's possible to upload to this instance.
+                example:
+                    - image/jpeg
+                    - image/gif
+                items:
+                    type: string
+                type: array
+                x-go-name: SupportedMimeTypes
+            video_frame_rate_limit:
+                description: Max allowed video frame rate.
+                example: 60
+                format: int64
+                type: integer
+                x-go-name: VideoFrameRateLimit
+            video_matrix_limit:
+                description: |-
+                    Max allowed video size in pixels as height*width.
+
+                    GtS doesn't set a limit on this, but for compatibility
+                    we give Mastodon's 4096x4096px value here.
+                example: 16777216
+                format: int64
+                type: integer
+                x-go-name: VideoMatrixLimit
+            video_size_limit:
+                description: Max allowed video size in bytes
+                example: 10485760
+                format: int64
+                type: integer
+                x-go-name: VideoSizeLimit
         title: InstanceConfigurationMediaAttachments models instance media attachment config parameters.
+        type: object
         x-go-name: InstanceConfigurationMediaAttachments
         x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
     instanceConfigurationPolls:
+        properties:
+            max_characters_per_option:
+                description: Number of characters allowed per option in the poll.
+                example: 50
+                format: int64
+                type: integer
+                x-go-name: MaxCharactersPerOption
+            max_expiration:
+                description: Maximum expiration time of the poll in seconds.
+                example: 2629746
+                format: int64
+                type: integer
+                x-go-name: MaxExpiration
+            max_options:
+                description: Number of options permitted in a poll on this instance.
+                example: 4
+                format: int64
+                type: integer
+                x-go-name: MaxOptions
+            min_expiration:
+                description: Minimum expiration time of the poll in seconds.
+                example: 300
+                format: int64
+                type: integer
+                x-go-name: MinExpiration
         title: InstanceConfigurationPolls models instance poll config parameters.
+        type: object
         x-go-name: InstanceConfigurationPolls
         x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
     instanceConfigurationStatuses:
+        properties:
+            characters_reserved_per_url:
+                description: Amount of characters clients should assume a url takes up.
+                example: 25
+                format: int64
+                type: integer
+                x-go-name: CharactersReservedPerURL
+            max_characters:
+                description: Maximum allowed length of a post on this instance, in characters.
+                example: 5000
+                format: int64
+                type: integer
+                x-go-name: MaxCharacters
+            max_media_attachments:
+                description: Max number of attachments allowed on a status.
+                example: 4
+                format: int64
+                type: integer
+                x-go-name: MaxMediaAttachments
+            supported_mime_types:
+                description: List of mime types that it's possible to use for statuses on this instance.
+                example:
+                    - text/plain
+                    - text/markdown
+                items:
+                    type: string
+                type: array
+                x-go-name: SupportedMimeTypes
         title: InstanceConfigurationStatuses models instance status config parameters.
+        type: object
         x-go-name: InstanceConfigurationStatuses
         x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
+    instanceRule:
+        properties:
+            id:
+                type: string
+                x-go-name: ID
+            text:
+                type: string
+                x-go-name: Text
+        title: InstanceRule represents a single instance rule.
+        type: object
+        x-go-name: InstanceRule
+        x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
+    instanceRuleCreateRequest:
+        properties:
+            Text:
+                type: string
+        title: InstanceRuleCreateRequest represents a request to create a new instance rule, made through the admin API.
+        type: object
+        x-go-name: InstanceRuleCreateRequest
+        x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
+    instanceRuleUpdateRequest:
+        properties:
+            ID:
+                type: string
+            Text:
+                type: string
+        title: InstanceRuleUpdateRequest represents a request to update the text of an instance rule, made through the admin API.
+        type: object
+        x-go-name: InstanceRuleUpdateRequest
+        x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
     instanceV1:
+        properties:
+            account_domain:
+                description: |-
+                    The domain of accounts on this instance.
+                    This will not necessarily be the same as
+                    simply the Host part of the URI.
+                example: example.org
+                type: string
+                x-go-name: AccountDomain
+            approval_required:
+                description: New account registrations require admin approval.
+                type: boolean
+                x-go-name: ApprovalRequired
+            configuration:
+                $ref: '#/definitions/instanceV1Configuration'
+            contact_account:
+                $ref: '#/definitions/account'
+            description:
+                description: |-
+                    Description of the instance.
+
+                    Should be HTML formatted, but might be plaintext.
+
+                    This should be displayed on the 'about' page for an instance.
+                type: string
+                x-go-name: Description
+            email:
+                description: An email address that may be used for inquiries.
+                example: admin@example.org
+                type: string
+                x-go-name: Email
+            invites_enabled:
+                description: Invites are enabled on this instance.
+                type: boolean
+                x-go-name: InvitesEnabled
+            languages:
+                description: Primary language of the instance.
+                example: en
+                items:
+                    type: string
+                type: array
+                x-go-name: Languages
+            max_toot_chars:
+                description: |-
+                    Maximum allowed length of a post on this instance, in characters.
+
+                    This is provided for compatibility with Tusky and other apps.
+                example: 5000
+                format: uint64
+                type: integer
+                x-go-name: MaxTootChars
+            registrations:
+                description: New account registrations are enabled on this instance.
+                type: boolean
+                x-go-name: Registrations
+            rules:
+                description: An itemized list of rules for this instance.
+                items:
+                    $ref: '#/definitions/instanceRule'
+                type: array
+                x-go-name: Rules
+            short_description:
+                description: |-
+                    A shorter description of the instance.
+
+                    Should be HTML formatted, but might be plaintext.
+
+                    This should be displayed on the instance splash/landing page.
+                type: string
+                x-go-name: ShortDescription
+            stats:
+                additionalProperties:
+                    format: int64
+                    type: integer
+                description: 'Statistics about the instance: number of posts, accounts, etc.'
+                type: object
+                x-go-name: Stats
+            terms:
+                description: Terms and conditions for accounts on this instance.
+                type: string
+                x-go-name: Terms
+            thumbnail:
+                description: URL of the instance avatar/banner image.
+                example: https://example.org/files/instance/thumbnail.jpeg
+                type: string
+                x-go-name: Thumbnail
+            thumbnail_description:
+                description: Description of the instance thumbnail.
+                example: picture of a cute lil' friendly sloth
+                type: string
+                x-go-name: ThumbnailDescription
+            thumbnail_type:
+                description: MIME type of the instance thumbnail.
+                example: image/png
+                type: string
+                x-go-name: ThumbnailType
+            title:
+                description: The title of the instance.
+                example: GoToSocial Example Instance
+                type: string
+                x-go-name: Title
+            uri:
+                description: The URI of the instance.
+                example: https://gts.example.org
+                type: string
+                x-go-name: URI
+            urls:
+                $ref: '#/definitions/instanceV1URLs'
+            version:
+                description: |-
+                    The version of GoToSocial installed on the instance.
+
+                    This will contain at least a semantic version number.
+
+                    It may also contain, after a space, the short git commit ID of the running software.
+                example: 0.1.1 cb85f65
+                type: string
+                x-go-name: Version
         title: InstanceV1 models information about this instance.
+        type: object
         x-go-name: InstanceV1
         x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
     instanceV1Configuration:
+        properties:
+            accounts:
+                $ref: '#/definitions/instanceConfigurationAccounts'
+            emojis:
+                $ref: '#/definitions/InstanceConfigurationEmojis'
+            media_attachments:
+                $ref: '#/definitions/instanceConfigurationMediaAttachments'
+            polls:
+                $ref: '#/definitions/instanceConfigurationPolls'
+            statuses:
+                $ref: '#/definitions/instanceConfigurationStatuses'
         title: InstanceV1Configuration models instance configuration parameters.
+        type: object
         x-go-name: InstanceV1Configuration
         x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
     instanceV1URLs:
+        properties:
+            streaming_api:
+                description: Websockets address for status and notification streaming.
+                example: wss://example.org
+                type: string
+                x-go-name: StreamingAPI
         title: InstanceV1URLs models instance-relevant URLs for client application consumption.
+        type: object
         x-go-name: InstanceV1URLs
         x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
     instanceV2:
+        properties:
+            account_domain:
+                description: |-
+                    The domain of accounts on this instance.
+                    This will not necessarily be the same as
+                    domain.
+                example: example.org
+                type: string
+                x-go-name: AccountDomain
+            configuration:
+                $ref: '#/definitions/instanceV2Configuration'
+            contact:
+                $ref: '#/definitions/instanceV2Contact'
+            description:
+                description: |-
+                    Description of the instance.
+
+                    Should be HTML formatted, but might be plaintext.
+
+                    This should be displayed on the 'about' page for an instance.
+                type: string
+                x-go-name: Description
+            domain:
+                description: The domain of the instance.
+                example: gts.example.org
+                type: string
+                x-go-name: Domain
+            languages:
+                description: Primary languages of the instance + moderators/admins.
+                example:
+                    - en
+                items:
+                    type: string
+                type: array
+                x-go-name: Languages
+            registrations:
+                $ref: '#/definitions/instanceV2Registrations'
+            rules:
+                description: An itemized list of rules for this instance.
+                items:
+                    $ref: '#/definitions/instanceRule'
+                type: array
+                x-go-name: Rules
+            source_url:
+                description: The URL for the source code of the software running on this instance, in keeping with AGPL license requirements.
+                example: https://github.com/superseriousbusiness/gotosocial
+                type: string
+                x-go-name: SourceURL
+            terms:
+                description: Terms and conditions for accounts on this instance.
+                type: string
+                x-go-name: Terms
+            thumbnail:
+                $ref: '#/definitions/instanceV2Thumbnail'
+            title:
+                description: The title of the instance.
+                example: GoToSocial Example Instance
+                type: string
+                x-go-name: Title
+            usage:
+                $ref: '#/definitions/instanceV2Usage'
+            version:
+                description: |-
+                    The version of GoToSocial installed on the instance.
+
+                    This will contain at least a semantic version number.
+
+                    It may also contain, after a space, the short git commit ID of the running software.
+                example: 0.1.1 cb85f65
+                type: string
+                x-go-name: Version
         title: InstanceV2 models information about this instance.
+        type: object
         x-go-name: InstanceV2
         x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
     instanceV2Configuration:
+        properties:
+            accounts:
+                $ref: '#/definitions/instanceConfigurationAccounts'
+            emojis:
+                $ref: '#/definitions/InstanceConfigurationEmojis'
+            media_attachments:
+                $ref: '#/definitions/instanceConfigurationMediaAttachments'
+            polls:
+                $ref: '#/definitions/instanceConfigurationPolls'
+            statuses:
+                $ref: '#/definitions/instanceConfigurationStatuses'
+            translation:
+                $ref: '#/definitions/instanceV2ConfigurationTranslation'
+            urls:
+                $ref: '#/definitions/instanceV2URLs'
         title: Configured values and limits for this instance.
+        type: object
         x-go-name: InstanceV2Configuration
         x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
     instanceV2ConfigurationTranslation:
+        properties:
+            enabled:
+                description: |-
+                    Whether the Translations API is available on this instance.
+                    Not implemented so this value is always false.
+                type: boolean
+                x-go-name: Enabled
         title: Hints related to translation.
+        type: object
         x-go-name: InstanceV2ConfigurationTranslation
         x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
     instanceV2Contact:
+        properties:
+            account:
+                $ref: '#/definitions/account'
+            email:
+                description: |-
+                    An email address that can be messaged regarding inquiries or issues.
+                    Empty string if no email address set.
+                example: someone@example.org
+                type: string
+                x-go-name: Email
         title: Hints related to contacting a representative of the instance.
+        type: object
         x-go-name: InstanceV2Contact
         x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
     instanceV2Registrations:
+        properties:
+            approval_required:
+                description: Whether registrations require moderator approval.
+                example: true
+                type: boolean
+                x-go-name: ApprovalRequired
+            enabled:
+                description: Whether registrations are enabled.
+                example: false
+                type: boolean
+                x-go-name: Enabled
+            message:
+                description: |-
+                    A custom message (html string) to be shown when registrations are closed.
+                    Value will be null if no message is set.
+                example: <p>Registrations are currently closed on example.org because of spam bots!</p>
+                type: string
+                x-go-name: Message
         title: Information about registering for this instance.
+        type: object
         x-go-name: InstanceV2Registrations
         x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
     instanceV2Thumbnail:
+        properties:
+            blurhash:
+                description: |-
+                    A hash computed by the BlurHash algorithm, for generating colorful preview thumbnails when media has not been downloaded yet.
+                    Key/value not set if no blurhash available.
+                example: UeKUpFxuo~R%0nW;WCnhF6RjaJt757oJodS$
+                type: string
+                x-go-name: Blurhash
+            thumbnail_description:
+                description: |-
+                    Description of the instance thumbnail.
+                    Key/value not set if no description available.
+                example: picture of a cute lil' friendly sloth
+                type: string
+                x-go-name: Description
+            thumbnail_type:
+                description: |-
+                    MIME type of the instance thumbnail.
+                    Key/value not set if thumbnail image type unknown.
+                example: image/png
+                type: string
+                x-go-name: Type
+            url:
+                description: The URL for the thumbnail image.
+                example: https://example.org/fileserver/01BPSX2MKCRVMD4YN4D71G9CP5/attachment/original/01H88X0KQ2DFYYDSWYP93VDJZA.png
+                type: string
+                x-go-name: URL
+            versions:
+                $ref: '#/definitions/instanceV2ThumbnailVersions'
         title: An image used to represent this instance.
+        type: object
         x-go-name: InstanceV2Thumbnail
         x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
     instanceV2ThumbnailVersions:
+        properties:
+            '@1x':
+                description: |-
+                    The URL for the thumbnail image at 1x resolution.
+                    Key/value not set if scaled versions not available.
+                type: string
+                x-go-name: Size1URL
+            '@2x':
+                description: |-
+                    The URL for the thumbnail image at 2x resolution.
+                    Key/value not set if scaled versions not available.
+                type: string
+                x-go-name: Size2URL
         title: Links to scaled resolution images, for high DPI screens.
+        type: object
         x-go-name: InstanceV2ThumbnailVersions
         x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
     instanceV2URLs:
+        properties:
+            streaming:
+                description: Websockets address for status and notification streaming.
+                example: wss://example.org
+                type: string
+                x-go-name: Streaming
         title: InstanceV2URLs models instance-relevant URLs for client application consumption.
+        type: object
         x-go-name: InstanceV2URLs
         x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
     instanceV2Usage:
+        properties:
+            users:
+                $ref: '#/definitions/instanceV2Users'
         title: Usage data for this instance.
+        type: object
         x-go-name: InstanceV2Usage
         x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
     instanceV2Users:
+        properties:
+            active_month:
+                description: |-
+                    The number of active users in the past 4 weeks.
+                    Currently not implemented: will always be 0.
+                example: 0
+                format: int64
+                type: integer
+                x-go-name: ActiveMonth
         title: Usage data related to users on this instance.
+        type: object
         x-go-name: InstanceV2Users
         x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
     list:
+        properties:
+            id:
+                description: The ID of the list.
+                type: string
+                x-go-name: ID
+            replies_policy:
+                description: |-
+                    RepliesPolicy for this list.
+                    followed = Show replies to any followed user
+                    list = Show replies to members of the list
+                    none = Show replies to no one
+                type: string
+                x-go-name: RepliesPolicy
+            title:
+                description: The user-defined title of the list.
+                type: string
+                x-go-name: Title
         title: List represents a user-created list of accounts that the user follows.
+        type: object
         x-go-name: List
         x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
     mediaDimensions:
+        properties:
+            aspect:
+                description: |-
+                    Aspect ratio of the media.
+                    Equal to width / height.
+                example: 1.777777778
+                format: float
+                type: number
+                x-go-name: Aspect
+            bitrate:
+                description: Bitrate of the media in bits per second.
+                example: 1000000
+                format: int64
+                type: integer
+                x-go-name: Bitrate
+            duration:
+                description: |-
+                    Duration of the media in seconds.
+                    Only set for video and audio.
+                example: 5.43
+                format: float
+                type: number
+                x-go-name: Duration
+            frame_rate:
+                description: |-
+                    Framerate of the media.
+                    Only set for video and gifs.
+                example: "30"
+                type: string
+                x-go-name: FrameRate
+            height:
+                description: |-
+                    Height of the media in pixels.
+                    Not set for audio.
+                example: 1080
+                format: int64
+                type: integer
+                x-go-name: Height
+            size:
+                description: |-
+                    Size of the media, in the format `[width]x[height]`.
+                    Not set for audio.
+                example: 1920x1080
+                type: string
+                x-go-name: Size
+            width:
+                description: |-
+                    Width of the media in pixels.
+                    Not set for audio.
+                example: 1920
+                format: int64
+                type: integer
+                x-go-name: Width
         title: MediaDimensions models detailed properties of a piece of media.
+        type: object
         x-go-name: MediaDimensions
         x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
     mediaFocus:
+        properties:
+            x:
+                description: |-
+                    x position of the focus
+                    should be between -1 and 1
+                format: float
+                type: number
+                x-go-name: X
+            "y":
+                description: |-
+                    y position of the focus
+                    should be between -1 and 1
+                format: float
+                type: number
+                x-go-name: "Y"
         title: MediaFocus models the focal point of a piece of media.
+        type: object
         x-go-name: MediaFocus
         x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
     mediaMeta:
         description: This can be metadata about an image, an audio file, video, etc.
+        properties:
+            focus:
+                $ref: '#/definitions/mediaFocus'
+            original:
+                $ref: '#/definitions/mediaDimensions'
+            small:
+                $ref: '#/definitions/mediaDimensions'
         title: MediaMeta models media metadata.
+        type: object
         x-go-name: MediaMeta
         x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
     multiStatus:
@@ -178,7 +1877,16 @@ definitions:
             This model should be transmitted along with http code
             207 MULTI-STATUS to indicate a mixture of responses.
             See https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/207
+        properties:
+            data:
+                items:
+                    $ref: '#/definitions/multiStatusEntry'
+                type: array
+                x-go-name: Data
+            metadata:
+                $ref: '#/definitions/multiStatusMetadata'
         title: MultiStatus models a multistatus HTTP response body.
+        type: object
         x-go-name: MultiStatus
         x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
     multiStatusEntry:
@@ -187,90 +1895,896 @@ definitions:
             and value of `Resource` is left to the discretion of
             the caller, but at minimum it should be expected to be
             JSON-serializable.
+        properties:
+            message:
+                description: Message/error message for this entry.
+                type: string
+                x-go-name: Message
+            resource:
+                description: |-
+                    The resource/result for this entry.
+                    Value may be any type, check the docs
+                    per endpoint to see which to expect.
+                x-go-name: Resource
+            status:
+                description: HTTP status code of this entry.
+                format: int64
+                type: integer
+                x-go-name: Status
         title: MultiStatusEntry models one entry in multistatus data.
+        type: object
         x-go-name: MultiStatusEntry
         x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
     multiStatusMetadata:
         description: |-
             MultiStatusMetadata models an at-a-glance summary of
             the data contained in the MultiStatus.
+        properties:
+            failure:
+                description: Count of unsuccessful results (!2xx).
+                format: int64
+                type: integer
+                x-go-name: Failure
+            success:
+                description: Count of successful results (2xx).
+                format: int64
+                type: integer
+                x-go-name: Success
+            total:
+                description: Success count + failure count.
+                format: int64
+                type: integer
+                x-go-name: Total
+        type: object
         x-go-name: MultiStatusMetadata
         x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
     nodeinfo:
         description: 'See: https://nodeinfo.diaspora.software/schema.html'
+        properties:
+            metadata:
+                additionalProperties: {}
+                description: Free form key value pairs for software specific values. Clients should not rely on any specific key present.
+                type: object
+                x-go-name: Metadata
+            openRegistrations:
+                description: Whether this server allows open self-registration.
+                example: false
+                type: boolean
+                x-go-name: OpenRegistrations
+            protocols:
+                description: The protocols supported on this server.
+                items:
+                    type: string
+                type: array
+                x-go-name: Protocols
+            services:
+                $ref: '#/definitions/NodeInfoServices'
+            software:
+                $ref: '#/definitions/NodeInfoSoftware'
+            usage:
+                $ref: '#/definitions/NodeInfoUsage'
+            version:
+                description: The schema version
+                example: "2.0"
+                type: string
+                x-go-name: Version
         title: Nodeinfo represents a version 2.1 or version 2.0 nodeinfo schema.
+        type: object
         x-go-name: Nodeinfo
         x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
     notification:
+        properties:
+            account:
+                $ref: '#/definitions/account'
+            created_at:
+                description: The timestamp of the notification (ISO 8601 Datetime)
+                type: string
+                x-go-name: CreatedAt
+            id:
+                description: The id of the notification in the database.
+                type: string
+                x-go-name: ID
+            status:
+                $ref: '#/definitions/status'
+            type:
+                description: |-
+                    The type of event that resulted in the notification.
+                    follow = Someone followed you
+                    follow_request = Someone requested to follow you
+                    mention = Someone mentioned you in their status
+                    reblog = Someone boosted one of your statuses
+                    favourite = Someone favourited one of your statuses
+                    poll = A poll you have voted in or created has ended
+                    status = Someone you enabled notifications for has posted a status
+                type: string
+                x-go-name: Type
         title: Notification represents a notification of an event relevant to the user.
+        type: object
         x-go-name: Notification
         x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
     oauthToken:
+        properties:
+            access_token:
+                description: Access token used for authorization.
+                type: string
+                x-go-name: AccessToken
+            created_at:
+                description: When the OAuth token was generated (UNIX timestamp seconds).
+                example: 1627644520
+                format: int64
+                type: integer
+                x-go-name: CreatedAt
+            scope:
+                description: OAuth scopes granted by this token, space-separated.
+                example: read write admin
+                type: string
+                x-go-name: Scope
+            token_type:
+                description: OAuth token type. Will always be 'Bearer'.
+                example: bearer
+                type: string
+                x-go-name: TokenType
         title: Token represents an OAuth token used for authenticating with the GoToSocial API and performing actions.
+        type: object
         x-go-name: Token
         x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
     poll:
+        properties:
+            emojis:
+                description: Custom emoji to be used for rendering poll options.
+                items:
+                    $ref: '#/definitions/emoji'
+                type: array
+                x-go-name: Emojis
+            expired:
+                description: Is the poll currently expired?
+                type: boolean
+                x-go-name: Expired
+            expires_at:
+                description: When the poll ends. (ISO 8601 Datetime).
+                type: string
+                x-go-name: ExpiresAt
+            id:
+                description: The ID of the poll in the database.
+                example: 01FBYKMD1KBMJ0W6JF1YZ3VY5D
+                type: string
+                x-go-name: ID
+            multiple:
+                description: Does the poll allow multiple-choice answers?
+                type: boolean
+                x-go-name: Multiple
+            options:
+                description: Possible answers for the poll.
+                items:
+                    $ref: '#/definitions/pollOption'
+                type: array
+                x-go-name: Options
+            own_votes:
+                description: |-
+                    When called with a user token, which options has the authorized
+                    user chosen? Contains an array of index values for options.
+
+                    Omitted when no user token provided.
+                items:
+                    format: int64
+                    type: integer
+                type: array
+                x-go-name: OwnVotes
+            voted:
+                description: |-
+                    When called with a user token, has the authorized user voted?
+
+                    Omitted when no user token provided.
+                type: boolean
+                x-go-name: Voted
+            voters_count:
+                description: How many unique accounts have voted on a multiple-choice poll.
+                format: int64
+                type: integer
+                x-go-name: VotersCount
+            votes_count:
+                description: How many votes have been received.
+                format: int64
+                type: integer
+                x-go-name: VotesCount
         title: Poll represents a poll attached to a status.
+        type: object
         x-go-name: Poll
         x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
-    pollOptions:
-        title: PollOptions represents the current vote counts for different poll options.
-        x-go-name: PollOptions
+    pollOption:
+        properties:
+            title:
+                description: The text value of the poll option. String.
+                type: string
+                x-go-name: Title
+            votes_count:
+                description: The number of received votes for this option.
+                format: int64
+                type: integer
+                x-go-name: VotesCount
+        title: PollOption represents the current vote counts for different poll options.
+        type: object
+        x-go-name: PollOption
+        x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
+    pollRequest:
+        properties:
+            ExpiresIn:
+                description: |-
+                    Duration the poll should be open, in seconds.
+                    If provided, media_ids cannot be used, and poll[options] must be provided.
+                format: int64
+                type: integer
+            expires_in:
+                description: |-
+                    Duration the poll should be open, in seconds.
+                    If provided, media_ids cannot be used, and poll[options] must be provided.
+                x-go-name: ExpiresInI
+            hide_totals:
+                description: Hide vote counts until the poll ends.
+                type: boolean
+                x-go-name: HideTotals
+            multiple:
+                description: Allow multiple choices on this poll.
+                type: boolean
+                x-go-name: Multiple
+            options:
+                description: |-
+                    Array of possible answers.
+                    If provided, media_ids cannot be used, and poll[expires_in] must be provided.
+                    name: poll[options]
+                items:
+                    type: string
+                type: array
+                x-go-name: Options
+        title: PollRequest models a request to create a poll.
+        type: object
+        x-go-name: PollRequest
         x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
     report:
+        properties:
+            action_taken:
+                description: Whether an action has been taken by an admin in response to this report.
+                example: false
+                type: boolean
+                x-go-name: ActionTaken
+            action_taken_at:
+                description: |-
+                    If an action was taken, at what time was this done? (ISO 8601 Datetime)
+                    Will be null if not set / no action yet taken.
+                example: "2021-07-30T09:20:25+00:00"
+                type: string
+                x-go-name: ActionTakenAt
+            action_taken_comment:
+                description: |-
+                    If an action was taken, what comment was made by the admin on the taken action?
+                    Will be null if not set / no action yet taken.
+                example: Account was suspended.
+                type: string
+                x-go-name: ActionTakenComment
+            category:
+                description: Under what category was this report created?
+                example: spam
+                type: string
+                x-go-name: Category
+            comment:
+                description: |-
+                    Comment submitted when the report was created.
+                    Will be empty if no comment was submitted.
+                example: This person has been harassing me.
+                type: string
+                x-go-name: Comment
+            created_at:
+                description: The date when this report was created (ISO 8601 Datetime).
+                example: "2021-07-30T09:20:25+00:00"
+                type: string
+                x-go-name: CreatedAt
+            forwarded:
+                description: Bool to indicate that report should be federated to remote instance.
+                example: true
+                type: boolean
+                x-go-name: Forwarded
+            id:
+                description: ID of the report.
+                example: 01FBVD42CQ3ZEEVMW180SBX03B
+                type: string
+                x-go-name: ID
+            rule_ids:
+                description: |-
+                    Array of rule IDs that were submitted along with this report.
+                    Will be empty if no rule IDs were submitted.
+                example:
+                    - 01GPBN5YDY6JKBWE44H7YQBDCQ
+                    - 01GPBN65PDWSBPWVDD0SQCFFY3
+                items:
+                    type: string
+                type: array
+                x-go-name: RuleIDs
+            status_ids:
+                description: |-
+                    Array of IDs of statuses that were submitted along with this report.
+                    Will be empty if no status IDs were submitted.
+                example:
+                    - 01GPBN5YDY6JKBWE44H7YQBDCQ
+                    - 01GPBN65PDWSBPWVDD0SQCFFY3
+                items:
+                    type: string
+                type: array
+                x-go-name: StatusIDs
+            target_account:
+                $ref: '#/definitions/account'
         title: Report models a moderation report submitted to the instance, either via the client API or via the federated API.
+        type: object
         x-go-name: Report
         x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
     searchResult:
+        properties:
+            accounts:
+                items:
+                    $ref: '#/definitions/account'
+                type: array
+                x-go-name: Accounts
+            hashtags:
+                description: Slice of strings if api v1, slice of tags if api v2.
+                items: {}
+                type: array
+                x-go-name: Hashtags
+            statuses:
+                items:
+                    $ref: '#/definitions/status'
+                type: array
+                x-go-name: Statuses
         title: SearchResult models a search result.
+        type: object
         x-go-name: SearchResult
         x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
     status:
+        properties:
+            account:
+                $ref: '#/definitions/account'
+            application:
+                $ref: '#/definitions/application'
+            bookmarked:
+                description: This status has been bookmarked by the account viewing it.
+                type: boolean
+                x-go-name: Bookmarked
+            card:
+                $ref: '#/definitions/card'
+            content:
+                description: The content of this status. Should be HTML, but might also be plaintext in some cases.
+                example: <p>Hey this is a status!</p>
+                type: string
+                x-go-name: Content
+            created_at:
+                description: The date when this status was created (ISO 8601 Datetime).
+                example: "2021-07-30T09:20:25+00:00"
+                type: string
+                x-go-name: CreatedAt
+            emojis:
+                description: Custom emoji to be used when rendering status content.
+                items:
+                    $ref: '#/definitions/emoji'
+                type: array
+                x-go-name: Emojis
+            favourited:
+                description: This status has been favourited by the account viewing it.
+                type: boolean
+                x-go-name: Favourited
+            favourites_count:
+                description: Number of favourites/likes this status has received, according to our instance.
+                format: int64
+                type: integer
+                x-go-name: FavouritesCount
+            id:
+                description: ID of the status.
+                example: 01FBVD42CQ3ZEEVMW180SBX03B
+                type: string
+                x-go-name: ID
+            in_reply_to_account_id:
+                description: ID of the account being replied to.
+                example: 01FBVD42CQ3ZEEVMW180SBX03B
+                type: string
+                x-go-name: InReplyToAccountID
+            in_reply_to_id:
+                description: ID of the status being replied to.
+                example: 01FBVD42CQ3ZEEVMW180SBX03B
+                type: string
+                x-go-name: InReplyToID
+            language:
+                description: |-
+                    Primary language of this status (ISO 639 Part 1 two-letter language code).
+                    Will be null if language is not known.
+                example: en
+                type: string
+                x-go-name: Language
+            media_attachments:
+                description: Media that is attached to this status.
+                items:
+                    $ref: '#/definitions/attachment'
+                type: array
+                x-go-name: MediaAttachments
+            mentions:
+                description: Mentions of users within the status content.
+                items:
+                    $ref: '#/definitions/Mention'
+                type: array
+                x-go-name: Mentions
+            muted:
+                description: Replies to this status have been muted by the account viewing it.
+                type: boolean
+                x-go-name: Muted
+            pinned:
+                description: This status has been pinned by the account viewing it (only relevant for your own statuses).
+                type: boolean
+                x-go-name: Pinned
+            poll:
+                $ref: '#/definitions/poll'
+            reblog:
+                $ref: '#/definitions/statusReblogged'
+            reblogged:
+                description: This status has been boosted/reblogged by the account viewing it.
+                type: boolean
+                x-go-name: Reblogged
+            reblogs_count:
+                description: Number of times this status has been boosted/reblogged, according to our instance.
+                format: int64
+                type: integer
+                x-go-name: ReblogsCount
+            replies_count:
+                description: Number of replies to this status, according to our instance.
+                format: int64
+                type: integer
+                x-go-name: RepliesCount
+            sensitive:
+                description: Status contains sensitive content.
+                example: false
+                type: boolean
+                x-go-name: Sensitive
+            spoiler_text:
+                description: Subject, summary, or content warning for the status.
+                example: warning nsfw
+                type: string
+                x-go-name: SpoilerText
+            tags:
+                description: Hashtags used within the status content.
+                items:
+                    $ref: '#/definitions/tag'
+                type: array
+                x-go-name: Tags
+            text:
+                description: |-
+                    Plain-text source of a status. Returned instead of content when status is deleted,
+                    so the user may redraft from the source text without the client having to reverse-engineer
+                    the original text from the HTML content.
+                type: string
+                x-go-name: Text
+            uri:
+                description: ActivityPub URI of the status. Equivalent to the status's activitypub ID.
+                example: https://example.org/users/some_user/statuses/01FBVD42CQ3ZEEVMW180SBX03B
+                type: string
+                x-go-name: URI
+            url:
+                description: The status's publicly available web URL. This link will only work if the visibility of the status is 'public'.
+                example: https://example.org/@some_user/statuses/01FBVD42CQ3ZEEVMW180SBX03B
+                type: string
+                x-go-name: URL
+            visibility:
+                description: Visibility of this status.
+                example: unlisted
+                type: string
+                x-go-name: Visibility
         title: Status models a status or post.
+        type: object
         x-go-name: Status
         x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
     statusContext:
+        properties:
+            ancestors:
+                description: Parents in the thread.
+                items:
+                    $ref: '#/definitions/status'
+                type: array
+                x-go-name: Ancestors
+            descendants:
+                description: Children in the thread.
+                items:
+                    $ref: '#/definitions/status'
+                type: array
+                x-go-name: Descendants
         title: Context models the tree around a given status.
+        type: object
         x-go-name: Context
         x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
     statusCreateRequest:
+        properties:
+            content_type:
+                description: |-
+                    Content type to use when parsing this status.
+                    in: formData
+                type: string
+                x-go-name: ContentType
+            in_reply_to_id:
+                description: |-
+                    ID of the status being replied to, if status is a reply.
+                    in: formData
+                type: string
+                x-go-name: InReplyToID
+            language:
+                description: |-
+                    ISO 639 language code for this status.
+                    in: formData
+                type: string
+                x-go-name: Language
+            media_ids:
+                description: |-
+                    Array of Attachment ids to be attached as media.
+                    If provided, status becomes optional, and poll cannot be used.
+
+                    If the status is being submitted as a form, the key is 'media_ids[]',
+                    but if it's json or xml, the key is 'media_ids'.
+
+                    in: formData
+                items:
+                    type: string
+                type: array
+                x-go-name: MediaIDs
+            poll:
+                $ref: '#/definitions/pollRequest'
+            scheduled_at:
+                description: |-
+                    ISO 8601 Datetime at which to schedule a status.
+                    Providing this parameter will cause ScheduledStatus to be returned instead of Status.
+                    Must be at least 5 minutes in the future.
+                    in: formData
+                type: string
+                x-go-name: ScheduledAt
+            sensitive:
+                description: |-
+                    Status and attached media should be marked as sensitive.
+                    in: formData
+                type: boolean
+                x-go-name: Sensitive
+            spoiler_text:
+                description: |-
+                    Text to be shown as a warning or subject before the actual content.
+                    Statuses are generally collapsed behind this field.
+                    in: formData
+                type: string
+                x-go-name: SpoilerText
+            status:
+                description: |-
+                    Text content of the status.
+                    If media_ids is provided, this becomes optional.
+                    Attaching a poll is optional while status is provided.
+                    in: formData
+                type: string
+                x-go-name: Status
+            visibility:
+                description: |-
+                    Visibility of the posted status.
+                    in: formData
+                type: string
+                x-go-name: Visibility
         title: StatusCreateRequest models status creation parameters.
+        type: object
         x-go-name: StatusCreateRequest
         x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
     statusReblogged:
+        properties:
+            account:
+                $ref: '#/definitions/account'
+            application:
+                $ref: '#/definitions/application'
+            bookmarked:
+                description: This status has been bookmarked by the account viewing it.
+                type: boolean
+                x-go-name: Bookmarked
+            card:
+                $ref: '#/definitions/card'
+            content:
+                description: The content of this status. Should be HTML, but might also be plaintext in some cases.
+                example: <p>Hey this is a status!</p>
+                type: string
+                x-go-name: Content
+            created_at:
+                description: The date when this status was created (ISO 8601 Datetime).
+                example: "2021-07-30T09:20:25+00:00"
+                type: string
+                x-go-name: CreatedAt
+            emojis:
+                description: Custom emoji to be used when rendering status content.
+                items:
+                    $ref: '#/definitions/emoji'
+                type: array
+                x-go-name: Emojis
+            favourited:
+                description: This status has been favourited by the account viewing it.
+                type: boolean
+                x-go-name: Favourited
+            favourites_count:
+                description: Number of favourites/likes this status has received, according to our instance.
+                format: int64
+                type: integer
+                x-go-name: FavouritesCount
+            id:
+                description: ID of the status.
+                example: 01FBVD42CQ3ZEEVMW180SBX03B
+                type: string
+                x-go-name: ID
+            in_reply_to_account_id:
+                description: ID of the account being replied to.
+                example: 01FBVD42CQ3ZEEVMW180SBX03B
+                type: string
+                x-go-name: InReplyToAccountID
+            in_reply_to_id:
+                description: ID of the status being replied to.
+                example: 01FBVD42CQ3ZEEVMW180SBX03B
+                type: string
+                x-go-name: InReplyToID
+            language:
+                description: |-
+                    Primary language of this status (ISO 639 Part 1 two-letter language code).
+                    Will be null if language is not known.
+                example: en
+                type: string
+                x-go-name: Language
+            media_attachments:
+                description: Media that is attached to this status.
+                items:
+                    $ref: '#/definitions/attachment'
+                type: array
+                x-go-name: MediaAttachments
+            mentions:
+                description: Mentions of users within the status content.
+                items:
+                    $ref: '#/definitions/Mention'
+                type: array
+                x-go-name: Mentions
+            muted:
+                description: Replies to this status have been muted by the account viewing it.
+                type: boolean
+                x-go-name: Muted
+            pinned:
+                description: This status has been pinned by the account viewing it (only relevant for your own statuses).
+                type: boolean
+                x-go-name: Pinned
+            poll:
+                $ref: '#/definitions/poll'
+            reblog:
+                $ref: '#/definitions/statusReblogged'
+            reblogged:
+                description: This status has been boosted/reblogged by the account viewing it.
+                type: boolean
+                x-go-name: Reblogged
+            reblogs_count:
+                description: Number of times this status has been boosted/reblogged, according to our instance.
+                format: int64
+                type: integer
+                x-go-name: ReblogsCount
+            replies_count:
+                description: Number of replies to this status, according to our instance.
+                format: int64
+                type: integer
+                x-go-name: RepliesCount
+            sensitive:
+                description: Status contains sensitive content.
+                example: false
+                type: boolean
+                x-go-name: Sensitive
+            spoiler_text:
+                description: Subject, summary, or content warning for the status.
+                example: warning nsfw
+                type: string
+                x-go-name: SpoilerText
+            tags:
+                description: Hashtags used within the status content.
+                items:
+                    $ref: '#/definitions/tag'
+                type: array
+                x-go-name: Tags
+            text:
+                description: |-
+                    Plain-text source of a status. Returned instead of content when status is deleted,
+                    so the user may redraft from the source text without the client having to reverse-engineer
+                    the original text from the HTML content.
+                type: string
+                x-go-name: Text
+            uri:
+                description: ActivityPub URI of the status. Equivalent to the status's activitypub ID.
+                example: https://example.org/users/some_user/statuses/01FBVD42CQ3ZEEVMW180SBX03B
+                type: string
+                x-go-name: URI
+            url:
+                description: The status's publicly available web URL. This link will only work if the visibility of the status is 'public'.
+                example: https://example.org/@some_user/statuses/01FBVD42CQ3ZEEVMW180SBX03B
+                type: string
+                x-go-name: URL
+            visibility:
+                description: Visibility of this status.
+                example: unlisted
+                type: string
+                x-go-name: Visibility
         title: StatusReblogged represents a reblogged status.
+        type: object
         x-go-name: StatusReblogged
         x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
     swaggerCollection:
+        properties:
+            '@context':
+                description: |-
+                    ActivityStreams JSON-LD context.
+                    A string or an array of strings, or more
+                    complex nested items.
+                example: https://www.w3.org/ns/activitystreams
+                x-go-name: Context
+            first:
+                $ref: '#/definitions/swaggerCollectionPage'
+            id:
+                description: ActivityStreams ID.
+                example: https://example.org/users/some_user/statuses/106717595988259568/replies
+                type: string
+                x-go-name: ID
+            last:
+                $ref: '#/definitions/swaggerCollectionPage'
+            type:
+                description: ActivityStreams type.
+                example: Collection
+                type: string
+                x-go-name: Type
         title: SwaggerCollection represents an ActivityPub Collection.
+        type: object
         x-go-name: SwaggerCollection
         x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/activitypub/users
     swaggerCollectionPage:
+        properties:
+            id:
+                description: ActivityStreams ID.
+                example: https://example.org/users/some_user/statuses/106717595988259568/replies?page=true
+                type: string
+                x-go-name: ID
+            items:
+                description: Items on this page.
+                example:
+                    - https://example.org/users/some_other_user/statuses/086417595981111564
+                    - https://another.example.com/users/another_user/statuses/01FCN8XDV3YG7B4R42QA6YQZ9R
+                items:
+                    type: string
+                type: array
+                x-go-name: Items
+            next:
+                description: Link to the next page.
+                example: https://example.org/users/some_user/statuses/106717595988259568/replies?only_other_accounts=true&page=true
+                type: string
+                x-go-name: Next
+            partOf:
+                description: Collection this page belongs to.
+                example: https://example.org/users/some_user/statuses/106717595988259568/replies
+                type: string
+                x-go-name: PartOf
+            type:
+                description: ActivityStreams type.
+                example: CollectionPage
+                type: string
+                x-go-name: Type
         title: SwaggerCollectionPage represents one page of a collection.
+        type: object
         x-go-name: SwaggerCollectionPage
         x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/activitypub/users
     swaggerFeaturedCollection:
+        properties:
+            '@context':
+                description: |-
+                    ActivityStreams JSON-LD context.
+                    A string or an array of strings, or more
+                    complex nested items.
+                example: https://www.w3.org/ns/activitystreams
+                x-go-name: Context
+            TotalItems:
+                description: Number of items in this collection.
+                example: 2
+                format: int64
+                type: integer
+            id:
+                description: ActivityStreams ID.
+                example: https://example.org/users/some_user/collections/featured
+                type: string
+                x-go-name: ID
+            items:
+                description: List of status URIs.
+                example: '[''https://example.org/users/some_user/statuses/01GSZ0F7Q8SJKNRF777GJD271R'', ''https://example.org/users/some_user/statuses/01GSZ0G012CBQ7TEKX689S3QRE'']'
+                items:
+                    type: string
+                type: array
+                x-go-name: Items
+            type:
+                description: ActivityStreams type.
+                example: OrderedCollection
+                type: string
+                x-go-name: Type
         title: SwaggerFeaturedCollection represents an ActivityPub OrderedCollection.
+        type: object
         x-go-name: SwaggerFeaturedCollection
         x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/activitypub/users
     tag:
+        properties:
+            history:
+                description: |-
+                    History of this hashtag's usage.
+                    Currently just a stub, if provided will always be an empty array.
+                example: []
+                items: {}
+                type: array
+                x-go-name: History
+            name:
+                description: 'The value of the hashtag after the # sign.'
+                example: helloworld
+                type: string
+                x-go-name: Name
+            url:
+                description: Web link to the hashtag.
+                example: https://example.org/tags/helloworld
+                type: string
+                x-go-name: URL
         title: Tag represents a hashtag used within the content of a status.
+        type: object
         x-go-name: Tag
         x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
     updateField:
         description: By default, max 6 fields and 255 characters per property/value.
+        properties:
+            name:
+                description: Name of the field
+                type: string
+                x-go-name: Name
+            value:
+                description: Value of the field
+                type: string
+                x-go-name: Value
         title: UpdateField is to be used specifically in an UpdateCredentialsRequest.
+        type: object
         x-go-name: UpdateField
         x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
     updateSource:
+        properties:
+            language:
+                description: Default language to use for authored statuses. (ISO 6391)
+                type: string
+                x-go-name: Language
+            privacy:
+                description: Default post privacy for authored statuses.
+                type: string
+                x-go-name: Privacy
+            sensitive:
+                description: Mark authored statuses as sensitive by default.
+                type: boolean
+                x-go-name: Sensitive
+            status_content_type:
+                description: Default format for authored statuses (text/plain or text/markdown).
+                type: string
+                x-go-name: StatusContentType
         title: UpdateSource is to be used specifically in an UpdateCredentialsRequest.
+        type: object
         x-go-name: UpdateSource
         x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
     wellKnownResponse:
         description: See https://webfinger.net/
+        properties:
+            aliases:
+                items:
+                    type: string
+                type: array
+                x-go-name: Aliases
+            links:
+                items:
+                    $ref: '#/definitions/Link'
+                type: array
+                x-go-name: Links
+            subject:
+                type: string
+                x-go-name: Subject
         title: |-
             WellKnownResponse represents the response to either a webfinger request for an 'acct' resource, or a request to nodeinfo.
             For example, it would be returned from https://example.org/.well-known/webfinger?resource=acct:some_username@example.org
+        type: object
         x-go-name: WellKnownResponse
         x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
 host: example.org
@@ -282,7 +2796,7 @@ info:
         name: AGPL3
         url: https://www.gnu.org/licenses/agpl-3.0.en.html
     title: GoToSocial Swagger documentation.
-    version: 0.11.2
+    version: 0.13.0
 paths:
     /.well-known/host-meta:
         get:
@@ -657,6 +3171,13 @@ paths:
                 - accounts
     /api/v1/accounts/{id}/followers:
         get:
+            description: |-
+                The next and previous queries can be parsed from the returned Link header.
+                Example:
+
+                ```
+                <https://example.org/api/v1/accounts/0657WMDEC3KQDTD6NZ4XJZBK4M/followers?limit=80&max_id=01FC0SKA48HNSVR6YKZCQGS2V8>; rel="next", <https://example.org/api/v1/accounts/0657WMDEC3KQDTD6NZ4XJZBK4M/followers?limit=80&min_id=01FC0SKW5JK2Q4EVAV2B462YY0>; rel="prev"
+                ````
             operationId: accountFollowers
             parameters:
                 - description: Account ID.
@@ -664,6 +3185,25 @@ paths:
                   name: id
                   required: true
                   type: string
+                - description: 'Return only follower accounts *OLDER* than the given max ID. The follower account with the specified ID will not be included in the response. NOTE: the ID is of the internal follow, NOT any of the returned accounts.'
+                  in: query
+                  name: max_id
+                  type: string
+                - description: 'Return only follower accounts *NEWER* than the given since ID. The follower account with the specified ID will not be included in the response. NOTE: the ID is of the internal follow, NOT any of the returned accounts.'
+                  in: query
+                  name: since_id
+                  type: string
+                - description: 'Return only follower accounts *IMMEDIATELY NEWER* than the given min ID. The follower account with the specified ID will not be included in the response. NOTE: the ID is of the internal follow, NOT any of the returned accounts.'
+                  in: query
+                  name: min_id
+                  type: string
+                - default: 40
+                  description: Number of follower accounts to return.
+                  in: query
+                  maximum: 80
+                  minimum: 1
+                  name: limit
+                  type: integer
             produces:
                 - application/json
             responses:
@@ -691,6 +3231,13 @@ paths:
                 - accounts
     /api/v1/accounts/{id}/following:
         get:
+            description: |-
+                The next and previous queries can be parsed from the returned Link header.
+                Example:
+
+                ```
+                <https://example.org/api/v1/accounts/0657WMDEC3KQDTD6NZ4XJZBK4M/following?limit=80&max_id=01FC0SKA48HNSVR6YKZCQGS2V8>; rel="next", <https://example.org/api/v1/accounts/0657WMDEC3KQDTD6NZ4XJZBK4M/following?limit=80&min_id=01FC0SKW5JK2Q4EVAV2B462YY0>; rel="prev"
+                ````
             operationId: accountFollowing
             parameters:
                 - description: Account ID.
@@ -698,6 +3245,25 @@ paths:
                   name: id
                   required: true
                   type: string
+                - description: 'Return only following accounts *OLDER* than the given max ID. The following account with the specified ID will not be included in the response. NOTE: the ID is of the internal follow, NOT any of the returned accounts.'
+                  in: query
+                  name: max_id
+                  type: string
+                - description: 'Return only following accounts *NEWER* than the given since ID. The following account with the specified ID will not be included in the response. NOTE: the ID is of the internal follow, NOT any of the returned accounts.'
+                  in: query
+                  name: since_id
+                  type: string
+                - description: 'Return only following accounts *IMMEDIATELY NEWER* than the given min ID. The following account with the specified ID will not be included in the response. NOTE: the ID is of the internal follow, NOT any of the returned accounts.'
+                  in: query
+                  name: min_id
+                  type: string
+                - default: 40
+                  description: Number of following accounts to return.
+                  in: query
+                  maximum: 80
+                  minimum: 1
+                  name: limit
+                  type: integer
             produces:
                 - application/json
             responses:
@@ -828,7 +3394,7 @@ paths:
                 - default: false
                   description: Show only pinned statuses. In other words, exclude statuses that are not pinned to the given account ID.
                   in: query
-                  name: pinned_only
+                  name: pinned
                   type: boolean
                 - default: false
                   description: Show only statuses with media attachments.
@@ -1241,6 +3807,8 @@ paths:
                     description: not found
                 "406":
                     description: not acceptable
+                "409":
+                    description: 'Conflict: There is already an admin action running that conflicts with this action. Check the error message in the response body for more information. This is a temporary error; it should be possible to process this action if you try again in a bit.'
                 "500":
                     description: internal server error
             security:
@@ -1542,6 +4110,206 @@ paths:
             summary: Get a list of existing emoji categories.
             tags:
                 - admin
+    /api/v1/admin/debug/apurl:
+        get:
+            description: Only enabled / exposed if GoToSocial was built and is running with flag DEBUG=1.
+            operationId: debugAPUrl
+            parameters:
+                - description: The URL / ActivityPub ID to dereference. This should be a full URL, including protocol. Eg., `https://example.org/users/someone`
+                  in: query
+                  name: url
+                  required: true
+                  type: string
+            produces:
+                - application/json
+            responses:
+                "200":
+                    description: ""
+                    schema:
+                        $ref: '#/definitions/debugAPUrlResponse'
+                "400":
+                    description: bad request
+                "401":
+                    description: unauthorized
+                "404":
+                    description: not found
+                "406":
+                    description: not acceptable
+                "500":
+                    description: internal server error
+            security:
+                - OAuth2 Bearer:
+                    - admin
+            summary: Perform a GET to the specified ActivityPub URL and return detailed debugging information.
+            tags:
+                - debug
+    /api/v1/admin/domain_allows:
+        get:
+            operationId: domainAllowsGet
+            parameters:
+                - description: If set to `true`, then each entry in the returned list of domain allows will only consist of the fields `domain` and `public_comment`. This is perfect for when you want to save and share a list of all the domains you have allowed on your instance, so that someone else can easily import them, but you don't want them to see the database IDs of your allows, or private comments etc.
+                  in: query
+                  name: export
+                  type: boolean
+            produces:
+                - application/json
+            responses:
+                "200":
+                    description: All domain allows currently in place.
+                    schema:
+                        items:
+                            $ref: '#/definitions/domainPermission'
+                        type: array
+                "400":
+                    description: bad request
+                "401":
+                    description: unauthorized
+                "403":
+                    description: forbidden
+                "404":
+                    description: not found
+                "406":
+                    description: not acceptable
+                "500":
+                    description: internal server error
+            security:
+                - OAuth2 Bearer:
+                    - admin
+            summary: View all domain allows currently in place.
+            tags:
+                - admin
+        post:
+            consumes:
+                - multipart/form-data
+            description: |-
+                You have two options when using this endpoint: either you can set `import` to `true` and
+                upload a file containing multiple domain allows, JSON-formatted, or you can leave import as
+                `false`, and just add one domain allow.
+
+                The format of the json file should be something like: `[{"domain":"example.org"},{"domain":"whatever.com","public_comment":"they smell"}]`
+            operationId: domainAllowCreate
+            parameters:
+                - default: false
+                  description: Signal that a list of domain allows is being imported as a file. If set to `true`, then 'domains' must be present as a JSON-formatted file. If set to `false`, then `domains` will be ignored, and `domain` must be present.
+                  in: query
+                  name: import
+                  type: boolean
+                - description: JSON-formatted list of domain allows to import. This is only used if `import` is set to `true`.
+                  in: formData
+                  name: domains
+                  type: file
+                - description: Single domain to allow. Used only if `import` is not `true`.
+                  in: formData
+                  name: domain
+                  type: string
+                - description: Obfuscate the name of the domain when serving it publicly. Eg., `example.org` becomes something like `ex***e.org`. Used only if `import` is not `true`.
+                  in: formData
+                  name: obfuscate
+                  type: boolean
+                - description: Public comment about this domain allow. This will be displayed alongside the domain allow if you choose to share allows. Used only if `import` is not `true`.
+                  in: formData
+                  name: public_comment
+                  type: string
+                - description: Private comment about this domain allow. Will only be shown to other admins, so this is a useful way of internally keeping track of why a certain domain ended up allowed. Used only if `import` is not `true`.
+                  in: formData
+                  name: private_comment
+                  type: string
+            produces:
+                - application/json
+            responses:
+                "200":
+                    description: The newly created domain allow, if `import` != `true`. If a list has been imported, then an `array` of newly created domain allows will be returned instead.
+                    schema:
+                        $ref: '#/definitions/domainPermission'
+                "400":
+                    description: bad request
+                "401":
+                    description: unauthorized
+                "403":
+                    description: forbidden
+                "404":
+                    description: not found
+                "406":
+                    description: not acceptable
+                "409":
+                    description: 'Conflict: There is already an admin action running that conflicts with this action. Check the error message in the response body for more information. This is a temporary error; it should be possible to process this action if you try again in a bit.'
+                "500":
+                    description: internal server error
+            security:
+                - OAuth2 Bearer:
+                    - admin
+            summary: Create one or more domain allows, from a string or a file.
+            tags:
+                - admin
+    /api/v1/admin/domain_allows/{id}:
+        delete:
+            operationId: domainAllowDelete
+            parameters:
+                - description: The id of the domain allow.
+                  in: path
+                  name: id
+                  required: true
+                  type: string
+            produces:
+                - application/json
+            responses:
+                "200":
+                    description: The domain allow that was just deleted.
+                    schema:
+                        $ref: '#/definitions/domainPermission'
+                "400":
+                    description: bad request
+                "401":
+                    description: unauthorized
+                "403":
+                    description: forbidden
+                "404":
+                    description: not found
+                "406":
+                    description: not acceptable
+                "409":
+                    description: 'Conflict: There is already an admin action running that conflicts with this action. Check the error message in the response body for more information. This is a temporary error; it should be possible to process this action if you try again in a bit.'
+                "500":
+                    description: internal server error
+            security:
+                - OAuth2 Bearer:
+                    - admin
+            summary: Delete domain allow with the given ID.
+            tags:
+                - admin
+        get:
+            operationId: domainAllowGet
+            parameters:
+                - description: The id of the domain allow.
+                  in: path
+                  name: id
+                  required: true
+                  type: string
+            produces:
+                - application/json
+            responses:
+                "200":
+                    description: The requested domain allow.
+                    schema:
+                        $ref: '#/definitions/domainPermission'
+                "400":
+                    description: bad request
+                "401":
+                    description: unauthorized
+                "403":
+                    description: forbidden
+                "404":
+                    description: not found
+                "406":
+                    description: not acceptable
+                "500":
+                    description: internal server error
+            security:
+                - OAuth2 Bearer:
+                    - admin
+            summary: View domain allow with the given ID.
+            tags:
+                - admin
     /api/v1/admin/domain_blocks:
         get:
             operationId: domainBlocksGet
@@ -1557,7 +4325,7 @@ paths:
                     description: All domain blocks currently in place.
                     schema:
                         items:
-                            $ref: '#/definitions/domainBlock'
+                            $ref: '#/definitions/domainPermission'
                         type: array
                 "400":
                     description: bad request
@@ -1619,7 +4387,7 @@ paths:
                 "200":
                     description: The newly created domain block, if `import` != `true`. If a list has been imported, then an `array` of newly created domain blocks will be returned instead.
                     schema:
-                        $ref: '#/definitions/domainBlock'
+                        $ref: '#/definitions/domainPermission'
                 "400":
                     description: bad request
                 "401":
@@ -1630,6 +4398,8 @@ paths:
                     description: not found
                 "406":
                     description: not acceptable
+                "409":
+                    description: 'Conflict: There is already an admin action running that conflicts with this action. Check the error message in the response body for more information. This is a temporary error; it should be possible to process this action if you try again in a bit.'
                 "500":
                     description: internal server error
             security:
@@ -1653,7 +4423,7 @@ paths:
                 "200":
                     description: The domain block that was just deleted.
                     schema:
-                        $ref: '#/definitions/domainBlock'
+                        $ref: '#/definitions/domainPermission'
                 "400":
                     description: bad request
                 "401":
@@ -1664,6 +4434,8 @@ paths:
                     description: not found
                 "406":
                     description: not acceptable
+                "409":
+                    description: 'Conflict: There is already an admin action running that conflicts with this action. Check the error message in the response body for more information. This is a temporary error; it should be possible to process this action if you try again in a bit.'
                 "500":
                     description: internal server error
             security:
@@ -1686,7 +4458,7 @@ paths:
                 "200":
                     description: The requested domain block.
                     schema:
-                        $ref: '#/definitions/domainBlock'
+                        $ref: '#/definitions/domainPermission'
                 "400":
                     description: bad request
                 "401":
@@ -1703,6 +4475,56 @@ paths:
                 - OAuth2 Bearer:
                     - admin
             summary: View domain block with the given ID.
+            tags:
+                - admin
+    /api/v1/admin/domain_keys_expire:
+        post:
+            consumes:
+                - multipart/form-data
+            description: |-
+                This is useful in cases where the remote domain has had to rotate their keys for whatever
+                reason (security issue, data leak, routine safety procedure, etc), and your instance can no
+                longer communicate with theirs properly using cached keys. A key marked as expired in this way
+                will be lazily refetched next time a request is made to your instance signed by the owner of that
+                key, so no further action should be required in order to reestablish communication with that domain.
+
+                This endpoint is explicitly not for rotating your *own* keys, it only works for remote instances.
+
+                Using this endpoint to expire keys for a domain that hasn't rotated all of their keys is not
+                harmful and won't break federation, but it is pointless and will cause unnecessary requests to
+                be performed.
+            operationId: domainKeysExpire
+            parameters:
+                - description: Domain to expire keys for.
+                  example: example.org
+                  in: formData
+                  name: domain
+                  type: string
+            produces:
+                - application/json
+            responses:
+                "202":
+                    description: Request accepted and will be processed. Check the logs for progress / errors.
+                    schema:
+                        $ref: '#/definitions/adminActionResponse'
+                "400":
+                    description: bad request
+                "401":
+                    description: unauthorized
+                "403":
+                    description: forbidden
+                "404":
+                    description: not found
+                "406":
+                    description: not acceptable
+                "409":
+                    description: 'Conflict: There is already an admin action running that conflicts with this action. Check the error message in the response body for more information. This is a temporary error; it should be possible to process this action if you try again in a bit.'
+                "500":
+                    description: internal server error
+            security:
+                - OAuth2 Bearer:
+                    - admin
+            summary: Force expiry of cached public keys for all accounts on the given domain stored in your database.
             tags:
                 - admin
     /api/v1/admin/email/test:
@@ -1743,6 +4565,118 @@ paths:
                 - OAuth2 Bearer:
                     - admin
             summary: Send a generic test email to a specified email address.
+            tags:
+                - admin
+    /api/v1/admin/instance/rules:
+        post:
+            consumes:
+                - multipart/form-data
+            operationId: ruleCreate
+            parameters:
+                - description: Text body for the instance rule, plaintext.
+                  in: formData
+                  name: text
+                  required: true
+                  type: string
+            produces:
+                - application/json
+            responses:
+                "200":
+                    description: The newly-created instance rule.
+                    schema:
+                        $ref: '#/definitions/instanceRule'
+                "400":
+                    description: bad request
+                "401":
+                    description: unauthorized
+                "403":
+                    description: forbidden
+                "404":
+                    description: not found
+                "406":
+                    description: not acceptable
+                "500":
+                    description: internal server error
+            security:
+                - OAuth2 Bearer:
+                    - admin
+            summary: Create a new instance rule.
+            tags:
+                - admin
+    /api/v1/admin/instance/rules{id}:
+        delete:
+            consumes:
+                - multipart/form-data
+            operationId: ruleDelete
+            parameters:
+                - description: The id of the rule to delete.
+                  in: formData
+                  name: id
+                  required: true
+                  type: path
+            produces:
+                - application/json
+            responses:
+                "200":
+                    description: The deleted instance rule.
+                    schema:
+                        $ref: '#/definitions/instanceRule'
+                "400":
+                    description: bad request
+                "401":
+                    description: unauthorized
+                "403":
+                    description: forbidden
+                "404":
+                    description: not found
+                "406":
+                    description: not acceptable
+                "500":
+                    description: internal server error
+            security:
+                - OAuth2 Bearer:
+                    - admin
+            summary: Delete an existing instance rule.
+            tags:
+                - admin
+        patch:
+            consumes:
+                - multipart/form-data
+            operationId: ruleUpdate
+            parameters:
+                - description: The id of the rule to update.
+                  in: formData
+                  name: id
+                  required: true
+                  type: path
+                - description: Text body for the updated instance rule, plaintext.
+                  in: formData
+                  name: text
+                  required: true
+                  type: string
+            produces:
+                - application/json
+            responses:
+                "200":
+                    description: The updated instance rule.
+                    schema:
+                        $ref: '#/definitions/instanceRule'
+                "400":
+                    description: bad request
+                "401":
+                    description: unauthorized
+                "403":
+                    description: forbidden
+                "404":
+                    description: not found
+                "406":
+                    description: not acceptable
+                "500":
+                    description: internal server error
+            security:
+                - OAuth2 Bearer:
+                    - admin
+            summary: Update an existing instance rule.
             tags:
                 - admin
     /api/v1/admin/media_cleanup:
@@ -1960,6 +4894,67 @@ paths:
             summary: Mark a report as resolved.
             tags:
                 - admin
+    /api/v1/admin/rules:
+        get:
+            description: The rules will be returned in order (sorted by Order ascending).
+            operationId: rules
+            produces:
+                - application/json
+            responses:
+                "200":
+                    description: An array with all the rules for the local instance.
+                    schema:
+                        items:
+                            $ref: '#/definitions/instanceRule'
+                        type: array
+                "400":
+                    description: bad request
+                "401":
+                    description: unauthorized
+                "404":
+                    description: not found
+                "406":
+                    description: not acceptable
+                "500":
+                    description: internal server error
+            security:
+                - OAuth2 Bearer:
+                    - admin
+            summary: View instance rules, with IDs.
+            tags:
+                - admin
+    /api/v1/admin/rules/{id}:
+        get:
+            operationId: adminRuleGet
+            parameters:
+                - description: The id of the rule.
+                  in: path
+                  name: id
+                  required: true
+                  type: string
+            produces:
+                - application/json
+            responses:
+                "200":
+                    description: The requested rule.
+                    schema:
+                        $ref: '#/definitions/instanceRule'
+                "400":
+                    description: bad request
+                "401":
+                    description: unauthorized
+                "404":
+                    description: not found
+                "406":
+                    description: not acceptable
+                "500":
+                    description: internal server error
+            security:
+                - OAuth2 Bearer:
+                    - admin
+            summary: View instance rule with the given id.
+            tags:
+                - admin
     /api/v1/apps:
         post:
             consumes:
@@ -2035,19 +5030,25 @@ paths:
                 ````
             operationId: blocksGet
             parameters:
-                - default: 20
-                  description: Number of blocks to return.
-                  in: query
-                  name: limit
-                  type: integer
-                - description: Return only blocks *OLDER* than the given block ID. The block with the specified ID will not be included in the response.
+                - description: 'Return only blocked accounts *OLDER* than the given max ID. The blocked account with the specified ID will not be included in the response. NOTE: the ID is of the internal block, NOT any of the returned accounts.'
                   in: query
                   name: max_id
                   type: string
-                - description: Return only blocks *NEWER* than the given block ID. The block with the specified ID will not be included in the response.
+                - description: 'Return only blocked accounts *NEWER* than the given since ID. The blocked account with the specified ID will not be included in the response. NOTE: the ID is of the internal block, NOT any of the returned accounts.'
                   in: query
                   name: since_id
                   type: string
+                - description: 'Return only blocked accounts *IMMEDIATELY NEWER* than the given min ID. The blocked account with the specified ID will not be included in the response. NOTE: the ID is of the internal block, NOT any of the returned accounts.'
+                  in: query
+                  name: min_id
+                  type: string
+                - default: 40
+                  description: Number of blocked accounts to return.
+                  in: query
+                  maximum: 80
+                  minimum: 1
+                  name: limit
+                  type: integer
             produces:
                 - application/json
             responses:
@@ -2213,12 +5214,32 @@ paths:
                 - featured_tags
     /api/v1/follow_requests:
         get:
-            description: Accounts will be sorted in order of follow request date descending (newest first).
+            description: |-
+                The next and previous queries can be parsed from the returned Link header.
+                Example:
+
+                ```
+                <https://example.org/api/v1/follow_requests?limit=80&max_id=01FC0SKA48HNSVR6YKZCQGS2V8>; rel="next", <https://example.org/api/v1/follow_requests?limit=80&min_id=01FC0SKW5JK2Q4EVAV2B462YY0>; rel="prev"
+                ````
             operationId: getFollowRequests
             parameters:
-                - default: 40
-                  description: Number of accounts to return.
+                - description: 'Return only follow requesting accounts *OLDER* than the given max ID. The follow requester with the specified ID will not be included in the response. NOTE: the ID is of the internal follow request, NOT any of the returned accounts.'
                   in: query
+                  name: max_id
+                  type: string
+                - description: 'Return only follow requesting accounts *NEWER* than the given since ID. The follow requester with the specified ID will not be included in the response. NOTE: the ID is of the internal follow request, NOT any of the returned accounts.'
+                  in: query
+                  name: since_id
+                  type: string
+                - description: 'Return only follow requesting accounts *IMMEDIATELY NEWER* than the given min ID. The follow requester with the specified ID will not be included in the response. NOTE: the ID is of the internal follow request, NOT any of the returned accounts.'
+                  in: query
+                  name: min_id
+                  type: string
+                - default: 40
+                  description: Number of follow requesting accounts to return.
+                  in: query
+                  maximum: 80
+                  minimum: 1
                   name: limit
                   type: integer
             produces:
@@ -2457,6 +5478,30 @@ paths:
                     description: not acceptable
                 "500":
                     description: internal server error
+            tags:
+                - instance
+    /api/v1/instance/rules:
+        get:
+            description: The rules will be returned in order (sorted by Order ascending).
+            operationId: rules
+            produces:
+                - application/json
+            responses:
+                "200":
+                    description: An array with all the rules for the local instance.
+                    schema:
+                        items:
+                            $ref: '#/definitions/instanceRule'
+                        type: array
+                "400":
+                    description: bad request
+                "404":
+                    description: not found
+                "406":
+                    description: not acceptable
+                "500":
+                    description: internal server error
+            summary: View instance rules (public).
             tags:
                 - instance
     /api/v1/lists:
@@ -3063,6 +6108,83 @@ paths:
             summary: Clear/delete all notifications for currently authorized user.
             tags:
                 - notifications
+    /api/v1/polls/{id}:
+        get:
+            operationId: poll
+            parameters:
+                - description: Target poll ID.
+                  in: path
+                  name: id
+                  required: true
+                  type: string
+            produces:
+                - application/json
+            responses:
+                "200":
+                    description: The requested poll.
+                    schema:
+                        $ref: '#/definitions/poll'
+                "400":
+                    description: bad request
+                "401":
+                    description: unauthorized
+                "403":
+                    description: forbidden
+                "404":
+                    description: not found
+                "406":
+                    description: not acceptable
+                "500":
+                    description: internal server error
+            security:
+                - OAuth2 Bearer:
+                    - read:statuses
+            summary: View poll with given ID.
+            tags:
+                - polls
+    /api/v1/polls/{id}/vote:
+        post:
+            operationId: pollVote
+            parameters:
+                - description: Target poll ID.
+                  in: path
+                  name: id
+                  required: true
+                  type: string
+                - description: Poll choice indices on which to vote.
+                  in: formData
+                  items:
+                    type: integer
+                  name: choices
+                  required: true
+                  type: array
+            produces:
+                - application/json
+            responses:
+                "200":
+                    description: The updated poll with user vote choices.
+                    schema:
+                        $ref: '#/definitions/poll'
+                "400":
+                    description: bad request
+                "401":
+                    description: unauthorized
+                "403":
+                    description: forbidden
+                "404":
+                    description: not found
+                "406":
+                    description: not acceptable
+                "422":
+                    description: unprocessable entity
+                "500":
+                    description: internal server error
+            security:
+                - OAuth2 Bearer:
+                    - write:statuses
+            summary: Vote with choices in the given poll.
+            tags:
+                - polls
     /api/v1/preferences:
         get:
             description: |-
@@ -3214,17 +6336,13 @@ paths:
                   name: category
                   type: string
                   x-go-name: Category
-                - description: |-
-                    IDs of rules on this instance which have been broken according to the reporter.
-                    This is currently not supported, provided only for API compatibility.
+                - description: IDs of rules on this instance which have been broken according to the reporter.
                   example:
-                    - 1
-                    - 2
-                    - 3
+                    - 01GPBN5YDY6JKBWE44H7YQBDCQ
+                    - 01GPBN65PDWSBPWVDD0SQCFFY3
                   in: formData
                   items:
-                    format: int64
-                    type: integer
+                    type: string
                   name: rule_ids
                   type: array
                   x-go-name: RuleIDs
@@ -3314,6 +6432,11 @@ paths:
                   name: media_ids
                   type: array
                   x-go-name: MediaIDs
+                - $ref: '#/definitions/pollRequest'
+                  description: Poll to include with this status.
+                  in: formData
+                  name: poll
+                  x-go-name: Poll
                 - description: ID of the status being replied to, if status is a reply.
                   in: formData
                   name: in_reply_to_id
@@ -3334,6 +6457,7 @@ paths:
                 - description: Visibility of the posted status.
                   in: formData
                   name: visibility
+                  type: string
                   x-go-name: Visibility
                 - description: |-
                     ISO 8601 Datetime at which to schedule a status.
@@ -3351,6 +6475,7 @@ paths:
                 - description: Content type to use when parsing this status.
                   in: formData
                   name: content_type
+                  type: string
                   x-go-name: ContentType
                 - description: This status will be federated beyond the local timeline(s).
                   in: query
@@ -3606,6 +6731,44 @@ paths:
             summary: View accounts that have faved/starred/liked the target status.
             tags:
                 - statuses
+    /api/v1/statuses/{id}/mute:
+        post:
+            description: |-
+                Target status must belong to you or mention you.
+
+                Status thread mutes and unmutes are idempotent. If you already mute a thread, muting it again just means it stays muted and you'll get 200 OK back.
+            operationId: statusMute
+            parameters:
+                - description: Target status ID.
+                  in: path
+                  name: id
+                  required: true
+                  type: string
+            produces:
+                - application/json
+            responses:
+                "200":
+                    description: The now-muted status.
+                    schema:
+                        $ref: '#/definitions/status'
+                "400":
+                    description: bad request; you're not part of the target status thread
+                "401":
+                    description: unauthorized
+                "403":
+                    description: forbidden
+                "404":
+                    description: not found
+                "406":
+                    description: not acceptable
+                "500":
+                    description: internal server error
+            security:
+                - OAuth2 Bearer:
+                    - write:mutes
+            summary: Mute a status's thread. This prevents notifications from being created for future replies, likes, boosts etc in the thread of which the target status is a part.
+            tags:
+                - statuses
     /api/v1/statuses/{id}/pin:
         post:
             description: |-
@@ -3780,6 +6943,44 @@ paths:
                 - OAuth2 Bearer:
                     - write:statuses
             summary: Unstar/unlike/unfavourite the given status.
+            tags:
+                - statuses
+    /api/v1/statuses/{id}/unmute:
+        post:
+            description: |-
+                Target status must belong to you or mention you.
+
+                Status thread mutes and unmutes are idempotent. If you already unmuted a thread, unmuting it again just means it stays unmuted and you'll get 200 OK back.
+            operationId: statusUnmute
+            parameters:
+                - description: Target status ID.
+                  in: path
+                  name: id
+                  required: true
+                  type: string
+            produces:
+                - application/json
+            responses:
+                "200":
+                    description: The now-unmuted status.
+                    schema:
+                        $ref: '#/definitions/status'
+                "400":
+                    description: bad request; you're not part of the target status thread
+                "401":
+                    description: unauthorized
+                "403":
+                    description: forbidden
+                "404":
+                    description: not found
+                "406":
+                    description: not acceptable
+                "500":
+                    description: internal server error
+            security:
+                - OAuth2 Bearer:
+                    - write:mutes
+            summary: Unmute a status's thread. This reenables notifications for future replies, likes, boosts etc in the thread of which the target status is a part.
             tags:
                 - statuses
     /api/v1/statuses/{id}/unpin:
@@ -4415,6 +7616,7 @@ securityDefinitions:
             read:follows: grant read access to follows
             read:lists: grant read access to lists
             read:media: grant read access to media
+            read:mutes: grant read access to mutes
             read:notifications: grants read access to notifications
             read:search: grant read access to searches
             read:statuses: grants read access to statuses
@@ -4426,6 +7628,7 @@ securityDefinitions:
             write:follows: grants write access to follows
             write:lists: grants write access to lists
             write:media: grants write access to media
+            write:mutes: grants write access to mutes
             write:statuses: grants write access to statuses
             write:user: grants write access to user-level info
         tokenUrl: https://example.org/oauth/token

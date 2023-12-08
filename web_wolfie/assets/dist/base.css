@@ -624,11 +624,6 @@ input:disabled, select:disabled, textarea:disabled, .input:disabled {
 		background: transparent;
 	}
 
-::-webkit-input-placeholder {
-	opacity: 1;
-	color: var(--fg-reduced)
-}
-
 ::placeholder {
 	opacity: 1;
 	color: var(--fg-reduced)
@@ -712,8 +707,7 @@ label {
 
 @media (prefers-reduced-motion) {
 	.fa-spin {
-		-webkit-animation: none;
-		        animation: none;
+		animation: none;
 	}
 }
 
@@ -852,6 +846,57 @@ label {
 		   object-fit: cover;
 		grid-row: 1 / span 2;
 	}
+
+.instance-rules {
+	list-style-position: inside;
+	margin: 0;
+	padding: 0;
+}
+
+.instance-rules a.rule {
+		display: grid;
+		grid-template-columns: 1fr auto;
+		align-items: center;
+		color: var(--fg);
+		text-decoration: none;
+		background: var(--toot-bg);
+		padding: 1rem;
+		margin: 0.5rem 0;
+		border-radius: var(--br);
+		line-height: 2rem;
+		position: relative;
+	}
+
+.instance-rules a.rule:hover {
+			color: var(--fg-accent);
+		}
+
+.instance-rules a.rule:hover .edit-icon {
+				display: inline;
+			}
+
+.instance-rules a.rule .edit-icon {
+			display: none;
+			font-size: 1rem;
+			line-height: 1.5rem;
+		}
+
+.instance-rules a.rule li {
+			font-size: 1.75rem;
+			padding: 0;
+			margin: 0;
+		}
+
+.instance-rules a.rule li h2 {
+				margin: 0;
+				margin-top: 0 !important;
+				display: inline-block;
+				font-size: 1.5rem;
+			}
+
+.instance-rules a.rule span {
+			color: var(--fg-reduced);
+		}
 
 @media screen and (max-width: 30rem) {
 	.domain-blocklist .entry {
