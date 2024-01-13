@@ -78,20 +78,6 @@
 				This GoToSocial user hasn't written a bio yet!
 				{{end}}
 			</div>
-
-			<div class="sr-only" role="group">
-				<span>Joined on {{.account.CreatedAt | timestampVague}}.</span>
-				<span>{{.account.StatusesCount}} post{{if .account.StatusesCount | eq 1 | not}}s{{end}}.</span>
-				<span>Followed by {{.account.FollowersCount}}.</span>
-				<span>Following {{.account.FollowingCount}}.</span>
-			</div>
-
-			<div class="accountstats" aria-hidden="true">
-				<b>Joined</b><time datetime="{{.account.CreatedAt}}">{{.account.CreatedAt | timestampVague}}</time>
-				<b>Posts</b><span>{{.account.StatusesCount}}</span>
-				<b>Followed by</b><span>{{.account.FollowersCount}}</span>
-				<b>Following</b><span>{{.account.FollowingCount}}</span>
-			</div>
 		</section>
 
 		<section class="toots">
