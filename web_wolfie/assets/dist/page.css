@@ -1,0 +1,119 @@
+
+/*
+	GoToSocial
+	Copyright (C) GoToSocial Authors admin@gotosocial.org
+	SPDX-License-Identifier: AGPL-3.0-or-later
+
+	This program is free software: you can redistribute it and/or modify
+	it under the terms of the GNU Affero General Public License as published by
+	the Free Software Foundation, either version 3 of the License, or
+	(at your option) any later version.
+
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU Affero General Public License for more details.
+
+	You should have received a copy of the GNU Affero General Public License
+	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+.page {
+	display: grid;
+	min-height: 100vh;
+
+	grid-template-columns: 1fr minmax(auto, 50rem) 1fr;
+	grid-template-columns: 1fr min(92%, 50rem) 1fr;
+	grid-template-rows: auto 1fr auto;
+}
+
+.page-header, .page-footer {
+	grid-column: 1 / span 3;
+}
+
+.page-content {
+	grid-column: 2;
+	align-self: start;
+}
+
+.page-header {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	padding: 1.5rem;
+	gap: 1rem;
+}
+
+.page-header a {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 1rem;
+		justify-content: center;
+	}
+
+.page-header a img {
+			align-self: center;
+			
+			/*
+				Shrink too-wide / too-tall instance
+				icons to sensible proportions. Allow
+				pretty wide images but prevent things
+				getting too out of hand + looking bad.
+			*/
+			max-height: 4rem;
+			max-width: 16rem;
+		}
+
+.page-header a h1 {
+			align-self: center;
+			text-align: center;
+	
+			font-size: 1.5rem;
+			line-height: 1.5rem;
+			word-wrap: anywhere;
+			color: var(--fg);
+		}
+
+.page-header aside {
+		margin: 0;
+		font-style: italic;
+		font-weight: normal;
+		text-align: center;
+		font-size: 1.2rem;
+	}
+
+.page-header aside .count {
+			font-weight: bold;
+			color: var(--fg-accent);
+		}
+
+.page-footer {
+	align-self: end;
+}
+
+.page-footer nav ul {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-around;
+		
+		/* Override list styling */
+		list-style-type: none;
+		padding-left: 0;
+	}
+
+.page-footer nav ul li {
+			text-align: center;
+			padding: 1rem;
+			flex-grow: 1;
+		}
+
+.page-footer nav ul li a {
+				font-weight: bold;
+			}
+
+@media screen and (max-width: 600px) {
+	.page-header {
+		text-align: center;
+	}
+}
+

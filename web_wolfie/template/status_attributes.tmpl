@@ -17,24 +17,39 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */ -}}
 
-{{- define "shortDescription" -}}
-{{- if .instance.ShortDescription }}
-{{ .instance.ShortDescription | noescape }}
-{{- else }}
-<p>No short description has yet been set for this instance.</p>
-{{- end }}
+{{- define "ariaLabel" -}}
+@{{ .Account.Acct -}}, {{ timestamp .CreatedAt -}}
+{{- if .LanguageTag -}}
+    , language {{ .LanguageTag.DisplayStr -}}
+{{- end -}}
+{{- if .MediaAttachments -}}
+    , has media
+{{- end -}}
+{{- if .RepliesCount -}}
+    {{- if eq .RepliesCount 1 -}}
+    , 1 reply
+    {{- else -}}
+    , {{ .RepliesCount }} replies
+    {{- end -}}
+{{- end -}}
+{{- if .FavouritesCount -}}
+    {{- if eq .FavouritesCount 1 -}}
+    , 1 favourite
+    {{- else -}}
+    , {{ .FavouritesCount }} favourites
+    {{- end -}}
+{{- end -}}
+{{- if .ReblogsCount -}}
+    {{- if eq .ReblogsCount 1 -}}
+    , 1 boost
+    {{- else -}}
+    , {{ .ReblogsCount }} boosts
+    {{- end -}}
+{{- end -}}
 {{- end -}}
 
 {{- with . }}
-<main class="about">
-    <section class="about-section" role="region" aria-labelledby="about">
-        <h3 id="about">About this instance</h3>
-        <div class="about-section-contents">
-            {{- include "shortDescription" . | indent 3 }}
-            <a href="/about">See more details</a>
-        </div>
-    </section>
-    {{- include "index_what_is_this.tmpl" . | indent 1 }}
-    {{- include "index_apps.tmpl" . | indent 1 }}
-</main>
+id="{{- .ID -}}{{- if .Pinned -}}-pinned{{- end -}}"
+role="region"
+aria-label="{{- template "ariaLabel" . -}}"
 {{- end }}

@@ -11373,7 +11373,7 @@ module.exports={ROOT:0,GROUP:1,POSITION:2,SET:3,RANGE:4,REPETITION:5,REFERENCE:6
 },{}],235:[function(require,module,exports){
 "use strict";function makeMatcher(e=pathToRegexp){let t={};return(r,n)=>{const{regexp:s,keys:u}=(r=>t[r]||(t[r]=e(r)))(r||""),x=s.exec(n);if(!x)return[!1,null];return[!0,u.reduce(((e,t,r)=>(e[t.name]=x[r+1],e)),{})]}}Object.defineProperty(exports,"__esModule",{value:!0});const escapeRx=e=>e.replace(/([.+*?=^!:${}()[\]|/\\])/g,"\\$1"),rxForSegment=(e,t,r)=>{let n=e?"((?:[^\\/]+?)(?:\\/(?:[^\\/]+?))*)":"([^\\/]+?)";return t&&r&&(n="(?:\\/"+n+")"),n+(t?"?":"")},pathToRegexp=e=>{const t=/:([A-Za-z0-9_]+)([?+*]?)/g;let r=null,n=0,s=[],u="";for(;null!==(r=t.exec(e));){const[x,a,c]=r,p="+"===c||"*"===c,l="?"===c||"*"===c,o=l&&"/"===e[r.index-1]?1:0,g=e.substring(n,r.index-o);s.push({name:a}),n=t.lastIndex,u+=escapeRx(g)+rxForSegment(p,l,o)}return u+=escapeRx(e.substring(n)),{keys:s,regexp:new RegExp("^"+u+"(?:\\/)?$","i")}};exports.default=makeMatcher;
 
-},{}],285:[function(require,module,exports){
+},{}],286:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -11404,7 +11404,7 @@ function getFormMutations(form, { changedOnly }) {
             return;
         }
         if ("selectedValues" in field) {
-            // FieldArrayInputHook.
+            // (Field)ArrayInputHook.
             const selected = field.selectedValues();
             if (!changedOnly || selected.length > 0) {
                 updatedFields.push(field);
@@ -11423,7 +11423,7 @@ function getFormMutations(form, { changedOnly }) {
 }
 exports.default = getFormMutations;
 
-},{}],305:[function(require,module,exports){
+},{}],306:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -11505,7 +11505,7 @@ function listToKeyedObject(key) {
 }
 exports.listToKeyedObject = listToKeyedObject;
 
-},{}],308:[function(require,module,exports){
+},{}],309:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -11637,7 +11637,7 @@ var _typeof=require("./typeof.js").default,toPrimitive=require("./toPrimitive.js
 },{"./dom.js":25,"./platform.js":29}],177:[function(require,module,exports){
 "use strict";const assureArray=require("assure-array");module.exports=function(r,e){return assureArray(e).reduce(((r,e)=>e(r)),r)};
 
-},{"assure-array":81}],313:[function(require,module,exports){
+},{"assure-array":81}],314:[function(require,module,exports){
 require("../node_modules/icssify/global-css-loader.js"); module.exports = {};
 },{"../node_modules/icssify/global-css-loader.js":86}],174:[function(require,module,exports){
 (function (setImmediate){(function (){
@@ -11653,7 +11653,7 @@ require("../node_modules/icssify/global-css-loader.js"); module.exports = {};
 "use strict";function f(e,n){var t=e.length;e.push(n);e:for(;0<t;){var r=t-1>>>1,a=e[r];if(!(0<g(a,n)))break e;e[r]=n,e[t]=a,t=r}}function h(e){return 0===e.length?null:e[0]}function k(e){if(0===e.length)return null;var n=e[0],t=e.pop();if(t!==n){e[0]=t;e:for(var r=0,a=e.length,o=a>>>1;r<o;){var l=2*(r+1)-1,i=e[l],u=l+1,s=e[u];if(0>g(i,t))u<a&&0>g(s,i)?(e[r]=s,e[u]=t,r=u):(e[r]=i,e[l]=t,r=l);else{if(!(u<a&&0>g(s,t)))break e;e[r]=s,e[u]=t,r=u}}}return n}function g(e,n){var t=e.sortIndex-n.sortIndex;return 0!==t?t:e.id-n.id}if("object"==typeof performance&&"function"==typeof performance.now){var l=performance;exports.unstable_now=function(){return l.now()}}else{var p=Date,q=p.now();exports.unstable_now=function(){return p.now()-q}}var r=[],t=[],u=1,v=null,y=3,z=!1,A=!1,B=!1,D="function"==typeof setTimeout?setTimeout:null,E="function"==typeof clearTimeout?clearTimeout:null,F="undefined"!=typeof setImmediate?setImmediate:null;function G(e){for(var n=h(t);null!==n;){if(null===n.callback)k(t);else{if(!(n.startTime<=e))break;k(t),n.sortIndex=n.expirationTime,f(r,n)}n=h(t)}}function H(e){if(B=!1,G(e),!A)if(null!==h(r))A=!0,I(J);else{var n=h(t);null!==n&&K(H,n.startTime-e)}}function J(e,n){A=!1,B&&(B=!1,E(L),L=-1),z=!0;var a=y;try{for(G(n),v=h(r);null!==v&&(!(v.expirationTime>n)||e&&!M());){var o=v.callback;if("function"==typeof o){v.callback=null,y=v.priorityLevel;var l=o(v.expirationTime<=n);n=exports.unstable_now(),"function"==typeof l?v.callback=l:v===h(r)&&k(r),G(n)}else k(r);v=h(r)}if(null!==v)var i=!0;else{var u=h(t);null!==u&&K(H,u.startTime-n),i=!1}return i}finally{v=null,y=a,z=!1}}"undefined"!=typeof navigator&&void 0!==navigator.scheduling&&void 0!==navigator.scheduling.isInputPending&&navigator.scheduling.isInputPending.bind(navigator.scheduling);var S,N=!1,O=null,L=-1,P=5,Q=-1;function M(){return!(exports.unstable_now()-Q<P)}function R(){if(null!==O){var e=exports.unstable_now();Q=e;var n=!0;try{n=O(!0,e)}finally{n?S():(N=!1,O=null)}}else N=!1}if("function"==typeof F)S=function(){F(R)};else if("undefined"!=typeof MessageChannel){var T=new MessageChannel,U=T.port2;T.port1.onmessage=R,S=function(){U.postMessage(null)}}else S=function(){D(R,0)};function I(e){O=e,N||(N=!0,S())}function K(e,n){L=D((function(){e(exports.unstable_now())}),n)}exports.unstable_IdlePriority=5,exports.unstable_ImmediatePriority=1,exports.unstable_LowPriority=4,exports.unstable_NormalPriority=3,exports.unstable_Profiling=null,exports.unstable_UserBlockingPriority=2,exports.unstable_cancelCallback=function(e){e.callback=null},exports.unstable_continueExecution=function(){A||z||(A=!0,I(J))},exports.unstable_forceFrameRate=function(e){0>e||125<e?console.error("forceFrameRate takes a positive int between 0 and 125, forcing frame rates higher than 125 fps is not supported"):P=0<e?Math.floor(1e3/e):5},exports.unstable_getCurrentPriorityLevel=function(){return y},exports.unstable_getFirstCallbackNode=function(){return h(r)},exports.unstable_next=function(e){switch(y){case 1:case 2:case 3:var n=3;break;default:n=y}var t=y;y=n;try{return e()}finally{y=t}},exports.unstable_pauseExecution=function(){},exports.unstable_requestPaint=function(){},exports.unstable_runWithPriority=function(e,n){switch(e){case 1:case 2:case 3:case 4:case 5:break;default:e=3}var t=y;y=e;try{return n()}finally{y=t}},exports.unstable_scheduleCallback=function(e,n,a){var o=exports.unstable_now();switch("object"==typeof a&&null!==a?a="number"==typeof(a=a.delay)&&0<a?o+a:o:a=o,e){case 1:var l=-1;break;case 2:l=250;break;case 5:l=1073741823;break;case 4:l=1e4;break;default:l=5e3}return e={id:u++,callback:n,priorityLevel:e,startTime:a,expirationTime:l=a+l,sortIndex:-1},a>o?(e.sortIndex=a,f(t,e),null===h(r)&&e===h(t)&&(B?(E(L),L=-1):B=!0,K(H,a-o))):(e.sortIndex=l,f(r,e),A||z||(A=!0,I(J))),e},exports.unstable_shouldYield=M,exports.unstable_wrapCallback=function(e){var n=y;return function(){var t=y;y=n;try{return e.apply(this,arguments)}finally{y=t}}};
 
 }).call(this)}).call(this,require("timers").setImmediate)
-},{"timers":178}],309:[function(require,module,exports){
+},{"timers":178}],310:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -12012,9 +12012,9 @@ module.exports = function FakeProfile(_ref) {
     React.createElement("div", {
       className: "profile"
     }, React.createElement("div", {
-      className: "header"
+      className: "profile-header"
     }, React.createElement("div", {
-      className: "header-image"
+      className: "header-image-wrapper"
     }, React.createElement("img", {
       src: header,
       alt: header ? `header image for ${username}` : "None set"
@@ -12027,17 +12027,23 @@ module.exports = function FakeProfile(_ref) {
     }, React.createElement("img", {
       src: avatar,
       alt: avatar ? `avatar image for ${username}` : "None set"
-    })), React.createElement("span", {
+    })), React.createElement("dl", {
+      className: "namerole"
+    }, React.createElement("dt", {
+      className: "sr-only"
+    }, "Display name"), React.createElement("dd", {
       className: "displayname text-cutoff"
-    }, display_name.trim().length > 0 ? display_name : username, React.createElement("span", {
+    }, display_name.trim().length > 0 ? display_name : username), React.createElement("dt", {
       className: "sr-only"
-    }, ".")), React.createElement("span", {
+    }, "Username"), React.createElement("dd", {
       className: "username text-cutoff"
-    }, "@", username), role && role.name != "user" && React.createElement("div", {
-      className: `role ${role.name}`
-    }, React.createElement("span", {
+    }, "@", username), React.createElement("dt", {
       className: "sr-only"
-    }, "Role: "), role.name))))
+    }, "Role"), role && role.name != "user" ? React.createElement(React.Fragment, null, React.createElement("dd", {
+      className: "sr-only"
+    }, "Role"), React.createElement("dt", {
+      className: `role ${role.name}`
+    }, role.name)) : null))))
   );
 };
 
@@ -12225,90 +12231,6 @@ module.exports = function Loading() {
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-Object.defineProperty(exports, "__esModule", { value: true });
-const react_1 = require("react");
-const _default = false;
-function useBoolInput({ name, Name }, { initialValue = _default }) {
-    const [value, setValue] = (0, react_1.useState)(initialValue);
-    function onChange(e) {
-        setValue(e.target.checked);
-    }
-    function reset() {
-        setValue(initialValue);
-    }
-    // Array / Object hybrid, for easier access in different contexts
-    return Object.assign([
-        onChange,
-        reset,
-        {
-            [name]: value,
-            [`set${Name}`]: setValue
-        }
-    ], {
-        name,
-        Name: "",
-        onChange,
-        reset,
-        value,
-        setter: setValue,
-        hasChanged: () => value != initialValue,
-        _default
-    });
-}
-exports.default = useBoolInput;
-
-},{"react":146}],281:[function(require,module,exports){
-"use strict";
-
-/*
-    GoToSocial
-    Copyright (C) GoToSocial Authors admin@gotosocial.org
-    SPDX-License-Identifier: AGPL-3.0-or-later
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Affero General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Affero General Public License for more details.
-
-    You should have received a copy of the GNU Affero General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-const React = require("react");
-const FormContext = React.createContext({});
-module.exports = {
-  FormContext,
-  useWithFormContext(index, form) {
-    const formContainer = React.useContext(FormContext);
-    formContainer[index] = form;
-    return form;
-  }
-};
-
-},{"react":146}],282:[function(require,module,exports){
-"use strict";
-/*
-    GoToSocial
-    Copyright (C) GoToSocial Authors admin@gotosocial.org
-    SPDX-License-Identifier: AGPL-3.0-or-later
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Affero General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Affero General Public License for more details.
-
-    You should have received a copy of the GNU Affero General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -12347,6 +12269,165 @@ function useArrayInput({ name }, { initialValue, length = 0, }) {
         hasChanged: hasUpdate,
         selectedValues() {
             if (hasUpdate()) {
+                return Object.values(fields.current)
+                    // Extract all form fields.
+                    .flatMap((fieldSet) => {
+                    return (0, get_form_mutations_1.default)(fieldSet, { changedOnly: false }).updatedFields;
+                })
+                    // Get just value from each
+                    // field, discarding name.
+                    .map((field) => field.value);
+            }
+            else {
+                return [];
+            }
+        }
+    };
+}
+exports.default = useArrayInput;
+
+},{"./get-form-mutations":286,"react":146}],279:[function(require,module,exports){
+"use strict";
+/*
+    GoToSocial
+    Copyright (C) GoToSocial Authors admin@gotosocial.org
+    SPDX-License-Identifier: AGPL-3.0-or-later
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+Object.defineProperty(exports, "__esModule", { value: true });
+const react_1 = require("react");
+const _default = false;
+function useBoolInput({ name, Name }, { initialValue = _default }) {
+    const [value, setValue] = (0, react_1.useState)(initialValue);
+    function onChange(e) {
+        setValue(e.target.checked);
+    }
+    function reset() {
+        setValue(initialValue);
+    }
+    // Array / Object hybrid, for easier access in different contexts
+    return Object.assign([
+        onChange,
+        reset,
+        {
+            [name]: value,
+            [`set${Name}`]: setValue
+        }
+    ], {
+        name,
+        Name: "",
+        onChange,
+        reset,
+        value,
+        setter: setValue,
+        hasChanged: () => value != initialValue,
+        _default
+    });
+}
+exports.default = useBoolInput;
+
+},{"react":146}],282:[function(require,module,exports){
+"use strict";
+
+/*
+    GoToSocial
+    Copyright (C) GoToSocial Authors admin@gotosocial.org
+    SPDX-License-Identifier: AGPL-3.0-or-later
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+const React = require("react");
+const FormContext = React.createContext({});
+module.exports = {
+  FormContext,
+  useWithFormContext(index, form) {
+    const formContainer = React.useContext(FormContext);
+    formContainer[index] = form;
+    return form;
+  }
+};
+
+},{"react":146}],283:[function(require,module,exports){
+"use strict";
+/*
+    GoToSocial
+    Copyright (C) GoToSocial Authors admin@gotosocial.org
+    SPDX-License-Identifier: AGPL-3.0-or-later
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const react_1 = require("react");
+const get_form_mutations_1 = __importDefault(require("./get-form-mutations"));
+function parseFields(entries, length) {
+    const fields = [];
+    for (let i = 0; i < length; i++) {
+        if (entries[i] != undefined) {
+            fields[i] = Object.assign({}, entries[i]);
+        }
+        else {
+            fields[i] = {};
+        }
+    }
+    return fields;
+}
+function useFieldArrayInput({ name }, { initialValue, length = 0, }) {
+    const _default = Array(length);
+    const fields = (0, react_1.useRef)(_default);
+    const value = (0, react_1.useMemo)(() => parseFields(initialValue, length), [initialValue, length]);
+    function hasUpdate() {
+        return Object.values(fields.current).some((fieldSet) => {
+            const { updatedFields } = (0, get_form_mutations_1.default)(fieldSet, { changedOnly: true });
+            return updatedFields.length > 0;
+        });
+    }
+    return {
+        _default,
+        name,
+        Name: "",
+        value,
+        ctx: fields.current,
+        maxLength: length,
+        hasChanged: hasUpdate,
+        selectedValues() {
+            if (hasUpdate()) {
                 return Object.values(fields.current).map((fieldSet) => {
                     return (0, get_form_mutations_1.default)(fieldSet, { changedOnly: false }).mutationData;
                 });
@@ -12357,9 +12438,9 @@ function useArrayInput({ name }, { initialValue, length = 0, }) {
         }
     };
 }
-exports.default = useArrayInput;
+exports.default = useFieldArrayInput;
 
-},{"./get-form-mutations":285,"react":146}],283:[function(require,module,exports){
+},{"./get-form-mutations":286,"react":146}],284:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -12449,7 +12530,7 @@ function useFileInput({ name }, { withPreview, maxSize, initialInfo = "no file s
 }
 exports.default = useFileInput;
 
-},{"prettier-bytes":102,"react":146}],287:[function(require,module,exports){
+},{"prettier-bytes":102,"react":146}],288:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -12502,7 +12583,7 @@ function useRadioInput({ name, Name }, { initialValue = _default, options = {}, 
 }
 exports.default = useRadioInput;
 
-},{"react":146}],288:[function(require,module,exports){
+},{"react":146}],289:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -12625,7 +12706,7 @@ function useFormSubmit(form, mutationQuery, opts = { changedOnly: true }) {
 }
 exports.default = useFormSubmit;
 
-},{"./get-form-mutations":285,"react":146}],289:[function(require,module,exports){
+},{"./get-form-mutations":286,"react":146}],290:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -12705,7 +12786,7 @@ function useTextInput({ name, Name }, { initialValue = _default, dontReset = fal
 }
 exports.default = useTextInput;
 
-},{"react":146}],292:[function(require,module,exports){
+},{"react":146}],293:[function(require,module,exports){
 "use strict";const React=require("react"),RoleContext=React.createContext([]),BaseUrlContext=React.createContext(null);function urlSafe(e){return e.toLowerCase().replace(/[\s/]+/g,"-")}function useHasPermission(e){return checkPermission(e,React.useContext(RoleContext))}function checkPermission(e,t){return!1===e||t.some((t=>e.includes(t)))}function useBaseUrl(){return React.useContext(BaseUrlContext)}module.exports={urlSafe:urlSafe,RoleContext:RoleContext,useHasPermission:useHasPermission,checkPermission:checkPermission,BaseUrlContext:BaseUrlContext,useBaseUrl:useBaseUrl};
 
 },{"react":146}],156:[function(require,module,exports){
@@ -12810,7 +12891,7 @@ module.exports = function MutationButton(_a) {
   }), targetsThisButton && result.isLoading ? "Processing..." : label));
 };
 
-},{"../error":270,"react":146}],284:[function(require,module,exports){
+},{"../error":270,"react":146}],285:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -12874,7 +12955,7 @@ function FormWithData(_a) {
 }
 exports.default = FormWithData;
 
-},{"../../components/error":270,"../../components/loading":276,"../types/query":308,"react":146}],169:[function(require,module,exports){
+},{"../../components/error":270,"../../components/loading":276,"../types/query":309,"react":146}],169:[function(require,module,exports){
 const util=require("./util"),types=require("./types"),sets=require("./sets"),positions=require("./positions");module.exports=e=>{var s,t,a=0,p={type:types.ROOT,stack:[]},r=p,o=p.stack,u=[],n=s=>{util.error(e,"Nothing to repeat at column "+(s-1))},i=util.strToChars(e);for(s=i.length;a<s;)switch(t=i[a++]){case"\\":switch(t=i[a++]){case"b":o.push(positions.wordBoundary());break;case"B":o.push(positions.nonWordBoundary());break;case"w":o.push(sets.words());break;case"W":o.push(sets.notWords());break;case"d":o.push(sets.ints());break;case"D":o.push(sets.notInts());break;case"s":o.push(sets.whitespace());break;case"S":o.push(sets.notWhitespace());break;default:/\d/.test(t)?o.push({type:types.REFERENCE,value:parseInt(t,10)}):o.push({type:types.CHAR,value:t.charCodeAt(0)})}break;case"^":o.push(positions.begin());break;case"$":o.push(positions.end());break;case"[":var c;"^"===i[a]?(c=!0,a++):c=!1;var h=util.tokenizeClass(i.slice(a),e);a+=h[1],o.push({type:types.SET,set:h[0],not:c});break;case".":o.push(sets.anyChar());break;case"(":var l={type:types.GROUP,stack:[],remember:!0};"?"===(t=i[a])&&(t=i[a+1],a+=2,"="===t?l.followedBy=!0:"!"===t?l.notFollowedBy=!0:":"!==t&&util.error(e,`Invalid group, character '${t}' after '?' at column `+(a-1)),l.remember=!1),o.push(l),u.push(r),r=l,o=l.stack;break;case")":0===u.length&&util.error(e,"Unmatched ) at column "+(a-1)),o=(r=u.pop()).options?r.options[r.options.length-1]:r.stack;break;case"|":r.options||(r.options=[r.stack],delete r.stack);var y=[];r.options.push(y),o=y;break;case"{":var k,b,d=/^(\d+)(,(\d+)?)?\}/.exec(i.slice(a));null!==d?(0===o.length&&n(a),k=parseInt(d[1],10),b=d[2]?d[3]?parseInt(d[3],10):1/0:k,a+=d[0].length,o.push({type:types.REPETITION,min:k,max:b,value:o.pop()})):o.push({type:types.CHAR,value:123});break;case"?":0===o.length&&n(a),o.push({type:types.REPETITION,min:0,max:1,value:o.pop()});break;case"+":0===o.length&&n(a),o.push({type:types.REPETITION,min:1,max:1/0,value:o.pop()});break;case"*":0===o.length&&n(a),o.push({type:types.REPETITION,min:0,max:1/0,value:o.pop()});break;default:o.push({type:types.CHAR,value:t.charCodeAt(0)})}return 0!==u.length&&util.error(e,"Unterminated group"),p},module.exports.types=types;
 
 },{"./positions":170,"./sets":171,"./types":172,"./util":173}],4:[function(require,module,exports){
@@ -13116,7 +13197,7 @@ var QueryStatus,__generator=this&&this.__generator||function(e,t){var r,n,i,a,o=
 var e,t,n=this&&this.__generator||function(e,t){var n,r,i,a,u={label:0,sent:function(){if(1&i[0])throw i[1];return i[1]},trys:[],ops:[]};return a={next:o(0),throw:o(1),return:o(2)},"function"==typeof Symbol&&(a[Symbol.iterator]=function(){return this}),a;function o(a){return function(o){return function(a){if(n)throw new TypeError("Generator is already executing.");for(;u;)try{if(n=1,r&&(i=2&a[0]?r.return:a[0]?r.throw||((i=r.return)&&i.call(r),0):r.next)&&!(i=i.call(r,a[1])).done)return i;switch(r=0,i&&(a=[2&a[0],i.value]),a[0]){case 0:case 1:i=a;break;case 4:return u.label++,{value:a[1],done:!1};case 5:u.label++,r=a[1],a=[0];continue;case 7:a=u.ops.pop(),u.trys.pop();continue;default:if(!((i=(i=u.trys).length>0&&i[i.length-1])||6!==a[0]&&2!==a[0])){u=0;continue}if(3===a[0]&&(!i||a[1]>i[0]&&a[1]<i[3])){u.label=a[1];break}if(6===a[0]&&u.label<i[1]){u.label=i[1],i=a;break}if(i&&u.label<i[2]){u.label=i[2],u.ops.push(a);break}i[2]&&u.ops.pop(),u.trys.pop();continue}a=t.call(e,u)}catch(e){a=[6,e],r=0}finally{n=i=0}if(5&a[0])throw a[1];return{value:a[0]?a[1]:void 0,done:!0}}([a,o])}}},r=this&&this.__spreadArray||function(e,t){for(var n=0,r=t.length,i=e.length;n<r;n++,i++)e[i]=t[n];return e},i=Object.create,a=Object.defineProperty,u=Object.defineProperties,o=Object.getOwnPropertyDescriptor,s=Object.getOwnPropertyDescriptors,c=Object.getOwnPropertyNames,l=Object.getOwnPropertySymbols,d=Object.getPrototypeOf,f=Object.prototype.hasOwnProperty,p=Object.prototype.propertyIsEnumerable,h=function(e,t,n){return t in e?a(e,t,{enumerable:!0,configurable:!0,writable:!0,value:n}):e[t]=n},v=function(e,t){for(var n in t||(t={}))f.call(t,n)&&h(e,n,t[n]);if(l)for(var r=0,i=l(t);r<i.length;r++)p.call(t,n=i[r])&&h(e,n,t[n]);return e},y=function(e,t){return u(e,s(t))},m=function(e){return a(e,"__esModule",{value:!0})},g=function(e,t){var n={};for(var r in e)f.call(e,r)&&t.indexOf(r)<0&&(n[r]=e[r]);if(null!=e&&l)for(var i=0,a=l(e);i<a.length;i++)t.indexOf(r=a[i])<0&&p.call(e,r)&&(n[r]=e[r]);return n},b=function(e){return function(e,t,n){if(t&&"object"==typeof t||"function"==typeof t)for(var r=function(r){f.call(e,r)||"default"===r||a(e,r,{get:function(){return t[r]},enumerable:!(n=o(t,r))||n.enumerable})},i=0,u=c(t);i<u.length;i++)r(u[i]);return e}(m(a(null!=e?i(d(e)):{},"default",e&&e.__esModule&&"default"in e?{get:function(){return e.default},enumerable:!0}:{value:e,enumerable:!0})),e)},q=function(e,t,n){return new Promise((function(r,i){var a=function(e){try{o(n.next(e))}catch(e){i(e)}},u=function(e){try{o(n.throw(e))}catch(e){i(e)}},o=function(e){return e.done?r(e.value):Promise.resolve(e.value).then(a,u)};o((n=n.apply(e,t)).next())}))};m(exports),function(e,t){for(var n in t)a(e,n,{get:t[n],enumerable:!0})}(exports,{QueryStatus:function(){return e},buildCreateApi:function(){return ge},copyWithStructuralSharing:function(){return A},coreModule:function(){return Ke},coreModuleName:function(){return Ne},createApi:function(){return Ee},defaultSerializeQueryArgs:function(){return ve},fakeBaseQuery:function(){return be},fetchBaseQuery:function(){return x},retry:function(){return I},setupListeners:function(){return F},skipSelector:function(){return ce},skipToken:function(){return se}}),(t=e||(e={})).uninitialized="uninitialized",t.pending="pending",t.fulfilled="fulfilled",t.rejected="rejected";var S=function(e){return[].concat.apply([],e)},O=b(require("@reduxjs/toolkit")).isPlainObject;function A(e,t){if(e===t||!(O(e)&&O(t)||Array.isArray(e)&&Array.isArray(t)))return t;for(var n=Object.keys(t),r=Object.keys(e),i=n.length===r.length,a=Array.isArray(t)?[]:{},u=0,o=n;u<o.length;u++){var s=o[u];a[s]=A(e[s],t[s]),i&&(i=e[s]===a[s])}return i?e:a}var T=b(require("@reduxjs/toolkit")),R=function(){for(var e=[],t=0;t<arguments.length;t++)e[t]=arguments[t];return fetch.apply(void 0,e)},j=function(e){return e.status>=200&&e.status<=299},w=function(e){return/ion\/(vnd\.api\+)?json/.test(e.get("content-type")||"")};function k(e){if(!(0,T.isPlainObject)(e))return e;for(var t=v({},e),n=0,r=Object.entries(t);n<r.length;n++){var i=r[n];void 0===i[1]&&delete t[i[0]]}return t}function x(e){var t=this;void 0===e&&(e={});var r=e.baseUrl,i=e.prepareHeaders,a=void 0===i?function(e){return e}:i,u=e.fetchFn,o=void 0===u?R:u,s=e.paramsSerializer,c=e.isJsonContentType,l=void 0===c?w:c,d=e.jsonContentType,f=void 0===d?"application/json":d,p=e.jsonReplacer,h=e.timeout,m=e.responseHandler,b=e.validateStatus,S=g(e,["baseUrl","prepareHeaders","fetchFn","paramsSerializer","isJsonContentType","jsonContentType","jsonReplacer","timeout","responseHandler","validateStatus"]);return"undefined"==typeof fetch&&o===R&&console.warn("Warning: `fetch` is not available. Please supply a custom `fetchFn` property to use `fetchBaseQuery` on SSR environments."),function(e,i){return q(t,null,(function(){var t,u,c,d,q,A,R,w,x,P,C,Q,I,M,D,N,K,E,z,_,F,J,U,B,L,W,H,V,$,G,Z,Y,X,ee,te,ne;return n(this,(function(n){switch(n.label){case 0:return t=i.signal,u=i.getState,c=i.extra,d=i.endpoint,q=i.forced,A=i.type,x=(w="string"==typeof e?{url:e}:e).url,C=void 0===(P=w.headers)?new Headers(S.headers):P,I=void 0===(Q=w.params)?void 0:Q,D=void 0===(M=w.responseHandler)?null!=m?m:"json":M,K=void 0===(N=w.validateStatus)?null!=b?b:j:N,z=void 0===(E=w.timeout)?h:E,_=g(w,["url","headers","params","responseHandler","validateStatus","timeout"]),F=v(y(v({},S),{signal:t}),_),C=new Headers(k(C)),J=F,[4,a(C,{getState:u,extra:c,endpoint:d,forced:q,type:A})];case 1:J.headers=n.sent()||C,U=function(e){return"object"==typeof e&&((0,T.isPlainObject)(e)||Array.isArray(e)||"function"==typeof e.toJSON)},!F.headers.has("content-type")&&U(F.body)&&F.headers.set("content-type",f),U(F.body)&&l(F.headers)&&(F.body=JSON.stringify(F.body,p)),I&&(B=~x.indexOf("?")?"&":"?",L=s?s(I):new URLSearchParams(k(I)),x+=B+L),x=function(e,t){if(!e)return t;if(!t)return e;if(function(e){return new RegExp("(^|:)//").test(e)}(t))return t;var n=e.endsWith("/")||!t.startsWith("?")?"/":"";return""+(e=function(e){return e.replace(/\/$/,"")}(e))+n+function(e){return e.replace(/^\//,"")}(t)}(r,x),W=new Request(x,F),H=new Request(x,F),R={request:H},$=!1,G=z&&setTimeout((function(){$=!0,i.abort()}),z),n.label=2;case 2:return n.trys.push([2,4,5,6]),[4,o(W)];case 3:return V=n.sent(),[3,6];case 4:return Z=n.sent(),[2,{error:{status:$?"TIMEOUT_ERROR":"FETCH_ERROR",error:String(Z)},meta:R}];case 5:return G&&clearTimeout(G),[7];case 6:Y=V.clone(),R.response=Y,ee="",n.label=7;case 7:return n.trys.push([7,9,,10]),[4,Promise.all([O(V,D).then((function(e){return X=e}),(function(e){return te=e})),Y.text().then((function(e){return ee=e}),(function(){}))])];case 8:if(n.sent(),te)throw te;return[3,10];case 9:return ne=n.sent(),[2,{error:{status:"PARSING_ERROR",originalStatus:V.status,data:ee,error:String(ne)},meta:R}];case 10:return[2,K(V,X)?{data:X,meta:R}:{error:{status:V.status,data:X},meta:R}]}}))}))};function O(e,t){return q(this,null,(function(){var r;return n(this,(function(n){switch(n.label){case 0:return"function"==typeof t?[2,t(e)]:("content-type"===t&&(t=l(e.headers)?"json":"text"),"json"!==t?[3,2]:[4,e.text()]);case 1:return[2,(r=n.sent()).length?JSON.parse(r):null];case 2:return[2,e.text()]}}))}))}}var P=function(e,t){void 0===t&&(t=void 0),this.value=e,this.meta=t};function Q(e,t){return void 0===e&&(e=0),void 0===t&&(t=5),q(this,null,(function(){var r,i;return n(this,(function(n){switch(n.label){case 0:return r=Math.min(e,t),i=~~((Math.random()+.4)*(300<<r)),[4,new Promise((function(e){return setTimeout((function(t){return e(t)}),i)}))];case 1:return n.sent(),[2]}}))}))}var C={},I=Object.assign((function(e,t){return function(r,i,a){return q(void 0,null,(function(){var u,o,s,c,l,d,f;return n(this,(function(n){switch(n.label){case 0:u=[5,(t||C).maxRetries,(a||C).maxRetries].filter((function(e){return void 0!==e})),o=u.slice(-1)[0],s=function(e,t,n){return n.attempt<=o},c=v(v({maxRetries:o,backoff:Q,retryCondition:s},t),a),l=0,n.label=1;case 1:n.label=2;case 2:return n.trys.push([2,4,,6]),[4,e(r,i,a)];case 3:if((d=n.sent()).error)throw new P(d);return[2,d];case 4:if(f=n.sent(),l++,f.throwImmediately){if(f instanceof P)return[2,f.value];throw f}return f instanceof P&&!c.retryCondition(f.value.error,r,{attempt:l,baseQueryApi:i,extraOptions:a})?[2,f.value]:[4,c.backoff(l,c.maxRetries)];case 5:return n.sent(),[3,6];case 6:return[3,1];case 7:return[2]}}))}))}}),{fail:function(e){throw Object.assign(new P({error:e}),{throwImmediately:!0})}}),M=b(require("@reduxjs/toolkit")),D=(0,M.createAction)("__rtkq/focused"),N=(0,M.createAction)("__rtkq/unfocused"),K=(0,M.createAction)("__rtkq/online"),E=(0,M.createAction)("__rtkq/offline"),_=!1;function F(e,t){return t?t(e,{onFocus:D,onFocusLost:N,onOffline:E,onOnline:K}):(n=function(){return e(D())},r=function(){return e(K())},i=function(){return e(E())},a=function(){"visible"===window.document.visibilityState?n():e(N())},_||"undefined"!=typeof window&&window.addEventListener&&(window.addEventListener("visibilitychange",a,!1),window.addEventListener("focus",n,!1),window.addEventListener("online",r,!1),window.addEventListener("offline",i,!1),_=!0),function(){window.removeEventListener("focus",n),window.removeEventListener("visibilitychange",a),window.removeEventListener("online",r),window.removeEventListener("offline",i),_=!1});var n,r,i,a}var z,U,B=b(require("@reduxjs/toolkit"));function L(e){return e.type===z.query}function W(e,t,n,r,i,a){return"function"==typeof e?e(t,n,r,i).map(H).map(a):Array.isArray(e)?e.map(H).map(a):[]}function H(e){return"string"==typeof e?{type:e}:e}(U=z||(z={})).query="query",U.mutation="mutation";var J=b(require("@reduxjs/toolkit"));function V(e){return null!=e}var G=Symbol("forceQueryFn"),Y=function(e){return"function"==typeof e[G]},$=b(require("@reduxjs/toolkit")),X=b(require("immer")),Z=b(require("@reduxjs/toolkit"));function ee(e){return e}function te(e,t,n,r){return W(n[e.meta.arg.endpointName][t],(0,$.isFulfilled)(e)?e.payload:void 0,(0,$.isRejectedWithValue)(e)?e.payload:void 0,e.meta.arg.originalArgs,"baseQueryMeta"in e.meta?e.meta.baseQueryMeta:void 0,r)}var ne=b(require("immer")),re=b(require("immer"));function ie(e,t,n){var r=e[t];r&&n(r)}function ae(e){var t;return null!=(t="arg"in e?e.arg.fixedCacheKey:e.fixedCacheKey)?t:e.requestId}function ue(e,t,n){var r=e[ae(t)];r&&n(r)}var oe={},se=Symbol.for("RTKQ/skipToken"),ce=se,le={status:e.uninitialized},de=(0,B.createNextState)(le,(function(){})),fe=(0,B.createNextState)(le,(function(){})),pe=b(require("@reduxjs/toolkit")),he=WeakMap?new WeakMap:void 0,ve=function(e){var t=e.endpointName,n=e.queryArgs,r="",i=null==he?void 0:he.get(n);if("string"==typeof i)r=i;else{var a=JSON.stringify(n,(function(e,t){return(0,pe.isPlainObject)(t)?Object.keys(t).sort().reduce((function(e,n){return e[n]=t[n],e}),{}):t}));(0,pe.isPlainObject)(n)&&(null==he||he.set(n,a)),r=a}return t+"("+r+")"},ye=b(require("@reduxjs/toolkit")),me=b(require("reselect"));function ge(){for(var e=[],t=0;t<arguments.length;t++)e[t]=arguments[t];return function(t){var n=(0,me.defaultMemoize)((function(e){var n,r;return null==(r=t.extractRehydrationInfo)?void 0:r.call(t,e,{reducerPath:null!=(n=t.reducerPath)?n:"api"})})),i=y(v({reducerPath:"api",keepUnusedDataFor:60,refetchOnMountOrArgChange:!1,refetchOnFocus:!1,refetchOnReconnect:!1},t),{extractRehydrationInfo:n,serializeQueryArgs:function(e){var n=ve;if("serializeQueryArgs"in e.endpointDefinition){var r=e.endpointDefinition.serializeQueryArgs;n=function(e){var t=r(e);return"string"==typeof t?t:ve(y(v({},e),{queryArgs:t}))}}else t.serializeQueryArgs&&(n=t.serializeQueryArgs);return n(e)},tagTypes:r([],t.tagTypes||[])}),a={endpointDefinitions:{},batch:function(e){e()},apiUid:(0,ye.nanoid)(),extractRehydrationInfo:n,hasRehydrationInfo:(0,me.defaultMemoize)((function(e){return null!=n(e)}))},u={injectEndpoints:function(e){for(var t=e.endpoints({query:function(e){return y(v({},e),{type:z.query})},mutation:function(e){return y(v({},e),{type:z.mutation})}}),n=0,r=Object.entries(t);n<r.length;n++){var i=r[n],s=i[0],c=i[1];if(e.overrideExisting||!(s in a.endpointDefinitions)){a.endpointDefinitions[s]=c;for(var l=0,d=o;l<d.length;l++)d[l].injectEndpoint(s,c)}}return u},enhanceEndpoints:function(e){var t=e.addTagTypes,n=e.endpoints;if(t)for(var r=0,o=t;r<o.length;r++){var s=o[r];i.tagTypes.includes(s)||i.tagTypes.push(s)}if(n)for(var c=0,l=Object.entries(n);c<l.length;c++){var d=l[c],f=d[0],p=d[1];"function"==typeof p?p(a.endpointDefinitions[f]):Object.assign(a.endpointDefinitions[f]||{},p)}return u}},o=e.map((function(e){return e.init(u,i,a)}));return u.injectEndpoints({endpoints:t.endpoints})}}function be(){return function(){throw new Error("When using `fakeBaseQuery`, all queries & mutations must use the `queryFn` definition syntax.")}}var qe,Se=b(require("@reduxjs/toolkit")),Oe=function(e){var t=e.reducerPath,n=e.api,r=e.context,i=e.internalState,a=n.internalActions,u=a.removeQueryResult,o=a.unsubscribeQueryResult;function s(e){var t=i.currentSubscriptions[e];return!!t&&!function(e){for(var t in e)return!1;return!0}(t)}var c={};function l(e,t,n,i){var a,o=r.endpointDefinitions[t],l=null!=(a=null==o?void 0:o.keepUnusedDataFor)?a:i.keepUnusedDataFor;if(1/0!==l){var d=Math.max(0,Math.min(l,2147482.647));if(!s(e)){var f=c[e];f&&clearTimeout(f),c[e]=setTimeout((function(){s(e)||n.dispatch(u({queryCacheKey:e})),delete c[e]}),1e3*d)}}}return function(e,i,a){var u;if(o.match(e)){var s=i.getState()[t];l(b=e.payload.queryCacheKey,null==(u=s.queries[b])?void 0:u.endpointName,i,s.config)}if(n.util.resetApiState.match(e))for(var d=0,f=Object.entries(c);d<f.length;d++){var p=f[d],v=p[0],h=p[1];h&&clearTimeout(h),delete c[v]}if(r.hasRehydrationInfo(e)){s=i.getState()[t];for(var y=r.extractRehydrationInfo(e).queries,m=0,g=Object.entries(y);m<g.length;m++){var b,q=g[m],S=q[1];l(b=q[0],null==S?void 0:S.endpointName,i,s.config)}}}},Ae=b(require("@reduxjs/toolkit")),Te=function(t){var n=t.reducerPath,r=t.context,i=t.context.endpointDefinitions,a=t.mutationThunk,u=t.api,o=t.assertTagType,s=t.refetchQuery,c=u.internalActions.removeQueryResult,l=(0,Ae.isAnyOf)((0,Ae.isFulfilled)(a),(0,Ae.isRejectedWithValue)(a));function d(t,i){var a=i.getState(),o=a[n],l=u.util.selectInvalidatedBy(a,t);r.batch((function(){for(var t,n=0,r=Array.from(l.values());n<r.length;n++){var a=r[n].queryCacheKey,u=o.queries[a],d=null!=(t=o.subscriptions[a])?t:{};u&&(0===Object.keys(d).length?i.dispatch(c({queryCacheKey:a})):u.status!==e.uninitialized&&i.dispatch(s(u,a)))}}))}return function(e,t){l(e)&&d(te(e,"invalidatesTags",i,o),t),u.util.invalidateTags.match(e)&&d(W(e.payload,void 0,void 0,void 0,void 0,o),t)}},Re=function(t){var n=t.reducerPath,r=t.queryThunk,i=t.api,a=t.refetchQuery,u=t.internalState,o={};function s(t,r){var i=t.queryCacheKey,s=r.getState()[n].queries[i];if(s&&s.status!==e.uninitialized){var c=d(u.currentSubscriptions[i]);if(Number.isFinite(c)){var l=o[i];(null==l?void 0:l.timeout)&&(clearTimeout(l.timeout),l.timeout=void 0);var f=Date.now()+c,p=o[i]={nextPollTimestamp:f,pollingInterval:c,timeout:setTimeout((function(){p.timeout=void 0,r.dispatch(a(s,i))}),c)}}}}function c(t,r){var i=t.queryCacheKey,a=r.getState()[n].queries[i];if(a&&a.status!==e.uninitialized){var c=d(u.currentSubscriptions[i]);if(Number.isFinite(c)){var f=o[i],p=Date.now()+c;(!f||p<f.nextPollTimestamp)&&s({queryCacheKey:i},r)}else l(i)}}function l(e){var t=o[e];(null==t?void 0:t.timeout)&&clearTimeout(t.timeout),delete o[e]}function d(e){void 0===e&&(e={});var t=Number.POSITIVE_INFINITY;for(var n in e)e[n].pollingInterval&&(t=Math.min(e[n].pollingInterval,t));return t}return function(e,t){(i.internalActions.updateSubscriptionOptions.match(e)||i.internalActions.unsubscribeQueryResult.match(e))&&c(e.payload,t),(r.pending.match(e)||r.rejected.match(e)&&e.meta.condition)&&c(e.meta.arg,t),(r.fulfilled.match(e)||r.rejected.match(e)&&!e.meta.condition)&&s(e.meta.arg,t),i.util.resetApiState.match(e)&&function(){for(var e=0,t=Object.keys(o);e<t.length;e++)l(t[e])}()}},je=b(require("@reduxjs/toolkit")),we=new Error("Promise never resolved before cacheEntryRemoved."),ke=function(e){var t=e.api,n=e.reducerPath,r=e.context,i=e.queryThunk,a=e.mutationThunk,u=(0,je.isAsyncThunkAction)(i),o=(0,je.isAsyncThunkAction)(a),s=(0,je.isFulfilled)(i,a),c={};function l(e,n,i,a,u){var o=r.endpointDefinitions[e],s=null==o?void 0:o.onCacheEntryAdded;if(s){var l={},d=new Promise((function(e){l.cacheEntryRemoved=e})),f=Promise.race([new Promise((function(e){l.valueResolved=e})),d.then((function(){throw we}))]);f.catch((function(){})),c[i]=l;var p=t.endpoints[e].select(o.type===z.query?n:i),h=a.dispatch((function(e,t,n){return n})),m=y(v({},a),{getCacheEntry:function(){return p(a.getState())},requestId:u,extra:h,updateCachedData:o.type===z.query?function(r){return a.dispatch(t.util.updateQueryData(e,n,r))}:void 0,cacheDataLoaded:f,cacheEntryRemoved:d}),g=s(n,m);Promise.resolve(g).catch((function(e){if(e!==we)throw e}))}}return function(e,r,d){var f=function(e){return u(e)?e.meta.arg.queryCacheKey:o(e)?e.meta.requestId:t.internalActions.removeQueryResult.match(e)?e.payload.queryCacheKey:t.internalActions.removeMutationResult.match(e)?ae(e.payload):""}(e);if(i.pending.match(e)){var p=d[n].queries[f],v=r.getState()[n].queries[f];!p&&v&&l(e.meta.arg.endpointName,e.meta.arg.originalArgs,f,r,e.meta.requestId)}else if(a.pending.match(e))(v=r.getState()[n].mutations[f])&&l(e.meta.arg.endpointName,e.meta.arg.originalArgs,f,r,e.meta.requestId);else if(s(e))(null==(g=c[f])?void 0:g.valueResolved)&&(g.valueResolved({data:e.payload,meta:e.meta.baseQueryMeta}),delete g.valueResolved);else if(t.internalActions.removeQueryResult.match(e)||t.internalActions.removeMutationResult.match(e))(g=c[f])&&(delete c[f],g.cacheEntryRemoved());else if(t.util.resetApiState.match(e))for(var h=0,y=Object.entries(c);h<y.length;h++){var m=y[h],g=m[1];delete c[m[0]],g.cacheEntryRemoved()}}},xe=b(require("@reduxjs/toolkit")),Pe=function(e){var t=e.api,n=e.context,r=e.queryThunk,i=e.mutationThunk,a=(0,xe.isPending)(r,i),u=(0,xe.isRejected)(r,i),o=(0,xe.isFulfilled)(r,i),s={};return function(e,r){var i,c,l;if(a(e)){var d=e.meta,f=d.requestId,p=d.arg,h=p.endpointName,m=p.originalArgs,g=n.endpointDefinitions[h],b=null==g?void 0:g.onQueryStarted;if(b){var q={},S=new Promise((function(e,t){q.resolve=e,q.reject=t}));S.catch((function(){})),s[f]=q;var O=t.endpoints[h].select(g.type===z.query?m:f),A=r.dispatch((function(e,t,n){return n})),T=y(v({},r),{getCacheEntry:function(){return O(r.getState())},requestId:f,extra:A,updateCachedData:g.type===z.query?function(e){return r.dispatch(t.util.updateQueryData(h,m,e))}:void 0,queryFulfilled:S});b(m,T)}}else if(o(e)){var R=e.meta,j=R.baseQueryMeta;null==(i=s[f=R.requestId])||i.resolve({data:e.payload,meta:j}),delete s[f]}else if(u(e)){var w=e.meta;j=w.baseQueryMeta,null==(l=s[f=w.requestId])||l.reject({error:null!=(c=e.payload)?c:e.error,isUnhandledError:!w.rejectedWithValue,meta:j}),delete s[f]}}},Qe=function(e){var t=e.api,n=e.context.apiUid;return function(e,r){t.util.resetApiState.match(e)&&r.dispatch(t.internalActions.middlewareRegistered(n))}},Ce=b(require("immer")),Ie="function"==typeof queueMicrotask?queueMicrotask.bind("undefined"!=typeof window?window:"undefined"!=typeof global?global:globalThis):function(e){return(qe||(qe=Promise.resolve())).then(e).catch((function(e){return setTimeout((function(){throw e}),0)}))};function Me(e){for(var t=[],n=1;n<arguments.length;n++)t[n-1]=arguments[n];Object.assign.apply(Object,r([e],t))}var De=b(require("immer")),Ne=Symbol(),Ke=function(){return{name:Ne,init:function(t,i,a){var u=i.baseQuery,o=i.reducerPath,s=i.serializeQueryArgs,c=i.keepUnusedDataFor,l=i.refetchOnMountOrArgChange,d=i.refetchOnFocus,f=i.refetchOnReconnect;(0,De.enablePatches)();var p=function(e){return e};Object.assign(t,{reducerPath:o,endpoints:{},internalActions:{onOnline:K,onOffline:E,onFocus:D,onFocusLost:N},util:{}});var h=function(t){var r=this,i=t.reducerPath,a=t.baseQuery,u=t.context.endpointDefinitions,o=t.serializeQueryArgs,s=t.api,c=t.assertTagType,l=function(e,t){return q(r,[e,t],(function(e,t){var r,i,o,s,c,l,f,p,v,h,y,m,g,b=t.signal,q=t.abort,S=t.rejectWithValue,O=t.fulfillWithValue,A=t.dispatch,T=t.getState,R=t.extra;return n(this,(function(t){switch(t.label){case 0:r=u[e.endpointName],t.label=1;case 1:return t.trys.push([1,8,,13]),i=ee,o=void 0,s={signal:b,abort:q,dispatch:A,getState:T,extra:R,endpoint:e.endpointName,type:e.type,forced:"query"===e.type?d(e,T()):void 0},(c="query"===e.type?e[G]:void 0)?(o=c(),[3,6]):[3,2];case 2:return r.query?[4,a(r.query(e.originalArgs),s,r.extraOptions)]:[3,4];case 3:return o=t.sent(),r.transformResponse&&(i=r.transformResponse),[3,6];case 4:return[4,r.queryFn(e.originalArgs,s,r.extraOptions,(function(e){return a(e,s,r.extraOptions)}))];case 5:o=t.sent(),t.label=6;case 6:if(o.error)throw new P(o.error,o.meta);return l=O,[4,i(o.data,o.meta,e.originalArgs)];case 7:return[2,l.apply(void 0,[t.sent(),(m={fulfilledTimeStamp:Date.now(),baseQueryMeta:o.meta},m[Z.SHOULD_AUTOBATCH]=!0,m)])];case 8:if(f=t.sent(),!((p=f)instanceof P))return[3,12];v=ee,r.query&&r.transformErrorResponse&&(v=r.transformErrorResponse),t.label=9;case 9:return t.trys.push([9,11,,12]),h=S,[4,v(p.value,p.meta,e.originalArgs)];case 10:return[2,h.apply(void 0,[t.sent(),(g={baseQueryMeta:p.meta},g[Z.SHOULD_AUTOBATCH]=!0,g)])];case 11:return y=t.sent(),p=y,[3,12];case 12:throw console.error(p),p;case 13:return[2]}}))}))};function d(e,t){var n,r,a,u,o=null==(r=null==(n=t[i])?void 0:n.queries)?void 0:r[e.queryCacheKey],s=null==(a=t[i])?void 0:a.config.refetchOnMountOrArgChange,c=null==o?void 0:o.fulfilledTimeStamp,l=null!=(u=e.forceRefetch)?u:e.subscribe&&s;return!!l&&(!0===l||(Number(new Date)-Number(c))/1e3>=l)}var f=(0,Z.createAsyncThunk)(i+"/executeQuery",l,{getPendingMeta:function(){var e;return(e={startedTimeStamp:Date.now()})[Z.SHOULD_AUTOBATCH]=!0,e},condition:function(e,t){var n,r,a,o=(0,t.getState)(),s=null==(r=null==(n=o[i])?void 0:n.queries)?void 0:r[e.queryCacheKey],c=null==s?void 0:s.fulfilledTimeStamp,l=e.originalArgs,f=null==s?void 0:s.originalArgs,p=u[e.endpointName];return!(!Y(e)&&("pending"===(null==s?void 0:s.status)||!d(e,o)&&(!L(p)||!(null==(a=null==p?void 0:p.forceRefetch)?void 0:a.call(p,{currentArg:l,previousArg:f,endpointState:s,state:o})))&&c))},dispatchConditionRejection:!0}),p=(0,Z.createAsyncThunk)(i+"/executeMutation",l,{getPendingMeta:function(){var e;return(e={startedTimeStamp:Date.now()})[Z.SHOULD_AUTOBATCH]=!0,e}});function v(e){return function(t){var n,r;return(null==(r=null==(n=null==t?void 0:t.meta)?void 0:n.arg)?void 0:r.endpointName)===e}}return{queryThunk:f,mutationThunk:p,prefetch:function(e,t,n){return function(r,i){var a=function(e){return"force"in e}(n)&&n.force,u=function(e){return"ifOlderThan"in e}(n)&&n.ifOlderThan,o=function(n){return void 0===n&&(n=!0),s.endpoints[e].initiate(t,{forceRefetch:n})},c=s.endpoints[e].select(t)(i());if(a)r(o());else if(u){var l=null==c?void 0:c.fulfilledTimeStamp;if(!l)return void r(o());(Number(new Date)-Number(new Date(l)))/1e3>=u&&r(o())}else r(o(!1))}},updateQueryData:function(t,n,r,i){return void 0===i&&(i=!0),function(a,u){var o,c,l,d=s.endpoints[t].select(n)(u()),f={patches:[],inversePatches:[],undo:function(){return a(s.util.patchQueryData(t,n,f.inversePatches,i))}};if(d.status===e.uninitialized)return f;if("data"in d)if((0,X.isDraftable)(d.data)){var p=(0,X.produceWithPatches)(d.data,r),v=p[0],h=p[2];(o=f.patches).push.apply(o,p[1]),(c=f.inversePatches).push.apply(c,h),l=v}else l=r(d.data),f.patches.push({op:"replace",path:[],value:l}),f.inversePatches.push({op:"replace",path:[],value:d.data});return a(s.util.patchQueryData(t,n,f.patches,i)),f}},upsertQueryData:function(e,t,n){return function(r){var i;return r(s.endpoints[e].initiate(t,((i={subscribe:!1,forceRefetch:!0})[G]=function(){return{data:n}},i)))}},patchQueryData:function(e,t,n,r){return function(i,a){var l=u[e],d=o({queryArgs:t,endpointDefinition:l,endpointName:e});if(i(s.internalActions.queryResultPatched({queryCacheKey:d,patches:n})),r){var f=s.endpoints[e].select(t)(a()),p=W(l.providesTags,f.data,void 0,t,{},c);i(s.internalActions.updateProvidedBy({queryCacheKey:d,providedTags:p}))}}},buildMatchThunkActions:function(e,t){return{matchPending:(0,$.isAllOf)((0,$.isPending)(e),v(t)),matchFulfilled:(0,$.isAllOf)((0,$.isFulfilled)(e),v(t)),matchRejected:(0,$.isAllOf)((0,$.isRejected)(e),v(t))}}}}({baseQuery:u,reducerPath:o,context:a,api:t,serializeQueryArgs:s,assertTagType:p}),m=h.queryThunk,g=h.mutationThunk,b=h.patchQueryData,O=h.updateQueryData,T=h.upsertQueryData,R=h.prefetch,j=h.buildMatchThunkActions,w=function(t){var n=t.reducerPath,r=t.queryThunk,i=t.mutationThunk,a=t.context,u=a.endpointDefinitions,o=a.apiUid,s=a.extractRehydrationInfo,c=a.hasRehydrationInfo,l=t.assertTagType,d=t.config,f=(0,J.createAction)(n+"/resetApiState"),p=(0,J.createSlice)({name:n+"/queries",initialState:oe,reducers:{removeQueryResult:{reducer:function(e,t){delete e[t.payload.queryCacheKey]},prepare:(0,J.prepareAutoBatched)()},queryResultPatched:{reducer:function(e,t){var n=t.payload,r=n.patches;ie(e,n.queryCacheKey,(function(e){e.data=(0,re.applyPatches)(e.data,r.concat())}))},prepare:(0,J.prepareAutoBatched)()}},extraReducers:function(t){t.addCase(r.pending,(function(t,n){var r,i=n.meta,a=n.meta.arg,u=Y(a);(a.subscribe||u)&&(null!=t[r=a.queryCacheKey]||(t[r]={status:e.uninitialized,endpointName:a.endpointName})),ie(t,a.queryCacheKey,(function(t){t.status=e.pending,t.requestId=u&&t.requestId?t.requestId:i.requestId,void 0!==a.originalArgs&&(t.originalArgs=a.originalArgs),t.startedTimeStamp=i.startedTimeStamp}))})).addCase(r.fulfilled,(function(t,n){var r=n.meta,i=n.payload;ie(t,r.arg.queryCacheKey,(function(t){var n;if(t.requestId===r.requestId||Y(r.arg)){var a=u[r.arg.endpointName].merge;if(t.status=e.fulfilled,a)if(void 0!==t.data){var o=r.fulfilledTimeStamp,s=r.arg,c=r.baseQueryMeta,l=r.requestId,d=(0,J.createNextState)(t.data,(function(e){return a(e,i,{arg:s.originalArgs,baseQueryMeta:c,fulfilledTimeStamp:o,requestId:l})}));t.data=d}else t.data=i;else t.data=null==(n=u[r.arg.endpointName].structuralSharing)||n?A((0,ne.isDraft)(t.data)?(0,re.original)(t.data):t.data,i):i;delete t.error,t.fulfilledTimeStamp=r.fulfilledTimeStamp}}))})).addCase(r.rejected,(function(t,n){var r=n.meta,i=r.condition,a=r.requestId,u=n.error,o=n.payload;ie(t,r.arg.queryCacheKey,(function(t){if(i);else{if(t.requestId!==a)return;t.status=e.rejected,t.error=null!=o?o:u}}))})).addMatcher(c,(function(t,n){for(var r=s(n).queries,i=0,a=Object.entries(r);i<a.length;i++){var u=a[i],o=u[1];(null==o?void 0:o.status)!==e.fulfilled&&(null==o?void 0:o.status)!==e.rejected||(t[u[0]]=o)}}))}}),h=(0,J.createSlice)({name:n+"/mutations",initialState:oe,reducers:{removeMutationResult:{reducer:function(e,t){var n=ae(t.payload);n in e&&delete e[n]},prepare:(0,J.prepareAutoBatched)()}},extraReducers:function(t){t.addCase(i.pending,(function(t,n){var r=n.meta,i=r.requestId,a=r.arg,u=r.startedTimeStamp;a.track&&(t[ae(n.meta)]={requestId:i,status:e.pending,endpointName:a.endpointName,startedTimeStamp:u})})).addCase(i.fulfilled,(function(t,n){var r=n.payload,i=n.meta;i.arg.track&&ue(t,i,(function(t){t.requestId===i.requestId&&(t.status=e.fulfilled,t.data=r,t.fulfilledTimeStamp=i.fulfilledTimeStamp)}))})).addCase(i.rejected,(function(t,n){var r=n.payload,i=n.error,a=n.meta;a.arg.track&&ue(t,a,(function(t){t.requestId===a.requestId&&(t.status=e.rejected,t.error=null!=r?r:i)}))})).addMatcher(c,(function(t,n){for(var r=s(n).mutations,i=0,a=Object.entries(r);i<a.length;i++){var u=a[i],o=u[0],c=u[1];(null==c?void 0:c.status)!==e.fulfilled&&(null==c?void 0:c.status)!==e.rejected||o===(null==c?void 0:c.requestId)||(t[o]=c)}}))}}),m=(0,J.createSlice)({name:n+"/invalidation",initialState:oe,reducers:{updateProvidedBy:{reducer:function(e,t){for(var n,r,i,a,u=t.payload,o=u.queryCacheKey,s=u.providedTags,c=0,l=Object.values(e);c<l.length;c++)for(var d=0,f=Object.values(l[c]);d<f.length;d++){var p=f[d],v=p.indexOf(o);-1!==v&&p.splice(v,1)}for(var h=0,y=s;h<y.length;h++){var m=y[h],g=m.type,b=m.id,q=null!=(a=(r=null!=(n=e[g])?n:e[g]={})[i=b||"__internal_without_id"])?a:r[i]=[];q.includes(o)||q.push(o)}},prepare:(0,J.prepareAutoBatched)()}},extraReducers:function(e){e.addCase(p.actions.removeQueryResult,(function(e,t){for(var n=t.payload.queryCacheKey,r=0,i=Object.values(e);r<i.length;r++)for(var a=0,u=Object.values(i[r]);a<u.length;a++){var o=u[a],s=o.indexOf(n);-1!==s&&o.splice(s,1)}})).addMatcher(c,(function(e,t){for(var n,r,i,a,u=s(t).provided,o=0,c=Object.entries(u);o<c.length;o++)for(var l=c[o],d=l[0],f=0,p=Object.entries(l[1]);f<p.length;f++)for(var v=p[f],h=v[0],y=v[1],m=null!=(a=(r=null!=(n=e[d])?n:e[d]={})[i=h||"__internal_without_id"])?a:r[i]=[],g=0,b=y;g<b.length;g++){var q=b[g];m.includes(q)||m.push(q)}})).addMatcher((0,J.isAnyOf)((0,J.isFulfilled)(r),(0,J.isRejectedWithValue)(r)),(function(e,t){var n=te(t,"providesTags",u,l);m.caseReducers.updateProvidedBy(e,m.actions.updateProvidedBy({queryCacheKey:t.meta.arg.queryCacheKey,providedTags:n}))}))}}),g=(0,J.createSlice)({name:n+"/subscriptions",initialState:oe,reducers:{updateSubscriptionOptions:function(e,t){},unsubscribeQueryResult:function(e,t){},internal_probeSubscription:function(e,t){}}}),b=(0,J.createSlice)({name:n+"/internalSubscriptions",initialState:oe,reducers:{subscriptionsUpdated:{reducer:function(e,t){return(0,re.applyPatches)(e,t.payload)},prepare:(0,J.prepareAutoBatched)()}}}),q=(0,J.createSlice)({name:n+"/config",initialState:v({online:"undefined"==typeof navigator||void 0===navigator.onLine||navigator.onLine,focused:"undefined"==typeof document||"hidden"!==document.visibilityState,middlewareRegistered:!1},d),reducers:{middlewareRegistered:function(e,t){e.middlewareRegistered="conflict"!==e.middlewareRegistered&&o===t.payload||"conflict"}},extraReducers:function(e){e.addCase(K,(function(e){e.online=!0})).addCase(E,(function(e){e.online=!1})).addCase(D,(function(e){e.focused=!0})).addCase(N,(function(e){e.focused=!1})).addMatcher(c,(function(e){return v({},e)}))}}),S=(0,J.combineReducers)({queries:p.reducer,mutations:h.reducer,provided:m.reducer,subscriptions:b.reducer,config:q.reducer});return{reducer:function(e,t){return S(f.match(t)?void 0:e,t)},actions:y(v(v(v(v(v(v({},q.actions),p.actions),g.actions),b.actions),h.actions),m.actions),{unsubscribeMutationResult:h.actions.removeMutationResult,resetApiState:f})}}({context:a,queryThunk:m,mutationThunk:g,reducerPath:o,assertTagType:p,config:{refetchOnFocus:d,refetchOnReconnect:f,refetchOnMountOrArgChange:l,keepUnusedDataFor:c,reducerPath:o}}),k=w.reducer,x=w.actions;Me(t.util,{patchQueryData:b,updateQueryData:O,upsertQueryData:T,prefetch:R,resetApiState:x.resetApiState}),Me(t.internalActions,x);var C=function(t){var n=t.reducerPath,r=t.queryThunk,i=t.api,a=t.context,u=a.apiUid,o={invalidateTags:(0,Se.createAction)(n+"/invalidateTags")},s=[Qe,Oe,Te,Re,ke,Pe];return{middleware:function(r){var o=!1,l=y(v({},t),{internalState:{currentSubscriptions:{}},refetchQuery:c}),d=s.map((function(e){return e(l)})),f=function(e){var t=e.api,n=e.queryThunk,r=e.internalState,i=t.reducerPath+"/subscriptions",a=null,u=!1,o=t.internalActions,s=o.updateSubscriptionOptions,c=o.unsubscribeQueryResult;return function(e,o){var l,d;if(a||(a=JSON.parse(JSON.stringify(r.currentSubscriptions))),t.util.resetApiState.match(e))return a=r.currentSubscriptions={},[!0,!1];if(t.internalActions.internal_probeSubscription.match(e)){var f=e.payload;return[!1,!!(null==(l=r.currentSubscriptions[f.queryCacheKey])?void 0:l[f.requestId])]}var p=function(e,r){var i,a,u,o,l,d,f,p,v;if(s.match(r)){var h=r.payload,y=h.queryCacheKey,m=h.requestId;return(null==(i=null==e?void 0:e[y])?void 0:i[m])&&(e[y][m]=h.options),!0}if(c.match(r)){var g=r.payload;return m=g.requestId,e[y=g.queryCacheKey]&&delete e[y][m],!0}if(t.internalActions.removeQueryResult.match(r))return delete e[r.payload.queryCacheKey],!0;if(n.pending.match(r)){var b=r.meta;if(m=b.requestId,(O=b.arg).subscribe)return(q=null!=(u=e[a=O.queryCacheKey])?u:e[a]={})[m]=null!=(l=null!=(o=O.subscriptionOptions)?o:q[m])?l:{},!0}if(n.rejected.match(r)){var q,S=r.meta,O=S.arg;if(m=S.requestId,S.condition&&O.subscribe)return(q=null!=(f=e[d=O.queryCacheKey])?f:e[d]={})[m]=null!=(v=null!=(p=O.subscriptionOptions)?p:q[m])?v:{},!0}return!1}(r.currentSubscriptions,e);if(p){u||(Ie((function(){var e=JSON.parse(JSON.stringify(r.currentSubscriptions)),n=(0,Ce.produceWithPatches)(a,(function(){return e}));o.next(t.internalActions.subscriptionsUpdated(n[1])),a=e,u=!1})),u=!0);var v=!!(null==(d=e.type)?void 0:d.startsWith(i)),h=n.rejected.match(e)&&e.meta.condition&&!!e.meta.arg.subscribe;return[!v&&!h,!1]}return[!0,!1]}}(l),p=function(t){var n=t.reducerPath,r=t.context,i=t.refetchQuery,a=t.internalState,u=t.api.internalActions.removeQueryResult;function o(t,o){var s=t.getState()[n],c=s.queries,l=a.currentSubscriptions;r.batch((function(){for(var n=0,r=Object.keys(l);n<r.length;n++){var a=r[n],d=c[a],f=l[a];f&&d&&(Object.values(f).some((function(e){return!0===e[o]}))||Object.values(f).every((function(e){return void 0===e[o]}))&&s.config[o])&&(0===Object.keys(f).length?t.dispatch(u({queryCacheKey:a})):d.status!==e.uninitialized&&t.dispatch(i(d,a)))}}))}return function(e,t){D.match(e)&&o(t,"refetchOnFocus"),K.match(e)&&o(t,"refetchOnReconnect")}}(l);return function(e){return function(t){o||(o=!0,r.dispatch(i.internalActions.middlewareRegistered(u)));var s,c=y(v({},r),{next:e}),l=r.getState(),h=f(t,c,l),m=h[1];if(s=h[0]?e(t):m,r.getState()[n]&&(p(t,c,l),function(e){return!!e&&"string"==typeof e.type&&e.type.startsWith(n+"/")}(t)||a.hasRehydrationInfo(t)))for(var g=0,b=d;g<b.length;g++)(0,b[g])(t,c,l);return s}}},actions:o};function c(e,t,n){return void 0===n&&(n={}),r(v({type:"query",endpointName:e.endpointName,originalArgs:e.originalArgs,subscribe:!1,forceRefetch:!0,queryCacheKey:t},n))}}({reducerPath:o,context:a,queryThunk:m,mutationThunk:g,api:t,assertTagType:p}),Q=C.middleware;Me(t.util,C.actions),Me(t,{reducer:k,middleware:Q});var I=function(t){var n=t.serializeQueryArgs,r=t.reducerPath,i=function(e){return de},a=function(e){return fe};return{buildQuerySelector:function(e,t){return function(r){var a=n({queryArgs:r,endpointDefinition:t,endpointName:e});return(0,B.createSelector)(r===se?i:function(e){var t,n,r;return null!=(r=null==(n=null==(t=o(e))?void 0:t.queries)?void 0:n[a])?r:de},u)}},buildMutationSelector:function(){return function(e){var t,n;return n="object"==typeof e?null!=(t=ae(e))?t:se:e,(0,B.createSelector)(n===se?a:function(e){var t,r,i;return null!=(i=null==(r=null==(t=o(e))?void 0:t.mutations)?void 0:r[n])?i:fe},u)}},selectInvalidatedBy:function(e,t){for(var n,i=e[r],a=new Set,u=0,o=t.map(H);u<o.length;u++){var s=o[u],c=i.provided[s.type];if(c)for(var l=0,d=null!=(n=void 0!==s.id?c[s.id]:S(Object.values(c)))?n:[];l<d.length;l++)a.add(d[l])}return S(Array.from(a.values()).map((function(e){var t=i.queries[e];return t?[{queryCacheKey:e,endpointName:t.endpointName,originalArgs:t.originalArgs}]:[]})))}};function u(t){return v(v({},t),{status:n=t.status,isUninitialized:n===e.uninitialized,isLoading:n===e.pending,isSuccess:n===e.fulfilled,isError:n===e.rejected});var n}function o(e){return e[r]}}({serializeQueryArgs:s,reducerPath:o}),M=I.buildQuerySelector,_=I.buildMutationSelector;Me(t.util,{selectInvalidatedBy:I.selectInvalidatedBy});var F=function(e){var t=e.serializeQueryArgs,i=e.queryThunk,a=e.mutationThunk,u=e.api,o=e.context,s=new Map,c=new Map,l=u.internalActions,d=l.unsubscribeQueryResult,f=l.removeMutationResult,p=l.updateSubscriptionOptions;return{buildInitiateQuery:function(e,r){var a=function(o,c){var l=void 0===c?{}:c,f=l.subscribe,v=void 0===f||f,h=l.forceRefetch,y=l.subscriptionOptions,m=l[G];return function(c,l){var f,g,b=t({queryArgs:o,endpointDefinition:r,endpointName:e}),S=i(((f={type:"query",subscribe:v,forceRefetch:h,subscriptionOptions:y,endpointName:e,originalArgs:o,queryCacheKey:b})[G]=m,f)),O=u.endpoints[e].select(o),A=c(S),T=O(l()),R=A.requestId,j=A.abort,w=T.requestId!==R,k=null==(g=s.get(c))?void 0:g[b],x=function(){return O(l())},P=Object.assign(m?A.then(x):w&&!k?Promise.resolve(T):Promise.all([k,A]).then(x),{arg:o,requestId:R,subscriptionOptions:y,queryCacheKey:b,abort:j,unwrap:function(){return q(this,null,(function(){var e;return n(this,(function(t){switch(t.label){case 0:return[4,P];case 1:if((e=t.sent()).isError)throw e.error;return[2,e.data]}}))}))},refetch:function(){return c(a(o,{subscribe:!1,forceRefetch:!0}))},unsubscribe:function(){v&&c(d({queryCacheKey:b,requestId:R}))},updateSubscriptionOptions:function(t){P.subscriptionOptions=t,c(p({endpointName:e,requestId:R,queryCacheKey:b,options:t}))}});if(!k&&!w&&!m){var C=s.get(c)||{};C[b]=P,s.set(c,C),P.then((function(){delete C[b],Object.keys(C).length||s.delete(c)}))}return P}};return a},buildInitiateMutation:function(e){return function(t,n){var r=void 0===n?{}:n,i=r.track,u=void 0===i||i,o=r.fixedCacheKey;return function(n,r){var i=a({type:"mutation",endpointName:e,originalArgs:t,track:u,fixedCacheKey:o}),s=n(i),l=s.requestId,d=s.abort,p=s.unwrap,v=s.unwrap().then((function(e){return{data:e}})).catch((function(e){return{error:e}})),h=function(){n(f({requestId:l,fixedCacheKey:o}))},y=Object.assign(v,{arg:s.arg,requestId:l,abort:d,unwrap:p,unsubscribe:h,reset:h}),m=c.get(n)||{};return c.set(n,m),m[l]=y,y.then((function(){delete m[l],Object.keys(m).length||c.delete(n)})),o&&(m[o]=y,y.then((function(){m[o]===y&&(delete m[o],Object.keys(m).length||c.delete(n))}))),y}}},getRunningQueryThunk:function(e,n){return function(r){var i,a=t({queryArgs:n,endpointDefinition:o.endpointDefinitions[e],endpointName:e});return null==(i=s.get(r))?void 0:i[a]}},getRunningMutationThunk:function(e,t){return function(e){var n;return null==(n=c.get(e))?void 0:n[t]}},getRunningQueriesThunk:function(){return function(e){return Object.values(s.get(e)||{}).filter(V)}},getRunningMutationsThunk:function(){return function(e){return Object.values(c.get(e)||{}).filter(V)}},getRunningOperationPromises:function(){var e=function(e){return Array.from(e.values()).flatMap((function(e){return e?Object.values(e):[]}))};return r(r([],e(s)),e(c)).filter(V)},removalWarning:function(){throw new Error("This method had to be removed due to a conceptual bug in RTK.\n       Please see https://github.com/reduxjs/redux-toolkit/pull/2481 for details.\n       See https://redux-toolkit.js.org/rtk-query/usage/server-side-rendering for new guidance on SSR.")}}}({queryThunk:m,mutationThunk:g,api:t,serializeQueryArgs:s,context:a}),U=F.buildInitiateQuery,ce=F.buildInitiateMutation;return Me(t.util,{getRunningOperationPromises:F.getRunningOperationPromises,getRunningOperationPromise:F.removalWarning,getRunningMutationThunk:F.getRunningMutationThunk,getRunningMutationsThunk:F.getRunningMutationsThunk,getRunningQueryThunk:F.getRunningQueryThunk,getRunningQueriesThunk:F.getRunningQueriesThunk}),{name:Ne,injectEndpoint:function(e,n){var r,i=t;null!=(r=i.endpoints)[e]||(r[e]={}),L(n)?Me(i.endpoints[e],{name:e,select:M(e,n),initiate:U(e,n)},j(m,e)):n.type===z.mutation&&Me(i.endpoints[e],{name:e,select:_(),initiate:ce(e)},j(g,e))}}}}},Ee=ge(Ke());
 
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"@reduxjs/toolkit":11,"immer":89,"reselect":168}],310:[function(require,module,exports){
+},{"@reduxjs/toolkit":11,"immer":89,"reselect":168}],311:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -13242,7 +13323,7 @@ const useChecklistReducer = (entries, uniqueKey, initialValue) => {
 };
 exports.useChecklistReducer = useChecklistReducer;
 
-},{"@reduxjs/toolkit":11,"immer":89,"react":146}],311:[function(require,module,exports){
+},{"@reduxjs/toolkit":11,"immer":89,"react":146}],312:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -13418,7 +13499,7 @@ module.exports = function BackButton(_ref) {
   }, "< back"));
 };
 
-},{"react":146,"wouter":234}],290:[function(require,module,exports){
+},{"react":146,"wouter":234}],291:[function(require,module,exports){
 "use strict";
 
 /*
@@ -13593,13 +13674,13 @@ module.exports = {
   MenuComponent
 };
 
-},{"./util":292,"react":146,"syncpipe":177,"wouter":234}],207:[function(require,module,exports){
+},{"./util":293,"react":146,"syncpipe":177,"wouter":234}],207:[function(require,module,exports){
 "use strict";var __createBinding=this&&this.__createBinding||(Object.create?function(e,t,a,s){void 0===s&&(s=a);var r=Object.getOwnPropertyDescriptor(t,a);r&&!("get"in r?!t.__esModule:r.writable||r.configurable)||(r={enumerable:!0,get:function(){return t[a]}}),Object.defineProperty(e,s,r)}:function(e,t,a,s){void 0===s&&(s=a),e[s]=t[a]}),__setModuleDefault=this&&this.__setModuleDefault||(Object.create?function(e,t){Object.defineProperty(e,"default",{enumerable:!0,value:t})}:function(e,t){e.default=t}),__importStar=this&&this.__importStar||function(e){if(e&&e.__esModule)return e;var t={};if(null!=e)for(var a in e)"default"!==a&&Object.prototype.hasOwnProperty.call(e,a)&&__createBinding(t,e,a);return __setModuleDefault(t,e),t},__exportStar=this&&this.__exportStar||function(e,t){for(var a in e)"default"===a||Object.prototype.hasOwnProperty.call(t,a)||__createBinding(t,e,a)};Object.defineProperty(exports,"__esModule",{value:!0}),exports.createRandom=exports.createValidateEquals=exports.createEquals=exports.createAssertEquals=exports.createValidate=exports.createIs=exports.createAssert=exports.metadata=exports.random=exports.validateEquals=exports.equals=exports.assertEquals=exports.validate=exports.is=exports.assert=exports.tags=exports.protobuf=exports.misc=exports.json=exports.http=void 0;var Namespace_1=require("./functional/Namespace");function assert(){halt("assert")}function is(){halt("is")}function validate(){halt("validate")}function assertEquals(){halt("assertEquals")}function equals(){halt("equals")}function validateEquals(){halt("validateEquals")}function random(){halt("random")}function metadata(){halt("metadata")}function createAssert(){halt("createAssert")}function createIs(){halt("createIs")}function createValidate(){halt("createValidate")}function createAssertEquals(){halt("createAssertEquals")}function createEquals(){halt("createEquals")}function createValidateEquals(){halt("createValidateEquals")}function createRandom(){halt("createRandom")}function halt(e){throw new Error("Error on typia.".concat(e,"(): no transform has been configured. Read and follow https://typia.io/docs/setup please."))}exports.http=__importStar(require("./http")),exports.json=__importStar(require("./json")),exports.misc=__importStar(require("./misc")),exports.protobuf=__importStar(require("./protobuf")),exports.tags=__importStar(require("./tags")),__exportStar(require("./schemas/json/IJsonApplication"),exports),__exportStar(require("./schemas/json/IJsonComponents"),exports),__exportStar(require("./schemas/json/IJsonSchema"),exports),__exportStar(require("./IRandomGenerator"),exports),__exportStar(require("./IValidation"),exports),__exportStar(require("./Primitive"),exports),__exportStar(require("./Resolved"),exports),__exportStar(require("./TypeGuardError"),exports),exports.assert=assert,Object.assign(assert,Namespace_1.Namespace.assert("assert")),exports.is=is,Object.assign(is,Namespace_1.Namespace.assert("is")),exports.validate=validate,Object.assign(validate,Namespace_1.Namespace.validate()),exports.assertEquals=assertEquals,Object.assign(assertEquals,Namespace_1.Namespace.assert("assertEquals")),exports.equals=equals,Object.assign(equals,Namespace_1.Namespace.is()),exports.validateEquals=validateEquals,Object.assign(validateEquals,Namespace_1.Namespace.validate()),exports.random=random,Object.assign(random,Namespace_1.Namespace.random()),exports.metadata=metadata,exports.createAssert=createAssert,Object.assign(createAssert,assert),exports.createIs=createIs,Object.assign(createIs,is),exports.createValidate=createValidate,Object.assign(createValidate,validate),exports.createAssertEquals=createAssertEquals,Object.assign(createAssertEquals,assertEquals),exports.createEquals=createEquals,Object.assign(createEquals,equals),exports.createValidateEquals=createValidateEquals,Object.assign(createValidateEquals,validateEquals),exports.createRandom=createRandom,Object.assign(createRandom,random);
 
 },{"./IRandomGenerator":179,"./IValidation":180,"./Primitive":181,"./Resolved":182,"./TypeGuardError":183,"./functional/Namespace":202,"./http":203,"./json":205,"./misc":206,"./protobuf":208,"./schemas/json/IJsonApplication":209,"./schemas/json/IJsonComponents":210,"./schemas/json/IJsonSchema":211,"./tags":226}],12:[function(require,module,exports){
 "use strict";"production"==="production"?module.exports=require("./rtk-query.cjs.production.min.js"):module.exports=require("./rtk-query.cjs.development.js");
 
-},{"./rtk-query.cjs.development.js":16,"./rtk-query.cjs.production.min.js":17}],279:[function(require,module,exports){
+},{"./rtk-query.cjs.development.js":16,"./rtk-query.cjs.production.min.js":17}],280:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -13680,16 +13761,16 @@ function useCheckListInput(
 }
 exports.default = useCheckListInput;
 
-},{"../../redux/checklist":310,"react":146}],62:[function(require,module,exports){
+},{"../../redux/checklist":311,"react":146}],62:[function(require,module,exports){
 "use strict";var system=require("ariakit-react-utils/system"),disclosure_disclosure=require("../disclosure/disclosure.js");const useDialogDisclosure=system.createHook((s=>{let{state:e,...o}=s;return o=disclosure_disclosure.useDisclosure({state:e,...o}),o})),DialogDisclosure=system.createComponent((s=>{const e=useDialogDisclosure(s);return system.createElement("button",e)}));"production"!=="production"&&(DialogDisclosure.displayName="DialogDisclosure"),exports.DialogDisclosure=DialogDisclosure,exports.useDialogDisclosure=useDialogDisclosure;
 
 },{"../disclosure/disclosure.js":67,"ariakit-react-utils/system":23}],76:[function(require,module,exports){
 "use strict";var react=require("react"),hooks=require("ariakit-react-utils/hooks"),system=require("ariakit-react-utils/system"),dialog_dialog=require("../dialog/dialog.js"),__utils=require("../__utils-0b3ca09c.js"),jsxRuntime=require("react/jsx-runtime");const usePopover=system.createHook((e=>{let{state:t,modal:o=!1,portal:r=!!o,preserveTabOrder:s=!0,autoFocusOnShow:a=!0,wrapperProps:n,...i}=e;const u=t.popoverRef;hooks.useSafeLayoutEffect((()=>{const e=u.current,o=t.contentElement;e&&o&&(e.style.zIndex=getComputedStyle(o).zIndex)}),[u,t.contentElement]);const[l,p]=react.useState(!1),{portalRef:c,domReady:d}=hooks.usePortalRef(r,i.portalRef);return hooks.useSafeLayoutEffect((()=>{if(!d)return;if(!t.mounted)return;if(!t.contentElement?.isConnected)return;const e=requestAnimationFrame((()=>{p(!0)}));return()=>{cancelAnimationFrame(e)}}),[d,t.mounted,t.contentElement]),i=hooks.useWrapElement(i,(e=>jsxRuntime.jsx("div",{role:"presentation",...n,style:{position:t.fixed?"fixed":"absolute",top:0,left:0,...n?.style},ref:u,children:e})),[t.fixed,u,n]),i=hooks.useWrapElement(i,(e=>jsxRuntime.jsx(__utils.PopoverContext.Provider,{value:t,children:e})),[t]),i={...i,style:{position:"relative",...i.style}},i=dialog_dialog.useDialog({state:t,modal:o,preserveTabOrder:s,portal:r,autoFocusOnShow:l&&a,...i,portalRef:c}),i})),Popover=system.createComponent((e=>{const t=usePopover(e);return system.createElement("div",t)}));"production"!=="production"&&(Popover.displayName="Popover"),exports.Popover=Popover,exports.usePopover=usePopover;
 
-},{"../__utils-0b3ca09c.js":31,"../dialog/dialog.js":64,"ariakit-react-utils/hooks":20,"ariakit-react-utils/system":23,"react":146,"react/jsx-runtime":147}],291:[function(require,module,exports){
+},{"../__utils-0b3ca09c.js":31,"../dialog/dialog.js":64,"ariakit-react-utils/hooks":20,"ariakit-react-utils/system":23,"react":146,"react/jsx-runtime":147}],292:[function(require,module,exports){
 "use strict";const React=require("react"),{nanoid:nanoid}=require("nanoid"),{Redirect:Redirect}=require("wouter"),{urlSafe:urlSafe}=require("./util"),{Sidebar:Sidebar,ViewRouter:ViewRouter,MenuComponent:MenuComponent}=require("./components");function createNavigation(e,r){const n={url:e,links:[]},t=[],i=r.map((e=>e(n,t)));return{Sidebar:Sidebar(i,t),ViewRouter:ViewRouter(t,n.redirectUrl)}}function MenuEntry(e,r,n){return null==n&&(n=r,r={}),function(t,i){var l,u,o;const a=Array.isArray(n)?"category":"view";let c=[t.url];""!=r.url&&c.push(null!==(l=r.url)&&void 0!==l?l:urlSafe(e));const s=c.join("/");let d=s;r.wildcard&&(d+="/:wildcard*");const p={name:e,type:a,url:s,routingUrl:d,key:nanoid(),permissions:null!==(u=r.permissions)&&void 0!==u&&u,icon:r.icon,links:[d],level:(null!==(o=t.level)&&void 0!==o?o:-1)+1,redirectUrl:r.defaultUrl};if("category"==a){let e=n.map((e=>e(p,i))),l=[];e.forEach((e=>{e.url==p.url?l.unshift(e):l.push(e)})),l.reverse(),i.push(...l),r.redirectUrl!=p.url&&(i.push({key:p.key,url:p.url,permissions:p.permissions,routingUrl:p.redirectUrl+"/:fallback*",view:React.createElement(Redirect,{to:p.redirectUrl})}),p.url=p.redirectUrl),t.links.push(...p.links),p.MenuEntry=React.createElement(MenuComponent,p,e.map((e=>e.MenuEntry)))}else p.links.push(d),t.links.push(d),p.view=React.createElement(n,{baseUrl:s}),p.MenuEntry=React.createElement(MenuComponent,p);return null==t.redirectUrl&&(t.redirectUrl=p.url),p}}module.exports={createNavigation:createNavigation,Menu:MenuEntry,Item:MenuEntry};
 
-},{"./components":290,"./util":292,"nanoid":98,"react":146,"wouter":234}],204:[function(require,module,exports){
+},{"./components":291,"./util":293,"nanoid":98,"react":146,"wouter":234}],204:[function(require,module,exports){
 "use strict";var __createBinding=this&&this.__createBinding||(Object.create?function(e,t,r,i){void 0===i&&(i=r);var o=Object.getOwnPropertyDescriptor(t,r);o&&!("get"in o?!t.__esModule:o.writable||o.configurable)||(o={enumerable:!0,get:function(){return t[r]}}),Object.defineProperty(e,i,o)}:function(e,t,r,i){void 0===i&&(i=r),e[i]=t[r]}),__setModuleDefault=this&&this.__setModuleDefault||(Object.create?function(e,t){Object.defineProperty(e,"default",{enumerable:!0,value:t})}:function(e,t){e.default=t}),__importStar=this&&this.__importStar||function(e){if(e&&e.__esModule)return e;var t={};if(null!=e)for(var r in e)"default"!==r&&Object.prototype.hasOwnProperty.call(e,r)&&__createBinding(t,e,r);return __setModuleDefault(t,e),t},__exportStar=this&&this.__exportStar||function(e,t){for(var r in e)"default"===r||Object.prototype.hasOwnProperty.call(t,r)||__createBinding(t,e,r)};Object.defineProperty(exports,"__esModule",{value:!0});var typia=__importStar(require("./module"));exports.default=typia,__exportStar(require("./module"),exports);
 
 },{"./module":207}],14:[function(require,module,exports){
@@ -13704,7 +13785,7 @@ var e=this&&this.__spreadArray||function(e,r){for(var t=0,n=r.length,u=e.length;
 },{"../dialog/dialog-disclosure.js":62,"ariakit-react-utils/hooks":20,"ariakit-react-utils/system":23,"react/jsx-runtime":147}],46:[function(require,module,exports){
 "use strict";var system=require("ariakit-react-utils/system"),dom=require("ariakit-utils/dom"),popover_popover=require("../popover/popover.js"),combobox_comboboxList=require("./combobox-list.js");function isController(o){if(!o)return!1;if("id"in o){for(var e=arguments.length,r=new Array(e>1?e-1:0),t=1;t<e;t++)r[t-1]=arguments[t];const s=r.filter(Boolean).map((o=>`[aria-controls="${o}"]`)).join(", ");return!!s&&dom.matches(o,s)}return!1}const useComboboxPopover=system.createHook((o=>{let{state:e,tabIndex:r,hideOnInteractOutside:t=!0,...s}=o;return s=combobox_comboboxList.useComboboxList({state:e,...s}),s=popover_popover.usePopover({state:e,autoFocusOnShow:!1,autoFocusOnHide:!1,finalFocusRef:e.baseRef,...s,modal:!1,hideOnInteractOutside:o=>{const r=e.contentElement?.id,s=e.baseRef.current?.id;if(isController(o.target,r,s))return!1;return"function"==typeof t?t(o):t}}),s})),ComboboxPopover=system.createComponent((o=>{const e=useComboboxPopover(o);return system.createElement("div",e)}));"production"!=="production"&&(ComboboxPopover.displayName="ComboboxPopover"),exports.ComboboxPopover=ComboboxPopover,exports.useComboboxPopover=useComboboxPopover;
 
-},{"../popover/popover.js":76,"./combobox-list.js":45,"ariakit-react-utils/system":23,"ariakit-utils/dom":25}],307:[function(require,module,exports){
+},{"../popover/popover.js":76,"./combobox-list.js":45,"ariakit-react-utils/system":23,"ariakit-utils/dom":25}],308:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -13852,7 +13933,7 @@ exports.isDomainPermInternalKey = isDomainPermInternalKey;
 },{"./rtk-query-react.cjs.development.js":14,"./rtk-query-react.cjs.production.min.js":15}],51:[function(require,module,exports){
 "use strict";var combobox_comboboxCancel=require("./combobox-cancel.js"),combobox_comboboxDisclosure=require("./combobox-disclosure.js"),combobox_comboboxGroupLabel=require("./combobox-group-label.js"),combobox_comboboxGroup=require("./combobox-group.js"),combobox_comboboxItemValue=require("./combobox-item-value.js"),combobox_comboboxItem=require("./combobox-item.js"),combobox_comboboxList=require("./combobox-list.js"),combobox_comboboxPopover=require("./combobox-popover.js"),combobox_comboboxRow=require("./combobox-row.js"),combobox_comboboxSeparator=require("./combobox-separator.js"),combobox_comboboxState=require("./combobox-state.js"),combobox_combobox=require("./combobox.js");exports.ComboboxCancel=combobox_comboboxCancel.ComboboxCancel,exports.useComboboxCancel=combobox_comboboxCancel.useComboboxCancel,exports.ComboboxDisclosure=combobox_comboboxDisclosure.ComboboxDisclosure,exports.useComboboxDisclosure=combobox_comboboxDisclosure.useComboboxDisclosure,exports.ComboboxGroupLabel=combobox_comboboxGroupLabel.ComboboxGroupLabel,exports.useComboboxGroupLabel=combobox_comboboxGroupLabel.useComboboxGroupLabel,exports.ComboboxGroup=combobox_comboboxGroup.ComboboxGroup,exports.useComboboxGroup=combobox_comboboxGroup.useComboboxGroup,exports.ComboboxItemValue=combobox_comboboxItemValue.ComboboxItemValue,exports.useComboboxItemValue=combobox_comboboxItemValue.useComboboxItemValue,exports.ComboboxItem=combobox_comboboxItem.ComboboxItem,exports.useComboboxItem=combobox_comboboxItem.useComboboxItem,exports.ComboboxList=combobox_comboboxList.ComboboxList,exports.useComboboxList=combobox_comboboxList.useComboboxList,exports.ComboboxPopover=combobox_comboboxPopover.ComboboxPopover,exports.useComboboxPopover=combobox_comboboxPopover.useComboboxPopover,exports.ComboboxRow=combobox_comboboxRow.ComboboxRow,exports.useComboboxRow=combobox_comboboxRow.useComboboxRow,exports.ComboboxSeparator=combobox_comboboxSeparator.ComboboxSeparator,exports.useComboboxSeparator=combobox_comboboxSeparator.useComboboxSeparator,exports.useComboboxState=combobox_comboboxState.useComboboxState,exports.Combobox=combobox_combobox.Combobox,exports.useCombobox=combobox_combobox.useCombobox;
 
-},{"./combobox-cancel.js":39,"./combobox-disclosure.js":40,"./combobox-group-label.js":41,"./combobox-group.js":42,"./combobox-item-value.js":43,"./combobox-item.js":44,"./combobox-list.js":45,"./combobox-popover.js":46,"./combobox-row.js":47,"./combobox-separator.js":48,"./combobox-state.js":49,"./combobox.js":50}],301:[function(require,module,exports){
+},{"./combobox-cancel.js":39,"./combobox-disclosure.js":40,"./combobox-group-label.js":41,"./combobox-group.js":42,"./combobox-item-value.js":43,"./combobox-item.js":44,"./combobox-list.js":45,"./combobox-popover.js":46,"./combobox-row.js":47,"./combobox-separator.js":48,"./combobox-state.js":49,"./combobox.js":50}],302:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -14042,7 +14123,7 @@ module.exports = function ComboBox(_a) {
   })));
 };
 
-},{"ariakit/combobox":51,"react":146}],280:[function(require,module,exports){
+},{"ariakit/combobox":51,"react":146}],281:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -14100,7 +14181,7 @@ function useComboBoxInput({ name, Name }, { initialValue = _default }) {
 }
 exports.default = useComboBoxInput;
 
-},{"ariakit/combobox":51,"react":146}],293:[function(require,module,exports){
+},{"ariakit/combobox":51,"react":146}],294:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -14410,7 +14491,7 @@ exports.useSearchItemForEmojiMutation = useSearchItemForEmojiMutation;
 const usePatchRemoteEmojisMutation = extended.usePatchRemoteEmojisMutation;
 exports.usePatchRemoteEmojisMutation = usePatchRemoteEmojisMutation;
 
-},{"../../gts-api":301}],294:[function(require,module,exports){
+},{"../../gts-api":302}],295:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -14561,7 +14642,7 @@ const extended = gts_api_1.gtsApi.injectEndpoints({
 const useExportDomainListMutation = extended.useExportDomainListMutation;
 exports.useExportDomainListMutation = useExportDomainListMutation;
 
-},{"../../gts-api":301,"js-file-download":94,"papaparse":101}],295:[function(require,module,exports){
+},{"../../gts-api":302,"js-file-download":94,"papaparse":101}],296:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -14612,7 +14693,7 @@ exports.useDomainBlocksQuery = useDomainBlocksQuery;
 const useDomainAllowsQuery = extended.useDomainAllowsQuery;
 exports.useDomainAllowsQuery = useDomainAllowsQuery;
 
-},{"../../gts-api":301,"../../transforms":305}],297:[function(require,module,exports){
+},{"../../gts-api":302,"../../transforms":306}],298:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -14789,7 +14870,7 @@ const extended = gts_api_1.gtsApi.injectEndpoints({
 const useProcessDomainPermissionsMutation = extended.useProcessDomainPermissionsMutation;
 exports.useProcessDomainPermissionsMutation = useProcessDomainPermissionsMutation;
 
-},{"../../../types/domain-permission":307,"../../../util/domain-permission":309,"../../gts-api":301,"nanoid":98,"papaparse":101}],300:[function(require,module,exports){
+},{"../../../types/domain-permission":308,"../../../util/domain-permission":310,"../../gts-api":302,"nanoid":98,"papaparse":101}],301:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -14858,7 +14939,7 @@ exports.useGetReportQuery = useGetReportQuery;
 const useResolveReportMutation = extended.useResolveReportMutation;
 exports.useResolveReportMutation = useResolveReportMutation;
 
-},{"../../gts-api":301}],303:[function(require,module,exports){
+},{"../../gts-api":302}],304:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -15039,7 +15120,7 @@ const extended = gts_api_1.gtsApi.injectEndpoints({
 });
 exports.useVerifyCredentialsQuery = extended.useVerifyCredentialsQuery, exports.useAuthorizeFlowMutation = extended.useAuthorizeFlowMutation, exports.useLogoutMutation = extended.useLogoutMutation;
 
-},{"../../../redux/oauth":311,"../gts-api":301}],304:[function(require,module,exports){
+},{"../../../redux/oauth":312,"../gts-api":302}],305:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -15172,7 +15253,7 @@ const removeFromCacheOnMutation = makeCacheMutation((draft, newData, { key }) =>
 });
 exports.removeFromCacheOnMutation = removeFromCacheOnMutation;
 
-},{"../types/query":308,"./gts-api":301}],312:[function(require,module,exports){
+},{"../types/query":309,"./gts-api":302}],313:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -15249,7 +15330,7 @@ exports.store = (0, toolkit_1.configureStore)({
 });
 exports.persistor = (0, redux_persist_1.persistStore)(exports.store);
 
-},{"../lib/query/gts-api":301,"./oauth":311,"@reduxjs/toolkit":11,"redux":165,"redux-persist":153,"redux-persist/lib/stateReconciler/autoMergeLevel1":159,"redux-persist/lib/storage":163}],286:[function(require,module,exports){
+},{"../lib/query/gts-api":302,"./oauth":312,"@reduxjs/toolkit":11,"redux":165,"redux-persist":153,"redux-persist/lib/stateReconciler/autoMergeLevel1":159,"redux-persist/lib/storage":163}],287:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -15273,7 +15354,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.useValue = exports.useFieldArrayInput = exports.useCheckListInput = exports.useComboBoxInput = exports.useRadioInput = exports.useBoolInput = exports.useFileInput = exports.useTextInput = void 0;
+exports.useValue = exports.useFieldArrayInput = exports.useArrayInput = exports.useCheckListInput = exports.useComboBoxInput = exports.useRadioInput = exports.useBoolInput = exports.useFileInput = exports.useTextInput = void 0;
 const react_1 = require("react");
 const get_by_dot_1 = __importDefault(require("get-by-dot"));
 const text_1 = __importDefault(require("./text"));
@@ -15282,6 +15363,7 @@ const bool_1 = __importDefault(require("./bool"));
 const radio_1 = __importDefault(require("./radio"));
 const combo_box_1 = __importDefault(require("./combo-box"));
 const check_list_1 = __importDefault(require("./check-list"));
+const array_1 = __importDefault(require("./array"));
 const field_array_1 = __importDefault(require("./field-array"));
 function capitalizeFirst(str) {
     return str.slice(0, 1).toUpperCase + str.slice(1);
@@ -15349,10 +15431,11 @@ exports.useBoolInput = inputHook(bool_1.default);
 exports.useRadioInput = inputHook(radio_1.default);
 exports.useComboBoxInput = inputHook(combo_box_1.default);
 exports.useCheckListInput = inputHook(check_list_1.default);
+exports.useArrayInput = inputHook(array_1.default);
 exports.useFieldArrayInput = inputHook(field_array_1.default);
 exports.useValue = value;
 
-},{"./bool":278,"./check-list":279,"./combo-box":280,"./field-array":282,"./file":283,"./radio":287,"./text":289,"get-by-dot":84,"react":146}],252:[function(require,module,exports){
+},{"./array":278,"./bool":279,"./check-list":280,"./combo-box":281,"./field-array":283,"./file":284,"./radio":288,"./text":290,"get-by-dot":84,"react":146}],252:[function(require,module,exports){
 "use strict";
 
 /*
@@ -15452,7 +15535,7 @@ module.exports = {
   CategorySelect
 };
 
-},{"../../components/combo-box":269,"../../lib/query/admin/custom-emoji":293,"match-sorter":97,"react":146,"split-filter-n":176,"syncpipe":177}],247:[function(require,module,exports){
+},{"../../components/combo-box":269,"../../lib/query/admin/custom-emoji":294,"match-sorter":97,"react":146,"split-filter-n":176,"syncpipe":177}],247:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -15534,7 +15617,7 @@ function ImportExportForm({ form, submitParse, parseResult }) {
 }
 exports.default = ImportExportForm;
 
-},{"../../components/error":270,"../../components/form/inputs":273,"../../components/form/mutation-button":274,"../../lib/form/submit":288,"../../lib/query/admin/domain-permissions/export":294,"./export-format-table":246,"react":146}],296:[function(require,module,exports){
+},{"../../components/error":270,"../../components/form/inputs":273,"../../components/form/mutation-button":274,"../../lib/form/submit":289,"../../lib/query/admin/domain-permissions/export":295,"./export-format-table":246,"react":146}],297:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -15651,7 +15734,7 @@ const extended = gts_api_1.gtsApi.injectEndpoints({
 const useImportDomainPermsMutation = extended.useImportDomainPermsMutation;
 exports.useImportDomainPermsMutation = useImportDomainPermsMutation;
 
-},{"../../../types/domain-permission":307,"../../gts-api":301,"../../query-modifiers":304,"../../transforms":305}],298:[function(require,module,exports){
+},{"../../../types/domain-permission":308,"../../gts-api":302,"../../query-modifiers":305,"../../transforms":306}],299:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -15731,7 +15814,7 @@ exports.useRemoveDomainBlockMutation = useRemoveDomainBlockMutation;
 const useRemoveDomainAllowMutation = extended.useRemoveDomainAllowMutation;
 exports.useRemoveDomainAllowMutation = useRemoveDomainAllowMutation;
 
-},{"../../gts-api":301,"../../query-modifiers":304,"../../transforms":305}],299:[function(require,module,exports){
+},{"../../gts-api":302,"../../query-modifiers":305,"../../transforms":306}],300:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -15862,7 +15945,7 @@ const extended = gts_api_1.gtsApi.injectEndpoints({
 });
 exports.useUpdateInstanceMutation = extended.useUpdateInstanceMutation, exports.useMediaCleanupMutation = extended.useMediaCleanupMutation, exports.useInstanceKeysExpireMutation = extended.useInstanceKeysExpireMutation, exports.useGetAccountQuery = extended.useGetAccountQuery, exports.useActionAccountMutation = extended.useActionAccountMutation, exports.useSearchAccountMutation = extended.useSearchAccountMutation, exports.useInstanceRulesQuery = extended.useInstanceRulesQuery, exports.useAddInstanceRuleMutation = extended.useAddInstanceRuleMutation, exports.useUpdateInstanceRuleMutation = extended.useUpdateInstanceRuleMutation, exports.useDeleteInstanceRuleMutation = extended.useDeleteInstanceRuleMutation;
 
-},{"../gts-api":301,"../query-modifiers":304,"../transforms":305}],306:[function(require,module,exports){
+},{"../gts-api":302,"../query-modifiers":305,"../transforms":306}],307:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -15882,8 +15965,17 @@ exports.useUpdateInstanceMutation = extended.useUpdateInstanceMutation, exports.
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.usePasswordChangeMutation = exports.useUpdateCredentialsMutation = void 0;
+exports.useMoveAccountMutation = exports.useAliasAccountMutation = exports.usePasswordChangeMutation = exports.useUpdateCredentialsMutation = void 0;
 const query_modifiers_1 = require("../query-modifiers");
 const gts_api_1 = require("../gts-api");
 const extended = gts_api_1.gtsApi.injectEndpoints({
@@ -15901,12 +15993,37 @@ const extended = gts_api_1.gtsApi.injectEndpoints({
                 url: `/api/v1/user/password_change`,
                 body: data
             })
+        }),
+        aliasAccount: build.mutation({
+            queryFn(formData, _api, _extraOpts, fetchWithBQ) {
+                return __awaiter(this, void 0, void 0, function* () {
+                    // Pull entries out from the hooked form.
+                    const entries = [];
+                    formData.also_known_as_uris.forEach(entry => {
+                        if (entry) {
+                            entries.push(entry);
+                        }
+                    });
+                    return fetchWithBQ({
+                        method: "POST",
+                        url: `/api/v1/accounts/alias`,
+                        body: { also_known_as_uris: entries },
+                    });
+                });
+            }
+        }),
+        moveAccount: build.mutation({
+            query: (data) => ({
+                method: "POST",
+                url: `/api/v1/accounts/move`,
+                body: data
+            })
         })
     })
 });
-exports.useUpdateCredentialsMutation = extended.useUpdateCredentialsMutation, exports.usePasswordChangeMutation = extended.usePasswordChangeMutation;
+exports.useUpdateCredentialsMutation = extended.useUpdateCredentialsMutation, exports.usePasswordChangeMutation = extended.usePasswordChangeMutation, exports.useAliasAccountMutation = extended.useAliasAccountMutation, exports.useMoveAccountMutation = extended.useMoveAccountMutation;
 
-},{"../gts-api":301,"../query-modifiers":304}],250:[function(require,module,exports){
+},{"../gts-api":302,"../query-modifiers":305}],250:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -16033,10 +16150,10 @@ function AllowHelperText() {
         react_1.default.createElement("a", { href: "https://docs.gotosocial.org/en/latest/admin/federation_modes/", target: "_blank", className: "docslink", rel: "noreferrer" }, "Learn more about federation modes (opens in a new tab)")));
 }
 
-},{"../../components/form/inputs":273,"../../components/loading":276,"../../lib/form":286,"../../lib/query/admin/domain-permissions/get":295,"../../lib/types/query":308,"match-sorter":97,"react":146,"wouter":234}],257:[function(require,module,exports){
+},{"../../components/form/inputs":273,"../../components/loading":276,"../../lib/form":287,"../../lib/query/admin/domain-permissions/get":296,"../../lib/types/query":309,"match-sorter":97,"react":146,"wouter":234}],257:[function(require,module,exports){
 "use strict";const React=require("react"),{useTextInput:useTextInput}=require("../../../lib/form"),{useListEmojiQuery:useListEmojiQuery}=require("../../../lib/query/admin/custom-emoji"),shortcodeRegex=/^\w{2,30}$/;module.exports=function(){const{data:e=[]}=useListEmojiQuery({filter:"domain:local"}),t=React.useMemo((()=>new Set(e.map((e=>e.shortcode)))),[e]);return useTextInput("shortcode",{validator:function(e){return""==e?"":t.has(e)?"Shortcode already in use":e.length<2||e.length>30?"Shortcode must be between 2 and 30 characters":shortcodeRegex.test(e)?"":"Shortcode must only contain letters, numbers, and underscores"}})};
 
-},{"../../../lib/form":286,"../../../lib/query/admin/custom-emoji":293,"react":146}],260:[function(require,module,exports){
+},{"../../../lib/form":287,"../../../lib/query/admin/custom-emoji":294,"react":146}],260:[function(require,module,exports){
 "use strict";
 
 /*
@@ -16165,21 +16282,29 @@ function ReportedToot(_ref4) {
   var _a, _b;
   const account = toot.account;
   return React.createElement("article", {
-    className: "toot expanded"
-  }, React.createElement("section", {
-    className: "author"
-  }, React.createElement("a", null, React.createElement("img", {
+    className: "status expanded"
+  }, React.createElement("header", {
+    className: "status-header"
+  }, React.createElement("address", null, React.createElement("a", {
+    style: {
+      margin: 0
+    }
+  }, React.createElement("img", {
     className: "avatar",
     src: account.avatar,
     alt: ""
-  }), React.createElement("span", {
-    className: "displayname"
-  }, account.display_name.trim().length > 0 ? account.display_name : account.username, React.createElement("span", {
+  }), React.createElement("dl", {
+    className: "author-strap"
+  }, React.createElement("dt", {
     className: "sr-only"
-  }, ".")), React.createElement("span", {
-    className: "username"
-  }, "@", account.username))), React.createElement("section", {
-    className: "body"
+  }, "Display name"), React.createElement("dd", {
+    className: "displayname text-cutoff"
+  }, account.display_name.trim().length > 0 ? account.display_name : account.username), React.createElement("dt", {
+    className: "sr-only"
+  }, "Username"), React.createElement("dd", {
+    className: "username text-cutoff"
+  }, "@", account.username))))), React.createElement("section", {
+    className: "status-body"
   }, React.createElement("div", {
     className: "text"
   }, React.createElement("div", {
@@ -16191,10 +16316,18 @@ function ReportedToot(_ref4) {
     media: toot.media_attachments,
     sensitive: toot.sensitive
   })), React.createElement("aside", {
-    className: "info"
-  }, React.createElement("time", {
+    className: "status-info"
+  }, React.createElement("dl", {
+    class: "status-stats"
+  }, React.createElement("div", {
+    class: "stats-grouping"
+  }, React.createElement("div", {
+    class: "stats-item published-at text-cutoff"
+  }, React.createElement("dt", {
+    class: "sr-only"
+  }, "Published"), React.createElement("dd", null, React.createElement("time", {
     dateTime: toot.created_at
-  }, new Date(toot.created_at).toLocaleString())));
+  }, new Date(toot.created_at).toLocaleString())))))));
 }
 function TootCW(_ref5) {
   let {
@@ -16270,7 +16403,7 @@ function TootMedia(_ref6) {
   }));
 }
 
-},{"../../components/back-button":267,"../../components/form/inputs":273,"../../components/form/mutation-button":274,"../../lib/form":286,"../../lib/form/form-with-data":284,"../../lib/form/submit":288,"../../lib/navigation/util":292,"../../lib/query/admin/reports":300,"./username":262,"react":146,"wouter":234}],266:[function(require,module,exports){
+},{"../../components/back-button":267,"../../components/form/inputs":273,"../../components/form/mutation-button":274,"../../lib/form":287,"../../lib/form/form-with-data":285,"../../lib/form/submit":289,"../../lib/navigation/util":293,"../../lib/query/admin/reports":301,"./username":262,"react":146,"wouter":234}],266:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -16327,10 +16460,10 @@ function Login({}) {
 }
 exports.default = Login;
 
-},{"../../lib/form":286,"../../lib/form/submit":288,"../../lib/query/oauth":303,"../form/inputs":273,"../form/mutation-button":274,"../loading":276,"react":146}],259:[function(require,module,exports){
+},{"../../lib/form":287,"../../lib/form/submit":289,"../../lib/query/oauth":304,"../form/inputs":273,"../form/mutation-button":274,"../loading":276,"react":146}],259:[function(require,module,exports){
 "use strict";const React=require("react"),{useTextInput:useTextInput,useComboBoxInput:useComboBoxInput,useCheckListInput:useCheckListInput}=require("../../../lib/form"),useFormSubmit=require("../../../lib/form/submit").default,CheckList=require("../../../components/check-list").default,{CategorySelect:CategorySelect}=require("../category-select"),{TextInput:TextInput}=require("../../../components/form/inputs"),MutationButton=require("../../../components/form/mutation-button"),{Error:Error}=require("../../../components/error"),{useSearchItemForEmojiMutation:useSearchItemForEmojiMutation,usePatchRemoteEmojisMutation:usePatchRemoteEmojisMutation}=require("../../../lib/query/admin/custom-emoji");function SearchResult(e){let{result:t,localEmojiCodes:o}=e;const{error:r,data:a,isSuccess:c,isError:n}=t;return c||n?"NONE_FOUND"==r?"No results found":"LOCAL_INSTANCE"==r?React.createElement("b",null,"This is a local user/toot, all referenced emoji are already on your instance"):null!=r?React.createElement(Error,{error:t.error}):0==a.list.length?React.createElement("b",null,"This ","statuses"==a.type?"toot":"account"," doesn't use any custom emoji"):React.createElement(CopyEmojiForm,{localEmojiCodes:o,type:a.type,domain:a.domain,emojiList:a.list}):null}function CopyEmojiForm(e){let{localEmojiCodes:t,type:o,emojiList:r}=e;const a={selectedEmoji:useCheckListInput("selectedEmoji",{entries:r,uniqueKey:"id"}),category:useComboBoxInput("category")},[c,n]=useFormSubmit(a,usePatchRemoteEmojisMutation(),{changedOnly:!1,onFinish:e=>{let{data:t}=e;if(t){const e=t.map((e=>[e.id,{checked:!1}]));a.selectedEmoji.updateMultiple(e)}}}),l=a.selectedEmoji.someSelected?{}:{disabled:!0,title:"No emoji selected, cannot perform any actions"},s=React.useCallback((()=>({localEmojiCodes:t})),[t]);return React.createElement("div",{className:"parsed"},React.createElement("span",null,"This ","statuses"==o?"toot":"account"," uses the following custom emoji, select the ones you want to copy/disable:"),React.createElement("form",{onSubmit:c},React.createElement(CheckList,{field:a.selectedEmoji,EntryComponent:EmojiEntry,getExtraProps:s}),React.createElement(CategorySelect,{field:a.category}),React.createElement("div",{className:"action-buttons row"},React.createElement(MutationButton,Object.assign({name:"copy",label:"Copy to local emoji",result:n,showError:!1},l)),React.createElement(MutationButton,Object.assign({name:"disable",label:"Disable",result:n,className:"button danger",showError:!1},l))),n.error&&(Array.isArray(n.error)?React.createElement(ErrorList,{errors:n.error}):React.createElement(Error,{error:n.error}))))}function ErrorList(e){let{errors:t}=e;return React.createElement("div",{className:"error"},"One or multiple emoji failed to process:",t.map((e=>{let[t,o]=e;return React.createElement("div",{key:t},React.createElement("b",null,t,":")," ",o)})))}function EmojiEntry(e){let{entry:t,onChange:o,extraProps:{localEmojiCodes:r}}=e;const a=useTextInput("shortcode",{defaultValue:t.shortcode,validator:function(e){return t.checked&&r.has(e)?"Shortcode already in use":""}});return React.useEffect((()=>{t.valid!=a.valid&&o({valid:a.valid})}),[o,t.valid,a.valid]),React.useEffect((()=>{a.validate()}),[t.checked]),React.createElement(React.Fragment,null,React.createElement("img",{className:"emoji",src:t.url,title:t.shortcode}),React.createElement(TextInput,{field:a,onChange:e=>{a.onChange(e),o({shortcode:e.target.value,checked:!0})}}))}module.exports=function(e){let{emojiCodes:t}=e;const[o,r]=useSearchItemForEmojiMutation(),[a,c,{url:n}]=useTextInput("url");return React.createElement("div",{className:"parse-emoji"},React.createElement("h2",null,"Steal this look"),React.createElement("form",{onSubmit:function(e){e.preventDefault(),0!=n.trim().length&&o(n)}},React.createElement("div",{className:"form-field text"},React.createElement("label",{htmlFor:"url"},"Link to a toot:"),React.createElement("div",{className:"row"},React.createElement("input",{type:"text",id:"url",name:"url",onChange:a,value:n}),React.createElement("button",{disabled:r.isLoading},React.createElement("i",{className:["fa fa-fw",r.isLoading?"fa-refresh fa-spin":"fa-search"].join(" "),"aria-hidden":"true",title:"Search"}),React.createElement("span",{className:"sr-only"},"Search"))))),React.createElement(SearchResult,{result:r,localEmojiCodes:t}))};
 
-},{"../../../components/check-list":268,"../../../components/error":270,"../../../components/form/inputs":273,"../../../components/form/mutation-button":274,"../../../lib/form":286,"../../../lib/form/submit":288,"../../../lib/query/admin/custom-emoji":293,"../category-select":252,"react":146}],251:[function(require,module,exports){
+},{"../../../components/check-list":268,"../../../components/error":270,"../../../components/form/inputs":273,"../../../components/form/mutation-button":274,"../../../lib/form":287,"../../../lib/form/submit":289,"../../../lib/query/admin/custom-emoji":294,"../category-select":252,"react":146}],251:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -16554,7 +16687,7 @@ function DomainEntryIcon({ alreadyExists, suggestion, permTypeString }) {
         react_1.default.createElement("span", { className: "sr-only" }, text)));
 }
 
-},{"../../components/check-list":268,"../../components/form/inputs":273,"../../components/form/mutation-button":274,"../../lib/form":286,"../../lib/form/form-with-data":284,"../../lib/form/submit":288,"../../lib/query/admin/domain-permissions/get":295,"../../lib/query/admin/domain-permissions/import":296,"../../lib/util/domain-permission":309,"react":146}],245:[function(require,module,exports){
+},{"../../components/check-list":268,"../../components/form/inputs":273,"../../components/form/mutation-button":274,"../../lib/form":287,"../../lib/form/form-with-data":285,"../../lib/form/submit":289,"../../lib/query/admin/domain-permissions/get":296,"../../lib/query/admin/domain-permissions/import":297,"../../lib/util/domain-permission":310,"react":146}],245:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -16729,10 +16862,151 @@ function DomainPermForm({ defaultDomain, perm, permType, baseUrl }) {
             removeResult.error && react_1.default.createElement(error_1.Error, { error: removeResult.error }))));
 }
 
-},{"../../components/back-button":267,"../../components/error":270,"../../components/form/inputs":273,"../../components/form/mutation-button":274,"../../components/loading":276,"../../lib/form":286,"../../lib/form/submit":288,"../../lib/query/admin/domain-permissions/get":295,"../../lib/query/admin/domain-permissions/update":298,"../../lib/types/query":308,"react":146,"wouter":234}],302:[function(require,module,exports){
+},{"../../components/back-button":267,"../../components/error":270,"../../components/form/inputs":273,"../../components/form/mutation-button":274,"../../components/loading":276,"../../lib/form":287,"../../lib/form/submit":289,"../../lib/query/admin/domain-permissions/get":296,"../../lib/query/admin/domain-permissions/update":299,"../../lib/types/query":309,"react":146,"wouter":234}],303:[function(require,module,exports){
 "use strict";module.exports=Object.assign(Object.assign(Object.assign(Object.assign({},require("./gts-api")),require("./oauth")),require("./user")),require("./admin"));
 
-},{"./admin":299,"./gts-api":301,"./oauth":303,"./user":306}],261:[function(require,module,exports){
+},{"./admin":300,"./gts-api":302,"./oauth":304,"./user":307}],315:[function(require,module,exports){
+"use strict";
+/*
+    GoToSocial
+    Copyright (C) GoToSocial Authors admin@gotosocial.org
+    SPDX-License-Identifier: AGPL-3.0-or-later
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const react_1 = __importDefault(require("react"));
+const form_with_data_1 = __importDefault(require("../lib/form/form-with-data"));
+const oauth_1 = require("../lib/query/oauth");
+const form_1 = require("../lib/form");
+const inputs_1 = require("../components/form/inputs");
+const submit_1 = __importDefault(require("../lib/form/submit"));
+const mutation_button_1 = __importDefault(require("../components/form/mutation-button"));
+const user_1 = require("../lib/query/user");
+const context_1 = require("../lib/form/context");
+const store_1 = require("../redux/store");
+function UserMigration() {
+    return (react_1.default.createElement(form_with_data_1.default, { dataQuery: oauth_1.useVerifyCredentialsQuery, DataForm: UserMigrationForm }));
+}
+exports.default = UserMigration;
+function UserMigrationForm({ data: profile }) {
+    var _a;
+    let urlStr = (_a = store_1.store.getState().oauth.instanceUrl) !== null && _a !== void 0 ? _a : "";
+    let url = new URL(urlStr);
+    return (react_1.default.createElement(react_1.default.Fragment, null,
+        react_1.default.createElement("h2", null, "Account Migration Settings"),
+        react_1.default.createElement("div", { className: "info" },
+            react_1.default.createElement("i", { className: "fa fa-fw fa-exclamation-triangle", "aria-hidden": "true" }),
+            react_1.default.createElement("b", null,
+                "Moving your account to another instance, or moving an account from another instance to your account, isn't implemented yet! You will only be able to use the \"alias\" section of the below panel. ",
+                react_1.default.createElement("a", { href: "https://github.com/superseriousbusiness/gotosocial/issues/130", target: "_blank", rel: "noopener noreferrer" }, "See here for progress"),
+                ".")),
+        react_1.default.createElement("p", null,
+            "The following settings allow you to ",
+            react_1.default.createElement("strong", null, "alias"),
+            " your account to another account elsewhere, and to ",
+            react_1.default.createElement("strong", null, "move"),
+            " your followers and following lists to another account."),
+        react_1.default.createElement("p", null,
+            "Account ",
+            react_1.default.createElement("strong", null, "aliasing"),
+            " is harmless and reversible; you can set and unset up to five account aliases as many times as you wish."),
+        react_1.default.createElement("p", null,
+            "The account ",
+            react_1.default.createElement("strong", null, "move"),
+            " action, on the other hand, has serious and irreversible consequences."),
+        react_1.default.createElement("p", null, "To move, you must set an alias from your account to the target account, using this settings panel."),
+        react_1.default.createElement("p", null, "You must also set an alias from the target account back to your account, using the settings panel of the instance on which the target account resides."),
+        react_1.default.createElement("p", null, "Provide the following details to the other instance:"),
+        react_1.default.createElement("dl", { className: "migration-details" },
+            react_1.default.createElement("div", null,
+                react_1.default.createElement("dt", null, "Account handle/username:"),
+                react_1.default.createElement("dd", null,
+                    "@",
+                    profile.acct,
+                    "@",
+                    url.host)),
+            react_1.default.createElement("div", null,
+                react_1.default.createElement("dt", null, "Account URI:"),
+                react_1.default.createElement("dd", null,
+                    urlStr,
+                    "/users/",
+                    profile.username))),
+        react_1.default.createElement("p", null,
+            "For more information on account migration, please see ",
+            react_1.default.createElement("a", { href: "https://docs.gotosocial.org/en/latest/user_guide/settings/#alias-account", target: "_blank", className: "docslink", rel: "noreferrer" }, "the documentation"),
+            "."),
+        react_1.default.createElement(AliasForm, { data: profile }),
+        react_1.default.createElement(MoveForm, { data: profile })));
+}
+function AliasForm({ data: profile }) {
+    const form = {
+        alsoKnownAs: (0, form_1.useArrayInput)("also_known_as_uris", {
+            source: profile,
+            valueSelector: (p) => {
+                var _a, _b;
+                return (((_a = p.source) === null || _a === void 0 ? void 0 : _a.also_known_as_uris)
+                    ? (_b = p.source) === null || _b === void 0 ? void 0 : _b.also_known_as_uris.map(entry => [entry])
+                    : []);
+            },
+            length: 5,
+        }),
+    };
+    const [submitForm, result] = (0, submit_1.default)(form, (0, user_1.useAliasAccountMutation)());
+    return (react_1.default.createElement("form", { className: "user-migration-alias", onSubmit: submitForm },
+        react_1.default.createElement("div", { className: "form-section-docs without-border" },
+            react_1.default.createElement("h3", null, "Alias Account"),
+            react_1.default.createElement("a", { href: "https://docs.gotosocial.org/en/latest/user_guide/settings/#alias-account", target: "_blank", className: "docslink", rel: "noreferrer" }, "Learn more about account aliasing (opens in a new tab)")),
+        react_1.default.createElement(AlsoKnownAsURIs, { field: form.alsoKnownAs }),
+        react_1.default.createElement(mutation_button_1.default, { disabled: false, label: "Save account aliases", result: result })));
+}
+function AlsoKnownAsURIs({ field: formField }) {
+    return (react_1.default.createElement("div", { className: "aliases" },
+        react_1.default.createElement(context_1.FormContext.Provider, { value: formField.ctx }, formField.value.map((data, i) => (react_1.default.createElement(AlsoKnownAsURI, { key: i, index: i, data: data }))))));
+}
+function AlsoKnownAsURI({ index, data }) {
+    var _a;
+    const name = `${index}`;
+    const form = (0, context_1.useWithFormContext)(index, {
+        alsoKnownAsURI: (0, form_1.useTextInput)(name, 
+        // Only one field per entry.
+        { defaultValue: (_a = data[0]) !== null && _a !== void 0 ? _a : "" }),
+    });
+    return (react_1.default.createElement(inputs_1.TextInput, { label: `Alias #${index + 1}`, field: form.alsoKnownAsURI, placeholder: `https://example.org/users/my_other_account_${index + 1}` }));
+}
+function MoveForm({ data: profile }) {
+    const form = {
+        movedToURI: (0, form_1.useTextInput)("moved_to_uri", {
+            source: profile,
+            valueSelector: (p) => { var _a; return (_a = p.moved) === null || _a === void 0 ? void 0 : _a.uri; }
+        }),
+        password: (0, form_1.useTextInput)("password"),
+    };
+    const [submitForm, result] = (0, submit_1.default)(form, (0, user_1.useMoveAccountMutation)());
+    return (react_1.default.createElement("form", { className: "user-migration-move", onSubmit: submitForm },
+        react_1.default.createElement("div", { className: "form-section-docs without-border" },
+            react_1.default.createElement("h3", null, "Move Account"),
+            react_1.default.createElement("a", { href: "https://docs.gotosocial.org/en/latest/user_guide/settings/#move-account", target: "_blank", className: "docslink", rel: "noreferrer" }, "Learn more about moving your account (opens in a new tab)")),
+        react_1.default.createElement(inputs_1.TextInput, { disabled: true, field: form.movedToURI, label: "Move target URI", placeholder: "https://example.org/users/my_new_account" }),
+        react_1.default.createElement(inputs_1.TextInput, { disabled: true, type: "password", name: "password", field: form.password, label: "Confirm account password" }),
+        react_1.default.createElement(mutation_button_1.default, { disabled: true, label: "Confirm account move", result: result })));
+}
+
+},{"../components/form/inputs":273,"../components/form/mutation-button":274,"../lib/form":287,"../lib/form/context":282,"../lib/form/form-with-data":285,"../lib/form/submit":289,"../lib/query/oauth":304,"../lib/query/user":307,"../redux/store":313,"react":146}],261:[function(require,module,exports){
 "use strict";
 
 /*
@@ -16819,7 +17093,7 @@ function ReportEntry(_ref4) {
     user: target,
     link: false
   })), React.createElement("h3", {
-    className: "status"
+    className: "report-status"
   }, report.action_taken ? "Resolved" : "Open")), React.createElement("div", {
     className: "details"
   }, React.createElement("b", null, "Created: "), React.createElement("span", null, new Date(report.created_at).toLocaleString()), React.createElement("b", null, "Reason: "), comment.length > 0 ? React.createElement("p", null, comment) : React.createElement("i", {
@@ -16827,7 +17101,7 @@ function ReportEntry(_ref4) {
   }, "none provided"))));
 }
 
-},{"../../lib/form/form-with-data":284,"../../lib/navigation/util":292,"../../lib/query/admin/reports":300,"./detail":260,"./username":262,"react":146,"wouter":234}],265:[function(require,module,exports){
+},{"../../lib/form/form-with-data":285,"../../lib/navigation/util":293,"../../lib/query/admin/reports":301,"./detail":260,"./username":262,"react":146,"wouter":234}],265:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -16896,10 +17170,10 @@ function Authorization({ App }) {
 }
 exports.Authorization = Authorization;
 
-},{"../../lib/query/oauth":303,"../../lib/types/query":308,"../../redux/store":312,"../error":270,"../loading":276,"./login":266,"react":146}],258:[function(require,module,exports){
+},{"../../lib/query/oauth":304,"../../lib/types/query":309,"../../redux/store":313,"../error":270,"../loading":276,"./login":266,"react":146}],258:[function(require,module,exports){
 "use strict";const React=require("react"),ParseFromToot=require("./parse-from-toot"),Loading=require("../../../components/loading"),{Error:Error}=require("../../../components/error"),{useListEmojiQuery:useListEmojiQuery}=require("../../../lib/query/admin/custom-emoji");module.exports=function(){const{data:e=[],isLoading:r,error:t}=useListEmojiQuery({filter:"domain:local"}),o=React.useMemo((()=>new Set(e.map((e=>e.shortcode)))),[e]);return React.createElement(React.Fragment,null,React.createElement("h1",null,"Custom Emoji (remote)"),t&&React.createElement(Error,{error:t}),r?React.createElement(Loading,null):React.createElement(React.Fragment,null,React.createElement(ParseFromToot,{emoji:e,emojiCodes:o})))};
 
-},{"../../../components/error":270,"../../../components/loading":276,"../../../lib/query/admin/custom-emoji":293,"./parse-from-toot":259,"react":146}],248:[function(require,module,exports){
+},{"../../../components/error":270,"../../../components/loading":276,"../../../lib/query/admin/custom-emoji":294,"./parse-from-toot":259,"react":146}],248:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -16962,7 +17236,7 @@ function ImportExport({ baseUrl }) {
 }
 exports.default = ImportExport;
 
-},{"../../lib/form":286,"../../lib/form/submit":288,"../../lib/query/admin/domain-permissions/process":297,"./form":247,"./process":251,"react":146,"wouter":234}],249:[function(require,module,exports){
+},{"../../lib/form":287,"../../lib/form/submit":289,"../../lib/query/admin/domain-permissions/process":298,"./form":247,"./process":251,"react":146,"wouter":234}],249:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -17095,7 +17369,7 @@ function ModifyAccount(_ref3) {
   })));
 }
 
-},{"../../components/fake-profile":271,"../../components/form/inputs":273,"../../components/form/mutation-button":274,"../../lib/form":286,"../../lib/form/form-with-data":284,"../../lib/form/submit":288,"../../lib/navigation/util":292,"../../lib/query":302,"react":146,"wouter":234}],241:[function(require,module,exports){
+},{"../../components/fake-profile":271,"../../components/form/inputs":273,"../../components/form/mutation-button":274,"../../lib/form":287,"../../lib/form/form-with-data":285,"../../lib/form/submit":289,"../../lib/navigation/util":293,"../../lib/query":303,"react":146,"wouter":234}],241:[function(require,module,exports){
 "use strict";
 
 /*
@@ -17146,7 +17420,7 @@ module.exports = function ExpireRemote(_ref) {
   }));
 };
 
-},{"../../../components/form/inputs":273,"../../../components/form/mutation-button":274,"../../../lib/form":286,"../../../lib/query":302,"react":146}],243:[function(require,module,exports){
+},{"../../../components/form/inputs":273,"../../../components/form/mutation-button":274,"../../../lib/form":287,"../../../lib/query":303,"react":146}],243:[function(require,module,exports){
 "use strict";
 
 /*
@@ -17200,9 +17474,8 @@ module.exports = function Cleanup(_ref) {
   }));
 };
 
-},{"../../../components/form/inputs":273,"../../../components/form/mutation-button":274,"../../../lib/form":286,"../../../lib/query":302,"react":146}],263:[function(require,module,exports){
+},{"../../../components/form/inputs":273,"../../../components/form/mutation-button":274,"../../../lib/form":287,"../../../lib/query":303,"react":146}],263:[function(require,module,exports){
 "use strict";
-
 /*
     GoToSocial
     Copyright (C) GoToSocial Authors admin@gotosocial.org
@@ -17221,115 +17494,85 @@ module.exports = function Cleanup(_ref) {
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-const React = require("react");
-const {
-  useTextInput,
-  useFileInput
-} = require("../../lib/form");
-const useFormSubmit = require("../../lib/form/submit").default;
-const {
-  TextInput,
-  TextArea,
-  FileInput
-} = require("../../components/form/inputs");
-const FormWithData = require("../../lib/form/form-with-data").default;
-const MutationButton = require("../../components/form/mutation-button");
-const {
-  useInstanceV1Query
-} = require("../../lib/query");
-const {
-  useUpdateInstanceMutation
-} = require("../../lib/query/admin");
-module.exports = function AdminSettings() {
-  return React.createElement(FormWithData, {
-    dataQuery: useInstanceV1Query,
-    DataForm: AdminSettingsForm
-  });
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-function AdminSettingsForm(_ref) {
-  let {
-    data: instance
-  } = _ref;
-  var _a, _b;
-  const form = {
-    title: useTextInput("title", {
-      source: instance,
-      validator: val => val.length <= 40 ? "" : "Instance title must be 40 characters or less"
-    }),
-    thumbnail: useFileInput("thumbnail", {
-      withPreview: true
-    }),
-    thumbnailDesc: useTextInput("thumbnail_description", {
-      source: instance
-    }),
-    shortDesc: useTextInput("short_description", {
-      source: instance
-    }),
-    description: useTextInput("description", {
-      source: instance
-    }),
-    contactUser: useTextInput("contact_username", {
-      source: instance,
-      valueSelector: s => {
-        var _a;
-        return (_a = s.contact_account) === null || _a === void 0 ? void 0 : _a.username;
-      }
-    }),
-    contactEmail: useTextInput("contact_email", {
-      source: instance,
-      valueSelector: s => s.email
-    }),
-    terms: useTextInput("terms", {
-      source: instance
-    })
-  };
-  const [submitForm, result] = useFormSubmit(form, useUpdateInstanceMutation());
-  return React.createElement("form", {
-    onSubmit: submitForm
-  }, React.createElement("h1", null, "Instance Settings"), React.createElement(TextInput, {
-    field: form.title,
-    label: "Title",
-    placeholder: "My GoToSocial instance"
-  }), React.createElement("div", {
-    className: "file-upload"
-  }, React.createElement("h3", null, "Instance thumbnail"), React.createElement("div", null, React.createElement("img", {
-    className: "preview avatar",
-    src: (_a = form.thumbnail.previewValue) !== null && _a !== void 0 ? _a : instance.thumbnail,
-    alt: (_b = form.thumbnailDesc.value) !== null && _b !== void 0 ? _b : instance.thumbnail ? `Thumbnail image for the instance` : "No instance thumbnail image set"
-  }), React.createElement(FileInput, {
-    field: form.thumbnail,
-    accept: "image/*"
-  }))), React.createElement(TextInput, {
-    field: form.thumbnailDesc,
-    label: "Instance thumbnail description",
-    placeholder: "A cute drawing of a smiling sloth."
-  }), React.createElement(TextArea, {
-    field: form.shortDesc,
-    label: "Short description",
-    placeholder: "A small testing instance for the GoToSocial alpha software."
-  }), React.createElement(TextArea, {
-    field: form.description,
-    label: "Full description",
-    placeholder: "A small testing instance for the GoToSocial alpha software. Just trying it out, my main instance is https://example.com"
-  }), React.createElement(TextInput, {
-    field: form.contactUser,
-    label: "Contact user (local account username)",
-    placeholder: "admin"
-  }), React.createElement(TextInput, {
-    field: form.contactEmail,
-    label: "Contact email",
-    placeholder: "admin@example.com"
-  }), React.createElement(TextArea, {
-    field: form.terms,
-    label: "Terms & Conditions",
-    placeholder: ""
-  }), React.createElement(MutationButton, {
-    label: "Save",
-    result: result
-  }));
+Object.defineProperty(exports, "__esModule", { value: true });
+const react_1 = __importDefault(require("react"));
+const form_1 = require("../../lib/form");
+const useFormSubmit = require("../../lib/form/submit").default;
+const inputs_1 = require("../../components/form/inputs");
+const FormWithData = require("../../lib/form/form-with-data").default;
+const mutation_button_1 = __importDefault(require("../../components/form/mutation-button"));
+const query_1 = require("../../lib/query");
+const admin_1 = require("../../lib/query/admin");
+function AdminSettings() {
+    return (react_1.default.createElement(FormWithData, { dataQuery: query_1.useInstanceV1Query, DataForm: AdminSettingsForm }));
+}
+exports.default = AdminSettings;
+function AdminSettingsForm({ data: instance }) {
+    var _a, _b;
+    const titleLimit = 40;
+    const shortDescLimit = 500;
+    const descLimit = 5000;
+    const termsLimit = 5000;
+    const form = {
+        title: (0, form_1.useTextInput)("title", {
+            source: instance,
+            validator: (val) => val.length <= titleLimit ? "" : `Instance title is ${val.length} characters; must be ${titleLimit} characters or less`
+        }),
+        thumbnail: (0, form_1.useFileInput)("thumbnail", { withPreview: true }),
+        thumbnailDesc: (0, form_1.useTextInput)("thumbnail_description", { source: instance }),
+        shortDesc: (0, form_1.useTextInput)("short_description", {
+            source: instance,
+            // Select "raw" text version of parsed field for editing.
+            valueSelector: (s) => s.short_description_text,
+            validator: (val) => val.length <= shortDescLimit ? "" : `Instance short description is ${val.length} characters; must be ${shortDescLimit} characters or less`
+        }),
+        description: (0, form_1.useTextInput)("description", {
+            source: instance,
+            // Select "raw" text version of parsed field for editing.
+            valueSelector: (s) => s.description_text,
+            validator: (val) => val.length <= descLimit ? "" : `Instance description is ${val.length} characters; must be ${descLimit} characters or less`
+        }),
+        terms: (0, form_1.useTextInput)("terms", {
+            source: instance,
+            // Select "raw" text version of parsed field for editing.
+            valueSelector: (s) => s.terms_text,
+            validator: (val) => val.length <= termsLimit ? "" : `Instance terms and conditions is ${val.length} characters; must be ${termsLimit} characters or less`
+        }),
+        contactUser: (0, form_1.useTextInput)("contact_username", { source: instance, valueSelector: (s) => { var _a; return (_a = s.contact_account) === null || _a === void 0 ? void 0 : _a.username; } }),
+        contactEmail: (0, form_1.useTextInput)("contact_email", { source: instance, valueSelector: (s) => s.email })
+    };
+    const [submitForm, result] = useFormSubmit(form, (0, admin_1.useUpdateInstanceMutation)());
+    return (react_1.default.createElement("form", { onSubmit: submitForm },
+        react_1.default.createElement("h1", null, "Instance Settings"),
+        react_1.default.createElement("div", { className: "form-section-docs" },
+            react_1.default.createElement("h3", null, "Appearance"),
+            react_1.default.createElement("a", { href: "https://docs.gotosocial.org/en/latest/admin/settings/#instance-appearance", target: "_blank", className: "docslink", rel: "noreferrer" }, "Learn more about these settings (opens in a new tab)")),
+        react_1.default.createElement(inputs_1.TextInput, { field: form.title, label: `Instance title (max ${titleLimit} characters)`, placeholder: "My GoToSocial instance" }),
+        react_1.default.createElement("div", { className: "file-upload", "aria-labelledby": "avatar" },
+            react_1.default.createElement("strong", { id: "avatar" }, "Instance avatar (1:1 images look best)"),
+            react_1.default.createElement("div", { className: "file-upload-with-preview" },
+                react_1.default.createElement("img", { className: "preview avatar", src: (_a = form.thumbnail.previewValue) !== null && _a !== void 0 ? _a : instance === null || instance === void 0 ? void 0 : instance.thumbnail, alt: (_b = form.thumbnailDesc.value) !== null && _b !== void 0 ? _b : ((instance === null || instance === void 0 ? void 0 : instance.thumbnail) ? `Thumbnail image for the instance` : "No instance thumbnail image set") }),
+                react_1.default.createElement("div", { className: "file-input-with-image-description" },
+                    react_1.default.createElement(inputs_1.FileInput, { field: form.thumbnail, accept: "image/png, image/jpeg, image/webp, image/gif" }),
+                    react_1.default.createElement(inputs_1.TextInput, { field: form.thumbnailDesc, label: "Avatar image description", placeholder: "A cute drawing of a smiling sloth." })))),
+        react_1.default.createElement("div", { className: "form-section-docs" },
+            react_1.default.createElement("h3", null, "Descriptors"),
+            react_1.default.createElement("a", { href: "https://docs.gotosocial.org/en/latest/admin/settings/#instance-descriptors", target: "_blank", className: "docslink", rel: "noreferrer" }, "Learn more about these settings (opens in a new tab)")),
+        react_1.default.createElement(inputs_1.TextArea, { field: form.shortDesc, label: `Short description (markdown accepted, max ${shortDescLimit} characters)`, placeholder: "A small testing instance for the GoToSocial alpha software.", rows: 6 }),
+        react_1.default.createElement(inputs_1.TextArea, { field: form.description, label: `Full description (markdown accepted, max ${descLimit} characters)`, placeholder: "A small testing instance for the GoToSocial alpha software. Just trying it out, my main instance is https://example.com", rows: 6 }),
+        react_1.default.createElement(inputs_1.TextArea, { field: form.terms, label: `Terms & Conditions (markdown accepted, max ${termsLimit} characters)`, placeholder: "Terms and conditions of using this instance, data policy, imprint, GDPR stuff, yadda yadda.", rows: 6 }),
+        react_1.default.createElement("div", { className: "form-section-docs" },
+            react_1.default.createElement("h3", null, "Contact info"),
+            react_1.default.createElement("a", { href: "https://docs.gotosocial.org/en/latest/admin/settings/#instance-contact-info", target: "_blank", className: "docslink", rel: "noreferrer" }, "Learn more about these settings (opens in a new tab)")),
+        react_1.default.createElement(inputs_1.TextInput, { field: form.contactUser, label: "Contact user (local account username)", placeholder: "admin" }),
+        react_1.default.createElement(inputs_1.TextInput, { field: form.contactEmail, label: "Contact email", placeholder: "admin@example.com" }),
+        react_1.default.createElement(mutation_button_1.default, { label: "Save", result: result, disabled: false })));
 }
 
-},{"../../components/form/inputs":273,"../../components/form/mutation-button":274,"../../lib/form":286,"../../lib/form/form-with-data":284,"../../lib/form/submit":288,"../../lib/query":302,"../../lib/query/admin":299,"react":146}],264:[function(require,module,exports){
+},{"../../components/form/inputs":273,"../../components/form/mutation-button":274,"../../lib/form":287,"../../lib/form/form-with-data":285,"../../lib/form/submit":289,"../../lib/query":303,"../../lib/query/admin":300,"react":146}],264:[function(require,module,exports){
 "use strict";
 
 /*
@@ -17499,7 +17742,7 @@ function InstanceRuleForm(_ref6) {
   })));
 }
 
-},{"../../components/form/inputs":273,"../../components/form/mutation-button":274,"../../lib/form":286,"../../lib/form/form-with-data":284,"../../lib/form/submit":288,"../../lib/navigation/util":292,"../../lib/query":302,"react":146,"wouter":234}],272:[function(require,module,exports){
+},{"../../components/form/inputs":273,"../../components/form/mutation-button":274,"../../lib/form":287,"../../lib/form/form-with-data":285,"../../lib/form/submit":289,"../../lib/navigation/util":293,"../../lib/query":303,"react":146,"wouter":234}],272:[function(require,module,exports){
 "use strict";
 
 /*
@@ -17534,27 +17777,37 @@ module.exports = function FakeToot(_ref) {
     }
   } = query.useVerifyCredentialsQuery();
   return React.createElement("article", {
-    className: "toot expanded"
-  }, React.createElement("section", {
-    className: "author"
-  }, React.createElement("a", null, React.createElement("img", {
+    className: "status expanded"
+  }, React.createElement("header", {
+    className: "status-header"
+  }, React.createElement("address", null, React.createElement("a", {
+    style: {
+      margin: 0
+    }
+  }, React.createElement("img", {
     className: "avatar",
     src: account.avatar,
     alt: ""
-  }), React.createElement("span", {
-    className: "displayname"
-  }, account.display_name.trim().length > 0 ? account.display_name : account.username, React.createElement("span", {
+  }), React.createElement("dl", {
+    className: "author-strap"
+  }, React.createElement("dt", {
     className: "sr-only"
-  }, ".")), React.createElement("span", {
-    className: "username"
-  }, "@", account.username))), React.createElement("section", {
-    className: "body"
+  }, "Display name"), React.createElement("dd", {
+    className: "displayname text-cutoff"
+  }, account.display_name.trim().length > 0 ? account.display_name : account.username), React.createElement("dt", {
+    className: "sr-only"
+  }, "Username"), React.createElement("dd", {
+    className: "username text-cutoff"
+  }, "@", account.username))))), React.createElement("section", {
+    className: "status-body"
   }, React.createElement("div", {
     className: "text"
-  }, children)));
+  }, React.createElement("div", {
+    className: "content"
+  }, children))));
 };
 
-},{"../lib/query":302,"react":146}],277:[function(require,module,exports){
+},{"../lib/query":303,"react":146}],277:[function(require,module,exports){
 "use strict";
 
 /*
@@ -17620,13 +17873,227 @@ module.exports = function UserLogoutCard() {
   }
 };
 
-},{"../lib/query":302,"../lib/query/oauth":303,"./loading":276,"react":146}],314:[function(require,module,exports){
-"use strict";const React=require("react"),{useTextInput:useTextInput,useFileInput:useFileInput,useBoolInput:useBoolInput,useFieldArrayInput:useFieldArrayInput}=require("../lib/form"),useFormSubmit=require("../lib/form/submit").default,{useWithFormContext:useWithFormContext,FormContext:FormContext}=require("../lib/form/context"),{TextInput:TextInput,TextArea:TextArea,FileInput:FileInput,Checkbox:Checkbox}=require("../components/form/inputs"),FormWithData=require("../lib/form/form-with-data").default,FakeProfile=require("../components/fake-profile"),MutationButton=require("../components/form/mutation-button"),{useInstanceV1Query:useInstanceV1Query}=require("../lib/query"),{useUpdateCredentialsMutation:useUpdateCredentialsMutation}=require("../lib/query/user"),{useVerifyCredentialsQuery:useVerifyCredentialsQuery}=require("../lib/query/oauth");function UserProfileForm(e){let{data:t}=e;var a,l,r,n;const{data:o}=useInstanceV1Query(),i=React.useMemo((()=>{var e,t,a,l,r;return{allowCustomCSS:!0===(null===(t=null===(e=null==o?void 0:o.configuration)||void 0===e?void 0:e.accounts)||void 0===t?void 0:t.allow_custom_css),maxPinnedFields:null!==(r=null===(l=null===(a=null==o?void 0:o.configuration)||void 0===a?void 0:a.accounts)||void 0===l?void 0:l.max_profile_fields)&&void 0!==r?r:6}}),[o]),s={avatar:useFileInput("avatar",{withPreview:!0}),header:useFileInput("header",{withPreview:!0}),displayName:useTextInput("display_name",{source:t}),note:useTextInput("note",{source:t,valueSelector:e=>{var t;return null===(t=e.source)||void 0===t?void 0:t.note}}),customCSS:useTextInput("custom_css",{source:t,nosubmit:!i.allowCustomCSS}),bot:useBoolInput("bot",{source:t}),locked:useBoolInput("locked",{source:t}),discoverable:useBoolInput("discoverable",{source:t}),enableRSS:useBoolInput("enable_rss",{source:t}),fields:useFieldArrayInput("fields_attributes",{defaultValue:null===(a=null==t?void 0:t.source)||void 0===a?void 0:a.fields,length:i.maxPinnedFields})},[u,c]=useFormSubmit(s,useUpdateCredentialsMutation(),{onFinish:()=>{s.avatar.reset(),s.header.reset()}});return React.createElement("form",{className:"user-profile",onSubmit:u},React.createElement("h1",null,"Profile"),React.createElement("div",{className:"overview"},React.createElement(FakeProfile,{avatar:null!==(l=s.avatar.previewValue)&&void 0!==l?l:t.avatar,header:null!==(r=s.header.previewValue)&&void 0!==r?r:t.header,display_name:null!==(n=s.displayName.value)&&void 0!==n?n:t.username,username:t.username,role:t.role}),React.createElement("div",{className:"files"},React.createElement("div",null,React.createElement(FileInput,{label:"Header",field:s.header,accept:"image/*"})),React.createElement("div",null,React.createElement(FileInput,{label:"Avatar",field:s.avatar,accept:"image/*"})))),React.createElement("div",{className:"form-section-docs"},React.createElement("h3",null,"Basic Information"),React.createElement("a",{href:"https://docs.gotosocial.org/en/latest/user_guide/settings/#basic-information",target:"_blank",className:"docslink",rel:"noreferrer"},"Learn more about these settings (opens in a new tab)")),React.createElement(TextInput,{field:s.displayName,label:"Display name",placeholder:"A GoToSocial user"}),React.createElement(TextArea,{field:s.note,label:"Bio",placeholder:"Just trying out GoToSocial, my pronouns are they/them and I like sloths.",rows:8}),React.createElement("b",null,"Profile fields"),React.createElement(ProfileFields,{field:s.fields}),React.createElement("div",{className:"form-section-docs"},React.createElement("h3",null,"Visibility and privacy"),React.createElement("a",{href:"https://docs.gotosocial.org/en/latest/user_guide/settings/#visibility-and-privacy",target:"_blank",className:"docslink",rel:"noreferrer"},"Learn more about these settings (opens in a new tab)")),React.createElement(Checkbox,{field:s.locked,label:"Manually approve follow requests"}),React.createElement(Checkbox,{field:s.discoverable,label:"Mark account as discoverable by search engines and directories"}),React.createElement(Checkbox,{field:s.enableRSS,label:"Enable RSS feed of Public posts"}),React.createElement("div",{className:"form-section-docs"},React.createElement("h3",null,"Advanced"),React.createElement("a",{href:"https://docs.gotosocial.org/en/latest/user_guide/settings/#advanced",target:"_blank",className:"docslink",rel:"noreferrer"},"Learn more about these settings (opens in a new tab)")),React.createElement(TextArea,{field:s.customCSS,label:"Custom CSS"+(i.allowCustomCSS?"":" (not enabled on this instance)"),className:"monospace",rows:8,disabled:!i.allowCustomCSS}),React.createElement(MutationButton,{label:"Save profile info",result:c}))}function ProfileFields(e){let{field:t}=e;return React.createElement("div",{className:"fields"},React.createElement(FormContext.Provider,{value:t.ctx},t.value.map(((e,t)=>React.createElement(Field,{key:t,index:t,data:e})))))}function Field(e){let{index:t,data:a}=e;const l=useWithFormContext(t,{name:useTextInput("name",{defaultValue:a.name}),value:useTextInput("value",{defaultValue:a.value})});return React.createElement("div",{className:"entry"},React.createElement(TextInput,{field:l.name,placeholder:"Name"}),React.createElement(TextInput,{field:l.value,placeholder:"Value"}))}module.exports=function(){return React.createElement(FormWithData,{dataQuery:useVerifyCredentialsQuery,DataForm:UserProfileForm})};
+},{"../lib/query":303,"../lib/query/oauth":304,"./loading":276,"react":146}],316:[function(require,module,exports){
+"use strict";
+/*
+    GoToSocial
+    Copyright (C) GoToSocial Authors admin@gotosocial.org
+    SPDX-License-Identifier: AGPL-3.0-or-later
 
-},{"../components/fake-profile":271,"../components/form/inputs":273,"../components/form/mutation-button":274,"../lib/form":286,"../lib/form/context":281,"../lib/form/form-with-data":284,"../lib/form/submit":288,"../lib/query":302,"../lib/query/oauth":303,"../lib/query/user":306,"react":146}],315:[function(require,module,exports){
-"use strict";const React=require("react"),query=require("../lib/query"),{useTextInput:useTextInput,useBoolInput:useBoolInput}=require("../lib/form"),useFormSubmit=require("../lib/form/submit").default,{Select:Select,TextInput:TextInput,Checkbox:Checkbox}=require("../components/form/inputs"),FormWithData=require("../lib/form/form-with-data").default,Languages=require("../components/languages"),MutationButton=require("../components/form/mutation-button");function UserSettingsForm(e){let{data:t}=e;const a={defaultPrivacy:useTextInput("source[privacy]",{source:t,defaultValue:"unlisted"}),isSensitive:useBoolInput("source[sensitive]",{source:t}),language:useTextInput("source[language]",{source:t,valueSelector:e=>{var t,a;return null!==(a=null===(t=e.source.language)||void 0===t?void 0:t.toUpperCase())&&void 0!==a?a:"EN"}}),statusContentType:useTextInput("source[status_content_type]",{source:t,defaultValue:"text/plain"})},[s,n]=useFormSubmit(a,query.useUpdateCredentialsMutation());return React.createElement(React.Fragment,null,React.createElement("form",{className:"user-settings",onSubmit:s},React.createElement("h1",null,"Post settings"),React.createElement(Select,{field:a.language,label:"Default post language",options:React.createElement(Languages,null)}),React.createElement(Select,{field:a.defaultPrivacy,label:"Default post privacy",options:React.createElement(React.Fragment,null,React.createElement("option",{value:"private"},"Private / followers-only"),React.createElement("option",{value:"unlisted"},"Unlisted"),React.createElement("option",{value:"public"},"Public"))},React.createElement("a",{href:"https://docs.gotosocial.org/en/latest/user_guide/posts/#privacy-settings",target:"_blank",className:"docslink",rel:"noreferrer"},"Learn more about post privacy settings (opens in a new tab)")),React.createElement(Select,{field:a.statusContentType,label:"Default post (and bio) format",options:React.createElement(React.Fragment,null,React.createElement("option",{value:"text/plain"},"Plain (default)"),React.createElement("option",{value:"text/markdown"},"Markdown"))},React.createElement("a",{href:"https://docs.gotosocial.org/en/latest/user_guide/posts/#input-types",target:"_blank",className:"docslink",rel:"noreferrer"},"Learn more about post format settings (opens in a new tab)")),React.createElement(Checkbox,{field:a.isSensitive,label:"Mark my posts as sensitive by default"}),React.createElement(MutationButton,{label:"Save settings",result:n})),React.createElement("div",null,React.createElement(PasswordChange,null)))}function PasswordChange(){const e={oldPassword:useTextInput("old_password"),newPassword:useTextInput("new_password",{validator:t=>""!=t&&t==e.oldPassword.value?"New password same as old password":""})},t=useTextInput("verifyNewPassword",{validator:t=>""!=t&&t!=e.newPassword.value?"Passwords do not match":""}),[a,s]=useFormSubmit(e,query.usePasswordChangeMutation());return React.createElement("form",{className:"change-password",onSubmit:a},React.createElement("h1",null,"Change password"),React.createElement(TextInput,{type:"password",name:"password",field:e.oldPassword,label:"Current password"}),React.createElement(TextInput,{type:"password",name:"newPassword",field:e.newPassword,label:"New password"}),React.createElement(TextInput,{type:"password",name:"confirmNewPassword",field:t,label:"Confirm new password"}),React.createElement(MutationButton,{label:"Change password",result:s}))}module.exports=function(){return React.createElement(FormWithData,{dataQuery:query.useVerifyCredentialsQuery,DataForm:UserSettingsForm})};
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
 
-},{"../components/form/inputs":273,"../components/form/mutation-button":274,"../components/languages":275,"../lib/form":286,"../lib/form/form-with-data":284,"../lib/form/submit":288,"../lib/query":302,"react":146}],240:[function(require,module,exports){
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const react_1 = __importDefault(require("react"));
+const form_1 = require("../lib/form");
+const submit_1 = __importDefault(require("../lib/form/submit"));
+const context_1 = require("../lib/form/context");
+const inputs_1 = require("../components/form/inputs");
+const form_with_data_1 = __importDefault(require("../lib/form/form-with-data"));
+const fake_profile_1 = __importDefault(require("../components/fake-profile"));
+const mutation_button_1 = __importDefault(require("../components/form/mutation-button"));
+const query_1 = require("../lib/query");
+const user_1 = require("../lib/query/user");
+const oauth_1 = require("../lib/query/oauth");
+function UserProfile() {
+    return (react_1.default.createElement(form_with_data_1.default, { dataQuery: oauth_1.useVerifyCredentialsQuery, DataForm: UserProfileForm }));
+}
+exports.default = UserProfile;
+function UserProfileForm({ data: profile }) {
+    /*
+        User profile update form keys
+        - bool bot
+        - bool locked
+        - string display_name
+        - string note
+        - file avatar
+        - file header
+        - bool enable_rss
+        - string custom_css (if enabled)
+    */
+    var _a, _b, _c, _d;
+    const { data: instance } = (0, query_1.useInstanceV1Query)();
+    const instanceConfig = react_1.default.useMemo(() => {
+        var _a, _b, _c, _d, _e;
+        return {
+            allowCustomCSS: ((_b = (_a = instance === null || instance === void 0 ? void 0 : instance.configuration) === null || _a === void 0 ? void 0 : _a.accounts) === null || _b === void 0 ? void 0 : _b.allow_custom_css) === true,
+            maxPinnedFields: (_e = (_d = (_c = instance === null || instance === void 0 ? void 0 : instance.configuration) === null || _c === void 0 ? void 0 : _c.accounts) === null || _d === void 0 ? void 0 : _d.max_profile_fields) !== null && _e !== void 0 ? _e : 6
+        };
+    }, [instance]);
+    const form = {
+        avatar: (0, form_1.useFileInput)("avatar", { withPreview: true }),
+        header: (0, form_1.useFileInput)("header", { withPreview: true }),
+        displayName: (0, form_1.useTextInput)("display_name", { source: profile }),
+        note: (0, form_1.useTextInput)("note", { source: profile, valueSelector: (p) => { var _a; return (_a = p.source) === null || _a === void 0 ? void 0 : _a.note; } }),
+        customCSS: (0, form_1.useTextInput)("custom_css", { source: profile, nosubmit: !instanceConfig.allowCustomCSS }),
+        bot: (0, form_1.useBoolInput)("bot", { source: profile }),
+        locked: (0, form_1.useBoolInput)("locked", { source: profile }),
+        discoverable: (0, form_1.useBoolInput)("discoverable", { source: profile }),
+        enableRSS: (0, form_1.useBoolInput)("enable_rss", { source: profile }),
+        fields: (0, form_1.useFieldArrayInput)("fields_attributes", {
+            defaultValue: (_a = profile === null || profile === void 0 ? void 0 : profile.source) === null || _a === void 0 ? void 0 : _a.fields,
+            length: instanceConfig.maxPinnedFields
+        }),
+    };
+    const [submitForm, result] = (0, submit_1.default)(form, (0, user_1.useUpdateCredentialsMutation)(), {
+        changedOnly: true,
+        onFinish: () => {
+            form.avatar.reset();
+            form.header.reset();
+        }
+    });
+    return (react_1.default.createElement("form", { className: "user-profile", onSubmit: submitForm },
+        react_1.default.createElement("h1", null, "Profile"),
+        react_1.default.createElement("div", { className: "overview" },
+            react_1.default.createElement(fake_profile_1.default, { avatar: (_b = form.avatar.previewValue) !== null && _b !== void 0 ? _b : profile.avatar, header: (_c = form.header.previewValue) !== null && _c !== void 0 ? _c : profile.header, display_name: (_d = form.displayName.value) !== null && _d !== void 0 ? _d : profile.username, username: profile.username, role: profile.role }),
+            react_1.default.createElement("div", { className: "files" },
+                react_1.default.createElement("div", null,
+                    react_1.default.createElement(inputs_1.FileInput, { label: "Header", field: form.header, accept: "image/*" })),
+                react_1.default.createElement("div", null,
+                    react_1.default.createElement(inputs_1.FileInput, { label: "Avatar", field: form.avatar, accept: "image/*" })))),
+        react_1.default.createElement("div", { className: "form-section-docs" },
+            react_1.default.createElement("h3", null, "Basic Information"),
+            react_1.default.createElement("a", { href: "https://docs.gotosocial.org/en/latest/user_guide/settings/#basic-information", target: "_blank", className: "docslink", rel: "noreferrer" }, "Learn more about these settings (opens in a new tab)")),
+        react_1.default.createElement(inputs_1.TextInput, { field: form.displayName, label: "Display name", placeholder: "A GoToSocial user" }),
+        react_1.default.createElement(inputs_1.TextArea, { field: form.note, label: "Bio", placeholder: "Just trying out GoToSocial, my pronouns are they/them and I like sloths.", rows: 8 }),
+        react_1.default.createElement("b", null, "Profile fields"),
+        react_1.default.createElement(ProfileFields, { field: form.fields }),
+        react_1.default.createElement("div", { className: "form-section-docs" },
+            react_1.default.createElement("h3", null, "Visibility and privacy"),
+            react_1.default.createElement("a", { href: "https://docs.gotosocial.org/en/latest/user_guide/settings/#visibility-and-privacy", target: "_blank", className: "docslink", rel: "noreferrer" }, "Learn more about these settings (opens in a new tab)")),
+        react_1.default.createElement(inputs_1.Checkbox, { field: form.locked, label: "Manually approve follow requests" }),
+        react_1.default.createElement(inputs_1.Checkbox, { field: form.discoverable, label: "Mark account as discoverable by search engines and directories" }),
+        react_1.default.createElement(inputs_1.Checkbox, { field: form.enableRSS, label: "Enable RSS feed of Public posts" }),
+        react_1.default.createElement("div", { className: "form-section-docs" },
+            react_1.default.createElement("h3", null, "Advanced"),
+            react_1.default.createElement("a", { href: "https://docs.gotosocial.org/en/latest/user_guide/settings/#advanced", target: "_blank", className: "docslink", rel: "noreferrer" }, "Learn more about these settings (opens in a new tab)")),
+        react_1.default.createElement(inputs_1.TextArea, { field: form.customCSS, label: `Custom CSS` + (!instanceConfig.allowCustomCSS ? ` (not enabled on this instance)` : ``), className: "monospace", rows: 8, disabled: !instanceConfig.allowCustomCSS }),
+        react_1.default.createElement(mutation_button_1.default, { disabled: false, label: "Save profile info", result: result })));
+}
+function ProfileFields({ field: formField }) {
+    return (react_1.default.createElement("div", { className: "fields" },
+        react_1.default.createElement(context_1.FormContext.Provider, { value: formField.ctx }, formField.value.map((data, i) => (react_1.default.createElement(Field, { key: i, index: i, data: data }))))));
+}
+function Field({ index, data }) {
+    const form = (0, context_1.useWithFormContext)(index, {
+        name: (0, form_1.useTextInput)("name", { defaultValue: data.name }),
+        value: (0, form_1.useTextInput)("value", { defaultValue: data.value })
+    });
+    return (react_1.default.createElement("div", { className: "entry" },
+        react_1.default.createElement(inputs_1.TextInput, { field: form.name, placeholder: "Name" }),
+        react_1.default.createElement(inputs_1.TextInput, { field: form.value, placeholder: "Value" })));
+}
+
+},{"../components/fake-profile":271,"../components/form/inputs":273,"../components/form/mutation-button":274,"../lib/form":287,"../lib/form/context":282,"../lib/form/form-with-data":285,"../lib/form/submit":289,"../lib/query":303,"../lib/query/oauth":304,"../lib/query/user":307,"react":146}],317:[function(require,module,exports){
+"use strict";
+/*
+    GoToSocial
+    Copyright (C) GoToSocial Authors admin@gotosocial.org
+    SPDX-License-Identifier: AGPL-3.0-or-later
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const react_1 = __importDefault(require("react"));
+const query_1 = __importDefault(require("../lib/query"));
+const form_1 = require("../lib/form");
+const submit_1 = __importDefault(require("../lib/form/submit"));
+const inputs_1 = require("../components/form/inputs");
+const form_with_data_1 = __importDefault(require("../lib/form/form-with-data"));
+const languages_1 = __importDefault(require("../components/languages"));
+const mutation_button_1 = __importDefault(require("../components/form/mutation-button"));
+function UserSettings() {
+    return (react_1.default.createElement(form_with_data_1.default, { dataQuery: query_1.default.useVerifyCredentialsQuery, DataForm: UserSettingsForm }));
+}
+exports.default = UserSettings;
+function UserSettingsForm({ data }) {
+    /* form keys
+        - string source[privacy]
+        - bool source[sensitive]
+        - string source[language]
+        - string source[status_content_type]
+     */
+    const form = {
+        defaultPrivacy: (0, form_1.useTextInput)("source[privacy]", { source: data, defaultValue: "unlisted" }),
+        isSensitive: (0, form_1.useBoolInput)("source[sensitive]", { source: data }),
+        language: (0, form_1.useTextInput)("source[language]", { source: data, valueSelector: (s) => { var _a, _b; return (_b = (_a = s.source.language) === null || _a === void 0 ? void 0 : _a.toUpperCase()) !== null && _b !== void 0 ? _b : "EN"; } }),
+        statusContentType: (0, form_1.useTextInput)("source[status_content_type]", { source: data, defaultValue: "text/plain" }),
+    };
+    const [submitForm, result] = (0, submit_1.default)(form, query_1.default.useUpdateCredentialsMutation());
+    return (react_1.default.createElement(react_1.default.Fragment, null,
+        react_1.default.createElement("form", { className: "user-settings", onSubmit: submitForm },
+            react_1.default.createElement("h1", null, "Post settings"),
+            react_1.default.createElement(inputs_1.Select, { field: form.language, label: "Default post language", options: react_1.default.createElement(languages_1.default, null) }),
+            react_1.default.createElement(inputs_1.Select, { field: form.defaultPrivacy, label: "Default post privacy", options: react_1.default.createElement(react_1.default.Fragment, null,
+                    react_1.default.createElement("option", { value: "private" }, "Private / followers-only"),
+                    react_1.default.createElement("option", { value: "unlisted" }, "Unlisted"),
+                    react_1.default.createElement("option", { value: "public" }, "Public")) },
+                react_1.default.createElement("a", { href: "https://docs.gotosocial.org/en/latest/user_guide/posts/#privacy-settings", target: "_blank", className: "docslink", rel: "noreferrer" }, "Learn more about post privacy settings (opens in a new tab)")),
+            react_1.default.createElement(inputs_1.Select, { field: form.statusContentType, label: "Default post (and bio) format", options: react_1.default.createElement(react_1.default.Fragment, null,
+                    react_1.default.createElement("option", { value: "text/plain" }, "Plain (default)"),
+                    react_1.default.createElement("option", { value: "text/markdown" }, "Markdown")) },
+                react_1.default.createElement("a", { href: "https://docs.gotosocial.org/en/latest/user_guide/posts/#input-types", target: "_blank", className: "docslink", rel: "noreferrer" }, "Learn more about post format settings (opens in a new tab)")),
+            react_1.default.createElement(inputs_1.Checkbox, { field: form.isSensitive, label: "Mark my posts as sensitive by default" }),
+            react_1.default.createElement(mutation_button_1.default, { disabled: false, label: "Save settings", result: result })),
+        react_1.default.createElement(PasswordChange, null)));
+}
+function PasswordChange() {
+    const form = {
+        oldPassword: (0, form_1.useTextInput)("old_password"),
+        newPassword: (0, form_1.useTextInput)("new_password", {
+            validator(val) {
+                if (val != "" && val == form.oldPassword.value) {
+                    return "New password same as old password";
+                }
+                return "";
+            }
+        })
+    };
+    const verifyNewPassword = (0, form_1.useTextInput)("verifyNewPassword", {
+        validator(val) {
+            if (val != "" && val != form.newPassword.value) {
+                return "Passwords do not match";
+            }
+            return "";
+        }
+    });
+    const [submitForm, result] = (0, submit_1.default)(form, query_1.default.usePasswordChangeMutation());
+    return (react_1.default.createElement("form", { className: "change-password", onSubmit: submitForm },
+        react_1.default.createElement("h1", null, "Change password"),
+        react_1.default.createElement(inputs_1.TextInput, { type: "password", name: "password", field: form.oldPassword, label: "Current password" }),
+        react_1.default.createElement(inputs_1.TextInput, { type: "password", name: "newPassword", field: form.newPassword, label: "New password" }),
+        react_1.default.createElement(inputs_1.TextInput, { type: "password", name: "confirmNewPassword", field: verifyNewPassword, label: "Confirm new password" }),
+        react_1.default.createElement(mutation_button_1.default, { disabled: false, label: "Change password", result: result })));
+}
+
+},{"../components/form/inputs":273,"../components/form/mutation-button":274,"../components/languages":275,"../lib/form":287,"../lib/form/form-with-data":285,"../lib/form/submit":289,"../lib/query":303,"react":146}],240:[function(require,module,exports){
 "use strict";
 
 /*
@@ -17755,7 +18222,7 @@ function AccountList(_ref3) {
   })));
 }
 
-},{"../../components/error":270,"../../lib/form":286,"../../lib/navigation/util":292,"../../lib/query":302,"./detail":239,"react":146,"wouter":234}],242:[function(require,module,exports){
+},{"../../components/error":270,"../../lib/form":287,"../../lib/navigation/util":293,"../../lib/query":303,"./detail":239,"react":146,"wouter":234}],242:[function(require,module,exports){
 "use strict";
 
 /*
@@ -17812,19 +18279,19 @@ module.exports = function Media() {
 },{"./cleanup":243,"react":146}],253:[function(require,module,exports){
 "use strict";const React=require("react"),{useRoute:useRoute,Link:Link,Redirect:Redirect}=require("wouter"),{useComboBoxInput:useComboBoxInput,useFileInput:useFileInput,useValue:useValue}=require("../../../lib/form"),{CategorySelect:CategorySelect}=require("../category-select"),useFormSubmit=require("../../../lib/form/submit").default,{useBaseUrl:useBaseUrl}=require("../../../lib/navigation/util"),FakeToot=require("../../../components/fake-toot"),FormWithData=require("../../../lib/form/form-with-data").default,Loading=require("../../../components/loading"),{FileInput:FileInput}=require("../../../components/form/inputs"),MutationButton=require("../../../components/form/mutation-button"),{Error:Error}=require("../../../components/error"),{useGetEmojiQuery:useGetEmojiQuery,useEditEmojiMutation:useEditEmojiMutation,useDeleteEmojiMutation:useDeleteEmojiMutation}=require("../../../lib/query/admin/custom-emoji");function EmojiDetailForm(e){let{data:t}=e;var r;const a=useBaseUrl(),o={id:useValue("id",t.id),category:useComboBoxInput("category",{source:t}),image:useFileInput("image",{withPreview:!0,maxSize:51200})},[i,l]=useFormSubmit(o,useEditEmojiMutation());React.useEffect((()=>{!o.category.hasChanged()||o.category.state.open||o.category.isNew||i()}),[o.category.hasChanged(),o.category.isNew,o.category.state.open]);const[u,c]=useDeleteEmojiMutation();return c.isSuccess?React.createElement(Redirect,{to:a}):React.createElement(React.Fragment,null,React.createElement("div",{className:"emoji-header"},React.createElement("img",{src:t.url,alt:t.shortcode,title:t.shortcode}),React.createElement("div",null,React.createElement("h2",null,t.shortcode),React.createElement(MutationButton,{label:"Delete",type:"button",onClick:()=>u(t.id),className:"danger",showError:!1,result:c}))),React.createElement("form",{onSubmit:i,className:"left-border"},React.createElement("h2",null,"Modify this emoji ",l.isLoading&&React.createElement(Loading,null)),React.createElement("div",{className:"update-category"},React.createElement(CategorySelect,{field:o.category},React.createElement(MutationButton,{name:"create-category",label:"Create",result:l,showError:!1,style:{visibility:o.category.isNew?"initial":"hidden"}}))),React.createElement("div",{className:"update-image"},React.createElement(FileInput,{field:o.image,label:"Image",accept:"image/png,image/gif"}),React.createElement(MutationButton,{name:"image",label:"Replace image",showError:!1,result:l}),React.createElement(FakeToot,null,"Look at this new custom emoji ",React.createElement("img",{className:"emoji",src:null!==(r=o.image.previewURL)&&void 0!==r?r:t.url,title:`:${t.shortcode}:`,alt:t.shortcode})," isn't it cool?"),l.error&&React.createElement(Error,{error:l.error}),c.error&&React.createElement(Error,{error:c.error}))))}module.exports=function(e){let{}=e;const t=useBaseUrl();let[r,a]=useRoute(`${t}/:emojiId`);return null==(null==a?void 0:a.emojiId)?React.createElement(Redirect,{to:t}):React.createElement("div",{className:"emoji-detail"},React.createElement(Link,{to:t},React.createElement("a",null,"< go back")),React.createElement(FormWithData,{dataQuery:useGetEmojiQuery,queryArg:a.emojiId,DataForm:EmojiDetailForm}))};
 
-},{"../../../components/error":270,"../../../components/fake-toot":272,"../../../components/form/inputs":273,"../../../components/form/mutation-button":274,"../../../components/loading":276,"../../../lib/form":286,"../../../lib/form/form-with-data":284,"../../../lib/form/submit":288,"../../../lib/navigation/util":292,"../../../lib/query/admin/custom-emoji":293,"../category-select":252,"react":146,"wouter":234}],255:[function(require,module,exports){
-"use strict";const React=require("react"),{useFileInput:useFileInput,useComboBoxInput:useComboBoxInput}=require("../../../lib/form"),useShortcode=require("./use-shortcode"),useFormSubmit=require("../../../lib/form/submit").default,{TextInput:TextInput,FileInput:FileInput}=require("../../../components/form/inputs"),{CategorySelect:CategorySelect}=require("../category-select"),FakeToot=require("../../../components/fake-toot"),MutationButton=require("../../../components/form/mutation-button"),{useAddEmojiMutation:useAddEmojiMutation}=require("../../../lib/query/admin/custom-emoji"),{useInstanceV1Query:useInstanceV1Query}=require("../../../lib/query");module.exports=function(){const e=useShortcode(),{data:t}=useInstanceV1Query(),u=React.useMemo((()=>{var e,u,o;return null!==(o=null===(u=null===(e=null==t?void 0:t.configuration)||void 0===e?void 0:e.emojis)||void 0===u?void 0:u.emoji_size_limit)&&void 0!==o?o:51200}),[t]),o=useFileInput("image",{withPreview:!0,maxSize:u}),i=useComboBoxInput("category"),[a,l]=useFormSubmit({shortcode:e,image:o,category:i},useAddEmojiMutation());React.useEffect((()=>{if(0==e.value.length&&null!=o.value){let[t,u]=o.value.name.split(".");e.setter(t)}}),[o.value]);let n=`:${e.value}:`;return null!=o.previewValue&&(n=React.createElement("img",{className:"emoji",src:o.previewValue,title:`:${e.value}:`,alt:e.value})),React.createElement("div",null,React.createElement("h2",null,"Add new custom emoji"),React.createElement(FakeToot,null,"Look at this new custom emoji ",n," isn't it cool?"),React.createElement("form",{onSubmit:a,className:"form-flex"},React.createElement(FileInput,{field:o,accept:"image/png,image/gif"}),React.createElement(TextInput,{field:e,label:"Shortcode, must be unique among the instance's local emoji"}),React.createElement(CategorySelect,{field:i}),React.createElement(MutationButton,{label:"Upload emoji",result:l})))};
+},{"../../../components/error":270,"../../../components/fake-toot":272,"../../../components/form/inputs":273,"../../../components/form/mutation-button":274,"../../../components/loading":276,"../../../lib/form":287,"../../../lib/form/form-with-data":285,"../../../lib/form/submit":289,"../../../lib/navigation/util":293,"../../../lib/query/admin/custom-emoji":294,"../category-select":252,"react":146,"wouter":234}],255:[function(require,module,exports){
+"use strict";const React=require("react"),{useFileInput:useFileInput,useComboBoxInput:useComboBoxInput}=require("../../../lib/form"),useShortcode=require("./use-shortcode"),useFormSubmit=require("../../../lib/form/submit").default,{TextInput:TextInput,FileInput:FileInput}=require("../../../components/form/inputs"),{CategorySelect:CategorySelect}=require("../category-select"),FakeToot=require("../../../components/fake-toot"),MutationButton=require("../../../components/form/mutation-button"),{useAddEmojiMutation:useAddEmojiMutation}=require("../../../lib/query/admin/custom-emoji"),{useInstanceV1Query:useInstanceV1Query}=require("../../../lib/query");module.exports=function(){const e=useShortcode(),{data:t}=useInstanceV1Query(),u=React.useMemo((()=>{var e,u,o;return null!==(o=null===(u=null===(e=null==t?void 0:t.configuration)||void 0===e?void 0:e.emojis)||void 0===u?void 0:u.emoji_size_limit)&&void 0!==o?o:51200}),[t]),o=useFileInput("image",{withPreview:!0,maxSize:u}),i=useComboBoxInput("category"),[a,l]=useFormSubmit({shortcode:e,image:o,category:i},useAddEmojiMutation());React.useEffect((()=>{if(0==e.value.length&&null!=o.value){let[t,u]=o.value.name.split(".");e.setter(t)}}),[o.value]);let n=`:${e.value}:`;return null!=o.previewValue&&(n=React.createElement("img",{className:"emoji",src:o.previewValue,title:`:${e.value}:`,alt:e.value})),React.createElement("div",null,React.createElement("h2",null,"Add new custom emoji"),React.createElement(FakeToot,null,"Look at this new custom emoji ",n," isn't it cool?"),React.createElement("form",{onSubmit:a,className:"form-flex"},React.createElement(FileInput,{field:o,accept:"image/png,image/gif,image/webp"}),React.createElement(TextInput,{field:e,label:"Shortcode, must be unique among the instance's local emoji"}),React.createElement(CategorySelect,{field:i}),React.createElement(MutationButton,{label:"Upload emoji",result:l})))};
 
-},{"../../../components/fake-toot":272,"../../../components/form/inputs":273,"../../../components/form/mutation-button":274,"../../../lib/form":286,"../../../lib/form/submit":288,"../../../lib/query":302,"../../../lib/query/admin/custom-emoji":293,"../category-select":252,"./use-shortcode":257,"react":146}],256:[function(require,module,exports){
-"use strict";const React=require("react"),{Link:Link}=require("wouter"),syncpipe=require("syncpipe"),{matchSorter:matchSorter}=require("match-sorter"),NewEmojiForm=require("./new-emoji"),{useTextInput:useTextInput}=require("../../../lib/form"),{useEmojiByCategory:useEmojiByCategory}=require("../category-select"),{useBaseUrl:useBaseUrl}=require("../../../lib/navigation/util"),Loading=require("../../../components/loading"),{Error:Error}=require("../../../components/error"),{TextInput:TextInput}=require("../../../components/form/inputs"),{useListEmojiQuery:useListEmojiQuery}=require("../../../lib/query/admin/custom-emoji");function EmojiList(e){let{emoji:t}=e;const r=useTextInput("filter"),a=r.value,o=useEmojiByCategory(t),{filteredEmoji:n,hidden:l}=React.useMemo((()=>{let e=t.length;return{filteredEmoji:syncpipe(o,[e=>Object.entries(o),t=>t.map((t=>{let[r,o]=t,n=matchSorter(o,a,{keys:["shortcode"]});return 0==n.length?null:(e-=n.length,[r,n])})),e=>e.filter((e=>null!==e))]),hidden:e}}),[a,o,t.length]);return React.createElement("div",null,React.createElement("h2",null,"Overview"),t.length>0?React.createElement("span",null,t.length," custom emoji ",l>0&&`(${l} filtered)`):React.createElement("span",null,"No custom emoji yet, you can add one below."),React.createElement("div",{className:"list emoji-list"},React.createElement("div",{className:"header"},React.createElement(TextInput,{field:r,name:"emoji-shortcode",placeholder:"Search"})),React.createElement("div",{className:"entries scrolling"},n.length>0?React.createElement("div",{className:"entries scrolling"},n.map((e=>{let[t,r]=e;return React.createElement(EmojiCategory,{key:t,category:t,entries:r})}))):React.createElement("div",{className:"entry"},"No local emoji matched your filter."))))}function EmojiCategory(e){let{category:t,entries:r}=e;const a=useBaseUrl();return React.createElement("div",{className:"entry"},React.createElement("b",null,t),React.createElement("div",{className:"emoji-group"},r.map((e=>React.createElement(Link,{key:e.id,to:`${a}/${e.id}`},React.createElement("a",null,React.createElement("img",{src:e.url,alt:e.shortcode,title:`:${e.shortcode}:`})))))))}module.exports=function(e){let{}=e;const{data:t=[],isLoading:r,isError:a,error:o}=useListEmojiQuery({filter:"domain:local"});let n=null;return n=r?React.createElement(Loading,null):a?React.createElement(Error,{error:o}):React.createElement(React.Fragment,null,React.createElement(EmojiList,{emoji:t}),React.createElement(NewEmojiForm,{emoji:t})),React.createElement(React.Fragment,null,React.createElement("h1",null,"Local Custom Emoji"),React.createElement("p",null,"To use custom emoji in your toots they have to be 'local' to the instance. You can either upload them here directly, or copy from those already present on other (known) instances through the ",React.createElement(Link,{to:"./remote"},"Remote Emoji")," page."),n)};
+},{"../../../components/fake-toot":272,"../../../components/form/inputs":273,"../../../components/form/mutation-button":274,"../../../lib/form":287,"../../../lib/form/submit":289,"../../../lib/query":303,"../../../lib/query/admin/custom-emoji":294,"../category-select":252,"./use-shortcode":257,"react":146}],256:[function(require,module,exports){
+"use strict";const React=require("react"),{Link:Link}=require("wouter"),syncpipe=require("syncpipe"),{matchSorter:matchSorter}=require("match-sorter"),NewEmojiForm=require("./new-emoji"),{useTextInput:useTextInput}=require("../../../lib/form"),{useEmojiByCategory:useEmojiByCategory}=require("../category-select"),{useBaseUrl:useBaseUrl}=require("../../../lib/navigation/util"),Loading=require("../../../components/loading"),{Error:Error}=require("../../../components/error"),{TextInput:TextInput}=require("../../../components/form/inputs"),{useListEmojiQuery:useListEmojiQuery}=require("../../../lib/query/admin/custom-emoji");function EmojiList(e){let{emoji:t}=e;const r=useTextInput("filter"),a=r.value,o=useEmojiByCategory(t),{filteredEmoji:n,hidden:l}=React.useMemo((()=>{let e=t.length;return{filteredEmoji:syncpipe(o,[e=>Object.entries(o),t=>t.map((t=>{let[r,o]=t,n=matchSorter(o,a,{keys:["shortcode"]});return 0==n.length?null:(e-=n.length,[r,n])})),e=>e.filter((e=>null!==e))]),hidden:e}}),[a,o,t.length]);return React.createElement("div",null,React.createElement("h2",null,"Overview"),t.length>0?React.createElement("span",null,t.length," custom emoji ",l>0&&`(${l} filtered)`):React.createElement("span",null,"No custom emoji yet, you can add one below."),React.createElement("div",{className:"list emoji-list"},React.createElement("div",{className:"header"},React.createElement(TextInput,{field:r,name:"emoji-shortcode",placeholder:"Search"})),React.createElement("div",{className:"entries scrolling"},n.length>0?React.createElement("div",{className:"entries scrolling"},n.map((e=>{let[t,r]=e;return React.createElement(EmojiCategory,{key:t,category:t,entries:r})}))):React.createElement("div",{className:"entry"},"No local emoji matched your filter."))))}function EmojiCategory(e){let{category:t,entries:r}=e;const a=useBaseUrl();return React.createElement("div",{className:"entry"},React.createElement("b",null,t),React.createElement("div",{className:"emoji-group"},r.map((e=>React.createElement(Link,{key:e.id,to:`${a}/${e.id}`},React.createElement("a",null,React.createElement("img",{src:e.url,alt:e.shortcode,title:`:${e.shortcode}:`})))))))}module.exports=function(e){let{}=e;const{data:t=[],isLoading:r,isError:a,error:o}=useListEmojiQuery({filter:"domain:local"});let n=null;return n=r?React.createElement(Loading,null):a?React.createElement(Error,{error:o}):React.createElement(React.Fragment,null,React.createElement(EmojiList,{emoji:t}),React.createElement(NewEmojiForm,{emoji:t})),React.createElement(React.Fragment,null,React.createElement("h1",null,"Local Custom Emoji"),React.createElement("p",null,"To use custom emoji in your toots they have to be 'local' to the instance. You can either upload them here directly, or copy from those already present on other (known) instances through the ",React.createElement(Link,{to:"./remote"},"Remote Emoji")," page."),React.createElement("p",null,React.createElement("strong",null,"Be warned!")," If you upload more than about 300-400 custom emojis in total on your instance, this may lead to rate-limiting issues for users and clients if they try to load all the emoji images at once (which is what many clients do)."),n)};
 
-},{"../../../components/error":270,"../../../components/form/inputs":273,"../../../components/loading":276,"../../../lib/form":286,"../../../lib/navigation/util":292,"../../../lib/query/admin/custom-emoji":293,"../category-select":252,"./new-emoji":255,"match-sorter":97,"react":146,"syncpipe":177,"wouter":234}],254:[function(require,module,exports){
+},{"../../../components/error":270,"../../../components/form/inputs":273,"../../../components/loading":276,"../../../lib/form":287,"../../../lib/navigation/util":293,"../../../lib/query/admin/custom-emoji":294,"../category-select":252,"./new-emoji":255,"match-sorter":97,"react":146,"syncpipe":177,"wouter":234}],254:[function(require,module,exports){
 "use strict";const React=require("react"),{Switch:Switch,Route:Route}=require("wouter"),EmojiOverview=require("./overview"),EmojiDetail=require("./detail");module.exports=function(e){let{baseUrl:t}=e;return React.createElement(Switch,null,React.createElement(Route,{path:`${t}/:emojiId`},React.createElement(EmojiDetail,null)),React.createElement(EmojiOverview,null))};
 
-},{"./detail":253,"./overview":256,"react":146,"wouter":234}],316:[function(require,module,exports){
-"use strict";const React=require("react"),ReactDom=require("react-dom/client"),{Provider:Provider}=require("react-redux"),{PersistGate:PersistGate}=require("redux-persist/integration/react"),{store:store,persistor:persistor}=require("./redux/store"),{createNavigation:createNavigation,Menu:Menu,Item:Item}=require("./lib/navigation"),{Authorization:Authorization}=require("./components/authorization"),Loading=require("./components/loading"),UserLogoutCard=require("./components/user-logout-card"),{RoleContext:RoleContext}=require("./lib/navigation/util"),DomainPerms=require("./admin/domain-permissions").default,DomainPermsImportExport=require("./admin/domain-permissions/import-export").default;require("./style.css");const{Sidebar:Sidebar,ViewRouter:ViewRouter}=createNavigation("/settings",[Menu("User",[Item("Profile",{icon:"fa-user"},require("./user/profile")),Item("Settings",{icon:"fa-cogs"},require("./user/settings"))]),Menu("Moderation",{url:"admin",permissions:["admin"]},[Item("Reports",{icon:"fa-flag",wildcard:!0},require("./admin/reports")),Item("Accounts",{icon:"fa-users",wildcard:!0},require("./admin/accounts")),Menu("Domain Permissions",{icon:"fa-hubzilla"},[Item("Blocks",{icon:"fa-close",url:"block",wildcard:!0},DomainPerms),Item("Allows",{icon:"fa-check",url:"allow",wildcard:!0},DomainPerms),Item("Import/Export",{icon:"fa-floppy-o",url:"import-export",wildcard:!0},DomainPermsImportExport)])]),Menu("Administration",{url:"admin",defaultUrl:"/settings/admin/settings",permissions:["admin"]},[Menu("Actions",{icon:"fa-bolt"},[Item("Media",{icon:"fa-photo"},require("./admin/actions/media")),Item("Keys",{icon:"fa-key-modern"},require("./admin/actions/keys"))]),Menu("Custom Emoji",{icon:"fa-smile-o"},[Item("Local",{icon:"fa-home",wildcard:!0},require("./admin/emoji/local")),Item("Remote",{icon:"fa-cloud"},require("./admin/emoji/remote"))]),Menu("Settings",{icon:"fa-sliders"},[Item("Settings",{icon:"fa-sliders",url:""},require("./admin/settings")),Item("Rules",{icon:"fa-dot-circle-o",wildcard:!0},require("./admin/settings/rules"))])])]);function App(e){let{account:t}=e;const r=[t.role.name];return React.createElement(RoleContext.Provider,{value:r},React.createElement("div",{className:"sidebar"},React.createElement(UserLogoutCard,null),React.createElement(Sidebar,null)),React.createElement("section",{className:"with-sidebar"},React.createElement(ViewRouter,null)))}function Main(){return React.createElement(Provider,{store:store},React.createElement(PersistGate,{loading:React.createElement("section",null,React.createElement(Loading,null)),persistor:persistor},React.createElement(Authorization,{App:App})))}const root=ReactDom.createRoot(document.getElementById("root"));root.render(React.createElement(React.StrictMode,null,React.createElement(Main,null)));
+},{"./detail":253,"./overview":256,"react":146,"wouter":234}],318:[function(require,module,exports){
+"use strict";const React=require("react"),ReactDom=require("react-dom/client"),{Provider:Provider}=require("react-redux"),{PersistGate:PersistGate}=require("redux-persist/integration/react"),{store:store,persistor:persistor}=require("./redux/store"),{createNavigation:createNavigation,Menu:Menu,Item:Item}=require("./lib/navigation"),{Authorization:Authorization}=require("./components/authorization"),Loading=require("./components/loading"),UserLogoutCard=require("./components/user-logout-card"),{RoleContext:RoleContext}=require("./lib/navigation/util"),UserProfile=require("./user/profile").default,UserSettings=require("./user/settings").default,UserMigration=require("./user/migration").default,DomainPerms=require("./admin/domain-permissions").default,DomainPermsImportExport=require("./admin/domain-permissions/import-export").default,InstanceSettings=require("./admin/settings").default;require("./style.css");const{Sidebar:Sidebar,ViewRouter:ViewRouter}=createNavigation("/settings",[Menu("User",[Item("Profile",{icon:"fa-user"},UserProfile),Item("Settings",{icon:"fa-cogs"},UserSettings),Item("Migration",{icon:"fa-exchange"},UserMigration)]),Menu("Moderation",{url:"admin",permissions:["admin"]},[Item("Reports",{icon:"fa-flag",wildcard:!0},require("./admin/reports")),Item("Accounts",{icon:"fa-users",wildcard:!0},require("./admin/accounts")),Menu("Domain Permissions",{icon:"fa-hubzilla"},[Item("Blocks",{icon:"fa-close",url:"block",wildcard:!0},DomainPerms),Item("Allows",{icon:"fa-check",url:"allow",wildcard:!0},DomainPerms),Item("Import/Export",{icon:"fa-floppy-o",url:"import-export",wildcard:!0},DomainPermsImportExport)])]),Menu("Administration",{url:"admin",defaultUrl:"/settings/admin/settings",permissions:["admin"]},[Menu("Actions",{icon:"fa-bolt"},[Item("Media",{icon:"fa-photo"},require("./admin/actions/media")),Item("Keys",{icon:"fa-key-modern"},require("./admin/actions/keys"))]),Menu("Custom Emoji",{icon:"fa-smile-o"},[Item("Local",{icon:"fa-home",wildcard:!0},require("./admin/emoji/local")),Item("Remote",{icon:"fa-cloud"},require("./admin/emoji/remote"))]),Menu("Settings",{icon:"fa-sliders"},[Item("Settings",{icon:"fa-sliders",url:""},InstanceSettings),Item("Rules",{icon:"fa-dot-circle-o",wildcard:!0},require("./admin/settings/rules"))])])]);function App(e){let{account:t}=e;const r=[t.role.name];return React.createElement(RoleContext.Provider,{value:r},React.createElement("div",{className:"sidebar"},React.createElement(UserLogoutCard,null),React.createElement(Sidebar,null)),React.createElement("section",{className:"with-sidebar"},React.createElement(ViewRouter,null)))}function Main(){return React.createElement(Provider,{store:store},React.createElement(PersistGate,{loading:React.createElement("section",null,React.createElement(Loading,null)),persistor:persistor},React.createElement(Authorization,{App:App})))}const root=ReactDom.createRoot(document.getElementById("root"));root.render(React.createElement(React.StrictMode,null,React.createElement(Main,null)));
 
-},{"./admin/accounts":240,"./admin/actions/keys":242,"./admin/actions/media":244,"./admin/domain-permissions":249,"./admin/domain-permissions/import-export":248,"./admin/emoji/local":254,"./admin/emoji/remote":258,"./admin/reports":261,"./admin/settings":263,"./admin/settings/rules":264,"./components/authorization":265,"./components/loading":276,"./components/user-logout-card":277,"./lib/navigation":291,"./lib/navigation/util":292,"./redux/store":312,"./style.css":313,"./user/profile":314,"./user/settings":315,"react":146,"react-dom/client":109,"react-redux":129,"redux-persist/integration/react":154}],86:[function(require,module,exports){
+},{"./admin/accounts":240,"./admin/actions/keys":242,"./admin/actions/media":244,"./admin/domain-permissions":249,"./admin/domain-permissions/import-export":248,"./admin/emoji/local":254,"./admin/emoji/remote":258,"./admin/reports":261,"./admin/settings":263,"./admin/settings/rules":264,"./components/authorization":265,"./components/loading":276,"./components/user-logout-card":277,"./lib/navigation":292,"./lib/navigation/util":293,"./redux/store":313,"./style.css":314,"./user/migration":315,"./user/profile":316,"./user/settings":317,"react":146,"react-dom/client":109,"react-redux":129,"redux-persist/integration/react":154}],86:[function(require,module,exports){
 "use strict";null;
 
-},{"insert-css":90}]},{},[316]);
+},{"insert-css":90}]},{},[318]);

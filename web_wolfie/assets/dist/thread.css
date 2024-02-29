@@ -18,8 +18,44 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-.thread #tag-name {
-        /* Ensure ridiculous length tags get wrapped */
-        word-wrap: anywhere; 
-    }
+.thread {
+	display: flex;
+	flex-direction: column;
+	gap: 0.4rem;
+}
+
+/*
+		This column header might contain
+		quite some info, so let it wrap.
+	*/
+
+.thread .col-header {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		column-gap: 1rem;
+		row-gap: 0.5rem;
+
+		box-shadow: var(--boxshadow);
+		border: var(--boxshadow-border);
+	}
+
+.thread .col-header h2 {
+			margin-right: auto;
+		}
+
+.thread .status {
+		border-radius: 0;
+	}
+
+.thread .status:last-child {
+			border-bottom-left-radius: var(--br);
+			border-bottom-right-radius: var(--br);
+		}
+
+.thread .status:last-child .status-info {
+				border-bottom-left-radius: var(--br);
+				border-bottom-right-radius: var(--br);
+			}
+
 

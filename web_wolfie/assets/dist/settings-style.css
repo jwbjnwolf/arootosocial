@@ -22,27 +22,16 @@ body {
 	grid-template-rows: auto 1fr;
 }
 
-.content {
+.page-content {
 	grid-column: 1 / span 3; /* stretch entire width, to fit panel + sidebar nav */
 	width: 100%;
 }
 
-header {
-	justify-content: start;
+/* Don't inherit orange dot from base.css. */
+
+ul li::before {
+	content: initial;
 }
-
-header a {
-		margin: 1.5rem;
-		gap: 1rem;
-	}
-
-header a h1 {
-			font-size: 1.5rem;
-		}
-
-header a img {
-			height: 3rem;
-		}
 
 #root {
 	box-sizing: border-box;
@@ -67,7 +56,8 @@ header a img {
 		max-width: 100%;
 	}
 
-#root section.with-sidebar > div, #root section.with-sidebar > form {
+#root section.with-sidebar > div,
+		#root section.with-sidebar > form {
 			border-left: 0.2rem solid var(--border-accent);
 			padding-left: 0.4rem;
 			display: flex;
@@ -76,13 +66,14 @@ header a img {
 			margin: 1rem 0;
 		}
 
-#root section.with-sidebar > div h2, #root section.with-sidebar > form h2 {
+#root section.with-sidebar > div h1, #root section.with-sidebar > div h2, #root section.with-sidebar > form h1, #root section.with-sidebar > form h2 {
 				margin: 0;
 				margin-top: 0.1rem;
 			}
 
 #root section.with-sidebar > div:only-child, #root section.with-sidebar > form:only-child {
 				border-left: none;
+				padding-left: none;
 			}
 
 #root section.with-sidebar > div:first-child, #root section.with-sidebar > form:first-child {
@@ -93,7 +84,10 @@ header a img {
 				margin-bottom: 0;
 			}
 
-#root section.with-sidebar > div.without-border, #root section.with-sidebar > form.without-border {
+#root section.with-sidebar > div.without-border,
+			#root section.with-sidebar > div .without-border,
+			#root section.with-sidebar > form.without-border,
+			#root section.with-sidebar > form .without-border {
 				border-left: 0;
 				padding-left: 0;
 			}
@@ -401,22 +395,42 @@ section.with-sidebar > div .titlesave, section.with-sidebar > form .titlesave {
 	gap: 1rem;
 }
 
-.file-upload > div {
-	display: flex;
-	gap: 1rem;
+.file-upload .file-upload-with-preview {
+		display: flex;
+		gap: 1rem;
+	}
+
+.file-upload .file-upload-with-preview img {
+			height: 8rem;
+			border: 0.2rem solid var(--border-accent);
+		}
+
+.file-upload .file-upload-with-preview img.avatar {
+			width: 8rem;
+		}
+
+.file-upload .file-upload-with-preview img.header {
+			width: 24rem;
+		}
+
+.file-upload .file-input-with-image-description {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-around;
+	}
+
+/*
+	Normalize mock profile and make profile
+	header preview pop a bit nicer.
+*/
+
+.profile {
+	padding: 0;
 }
 
-.file-upload > div img {
-		height: 8rem;
-		border: 0.2rem solid var(--border-accent);
-	}
-
-.file-upload > div img.avatar {
-		width: 8rem;
-	}
-
-.file-upload > div img.header {
-		width: 24rem;
+.profile > .profile-header {
+		margin-bottom: 0;
+		border: 0.1rem solid var(--gray1);
 	}
 
 .user-profile .overview {
@@ -426,14 +440,6 @@ section.with-sidebar > div .titlesave, section.with-sidebar > form .titlesave {
 		grid-template-rows: 100%;
 		gap: 1rem;
 	}
-
-.user-profile .overview .profile {
-			padding: 0;
-		}
-
-.user-profile .overview .profile .header {
-				border: 0.1rem solid var(--gray1);
-			}
 
 .user-profile .overview .files {
 			width: 100%;
@@ -457,6 +463,35 @@ section.with-sidebar > div .titlesave, section.with-sidebar > form .titlesave {
 			display: flex;
 			gap: 0.5rem;
 		}
+
+.migration-details {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+
+	background-color: var(--gray2);
+	padding: 1rem;
+	max-width: -moz-fit-content;
+	max-width: fit-content;
+	border-radius: var(--br);
+}
+
+.migration-details > div {
+		display: flex;
+		flex-direction: column;
+		gap: 0.25rem;
+	}
+
+.migration-details > div > dd {
+			font-weight: bold;
+			word-wrap: anywhere;
+		}
+
+.user-migration-alias .aliases {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+	}
 
 form {
 	display: flex;
@@ -984,7 +1019,7 @@ button.with-padding {
 			gap: 0.5rem;
 		}
 
-.reports .report .byline .status {
+.reports .report .byline .report-status {
 				color: var(--border-accent);
 			}
 
@@ -1006,7 +1041,7 @@ button.with-padding {
 			border-left: 0.4rem solid var(--bg);
 		}
 
-.reports .report.resolved .byline .status {
+.reports .report.resolved .byline .report-status {
 				color: var(--fg-reduced);
 			}
 
@@ -1113,12 +1148,63 @@ button.with-padding {
 		gap: 0.5rem;
 	}
 
+.instance-rules {
+	list-style-position: inside;
+	margin: 0;
+	padding: 0;
+}
+
+.instance-rules a.rule {
+		display: grid;
+		grid-template-columns: 1fr auto;
+		align-items: center;
+		color: var(--fg);
+		text-decoration: none;
+		background: var(--status-bg);
+		padding: 1rem;
+		margin: 0.5rem 0;
+		border-radius: var(--br);
+		line-height: 2rem;
+		position: relative;
+	}
+
+.instance-rules a.rule:hover {
+			color: var(--fg-accent);
+		}
+
+.instance-rules a.rule:hover .edit-icon {
+				display: inline;
+			}
+
+.instance-rules a.rule .edit-icon {
+			display: none;
+			font-size: 1rem;
+			line-height: 1.5rem;
+		}
+
+.instance-rules a.rule li {
+			font-size: 1.75rem;
+			padding: 0;
+			margin: 0;
+		}
+
+.instance-rules a.rule li h2 {
+				margin: 0;
+				margin-top: 0 !important;
+				display: inline-block;
+				font-size: 1.5rem;
+			}
+
+.instance-rules a.rule span {
+			color: var(--fg-reduced);
+		}
+
 @media screen and (orientation: portrait) {
 	.reports .report .byline {
 		grid-template-columns: 1fr;
 	}
 
-		.reports .report .byline .status {
+		.reports .report .byline .report-status {
 			grid-row: 1;
 		}
 }
@@ -1135,5 +1221,16 @@ button.with-padding {
 		opacity: 0;
 	}
 }
+
+@media (prefers-reduced-motion) {
+	.fa-spin {
+		animation: none;
+	}
+}
+
+.monospace {
+	font-family: monospace;
+}
+
 
 
