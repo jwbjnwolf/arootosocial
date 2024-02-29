@@ -18,8 +18,19 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-.thread #tag-name {
-        /* Ensure ridiculous length tags get wrapped */
-        word-wrap: anywhere; 
-    }
+.about {
+	display: flex;
+	flex-direction: column;
+	gap: 2rem;
+	padding: 2rem;
+
+	background: var(--bg-accent);
+	box-shadow: var(--boxshadow);
+	border: var(--boxshadow-border);
+	border-radius: var(--br);
+}
+
+.about .about-section h1, .about .about-section h2, .about .about-section h3, .about .about-section h4, .about .about-section h5 {
+			margin-top: 0;
+		}
 

@@ -2,7 +2,8 @@
 @charset "UTF-8";
 /*
 	GoToSocial
-	Copyright (C) 2021-2023 GoToSocial Authors admin@gotosocial.org
+	Copyright (C) GoToSocial Authors admin@gotosocial.org
+	SPDX-License-Identifier: AGPL-3.0-or-later
 
 	This program is free software: you can redistribute it and/or modify
 	it under the terms of the GNU Affero General Public License as published by
@@ -598,107 +599,110 @@ main {
 	background: transparent;
 	grid-auto-rows: auto;
 }
-.thread {
-	display: flex;
-	flex-direction: column;
-	border-radius: var(--br);
-}
-.toot {
-	background: var(--toot-bg);
+.status {
+	background: var(--status-bg);
 	box-shadow: var(--boxshadow);
 	border: var(--boxshadow-border);
 	border-radius: var(--br);
 	position: relative;
-	margin-bottom: var(--br);
 	padding-top: 0.75rem;
 }
-.toot a {
+.status a {
 		position: relative;
 		z-index: 1;
 		color: inherit;
 		text-decoration: none;
 	}
-.toot .author > a {
-		padding: 0 0.75rem;
-		display: grid;
-		grid-template-columns: 3.5rem 1fr auto;
-		grid-template-rows: auto auto;
-		grid-template-areas:
-			"avatar display date"
-			"avatar user .";
-		gap: 0 0.5rem;
+.status .status-header > address {
+		/*
+			Avoid stretching so wide that user
+			can't click on open thread link that's
+			behind the status header link.
+		*/
+		width: -moz-fit-content;
+		width: fit-content;
 	}
-.toot .author > a .avatar {
-			grid-area: avatar;
-			height: 3.5rem;
-			width: 3.5rem;
-			-o-object-fit: cover;
-			   object-fit: cover;
-
-			border: 0.15rem solid var(--avatar-border);
-			border-radius: var(--br);
-			overflow: hidden;
+.status .status-header > address > a {
+			padding: 0 0.75rem;
+			display: grid;
+			grid-template-columns: 3.5rem 1fr auto;
+			grid-template-rows: auto auto;
+			grid-template-areas:
+				"avatar author-strap author-strap"
+				"avatar author-strap author-strap";
+			gap: 0 0.5rem;
+			font-style: normal;
 		}
-/* hides corners from img overflowing */
-.toot .author > a .avatar img {
-				height: 100%;
-				width: 100%;
+.status .status-header > address > a .avatar {
+				grid-area: avatar;
+				height: 3.5rem;
+				width: 3.5rem;
 				-o-object-fit: cover;
 				   object-fit: cover;
-				background: var(--bg);
+	
+				border: 0.15rem solid var(--avatar-border);
+				border-radius: var(--br);
+				overflow: hidden;
 			}
-.toot .author > a .displayname, .toot .author > a .username {
-			justify-self: start;
-			align-self: start;
-		
-			max-width: 100%;
-			white-space: nowrap;
-			overflow: hidden;
-			text-overflow: ellipsis;
-		}
-.toot .author > a .displayname {
-			grid-area: display;
-			font-weight: bold;
-			font-size: 1rem;
-			line-height: 1.3rem;
-			/* margin-top: -0.5rem; */
-		}
-.toot .author > a .username {
-			grid-area: user;
-			color: var(--link-fg);
-			font-size: 1rem;
-			line-height: 1.3rem;
-		}
-.toot .author > a .timestamp {
-			grid-area: date;
-			color: var(--fg-reduced);
-		}
-.toot .body {
+/* hides corners from img overflowing */
+.status .status-header > address > a .avatar img {
+					height: 100%;
+					width: 100%;
+					-o-object-fit: cover;
+					   object-fit: cover;
+					background: var(--bg);
+				}
+.status .status-header > address > a .author-strap {
+				grid-area: author-strap;
+				display: grid;
+				grid-template-columns: 1fr auto;
+				grid-template-rows: auto;
+				grid-template-areas:
+					"display display"
+					"user    user";
+				gap: 0 0.5rem;
+			}
+.status .status-header > address > a .author-strap .displayname, .status .status-header > address > a .author-strap .username {
+					justify-self: start;
+					align-self: start;
+					max-width: 100%;
+					font-size: 1rem;
+					line-height: 1.3rem;
+				}
+.status .status-header > address > a .author-strap .displayname {
+					grid-area: display;
+					font-weight: bold;
+				}
+.status .status-header > address > a .author-strap .username {
+					grid-area: user;
+					color: var(--link-fg);
+				}
+.status .status-body {
 		padding: 0.5rem 0.75rem;
 		display: flex;
 		flex-direction: column;
 		gap: 0.5rem;
 	}
-.toot .text-spoiler > summary, .toot .text {
+.status .text-spoiler > summary, .status .text {
 		position: relative;
 		z-index: 2;
 	}
-.toot .text-spoiler > summary {
+.status .text-spoiler > summary {
 		display: inline-block;
 		list-style: none;
 
 		padding-bottom: 0.5rem;
 	}
-.toot .text-spoiler > summary::-webkit-details-marker {
+.status .text-spoiler > summary::-webkit-details-marker {
 			display: none; /* Safari */
 		}
-.toot .text-spoiler > summary .button {
+.status .text-spoiler > summary .button {
 			white-space: nowrap;
 			cursor: pointer;
 			padding: 0.2rem 0.3rem;
 			font-size: 1rem;
 		}
-.toot .text {
+.status .text {
 		margin: 0;
 		grid-row: span 1;
 		grid-column: 1 / span 3;
@@ -709,86 +713,52 @@ main {
 
 		width: 100%;
 	}
-.toot .text a {
+.status .text a {
 			color: var(--link-fg);
 			text-decoration: underline;
 		}
-.toot .text .content {
+.status .text .content {
 			word-break: break-word;
 			line-height: 1.6rem;
 			width: 100%;
 		}
-.toot .text .content h1 {
+/*
+				Normalize header sizes to fit better
+				with the line-height we use for statuses.
+			*/
+.status .text .content h1 {
 				margin: 0;
 				font-size: 1.8rem;
 				line-height: initial;
 			}
-.toot .text .content h2 {
+.status .text .content h2 {
 				margin: 0;
 				font-size: 1.6rem;
 				line-height: initial;
 			}
-.toot .text .content h3 {
+.status .text .content h3 {
 				margin: 0;
 				font-size: 1.4rem;
 				line-height: initial;
 			}
-.toot .text .content h4 {
+.status .text .content h4 {
 				margin: 0;
 				font-size: 1.2rem;
 				line-height: initial;
 			}
-.toot .text .content h5 {
+.status .text .content h5 {
 				margin: 0;
 				font-size: 1rem;
 				line-height: initial;
 			}
-.toot .text .content blockquote {
-				padding: 0.5rem 0 0.5rem 0.5rem;
-				border-left: 0.2rem solid var(--border-accent);
-				margin: 0;
-				font-style: italic;
-			}
-.toot .text .content hr {
-				border: 1px dashed var(--border-accent);
-			}
-.toot .text .content pre, .toot .text .content code {
-				background-color: var(--gray2);
-			}
-.toot .text .content code {
-				padding: 0.25rem;
-				border-radius: var(--br-inner);
-			}
-.toot .text .content pre {
-				display: flex;
-				border-radius: var(--br);
-				padding: 0.5rem;
-			}
-.toot .text .content pre code {	
-					padding: 0.5rem;
-					white-space: pre;
-					border-radius: 0;
-					overflow-x: auto;
-					-webkit-overflow-scrolling: touch;
-				}
-.toot .text .content img {
+.status .text .content img {
 				max-width: 100%;
 				margin: 5px auto;
 			}
-.toot .text .content img[alt~="!center"] {
+.status .text .content img[alt~="!center"] {
 				display: block;
 			}
-.toot .text .emoji {
-			transition: 0.1s;
-		}
-.toot .text .emoji:hover, .toot .text .emoji:active {
-			transform: scale(2);
-			background-color: var(--bg);
-			box-shadow: var(--boxshadow);
-			border: var(--boxshadow-border);
-			border-radius: var(--br-inner);
-		}
-.toot .text .poll {
+.status .text .poll {
 			background-color: var(--gray2);
 			z-index: 2;
 			
@@ -799,31 +769,31 @@ main {
 			margin: 0;
 			gap: 1rem;
 		}
-.toot .text .poll .poll-options {
+.status .text .poll .poll-options {
 				margin: 0;
 				padding: 0;
 				display: flex;
 				flex-direction: column;
 				gap: 1rem;
 			}
-.toot .text .poll .poll-options .poll-option {
+.status .text .poll .poll-options .poll-option {
 					display: flex;
 					flex-direction: column;
 					gap: 0.1rem;
 				}
-.toot .text .poll .poll-options .poll-option label {
+.status .text .poll .poll-options .poll-option label {
 						cursor: default;
 					}
-.toot .text .poll .poll-options .poll-option meter {
+.status .text .poll .poll-options .poll-option meter {
 						width: 100%;
 					}
-.toot .text .poll .poll-options .poll-option .poll-vote-summary {
+.status .text .poll .poll-options .poll-option .poll-vote-summary {
 						display: flex;
 						flex-wrap: wrap;
 						justify-content: space-between;
 						white-space: nowrap;
 					}
-.toot .text .poll .poll-info {
+.status .text .poll .poll-info {
 				background-color: var(--gray4);
 				display: flex;
 				flex-wrap: wrap;
@@ -832,20 +802,20 @@ main {
 				padding: 0.25rem;
 				gap: 0.25rem;
 			}
-.toot .text .poll .poll-info span {
+.status .text .poll .poll-info span {
 					justify-self: center;
 					white-space: nowrap;
 					overflow: hidden;
 					text-overflow: ellipsis;
 				}
-.toot .media {
+.status .media {
 		grid-column: span 3;
 		display: grid;
 		grid-template-columns: 50% 50%;
 		grid-auto-rows: 10rem;
 		overflow: hidden;
 	}
-.toot .media .media-wrapper {
+.status .media .media-wrapper {
 			height: 100%;
 			width: 100%;
 			box-sizing: border-box;
@@ -855,26 +825,26 @@ main {
 			overflow: hidden;
 			z-index: 2;
 		}
-.toot .media .media-wrapper details {
+.status .media .media-wrapper details {
 				position: absolute;
 				height: 100%;
 				width: 100%;
 			}
-.toot .media .media-wrapper details[open] summary {
+.status .media .media-wrapper details[open] summary {
 					height: auto;
 					width: auto;
 					margin: 1rem;
 					padding: 0;
 				}
-.toot .media .media-wrapper details[open] summary .show, .toot .media .media-wrapper details[open] summary video, .toot .media .media-wrapper details[open] summary img {
+.status .media .media-wrapper details[open] summary .show, .status .media .media-wrapper details[open] summary video, .status .media .media-wrapper details[open] summary img {
 						display: none;
 					}
-.toot .media .media-wrapper details[open] summary .eye.button .hide {
+.status .media .media-wrapper details[open] summary .eye.button .hide {
 						display: inline-block;
 						grid-column: 1 / span 3;
 						grid-row: 1 / span 2;
 					}
-.toot .media .media-wrapper details summary {
+.status .media .media-wrapper details summary {
 					position: absolute;
 					height: 100%;
 					width: 100%;
@@ -889,28 +859,28 @@ main {
 						"eye sensitive ."
 						".   sensitive  .";
 				}
-.toot .media .media-wrapper details summary .eye.button {
+.status .media .media-wrapper details summary .eye.button {
 						grid-area: eye;
 						align-self: start;
 						justify-self: start;
 						margin: 0;
 						padding: 0.4rem;
 					}
-.toot .media .media-wrapper details summary .eye.button .fa-fw {
+.status .media .media-wrapper details summary .eye.button .fa-fw {
 							line-height: var(--fa-fw);
 						}
-.toot .media .media-wrapper details summary .eye.button .hide {
+.status .media .media-wrapper details summary .eye.button .hide {
 							display: none;
 						}
-.toot .media .media-wrapper details summary .show.sensitive {
+.status .media .media-wrapper details summary .show.sensitive {
 						grid-area: sensitive;
 						align-self: center;
 					}
-.toot .media .media-wrapper details summary .show.sensitive .button {
+.status .media .media-wrapper details summary .show.sensitive .button {
 							cursor: pointer;
 							align-self: center;
 						}
-.toot .media .media-wrapper details summary video, .toot .media .media-wrapper details summary img {
+.status .media .media-wrapper details summary video, .status .media .media-wrapper details summary img {
 						z-index: -1;
 						position: absolute;
 						height: calc(100% + 1.2rem);
@@ -919,7 +889,7 @@ main {
 						left: -0.6rem;
 						filter: blur(1.2rem);
 					}
-.toot .media .media-wrapper details video.plyr-video, .toot .media .media-wrapper details .plyr {
+.status .media .media-wrapper details video.plyr-video, .status .media .media-wrapper details .plyr {
 					position: absolute;
 					height: 100%;
 					width: 100%;
@@ -927,7 +897,7 @@ main {
 					   object-fit: contain;
 					background: var(--gray1);
 				}
-.toot .media .media-wrapper details .unknown-attachment .placeholder {
+.status .media .media-wrapper details .unknown-attachment .placeholder {
 						width: 100%;
 						height: 100%;
 						padding: 0.8rem;
@@ -940,64 +910,65 @@ main {
 
 						color: var(--white2);
 					}
-.toot .media .media-wrapper details .unknown-attachment .placeholder .placeholder-external-link {
+.status .media .media-wrapper details .unknown-attachment .placeholder .placeholder-external-link {
 							align-self: end;
 							font-size: 2.5rem;
 						}
-.toot .media .media-wrapper details .unknown-attachment .placeholder .placeholder-icon {
+.status .media .media-wrapper details .unknown-attachment .placeholder .placeholder-icon {
 							width: 100%;
 							font-size: 3.5rem;
 							text-align: center;
 							margin-top: auto;
 						}
-.toot .media .media-wrapper details .unknown-attachment .placeholder .placeholder-link-to {
+.status .media .media-wrapper details .unknown-attachment .placeholder .placeholder-link-to {
 							width: 100%;
 							text-align: center;
 							margin-bottom: auto;
 						}
-.toot .media.single .media-wrapper {
+.status .media.single .media-wrapper {
 			grid-column: span 2;
 		}
-.toot .media.odd .media-wrapper:first-child, .toot .media.double .media-wrapper {
+.status .media.odd .media-wrapper:first-child, .status .media.double .media-wrapper {
 			grid-row: span 2;
 		}
-.toot .media img {
+.status .media img {
 			width: 100%;
 			height: 100%;
 			-o-object-fit: cover;
 			   object-fit: cover;
 		}
-.toot .info {
-		display: flex;
-		background: var(--toot-info-bg);
+.status .status-info {
+		background: var(--status-info-bg);
 		color: var(--fg-reduced);
-		border-top: 0.15rem solid var(--toot-info-border);
+		border-top: 0.15rem solid var(--status-info-border);
 		padding: 0.5rem 0.75rem;
 	}
-.toot .info time {
-			padding-right: 1rem;
-		}
-.toot .info .stats {
-			display: inline-flex;
-			flex: 1;
+.status .status-info .status-stats {
+			display: flex;
 			gap: 1rem;
 		}
-.toot .info .stats .stats-item span {
-					white-space: nowrap;
-				}
-.toot .info .stats .language {
-				margin-left: auto;
+.status .status-info .status-stats .stats-grouping {
+				display: flex;
+				flex-wrap: wrap;
+				column-gap: 1rem;
+			}
+.status .status-info .status-stats .stats-item {
+				display: flex;
+				gap: 0.4rem;
+			}
+.status .status-info .status-stats .stats-item:not(.published-at) {
 				z-index: 1;
-				cursor: pointer;
 				-webkit-user-select: none;
 				        user-select: none;
 			}
-.toot .info{
+.status .status-info .status-stats .language {
+				margin-left: auto;
+			}
+.status .status-info{
 
 		grid-column: span 3;
-		flex-wrap: wrap;
 }
-.toot .toot-link {
+.status .status-link {
 		top: 0;
 		right: 0;
 		bottom: 0;
@@ -1009,23 +980,21 @@ main {
 		position: absolute;
 		z-index: 0;
 	}
-.toot:first-child {
+.status:first-child {
 		/* top left, top right */
 		border-top-left-radius: var(--br);
 		border-top-right-radius: var(--br);
 	}
-.toot:last-child, .toot:last-child .info {
+.status:last-child, .status:last-child .info {
 		/* bottom left, bottom right */
 		border-bottom-left-radius: var(--br);
 		border-bottom-right-radius: var(--br);
-		margin-bottom: 0;
 	}
-.toot.expanded {
-		background: var(--toot-focus-bg);
-		padding-bottom: 0;
+.status.expanded {
+		background: var(--status-focus-bg);
 	}
-.toot.expanded .info {
-			background: var(--toot-focus-info-bg);
+.status.expanded .status-info {
+			background: var(--status-focus-info-bg);
 		}
 .plyr--video {
 	flex-direction: column-reverse;

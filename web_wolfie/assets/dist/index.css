@@ -1,7 +1,8 @@
 
 /*
 	GoToSocial
-	Copyright (C) 2021-2023 GoToSocial Authors admin@gotosocial.org
+	Copyright (C) GoToSocial Authors admin@gotosocial.org
+	SPDX-License-Identifier: AGPL-3.0-or-later
 
 	This program is free software: you can redistribute it and/or modify
 	it under the terms of the GNU Affero General Public License as published by
@@ -17,24 +18,96 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-header a {
-	margin: 2rem;
+/*
+	Render instance title + image
+	a bit bigger on index page.
+
+	Overrides the css from page.css.
+*/
+
+.page-header > a > h1 {
+			font-size: 2rem;
+			line-height: 2rem;
+		}
+
+.page-header > a > img {
+			align-self: center;
+			max-height: 6rem;
+		}
+
+/*
+	Reuse about styling, but rework it
+	to separate sections a bit more.
+*/
+
+.about {
+	display: flex;
+	flex-direction: column;
 	gap: 2rem;
+	padding: 0;
+	
+	background: initial;
+	box-shadow: initial;
+	border: initial;
+	border-radius: initial;
 }
 
-header a img {
-		height: 6rem;
-	}
-
-header a h1 {
-		font-size: 2rem;
-	}
-
-main section {
+.about .about-section {
+		padding: 2rem;
 		background: var(--bg-accent);
 		box-shadow: var(--boxshadow);
 		border: var(--boxshadow-border);
 		border-radius: var(--br);
-		padding: 2rem;
-		margin-bottom: 2rem;
 	}
+
+.apps {
+	align-self: start;
+}
+
+.apps .applist {
+		margin: 0;
+		padding: 0;
+
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		grid-gap: 0.5rem;
+		align-content: start;
+	}
+
+.apps .applist .applist-entry {
+			display: grid;
+			grid-template-columns: 25% 1fr;
+			grid-template-areas: "logo text";
+			gap: 1.5rem;
+			padding: 0.5rem;
+		}
+
+.apps .applist .applist-entry .applist-logo {
+				grid-area: logo;
+				align-self: center;
+				justify-self: center;
+				width: 100%;
+				-o-object-fit: contain;
+				   object-fit: contain;
+				flex: 1 1 auto;
+			}
+
+.apps .applist .applist-entry .applist-logo.redraw {
+				fill: var(--fg);
+				stroke: var(--fg);
+			}
+
+.apps .applist .applist-entry .applist-text {
+				grid-area: text;
+			}
+
+.apps .applist .applist-entry .applist-text a {
+					font-weight: bold;
+				}
+
+@media screen and (max-width: 600px) {
+	.apps .applist {
+		grid-template-columns: 1fr;
+	}
+}
+

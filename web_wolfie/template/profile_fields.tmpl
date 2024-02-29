@@ -17,9 +17,16 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */ -}}
 
-{{ template "header.tmpl" .}}
-<main class="lightgray">
-	<div id="root">
-	</div>
-</main>
-{{ template "footer.tmpl" .}}
+{{- with . }}
+<div class="fields">
+    <h4 class="sr-only">Fields</h4>
+    <dl>
+        {{- range .account.Fields }}
+        <div class="field">
+            <dt>{{- emojify $.account.Emojis (noescape .Name) -}}</dt>
+            <dd>{{- emojify $.account.Emojis (noescape .Value) -}}</dd>
+        </div>
+        {{- end }}
+    </dl>
+</div>
+{{- end }}
