@@ -40,6 +40,11 @@
 	margin-bottom: 1rem;
 }
 
+.profile .profile-header .moved-to {
+		padding: 1rem;
+		text-align: center;
+	}
+
 .profile .profile-header .header-image-wrapper {
 		position: relative;
 		padding-top: 33.33%;

@@ -1,9 +1,5 @@
 basePath: /
 definitions:
-    EmojiUpdateType:
-        title: EmojiUpdateType models an admin update action to take on a custom emoji.
-        type: string
-        x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
     InstanceConfigurationEmojis:
         properties:
             emoji_size_limit:
@@ -160,6 +156,24 @@ definitions:
         title: Source represents display or publishing preferences of user's own account.
         type: object
         x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
+    TimelineMarker:
+        properties:
+            last_read_id:
+                description: The ID of the most recently viewed entity.
+                type: string
+                x-go-name: LastReadID
+            updated_at:
+                description: The timestamp of when the marker was set (ISO 8601 Datetime)
+                type: string
+                x-go-name: UpdatedAt
+            version:
+                description: Used for locking to prevent write conflicts.
+                format: int64
+                type: integer
+                x-go-name: Version
+        title: TimelineMarker contains information about a user's progress through a specific timeline.
+        type: object
+        x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
     account:
         description: The modelled account can be either a remote account, or one on this instance.
         properties:
@@ -211,7 +225,9 @@ definitions:
                 type: array
                 x-go-name: Emojis
             enable_rss:
-                description: Account has enabled RSS feed.
+                description: |-
+                    Account has enabled RSS feed.
+                    Key/value omitted if false.
                 type: boolean
                 x-go-name: EnableRSS
             fields:
@@ -242,6 +258,12 @@ definitions:
                 example: https://example.org/media/some_user/header/static/header.png
                 type: string
                 x-go-name: HeaderStatic
+            hide_collections:
+                description: |-
+                    Account has opted to hide their followers/following collections.
+                    Key/value omitted if false.
+                type: boolean
+                x-go-name: HideCollections
             id:
                 description: The account id.
                 example: 01FBVD42CQ3ZEEVMW180SBX03B
@@ -280,6 +302,10 @@ definitions:
                 description: Account has been suspended by our instance.
                 type: boolean
                 x-go-name: Suspended
+            theme:
+                description: Filename of user-selected CSS theme to include when rendering this account's profile or statuses. Eg., `blurple-light.css`.
+                type: string
+                x-go-name: Theme
             url:
                 description: Web location of the account's profile page.
                 example: https://example.org/@some_user
@@ -622,151 +648,6 @@ definitions:
         type: object
         x-go-name: AdminReport
         x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
-    advancedVisibilityFlagsForm:
-        description: |-
-            AdvancedVisibilityFlagsForm allows a few more advanced flags to be set on new statuses, in addition
-            to the standard mastodon-compatible ones.
-        properties:
-            boostable:
-                description: This status can be boosted/reblogged.
-                type: boolean
-                x-go-name: Boostable
-            federated:
-                description: This status will be federated beyond the local timeline(s).
-                type: boolean
-                x-go-name: Federated
-            likeable:
-                description: This status can be liked/faved.
-                type: boolean
-                x-go-name: Likeable
-            replyable:
-                description: This status can be replied to.
-                type: boolean
-                x-go-name: Replyable
-        type: object
-        x-go-name: AdvancedVisibilityFlagsForm
-        x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
-    announcement:
-        properties:
-            all_day:
-                description: Announcement doesn't have begin time and end time, but begin day and end day.
-                type: boolean
-                x-go-name: AllDay
-            content:
-                description: |-
-                    The body of the announcement.
-                    Should be HTML formatted.
-                example: <p>This is an announcement. No malarky.</p>
-                type: string
-                x-go-name: Content
-            emoji:
-                description: Emojis used in this announcement.
-                items:
-                    $ref: '#/definitions/emoji'
-                type: array
-                x-go-name: Emojis
-            ends_at:
-                description: |-
-                    When the announcement should stop being displayed (ISO 8601 Datetime).
-                    If the announcement has no end time, this will be omitted or empty.
-                example: "2021-07-30T09:20:25+00:00"
-                type: string
-                x-go-name: EndsAt
-            id:
-                description: The ID of the announcement.
-                example: 01FC30T7X4TNCZK0TH90QYF3M4
-                type: string
-                x-go-name: ID
-            mentions:
-                description: Mentions this announcement contains.
-                items:
-                    $ref: '#/definitions/Mention'
-                type: array
-                x-go-name: Mentions
-            published:
-                description: |-
-                    Announcement is 'published', ie., visible to users.
-                    Announcements that are not published should be shown only to admins.
-                type: boolean
-                x-go-name: Published
-            published_at:
-                description: When the announcement was first published (ISO 8601 Datetime).
-                example: "2021-07-30T09:20:25+00:00"
-                type: string
-                x-go-name: PublishedAt
-            reactions:
-                description: Reactions to this announcement.
-                items:
-                    $ref: '#/definitions/announcementReaction'
-                type: array
-                x-go-name: Reactions
-            read:
-                description: Requesting account has seen this announcement.
-                type: boolean
-                x-go-name: Read
-            starts_at:
-                description: |-
-                    When the announcement should begin to be displayed (ISO 8601 Datetime).
-                    If the announcement has no start time, this will be omitted or empty.
-                example: "2021-07-30T09:20:25+00:00"
-                type: string
-                x-go-name: StartsAt
-            statuses:
-                description: Statuses contained in this announcement.
-                items:
-                    $ref: '#/definitions/status'
-                type: array
-                x-go-name: Statuses
-            tags:
-                description: Tags used in this announcement.
-                items:
-                    $ref: '#/definitions/tag'
-                type: array
-                x-go-name: Tags
-            updated_at:
-                description: When the announcement was last updated (ISO 8601 Datetime).
-                example: "2021-07-30T09:20:25+00:00"
-                type: string
-                x-go-name: UpdatedAt
-        title: Announcement models an admin announcement for the instance.
-        type: object
-        x-go-name: Announcement
-        x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
-    announcementReaction:
-        properties:
-            count:
-                description: The total number of users who have added this reaction.
-                example: 5
-                format: int64
-                type: integer
-                x-go-name: Count
-            me:
-                description: This reaction belongs to the account viewing it.
-                type: boolean
-                x-go-name: Me
-            name:
-                description: The emoji used for the reaction. Either a unicode emoji, or a custom emoji's shortcode.
-                example: blobcat_uwu
-                type: string
-                x-go-name: Name
-            static_url:
-                description: |-
-                    Web link to a non-animated image of the custom emoji.
-                    Empty for unicode emojis.
-                example: https://example.org/custom_emojis/statuc/blobcat_uwu.png
-                type: string
-                x-go-name: StaticURL
-            url:
-                description: |-
-                    Web link to the image of the custom emoji.
-                    Empty for unicode emojis.
-                example: https://example.org/custom_emojis/original/blobcat_uwu.png
-                type: string
-                x-go-name: URL
-        title: AnnouncementReaction models a user reaction to an announcement.
-        type: object
-        x-go-name: AnnouncementReaction
-        x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
     application:
         properties:
             client_id:
@@ -1003,16 +884,6 @@ definitions:
         type: object
         x-go-name: Domain
         x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
-    domainKeysExpireRequest:
-        properties:
-            domain:
-                description: hostname/domain to expire keys for.
-                type: string
-                x-go-name: Domain
-        title: DomainBlockCreateRequest is the form submitted as a POST to /api/v1/admin/domain_keys_expire to expire a domain's public keys.
-        type: object
-        x-go-name: DomainKeysExpireRequest
-        x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
     domainPermission:
         properties:
             created_at:
@@ -1070,43 +941,6 @@ definitions:
         type: object
         x-go-name: DomainPermission
         x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
-    domainPermissionCreateRequest:
-        properties:
-            domain:
-                description: |-
-                    A single domain for which this permission request should apply.
-                    Only used if import=true is NOT specified or if import=false.
-                example: example.org
-                type: string
-                x-go-name: Domain
-            domains:
-                description: |-
-                    A list of domains for which this permission request should apply.
-                    Only used if import=true is specified.
-                x-go-name: Domains
-            obfuscate:
-                description: |-
-                    Obfuscate the domain name when displaying this permission entry publicly.
-                    Ie., instead of 'example.org' show something like 'e**mpl*.or*'.
-                example: false
-                type: boolean
-                x-go-name: Obfuscate
-            private_comment:
-                description: Private comment for other admins on why this permission entry was created.
-                example: don't like 'em!!!!
-                type: string
-                x-go-name: PrivateComment
-            public_comment:
-                description: |-
-                    Public comment on why this permission entry was created.
-                    Will be visible to requesters at /api/v1/instance/peers if this endpoint is exposed.
-                example: "foss dorks \U0001F62B"
-                type: string
-                x-go-name: PublicComment
-        title: DomainPermissionRequest is the form submitted as a POST to create a new domain permission entry (allow/block).
-        type: object
-        x-go-name: DomainPermissionRequest
-        x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
     emoji:
         properties:
             category:
@@ -1152,42 +986,6 @@ definitions:
         type: object
         x-go-name: EmojiCategory
         x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
-    emojiCreateRequest:
-        properties:
-            CategoryName:
-                description: |-
-                    Category in which to place the new emoji. Will be uncategorized by default.
-                    CategoryName length should not exceed 64 characters.
-                type: string
-            Image:
-                description: Image file to use for the emoji. Must be png or gif and no larger than 50kb.
-            Shortcode:
-                description: Desired shortcode for the emoji, without surrounding colons. This must be unique for the domain.
-                example: blobcat_uwu
-                type: string
-        title: EmojiCreateRequest represents a request to create a custom emoji made through the admin API.
-        type: object
-        x-go-name: EmojiCreateRequest
-        x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
-    emojiUpdateRequest:
-        properties:
-            CategoryName:
-                description: Category in which to place the emoji.
-                type: string
-            Image:
-                description: |-
-                    Image file to use for the emoji.
-                    Must be png or gif and no larger than 50kb.
-            Shortcode:
-                description: Desired shortcode for the emoji, without surrounding colons. This must be unique for the domain.
-                example: blobcat_uwu
-                type: string
-            type:
-                $ref: '#/definitions/EmojiUpdateType'
-        title: EmojiUpdateRequest represents a request to update a custom emoji, made through the admin API.
-        type: object
-        x-go-name: EmojiUpdateRequest
-        x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
     field:
         properties:
             name:
@@ -1209,19 +1007,94 @@ definitions:
         type: object
         x-go-name: Field
         x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
-    headerFilterCreateRequest:
+    filterContext:
+        description: v1 and v2 filter APIs use the same set of contexts.
+        title: FilterContext represents the context in which to apply a filter.
+        type: string
+        x-go-name: FilterContext
+        x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
+    filterV1:
+        description: |-
+            Note that v1 filters are mapped to v2 filters and v2 filter keywords internally.
+            If whole_word is true, client app should do:
+            Define ‘word constituent character’ for your app. In the official implementation, it’s [A-Za-z0-9_] in JavaScript, and [[:word:]] in Ruby.
+            Ruby uses the POSIX character class (Letter | Mark | Decimal_Number | Connector_Punctuation).
+            If the phrase starts with a word character, and if the previous character before matched range is a word character, its matched range should be treated to not match.
+            If the phrase ends with a word character, and if the next character after matched range is a word character, its matched range should be treated to not match.
+            Please check app/javascript/mastodon/selectors/index.js and app/lib/feed_manager.rb in the Mastodon source code for more details.
         properties:
+            context:
+                description: The contexts in which the filter should be applied.
+                example:
+                    - home
+                    - public
+                items:
+                    $ref: '#/definitions/filterContext'
+                minItems: 1
+                type: array
+                uniqueItems: true
+                x-go-name: Context
+            expires_at:
+                description: When the filter should no longer be applied. Null if the filter does not expire.
+                example: "2024-02-01T02:57:49Z"
+                type: string
+                x-go-name: ExpiresAt
+            id:
+                description: The ID of the filter in the database.
+                type: string
+                x-go-name: ID
+            irreversible:
+                description: Should matching entities be removed from the user's timelines/views, instead of hidden?
+                example: false
+                type: boolean
+                x-go-name: Irreversible
+            phrase:
+                description: The text to be filtered.
+                example: fnord
+                type: string
+                x-go-name: Phrase
+            whole_word:
+                description: Should the filter consider word boundaries?
+                example: true
+                type: boolean
+                x-go-name: WholeWord
+        title: FilterV1 represents a user-defined filter for determining which statuses should not be shown to the user.
+        type: object
+        x-go-name: FilterV1
+        x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
+    headerFilter:
+        properties:
+            created_at:
+                description: Time at which the header filter was created (ISO 8601 Datetime).
+                example: "2021-07-30T09:20:25+00:00"
+                readOnly: true
+                type: string
+                x-go-name: CreatedAt
+            created_by:
+                description: The ID of the admin account that created this header filter.
+                example: 01FBW2758ZB6PBR200YPDDJK4C
+                readOnly: true
+                type: string
+                x-go-name: CreatedBy
             header:
-                description: The HTTP header to match against (e.g. User-Agent).
+                description: The HTTP header to match against.
+                example: User-Agent
                 type: string
                 x-go-name: Header
+            id:
+                description: The ID of the header filter.
+                example: 01FBW21XJA09XYX51KV5JVBW0F
+                readOnly: true
+                type: string
+                x-go-name: ID
             regex:
                 description: The header value matching regular expression.
+                example: .*Firefox.*
                 type: string
                 x-go-name: Regex
-        title: HeaderFilterRequest is the form submitted as a POST to create a new header filter entry (allow / block).
+        title: HeaderFilter represents a regex value filter applied to one particular HTTP header (allow / block).
         type: object
-        x-go-name: HeaderFilterRequest
+        x-go-name: HeaderFilter
         x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
     hostmeta:
         description: 'See: https://www.rfc-editor.org/rfc/rfc6415.html#section-3'
@@ -1390,24 +1263,6 @@ definitions:
         type: object
         x-go-name: InstanceRule
         x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
-    instanceRuleCreateRequest:
-        properties:
-            Text:
-                type: string
-        title: InstanceRuleCreateRequest represents a request to create a new instance rule, made through the admin API.
-        type: object
-        x-go-name: InstanceRuleCreateRequest
-        x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
-    instanceRuleUpdateRequest:
-        properties:
-            ID:
-                type: string
-            Text:
-                type: string
-        title: InstanceRuleUpdateRequest represents a request to update the text of an instance rule, made through the admin API.
-        type: object
-        x-go-name: InstanceRuleUpdateRequest
-        x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
     instanceV1:
         properties:
             account_domain:
@@ -1450,7 +1305,8 @@ definitions:
                 x-go-name: InvitesEnabled
             languages:
                 description: Primary language of the instance.
-                example: en
+                example:
+                    - en
                 items:
                     type: string
                 type: array
@@ -1834,6 +1690,16 @@ definitions:
         type: object
         x-go-name: List
         x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
+    markers:
+        properties:
+            home:
+                $ref: '#/definitions/TimelineMarker'
+            notifications:
+                $ref: '#/definitions/TimelineMarker'
+        title: Marker represents the last read position within a user's timelines.
+        type: object
+        x-go-name: Marker
+        x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
     mediaDimensions:
         properties:
             aspect:
@@ -1924,72 +1790,6 @@ definitions:
         title: MediaMeta models media metadata.
         type: object
         x-go-name: MediaMeta
-        x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
-    multiStatus:
-        description: |-
-            This model should be transmitted along with http code
-            207 MULTI-STATUS to indicate a mixture of responses.
-            See https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/207
-        properties:
-            data:
-                items:
-                    $ref: '#/definitions/multiStatusEntry'
-                type: array
-                x-go-name: Data
-            metadata:
-                $ref: '#/definitions/multiStatusMetadata'
-        title: MultiStatus models a multistatus HTTP response body.
-        type: object
-        x-go-name: MultiStatus
-        x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
-    multiStatusEntry:
-        description: |-
-            It can model either a success or a failure. The type
-            and value of `Resource` is left to the discretion of
-            the caller, but at minimum it should be expected to be
-            JSON-serializable.
-        properties:
-            message:
-                description: Message/error message for this entry.
-                type: string
-                x-go-name: Message
-            resource:
-                description: |-
-                    The resource/result for this entry.
-                    Value may be any type, check the docs
-                    per endpoint to see which to expect.
-                x-go-name: Resource
-            status:
-                description: HTTP status code of this entry.
-                format: int64
-                type: integer
-                x-go-name: Status
-        title: MultiStatusEntry models one entry in multistatus data.
-        type: object
-        x-go-name: MultiStatusEntry
-        x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
-    multiStatusMetadata:
-        description: |-
-            MultiStatusMetadata models an at-a-glance summary of
-            the data contained in the MultiStatus.
-        properties:
-            failure:
-                description: Count of unsuccessful results (!2xx).
-                format: int64
-                type: integer
-                x-go-name: Failure
-            success:
-                description: Count of successful results (2xx).
-                format: int64
-                type: integer
-                x-go-name: Success
-            total:
-                description: Success count + failure count.
-                format: int64
-                type: integer
-                x-go-name: Total
-        type: object
-        x-go-name: MultiStatusMetadata
         x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
     nodeinfo:
         description: 'See: https://nodeinfo.diaspora.software/schema.html'
@@ -2158,40 +1958,6 @@ definitions:
         title: PollOption represents the current vote counts for different poll options.
         type: object
         x-go-name: PollOption
-        x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
-    pollRequest:
-        properties:
-            ExpiresIn:
-                description: |-
-                    Duration the poll should be open, in seconds.
-                    If provided, media_ids cannot be used, and poll[options] must be provided.
-                format: int64
-                type: integer
-            expires_in:
-                description: |-
-                    Duration the poll should be open, in seconds.
-                    If provided, media_ids cannot be used, and poll[options] must be provided.
-                x-go-name: ExpiresInI
-            hide_totals:
-                description: Hide vote counts until the poll ends.
-                type: boolean
-                x-go-name: HideTotals
-            multiple:
-                description: Allow multiple choices on this poll.
-                type: boolean
-                x-go-name: Multiple
-            options:
-                description: |-
-                    Array of possible answers.
-                    If provided, media_ids cannot be used, and poll[expires_in] must be provided.
-                    name: poll[options]
-                items:
-                    type: string
-                type: array
-                x-go-name: Options
-        title: PollRequest models a request to create a poll.
-        type: object
-        x-go-name: PollRequest
         x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
     report:
         properties:
@@ -2447,80 +2213,6 @@ definitions:
         type: object
         x-go-name: Context
         x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
-    statusCreateRequest:
-        properties:
-            content_type:
-                description: |-
-                    Content type to use when parsing this status.
-                    in: formData
-                type: string
-                x-go-name: ContentType
-            in_reply_to_id:
-                description: |-
-                    ID of the status being replied to, if status is a reply.
-                    in: formData
-                type: string
-                x-go-name: InReplyToID
-            language:
-                description: |-
-                    ISO 639 language code for this status.
-                    in: formData
-                type: string
-                x-go-name: Language
-            media_ids:
-                description: |-
-                    Array of Attachment ids to be attached as media.
-                    If provided, status becomes optional, and poll cannot be used.
-
-                    If the status is being submitted as a form, the key is 'media_ids[]',
-                    but if it's json or xml, the key is 'media_ids'.
-
-                    in: formData
-                items:
-                    type: string
-                type: array
-                x-go-name: MediaIDs
-            poll:
-                $ref: '#/definitions/pollRequest'
-            scheduled_at:
-                description: |-
-                    ISO 8601 Datetime at which to schedule a status.
-                    Providing this parameter will cause ScheduledStatus to be returned instead of Status.
-                    Must be at least 5 minutes in the future.
-                    in: formData
-                type: string
-                x-go-name: ScheduledAt
-            sensitive:
-                description: |-
-                    Status and attached media should be marked as sensitive.
-                    in: formData
-                type: boolean
-                x-go-name: Sensitive
-            spoiler_text:
-                description: |-
-                    Text to be shown as a warning or subject before the actual content.
-                    Statuses are generally collapsed behind this field.
-                    in: formData
-                type: string
-                x-go-name: SpoilerText
-            status:
-                description: |-
-                    Text content of the status.
-                    If media_ids is provided, this becomes optional.
-                    Attaching a poll is optional while status is provided.
-                    in: formData
-                type: string
-                x-go-name: Status
-            visibility:
-                description: |-
-                    Visibility of the posted status.
-                    in: formData
-                type: string
-                x-go-name: Visibility
-        title: StatusCreateRequest models status creation parameters.
-        type: object
-        x-go-name: StatusCreateRequest
-        x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
     statusReblogged:
         properties:
             account:
@@ -2743,7 +2435,9 @@ definitions:
                 x-go-name: ID
             items:
                 description: List of status URIs.
-                example: '[''https://example.org/users/some_user/statuses/01GSZ0F7Q8SJKNRF777GJD271R'', ''https://example.org/users/some_user/statuses/01GSZ0G012CBQ7TEKX689S3QRE'']'
+                example:
+                    - https://example.org/users/some_user/statuses/01GSZ0F7Q8SJKNRF777GJD271R
+                    - https://example.org/users/some_user/statuses/01GSZ0G012CBQ7TEKX689S3QRE
                 items:
                     type: string
                 type: array
@@ -2781,42 +2475,23 @@ definitions:
         type: object
         x-go-name: Tag
         x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
-    updateField:
-        description: By default, max 6 fields and 255 characters per property/value.
+    theme:
         properties:
-            name:
-                description: Name of the field
+            description:
+                description: User-facing description of this theme.
                 type: string
-                x-go-name: Name
-            value:
-                description: Value of the field
+                x-go-name: Description
+            file_name:
+                description: FileName of this theme in the themes directory.
                 type: string
-                x-go-name: Value
-        title: UpdateField is to be used specifically in an UpdateCredentialsRequest.
+                x-go-name: FileName
+            title:
+                description: User-facing title of this theme.
+                type: string
+                x-go-name: Title
+        title: Theme represents one user-selectable preset CSS theme.
         type: object
-        x-go-name: UpdateField
-        x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
-    updateSource:
-        properties:
-            language:
-                description: Default language to use for authored statuses. (ISO 6391)
-                type: string
-                x-go-name: Language
-            privacy:
-                description: Default post privacy for authored statuses.
-                type: string
-                x-go-name: Privacy
-            sensitive:
-                description: Mark authored statuses as sensitive by default.
-                type: boolean
-                x-go-name: Sensitive
-            status_content_type:
-                description: Default format for authored statuses (text/plain or text/markdown).
-                type: string
-                x-go-name: StatusContentType
-        title: UpdateSource is to be used specifically in an UpdateCredentialsRequest.
-        type: object
-        x-go-name: UpdateSource
+        x-go-name: Theme
         x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
     wellKnownResponse:
         description: See https://webfinger.net/
@@ -2849,7 +2524,7 @@ info:
         name: AGPL3
         url: https://www.gnu.org/licenses/agpl-3.0.en.html
     title: GoToSocial Swagger documentation.
-    version: 0.14.3
+    version: 0.15.1
 paths:
     /.well-known/host-meta:
         get:
@@ -3231,6 +2906,8 @@ paths:
                 ```
                 <https://example.org/api/v1/accounts/0657WMDEC3KQDTD6NZ4XJZBK4M/followers?limit=80&max_id=01FC0SKA48HNSVR6YKZCQGS2V8>; rel="next", <https://example.org/api/v1/accounts/0657WMDEC3KQDTD6NZ4XJZBK4M/followers?limit=80&min_id=01FC0SKW5JK2Q4EVAV2B462YY0>; rel="prev"
                 ````
+
+                If account `hide_collections` is true, and requesting account != target account, no results will be returned.
             operationId: accountFollowers
             parameters:
                 - description: Account ID.
@@ -3262,6 +2939,10 @@ paths:
             responses:
                 "200":
                     description: Array of accounts that follow this account.
+                    headers:
+                        Link:
+                            description: Links to the next and previous queries.
+                            type: string
                     schema:
                         items:
                             $ref: '#/definitions/account'
@@ -3291,6 +2972,8 @@ paths:
                 ```
                 <https://example.org/api/v1/accounts/0657WMDEC3KQDTD6NZ4XJZBK4M/following?limit=80&max_id=01FC0SKA48HNSVR6YKZCQGS2V8>; rel="next", <https://example.org/api/v1/accounts/0657WMDEC3KQDTD6NZ4XJZBK4M/following?limit=80&min_id=01FC0SKW5JK2Q4EVAV2B462YY0>; rel="prev"
                 ````
+
+                If account `hide_collections` is true, and requesting account != target account, no results will be returned.
             operationId: accountFollowing
             parameters:
                 - description: Account ID.
@@ -3322,6 +3005,14 @@ paths:
             responses:
                 "200":
                     description: Array of accounts that are followed by this account.
+                    headers:
+                        Link:
+                            description: Links to the next and previous queries.
+                            type: string
+                    schema:
+                        items:
+                            $ref: '#/definitions/account'
+                        type: array
                 "400":
                     description: bad request
                 "401":
@@ -3464,6 +3155,10 @@ paths:
             responses:
                 "200":
                     description: Array of statuses.
+                    headers:
+                        Link:
+                            description: Links to the next and previous queries.
+                            type: string
                     schema:
                         items:
                             $ref: '#/definitions/status'
@@ -3655,7 +3350,6 @@ paths:
         post:
             consumes:
                 - multipart/form-data
-            description: NOT IMPLEMENTED YET!
             operationId: accountMove
             parameters:
                 - description: Password of the account user, for confirmation.
@@ -3693,11 +3387,12 @@ paths:
         get:
             operationId: accountRelationships
             parameters:
-                - description: Account IDs.
+                - collectionFormat: multi
+                  description: Account IDs.
                   in: query
                   items:
                     type: string
-                  name: id
+                  name: id[]
                   required: true
                   type: array
             produces:
@@ -3787,6 +3482,34 @@ paths:
             summary: Search for accounts by username and/or display name.
             tags:
                 - accounts
+    /api/v1/accounts/themes:
+        get:
+            operationId: accountThemes
+            produces:
+                - application/json
+            responses:
+                "200":
+                    description: Array of themes.
+                    schema:
+                        items:
+                            $ref: '#/definitions/theme'
+                        type: array
+                "400":
+                    description: bad request
+                "401":
+                    description: unauthorized
+                "404":
+                    description: not found
+                "406":
+                    description: not acceptable
+                "500":
+                    description: internal server error
+            security:
+                - OAuth2 Bearer:
+                    - read:accounts
+            summary: See preset CSS themes available to accounts on this instance.
+            tags:
+                - accounts
     /api/v1/accounts/update_credentials:
         patch:
             consumes:
@@ -3841,6 +3564,10 @@ paths:
                   in: formData
                   name: source[status_content_type]
                   type: string
+                - description: FileName of the theme to use when rendering this account's profile or statuses. The theme must exist on this server, as indicated by /api/v1/accounts/themes. Empty string unsets theme and returns to the default GoToSocial theme.
+                  in: formData
+                  name: theme
+                  type: string
                 - description: Custom CSS to use when rendering this account's profile or statuses. String must be no more than 5,000 characters (~5kb).
                   in: formData
                   name: custom_css
@@ -3849,12 +3576,58 @@ paths:
                   in: formData
                   name: enable_rss
                   type: boolean
-                - description: Profile fields to be added to this account's profile
+                - description: Hide the account's following/followers collections.
                   in: formData
-                  items:
-                    type: object
-                  name: fields_attributes
-                  type: array
+                  name: hide_collections
+                  type: boolean
+                - description: Name of 1st profile field to be added to this account's profile. (The index may be any string; add more indexes to send more fields.)
+                  in: formData
+                  name: fields_attributes[0][name]
+                  type: string
+                - description: Value of 1st profile field to be added to this account's profile. (The index may be any string; add more indexes to send more fields.)
+                  in: formData
+                  name: fields_attributes[0][value]
+                  type: string
+                - description: Name of 2nd profile field to be added to this account's profile.
+                  in: formData
+                  name: fields_attributes[1][name]
+                  type: string
+                - description: Value of 2nd profile field to be added to this account's profile.
+                  in: formData
+                  name: fields_attributes[1][value]
+                  type: string
+                - description: Name of 3rd profile field to be added to this account's profile.
+                  in: formData
+                  name: fields_attributes[2][name]
+                  type: string
+                - description: Value of 3rd profile field to be added to this account's profile.
+                  in: formData
+                  name: fields_attributes[2][value]
+                  type: string
+                - description: Name of 4th profile field to be added to this account's profile.
+                  in: formData
+                  name: fields_attributes[3][name]
+                  type: string
+                - description: Value of 4th profile field to be added to this account's profile.
+                  in: formData
+                  name: fields_attributes[3][value]
+                  type: string
+                - description: Name of 5th profile field to be added to this account's profile.
+                  in: formData
+                  name: fields_attributes[4][name]
+                  type: string
+                - description: Value of 5th profile field to be added to this account's profile.
+                  in: formData
+                  name: fields_attributes[4][value]
+                  type: string
+                - description: Name of 6th profile field to be added to this account's profile.
+                  in: formData
+                  name: fields_attributes[5][name]
+                  type: string
+                - description: Value of 6th profile field to be added to this account's profile.
+                  in: formData
+                  name: fields_attributes[5][value]
+                  type: string
             produces:
                 - application/json
             responses:
@@ -4040,7 +3813,7 @@ paths:
                   name: image
                   required: true
                   type: file
-                - description: Category in which to place the new emoji. 64 characters or less. If left blank, emoji will be uncategorized. If a category with the given name doesn't exist yet, it will be created.
+                - description: Category in which to place the new emoji. If left blank, emoji will be uncategorized. If a category with the given name doesn't exist yet, it will be created.
                   in: formData
                   name: category
                   type: string
@@ -4167,6 +3940,10 @@ paths:
                     Type of action to be taken. One of: (`disable`, `copy`, `modify`).
                     For REMOTE emojis, `copy` or `disable` are supported.
                     For LOCAL emojis, only `modify` is supported.
+                  enum:
+                    - copy
+                    - disable
+                    - modify
                   in: formData
                   name: type
                   required: true
@@ -4180,7 +3957,7 @@ paths:
                   in: formData
                   name: image
                   type: file
-                - description: Category in which to place the emoji. 64 characters or less. If a category with the given name doesn't exist yet, it will be created.
+                - description: Category in which to place the emoji. If a category with the given name doesn't exist yet, it will be created.
                   in: formData
                   name: category
                   type: string
@@ -4212,12 +3989,6 @@ paths:
     /api/v1/admin/custom_emojis/categories:
         get:
             operationId: emojiCategoriesGet
-            parameters:
-                - description: The id of the emoji.
-                  in: path
-                  name: id
-                  required: true
-                  type: string
             produces:
                 - application/json
             responses:
@@ -4225,7 +3996,7 @@ paths:
                     description: Array of existing emoji categories.
                     schema:
                         items:
-                            $ref: '#/definitions/adminEmojiCategory'
+                            $ref: '#/definitions/emojiCategory'
                         type: array
                 "400":
                     description: bad request
@@ -4627,11 +4398,13 @@ paths:
                 be performed.
             operationId: domainKeysExpire
             parameters:
-                - description: Domain to expire keys for.
-                  example: example.org
+                - description: |-
+                    Domain to expire keys for.
+                    Sample: example.org
                   in: formData
                   name: domain
                   type: string
+                  x-go-name: Domain
             produces:
                 - application/json
             responses:
@@ -4734,6 +4507,19 @@ paths:
                 The parameters can also be given in the body of the request, as JSON, if the content-type is set to 'application/json'.
                 The parameters can also be given in the body of the request, as XML, if the content-type is set to 'application/xml'.
             operationId: headerFilterAllowCreate
+            parameters:
+                - description: The HTTP header to match against (e.g. User-Agent).
+                  in: formData
+                  name: header
+                  required: true
+                  type: string
+                  x-go-name: Header
+                - description: The header value matching regular expression.
+                  in: formData
+                  name: regex
+                  required: true
+                  type: string
+                  x-go-name: Regex
             produces:
                 - application/json
             responses:
@@ -4847,6 +4633,19 @@ paths:
                 The parameters can also be given in the body of the request, as JSON, if the content-type is set to 'application/json'.
                 The parameters can also be given in the body of the request, as XML, if the content-type is set to 'application/xml'.
             operationId: headerFilterBlockCreate
+            parameters:
+                - description: The HTTP header to match against (e.g. User-Agent).
+                  in: formData
+                  name: header
+                  required: true
+                  type: string
+                  x-go-name: Header
+                - description: The header value matching regular expression.
+                  in: formData
+                  name: regex
+                  required: true
+                  type: string
+                  x-go-name: Regex
             produces:
                 - application/json
             responses:
@@ -4936,6 +4735,7 @@ paths:
                   name: text
                   required: true
                   type: string
+                  x-go-name: Text
             produces:
                 - application/json
             responses:
@@ -4961,17 +4761,17 @@ paths:
             summary: Create a new instance rule.
             tags:
                 - admin
-    /api/v1/admin/instance/rules{id}:
+    /api/v1/admin/instance/rules/{id}:
         delete:
             consumes:
                 - multipart/form-data
             operationId: ruleDelete
             parameters:
                 - description: The id of the rule to delete.
-                  in: formData
+                  in: path
                   name: id
                   required: true
-                  type: path
+                  type: string
             produces:
                 - application/json
             responses:
@@ -5003,15 +4803,17 @@ paths:
             operationId: ruleUpdate
             parameters:
                 - description: The id of the rule to update.
-                  in: formData
+                  in: path
                   name: id
                   required: true
-                  type: path
+                  type: string
+                  x-go-name: ID
                 - description: Text body for the updated instance rule, plaintext.
                   in: formData
                   name: text
                   required: true
                   type: string
+                  x-go-name: Text
             produces:
                 - application/json
             responses:
@@ -5159,6 +4961,10 @@ paths:
             responses:
                 "200":
                     description: Array of reports.
+                    headers:
+                        Link:
+                            description: Links to the next and previous queries.
+                            type: string
                     schema:
                         items:
                             $ref: '#/definitions/adminReport'
@@ -5224,8 +5030,9 @@ paths:
                   name: id
                   required: true
                   type: string
-                - description: Optional admin comment on the action taken in response to this report. Useful for providing an explanation about what action was taken (if any) before the report was marked as resolved. This will be visible to the user that created the report!
-                  example: The reported account was suspended.
+                - description: |-
+                    Optional admin comment on the action taken in response to this report. Useful for providing an explanation about what action was taken (if any) before the report was marked as resolved. This will be visible to the user that created the report!
+                    Sample: The reported account was suspended.
                   in: formData
                   name: action_taken_comment
                   type: string
@@ -5255,7 +5062,7 @@ paths:
     /api/v1/admin/rules:
         get:
             description: The rules will be returned in order (sorted by Order ascending).
-            operationId: rules
+            operationId: adminsRuleGet
             produces:
                 - application/json
             responses:
@@ -5440,6 +5247,20 @@ paths:
         get:
             description: Get an array of statuses bookmarked in the instance
             operationId: bookmarksGet
+            parameters:
+                - default: 30
+                  description: Number of statuses to return.
+                  in: query
+                  name: limit
+                  type: integer
+                - description: Return only bookmarked statuses *OLDER* than the given bookmark ID. The status with the corresponding bookmark ID will not be included in the response.
+                  in: query
+                  name: max_id
+                  type: string
+                - description: Return only bookmarked statuses *NEWER* than the given bookmark ID. The status with the corresponding bookmark ID will not be included in the response.
+                  in: query
+                  name: min_id
+                  type: string
             produces:
                 - application/json
             responses:
@@ -5570,6 +5391,266 @@ paths:
             summary: Get an array of all hashtags that you currently have featured on your profile.
             tags:
                 - featured_tags
+    /api/v1/filters:
+        get:
+            operationId: filtersV1Get
+            produces:
+                - application/json
+            responses:
+                "200":
+                    description: Requested filters.
+                    schema:
+                        items:
+                            $ref: '#/definitions/filterV1'
+                        type: array
+                "400":
+                    description: bad request
+                "401":
+                    description: unauthorized
+                "404":
+                    description: not found
+                "406":
+                    description: not acceptable
+                "500":
+                    description: internal server error
+            security:
+                - OAuth2 Bearer:
+                    - read:filters
+            summary: Get all filters for the authenticated account.
+            tags:
+                - filters
+        post:
+            consumes:
+                - application/json
+                - application/xml
+                - application/x-www-form-urlencoded
+            operationId: filterV1Post
+            parameters:
+                - description: |-
+                    The text to be filtered.
+
+                    Sample: fnord
+                  in: formData
+                  maxLength: 40
+                  name: phrase
+                  required: true
+                  type: string
+                - collectionFormat: multi
+                  description: |-
+                    The contexts in which the filter should be applied.
+
+                    Sample: home, public
+                  enum:
+                    - home
+                    - notifications
+                    - public
+                    - thread
+                    - account
+                  in: formData
+                  items:
+                    type: string
+                  minItems: 1
+                  name: context[]
+                  required: true
+                  type: array
+                  uniqueItems: true
+                - description: |-
+                    Number of seconds from now that the filter should expire. If omitted, filter never expires.
+
+                    Sample: 86400
+                  in: formData
+                  name: expires_in
+                  type: number
+                - default: false
+                  description: |-
+                    Should matching entities be removed from the user's timelines/views, instead of hidden? Not supported yet.
+
+                    Sample: false
+                  in: formData
+                  name: irreversible
+                  type: boolean
+                - default: false
+                  description: |-
+                    Should the filter consider word boundaries?
+
+                    Sample: true
+                  in: formData
+                  name: whole_word
+                  type: boolean
+            produces:
+                - application/json
+            responses:
+                "200":
+                    description: New filter.
+                    schema:
+                        $ref: '#/definitions/filterV1'
+                "400":
+                    description: bad request
+                "401":
+                    description: unauthorized
+                "404":
+                    description: not found
+                "406":
+                    description: not acceptable
+                "422":
+                    description: unprocessable content
+                "500":
+                    description: internal server error
+            security:
+                - OAuth2 Bearer:
+                    - write:filters
+            summary: Create a single filter.
+            tags:
+                - filters
+    /api/v1/filters/{id}:
+        delete:
+            operationId: filterV1Delete
+            parameters:
+                - description: ID of the list
+                  in: path
+                  name: id
+                  required: true
+                  type: string
+            produces:
+                - application/json
+            responses:
+                "200":
+                    description: filter deleted
+                "400":
+                    description: bad request
+                "401":
+                    description: unauthorized
+                "404":
+                    description: not found
+                "406":
+                    description: not acceptable
+                "500":
+                    description: internal server error
+            security:
+                - OAuth2 Bearer:
+                    - write:filters
+            summary: Delete a single filter with the given ID.
+            tags:
+                - filters
+        get:
+            operationId: filterV1Get
+            parameters:
+                - description: ID of the filter
+                  in: path
+                  name: id
+                  required: true
+                  type: string
+            produces:
+                - application/json
+            responses:
+                "200":
+                    description: Requested filter.
+                    schema:
+                        $ref: '#/definitions/filterV1'
+                "400":
+                    description: bad request
+                "401":
+                    description: unauthorized
+                "404":
+                    description: not found
+                "406":
+                    description: not acceptable
+                "500":
+                    description: internal server error
+            security:
+                - OAuth2 Bearer:
+                    - read:filters
+            summary: Get a single filter with the given ID.
+            tags:
+                - filters
+        put:
+            consumes:
+                - application/json
+                - application/xml
+                - application/x-www-form-urlencoded
+            operationId: filterV1Put
+            parameters:
+                - description: ID of the filter.
+                  in: path
+                  name: id
+                  required: true
+                  type: string
+                - description: |-
+                    The text to be filtered.
+
+                    Sample: fnord
+                  in: formData
+                  maxLength: 40
+                  name: phrase
+                  required: true
+                  type: string
+                - collectionFormat: multi
+                  description: |-
+                    The contexts in which the filter should be applied.
+
+                    Sample: home, public
+                  enum:
+                    - home
+                    - notifications
+                    - public
+                    - thread
+                    - account
+                  in: formData
+                  items:
+                    type: string
+                  minItems: 1
+                  name: context[]
+                  required: true
+                  type: array
+                  uniqueItems: true
+                - description: |-
+                    Number of seconds from now that the filter should expire. If omitted, filter never expires.
+
+                    Sample: 86400
+                  in: formData
+                  name: expires_in
+                  type: number
+                - default: false
+                  description: |-
+                    Should matching entities be removed from the user's timelines/views, instead of hidden? Not supported yet.
+
+                    Sample: false
+                  in: formData
+                  name: irreversible
+                  type: boolean
+                - default: false
+                  description: |-
+                    Should the filter consider word boundaries?
+
+                    Sample: true
+                  in: formData
+                  name: whole_word
+                  type: boolean
+            produces:
+                - application/json
+            responses:
+                "200":
+                    description: Updated filter.
+                    schema:
+                        $ref: '#/definitions/filterV1'
+                "400":
+                    description: bad request
+                "401":
+                    description: unauthorized
+                "404":
+                    description: not found
+                "406":
+                    description: not acceptable
+                "422":
+                    description: unprocessable content
+                "500":
+                    description: internal server error
+            security:
+                - OAuth2 Bearer:
+                    - write:filters
+            summary: Update a single filter with the given ID.
+            tags:
+                - filters
     /api/v1/follow_requests:
         get:
             description: |-
@@ -5720,7 +5801,7 @@ paths:
                 - allowEmptyValue: true
                   description: Title to use for the instance.
                   in: formData
-                  maximum: 40
+                  maxLength: 40
                   name: title
                   type: string
                 - allowEmptyValue: true
@@ -5736,19 +5817,19 @@ paths:
                 - allowEmptyValue: true
                   description: Short description of the instance.
                   in: formData
-                  maximum: 500
+                  maxLength: 500
                   name: short_description
                   type: string
                 - allowEmptyValue: true
                   description: Longer description of the instance.
                   in: formData
-                  maximum: 5000
+                  maxLength: 5000
                   name: description
                   type: string
                 - allowEmptyValue: true
                   description: Terms and conditions of the instance.
                   in: formData
-                  maximum: 5000
+                  maxLength: 5000
                   name: terms
                   type: string
                 - description: Thumbnail image to use for the instance.
@@ -5769,7 +5850,7 @@ paths:
                 "200":
                     description: The newly updated instance.
                     schema:
-                        $ref: '#/definitions/instance'
+                        $ref: '#/definitions/instanceV1'
                 "400":
                     description: bad request
                 "401":
@@ -5897,8 +5978,9 @@ paths:
                 - application/x-www-form-urlencoded
             operationId: listCreate
             parameters:
-                - description: Title of this list.
-                  example: Cool People
+                - description: |-
+                    Title of this list.
+                    Sample: Cool People
                   in: formData
                   name: title
                   required: true
@@ -5910,7 +5992,7 @@ paths:
                     followed = Show replies to any followed user
                     list = Show replies to members of the list
                     none = Show replies to no one
-                  example: list
+                    Sample: list
                   in: formData
                   name: replies_policy
                   type: string
@@ -6009,24 +6091,26 @@ paths:
             operationId: listUpdate
             parameters:
                 - description: ID of the list
-                  example: Cool People
                   in: path
                   name: id
                   required: true
                   type: string
-                  x-go-name: Title
-                - description: Title of this list.
-                  example: Cool People
+                - description: |-
+                    Title of this list.
+                    Sample: Cool People
                   in: formData
                   name: title
                   type: string
-                  x-go-name: RepliesPolicy
                 - description: |-
                     RepliesPolicy for this list.
                     followed = Show replies to any followed user
                     list = Show replies to members of the list
                     none = Show replies to no one
-                  example: list
+                    Sample: list
+                  enum:
+                    - followed
+                    - list
+                    - none
                   in: formData
                   name: replies_policy
                   type: string
@@ -6068,11 +6152,12 @@ paths:
                   name: id
                   required: true
                   type: string
-                - description: Array of accountIDs to modify. Each accountID must correspond to an account that the requesting account follows.
+                - collectionFormat: multi
+                  description: Array of accountIDs to modify. Each accountID must correspond to an account that the requesting account follows.
                   in: formData
                   items:
                     type: string
-                  name: account_ids
+                  name: account_ids[]
                   required: true
                   type: array
             produces:
@@ -6172,11 +6257,12 @@ paths:
                   name: id
                   required: true
                   type: string
-                - description: Array of accountIDs to modify. Each accountID must correspond to an account that the requesting account follows.
+                - collectionFormat: multi
+                  description: Array of accountIDs to modify. Each accountID must correspond to an account that the requesting account follows.
                   in: formData
                   items:
                     type: string
-                  name: account_ids
+                  name: account_ids[]
                   required: true
                   type: array
             produces:
@@ -6352,6 +6438,12 @@ paths:
     /api/v1/notification/{id}:
         get:
             operationId: notification
+            parameters:
+                - description: The ID of the notification.
+                  in: path
+                  name: id
+                  required: true
+                  type: string
             produces:
                 - application/json
             responses:
@@ -6628,6 +6720,10 @@ paths:
             responses:
                 "200":
                     description: Array of reports.
+                    headers:
+                        Link:
+                            description: Links to the next and previous queries.
+                            type: string
                     schema:
                         items:
                             $ref: '#/definitions/report'
@@ -6655,32 +6751,34 @@ paths:
                 - application/x-www-form-urlencoded
             operationId: reportCreate
             parameters:
-                - description: ID of the account to report.
-                  example: 01GPE75FXSH2EGFBF85NXPH3KP
+                - description: |-
+                    ID of the account to report.
+                    Sample: 01GPE75FXSH2EGFBF85NXPH3KP
                   in: formData
                   name: account_id
                   required: true
                   type: string
                   x-go-name: AccountID
-                - description: IDs of statuses to attach to the report to provide additional context.
-                  example:
-                    - 01GPE76N4SBVRZ8K24TW51ZZQ4
-                    - 01GPE76WN9JZE62EPT3Q9FRRD4
+                - description: |-
+                    IDs of statuses to attach to the report to provide additional context.
+                    Sample: ["01GPE76N4SBVRZ8K24TW51ZZQ4","01GPE76WN9JZE62EPT3Q9FRRD4"]
                   in: formData
                   items:
                     type: string
                   name: status_ids
                   type: array
                   x-go-name: StatusIDs
-                - description: The reason for the report. Default maximum of 1000 characters.
-                  example: Anti-Blackness, transphobia.
+                - description: |-
+                    The reason for the report. Default maximum of 1000 characters.
+                    Sample: Anti-Blackness, transphobia.
                   in: formData
                   name: comment
                   type: string
                   x-go-name: Comment
                 - default: false
-                  description: If the account is remote, should the report be forwarded to the remote admin?
-                  example: true
+                  description: |-
+                    If the account is remote, should the report be forwarded to the remote admin?
+                    Sample: true
                   in: formData
                   name: forward
                   type: boolean
@@ -6689,15 +6787,14 @@ paths:
                   description: |-
                     Specify if the report is due to spam, violation of enumerated instance rules, or some other reason.
                     Currently only 'other' is supported.
-                  example: other
+                    Sample: other
                   in: formData
                   name: category
                   type: string
                   x-go-name: Category
-                - description: IDs of rules on this instance which have been broken according to the reporter.
-                  example:
-                    - 01GPBN5YDY6JKBWE44H7YQBDCQ
-                    - 01GPBN65PDWSBPWVDD0SQCFFY3
+                - description: |-
+                    IDs of rules on this instance which have been broken according to the reporter.
+                    Sample: ["01GPBN5YDY6JKBWE44H7YQBDCQ","01GPBN65PDWSBPWVDD0SQCFFY3"]
                   in: formData
                   items:
                     type: string
@@ -6790,11 +6887,35 @@ paths:
                   name: media_ids
                   type: array
                   x-go-name: MediaIDs
-                - $ref: '#/definitions/pollRequest'
-                  description: Poll to include with this status.
+                - description: |-
+                    Array of possible poll answers.
+                    If provided, media_ids cannot be used, and poll[expires_in] must be provided.
                   in: formData
-                  name: poll
-                  x-go-name: Poll
+                  items:
+                    type: string
+                  name: poll[options][]
+                  type: array
+                  x-go-name: PollOptions
+                - description: |-
+                    Duration the poll should be open, in seconds.
+                    If provided, media_ids cannot be used, and poll[options] must be provided.
+                  format: int64
+                  in: formData
+                  name: poll[expires_in]
+                  type: integer
+                  x-go-name: PollExpiresIn
+                - default: false
+                  description: Allow multiple choices on this poll.
+                  in: formData
+                  name: poll[multiple]
+                  type: boolean
+                  x-go-name: PollMultiple
+                - default: true
+                  description: Hide vote counts until the poll ends.
+                  in: formData
+                  name: poll[hide_totals]
+                  type: boolean
+                  x-go-name: PollHideTotals
                 - description: ID of the status being replied to, if status is a reply.
                   in: formData
                   name: in_reply_to_id
@@ -6813,6 +6934,12 @@ paths:
                   type: string
                   x-go-name: SpoilerText
                 - description: Visibility of the posted status.
+                  enum:
+                    - public
+                    - unlisted
+                    - private
+                    - mutuals_only
+                    - direct
                   in: formData
                   name: visibility
                   type: string
@@ -6821,6 +6948,8 @@ paths:
                     ISO 8601 Datetime at which to schedule a status.
                     Providing this parameter will cause ScheduledStatus to be returned instead of Status.
                     Must be at least 5 minutes in the future.
+
+                    This feature isn't implemented yet.
                   in: formData
                   name: scheduled_at
                   type: string
@@ -6831,27 +6960,30 @@ paths:
                   type: string
                   x-go-name: Language
                 - description: Content type to use when parsing this status.
+                  enum:
+                    - text/plain
+                    - text/markdown
                   in: formData
                   name: content_type
                   type: string
                   x-go-name: ContentType
                 - description: This status will be federated beyond the local timeline(s).
-                  in: query
+                  in: formData
                   name: federated
                   type: boolean
                   x-go-name: Federated
                 - description: This status can be boosted/reblogged.
-                  in: query
+                  in: formData
                   name: boostable
                   type: boolean
                   x-go-name: Boostable
                 - description: This status can be replied to.
-                  in: query
+                  in: formData
                   name: replyable
                   type: boolean
                   x-go-name: Replyable
                 - description: This status can be liked/faved.
-                  in: query
+                  in: formData
                   name: likeable
                   type: boolean
                   x-go-name: Likeable
@@ -7705,6 +7837,11 @@ paths:
                 ````
             operationId: tagTimeline
             parameters:
+                - description: Name of the tag
+                  in: path
+                  name: tag_name
+                  required: true
+                  type: string
                 - description: Return only statuses *OLDER* than the given max status ID. The status with the specified ID will not be included in the response.
                   in: query
                   name: max_id
@@ -7811,6 +7948,23 @@ paths:
             summary: View instance information.
             tags:
                 - instance
+    /livez:
+        get:
+            operationId: liveGet
+            responses:
+                "200":
+                    description: OK
+            summary: Returns code 200 with no body if GoToSocial is "live", ie., able to respond to HTTP requests.
+            tags:
+                - health
+        head:
+            operationId: liveHead
+            responses:
+                "200":
+                    description: OK
+            summary: Returns code 200 if GoToSocial is "live", ie., able to respond to HTTP requests.
+            tags:
+                - health
     /nodeinfo/2.0:
         get:
             description: 'See: https://nodeinfo.diaspora.software/schema.html'
@@ -7825,6 +7979,27 @@ paths:
             summary: Returns a compliant nodeinfo response to node info queries.
             tags:
                 - nodeinfo
+    /readyz:
+        get:
+            description: If GtS is not ready, 500 Internal Error will be returned, and an error will be logged (but not returned to the caller, to avoid leaking internals).
+            operationId: readyGet
+            responses:
+                "200":
+                    description: OK
+                "500":
+                    description: Not ready. Check logs for error message.
+            summary: Returns code 200 with no body if GoToSocial is "ready", ie., able to connect to the database backend and do a simple SELECT.
+            tags:
+                - health
+        head:
+            description: If GtS is not ready, 500 Internal Error will be returned, and an error will be logged (but not returned to the caller, to avoid leaking internals).
+            operationId: readyHead
+            responses:
+                "200":
+                    description: OK
+            summary: Returns code 200 with no body if GoToSocial is "ready", ie., able to connect to the database backend and do a simple SELECT.
+            tags:
+                - health
     /users/{username}/collections/featured:
         get:
             description: |-
@@ -7834,6 +8009,12 @@ paths:
 
                 HTTP signature is required on the request.
             operationId: s2sFeaturedCollectionGet
+            parameters:
+                - description: Account name of the user
+                  in: path
+                  name: username
+                  required: true
+                  type: string
             produces:
                 - application/activity+json
             responses:
@@ -7971,6 +8152,7 @@ securityDefinitions:
             read:blocks: grant read access to blocks
             read:custom_emojis: grant read access to custom_emojis
             read:favourites: grant read access to favourites
+            read:filters: grant read access to filters
             read:follows: grant read access to follows
             read:lists: grant read access to lists
             read:media: grant read access to media
@@ -7983,6 +8165,7 @@ securityDefinitions:
             write: grants write access to everything
             write:accounts: grants write access to accounts
             write:blocks: grants write access to blocks
+            write:filters: grants write access to filters
             write:follows: grants write access to follows
             write:lists: grants write access to lists
             write:media: grants write access to media

@@ -15975,7 +15975,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.useMoveAccountMutation = exports.useAliasAccountMutation = exports.usePasswordChangeMutation = exports.useUpdateCredentialsMutation = void 0;
+exports.useAccountThemesQuery = exports.useMoveAccountMutation = exports.useAliasAccountMutation = exports.usePasswordChangeMutation = exports.useUpdateCredentialsMutation = void 0;
 const query_modifiers_1 = require("../query-modifiers");
 const gts_api_1 = require("../gts-api");
 const extended = gts_api_1.gtsApi.injectEndpoints({
@@ -16018,10 +16018,15 @@ const extended = gts_api_1.gtsApi.injectEndpoints({
                 url: `/api/v1/accounts/move`,
                 body: data
             })
+        }),
+        accountThemes: build.query({
+            query: () => ({
+                url: `/api/v1/accounts/themes`
+            })
         })
     })
 });
-exports.useUpdateCredentialsMutation = extended.useUpdateCredentialsMutation, exports.usePasswordChangeMutation = extended.usePasswordChangeMutation, exports.useAliasAccountMutation = extended.useAliasAccountMutation, exports.useMoveAccountMutation = extended.useMoveAccountMutation;
+exports.useUpdateCredentialsMutation = extended.useUpdateCredentialsMutation, exports.usePasswordChangeMutation = extended.usePasswordChangeMutation, exports.useAliasAccountMutation = extended.useAliasAccountMutation, exports.useMoveAccountMutation = extended.useMoveAccountMutation, exports.useAccountThemesQuery = extended.useAccountThemesQuery;
 
 },{"../gts-api":302,"../query-modifiers":305}],250:[function(require,module,exports){
 "use strict";
@@ -16904,23 +16909,14 @@ function UserMigration() {
 }
 exports.default = UserMigration;
 function UserMigrationForm({ data: profile }) {
-    var _a;
-    let urlStr = (_a = store_1.store.getState().oauth.instanceUrl) !== null && _a !== void 0 ? _a : "";
-    let url = new URL(urlStr);
     return (react_1.default.createElement(react_1.default.Fragment, null,
         react_1.default.createElement("h2", null, "Account Migration Settings"),
-        react_1.default.createElement("div", { className: "info" },
-            react_1.default.createElement("i", { className: "fa fa-fw fa-exclamation-triangle", "aria-hidden": "true" }),
-            react_1.default.createElement("b", null,
-                "Moving your account to another instance, or moving an account from another instance to your account, isn't implemented yet! You will only be able to use the \"alias\" section of the below panel. ",
-                react_1.default.createElement("a", { href: "https://github.com/superseriousbusiness/gotosocial/issues/130", target: "_blank", rel: "noopener noreferrer" }, "See here for progress"),
-                ".")),
         react_1.default.createElement("p", null,
             "The following settings allow you to ",
             react_1.default.createElement("strong", null, "alias"),
-            " your account to another account elsewhere, and to ",
+            " your account to another account elsewhere, or to ",
             react_1.default.createElement("strong", null, "move"),
-            " your followers and following lists to another account."),
+            " to another account."),
         react_1.default.createElement("p", null,
             "Account ",
             react_1.default.createElement("strong", null, "aliasing"),
@@ -16929,26 +16925,9 @@ function UserMigrationForm({ data: profile }) {
             "The account ",
             react_1.default.createElement("strong", null, "move"),
             " action, on the other hand, has serious and irreversible consequences."),
-        react_1.default.createElement("p", null, "To move, you must set an alias from your account to the target account, using this settings panel."),
-        react_1.default.createElement("p", null, "You must also set an alias from the target account back to your account, using the settings panel of the instance on which the target account resides."),
-        react_1.default.createElement("p", null, "Provide the following details to the other instance:"),
-        react_1.default.createElement("dl", { className: "migration-details" },
-            react_1.default.createElement("div", null,
-                react_1.default.createElement("dt", null, "Account handle/username:"),
-                react_1.default.createElement("dd", null,
-                    "@",
-                    profile.acct,
-                    "@",
-                    url.host)),
-            react_1.default.createElement("div", null,
-                react_1.default.createElement("dt", null, "Account URI:"),
-                react_1.default.createElement("dd", null,
-                    urlStr,
-                    "/users/",
-                    profile.username))),
         react_1.default.createElement("p", null,
             "For more information on account migration, please see ",
-            react_1.default.createElement("a", { href: "https://docs.gotosocial.org/en/latest/user_guide/settings/#alias-account", target: "_blank", className: "docslink", rel: "noreferrer" }, "the documentation"),
+            react_1.default.createElement("a", { href: "https://docs.gotosocial.org/en/latest/user_guide/settings/#migration", target: "_blank", className: "docslink", rel: "noreferrer" }, "the documentation"),
             "."),
         react_1.default.createElement(AliasForm, { data: profile }),
         react_1.default.createElement(MoveForm, { data: profile })));
@@ -16989,21 +16968,44 @@ function AlsoKnownAsURI({ index, data }) {
     return (react_1.default.createElement(inputs_1.TextInput, { label: `Alias #${index + 1}`, field: form.alsoKnownAsURI, placeholder: `https://example.org/users/my_other_account_${index + 1}` }));
 }
 function MoveForm({ data: profile }) {
+    var _a;
+    let urlStr = (_a = store_1.store.getState().oauth.instanceUrl) !== null && _a !== void 0 ? _a : "";
+    let url = new URL(urlStr);
     const form = {
         movedToURI: (0, form_1.useTextInput)("moved_to_uri", {
             source: profile,
-            valueSelector: (p) => { var _a; return (_a = p.moved) === null || _a === void 0 ? void 0 : _a.uri; }
+            valueSelector: (p) => { var _a; return (_a = p.moved) === null || _a === void 0 ? void 0 : _a.url; }
         }),
         password: (0, form_1.useTextInput)("password"),
     };
-    const [submitForm, result] = (0, submit_1.default)(form, (0, user_1.useMoveAccountMutation)());
+    const [submitForm, result] = (0, submit_1.default)(form, (0, user_1.useMoveAccountMutation)(), {
+        changedOnly: false,
+    });
     return (react_1.default.createElement("form", { className: "user-migration-move", onSubmit: submitForm },
         react_1.default.createElement("div", { className: "form-section-docs without-border" },
             react_1.default.createElement("h3", null, "Move Account"),
-            react_1.default.createElement("a", { href: "https://docs.gotosocial.org/en/latest/user_guide/settings/#move-account", target: "_blank", className: "docslink", rel: "noreferrer" }, "Learn more about moving your account (opens in a new tab)")),
-        react_1.default.createElement(inputs_1.TextInput, { disabled: true, field: form.movedToURI, label: "Move target URI", placeholder: "https://example.org/users/my_new_account" }),
-        react_1.default.createElement(inputs_1.TextInput, { disabled: true, type: "password", name: "password", field: form.password, label: "Confirm account password" }),
-        react_1.default.createElement(mutation_button_1.default, { disabled: true, label: "Confirm account move", result: result })));
+            react_1.default.createElement("p", null,
+                react_1.default.createElement("p", null, "For a move to be successful, you must have already set an alias from the target account back to the account you're moving from (ie., this account), using the settings panel of the instance on which the target account resides."),
+                react_1.default.createElement("p", null, "To do this, provide the following details to the other instance:"),
+                react_1.default.createElement("dl", { className: "migration-details" },
+                    react_1.default.createElement("div", null,
+                        react_1.default.createElement("dt", null, "Account handle/username:"),
+                        react_1.default.createElement("dd", null,
+                            "@",
+                            profile.acct,
+                            "@",
+                            url.host)),
+                    react_1.default.createElement("div", null,
+                        react_1.default.createElement("dt", null, "Account URI:"),
+                        react_1.default.createElement("dd", null,
+                            urlStr,
+                            "/users/",
+                            profile.username))),
+                react_1.default.createElement("br", null),
+                react_1.default.createElement("a", { href: "https://docs.gotosocial.org/en/latest/user_guide/settings/#move-account", target: "_blank", className: "docslink", rel: "noreferrer" }, "Learn more about moving your account (opens in a new tab)"))),
+        react_1.default.createElement(inputs_1.TextInput, { disabled: false, field: form.movedToURI, label: "Move target URI", placeholder: "https://example.org/users/my_new_account" }),
+        react_1.default.createElement(inputs_1.TextInput, { disabled: false, type: "password", name: "password", field: form.password, label: "Current account password" }),
+        react_1.default.createElement(mutation_button_1.default, { disabled: false, label: "Confirm account move", result: result })));
 }
 
 },{"../components/form/inputs":273,"../components/form/mutation-button":274,"../lib/form":287,"../lib/form/context":282,"../lib/form/form-with-data":285,"../lib/form/submit":289,"../lib/query/oauth":304,"../lib/query/user":307,"../redux/store":313,"react":146}],261:[function(require,module,exports){
@@ -17922,7 +17924,9 @@ function UserProfileForm({ data: profile }) {
         - file avatar
         - file header
         - bool enable_rss
+        - bool hide_collections
         - string custom_css (if enabled)
+        - string theme
     */
     var _a, _b, _c, _d;
     const { data: instance } = (0, query_1.useInstanceV1Query)();
@@ -17933,19 +17937,35 @@ function UserProfileForm({ data: profile }) {
             maxPinnedFields: (_e = (_d = (_c = instance === null || instance === void 0 ? void 0 : instance.configuration) === null || _c === void 0 ? void 0 : _c.accounts) === null || _d === void 0 ? void 0 : _d.max_profile_fields) !== null && _e !== void 0 ? _e : 6
         };
     }, [instance]);
+    // Parse out available theme options into nice format.
+    const { data: themes } = (0, query_1.useAccountThemesQuery)();
+    let themeOptions = { "": "Default" };
+    themes === null || themes === void 0 ? void 0 : themes.forEach((theme) => {
+        let key = theme.file_name;
+        let value = theme.title;
+        if (theme.description) {
+            value += " - " + theme.description;
+        }
+        themeOptions[key] = value;
+    });
     const form = {
         avatar: (0, form_1.useFileInput)("avatar", { withPreview: true }),
         header: (0, form_1.useFileInput)("header", { withPreview: true }),
         displayName: (0, form_1.useTextInput)("display_name", { source: profile }),
         note: (0, form_1.useTextInput)("note", { source: profile, valueSelector: (p) => { var _a; return (_a = p.source) === null || _a === void 0 ? void 0 : _a.note; } }),
-        customCSS: (0, form_1.useTextInput)("custom_css", { source: profile, nosubmit: !instanceConfig.allowCustomCSS }),
         bot: (0, form_1.useBoolInput)("bot", { source: profile }),
         locked: (0, form_1.useBoolInput)("locked", { source: profile }),
         discoverable: (0, form_1.useBoolInput)("discoverable", { source: profile }),
         enableRSS: (0, form_1.useBoolInput)("enable_rss", { source: profile }),
+        hideCollections: (0, form_1.useBoolInput)("hide_collections", { source: profile }),
         fields: (0, form_1.useFieldArrayInput)("fields_attributes", {
             defaultValue: (_a = profile === null || profile === void 0 ? void 0 : profile.source) === null || _a === void 0 ? void 0 : _a.fields,
             length: instanceConfig.maxPinnedFields
+        }),
+        customCSS: (0, form_1.useTextInput)("custom_css", { source: profile, nosubmit: !instanceConfig.allowCustomCSS }),
+        theme: (0, form_1.useRadioInput)("theme", {
+            source: profile,
+            options: themeOptions,
         }),
     };
     const [submitForm, result] = (0, submit_1.default)(form, (0, user_1.useUpdateCredentialsMutation)(), {
@@ -17963,7 +17983,16 @@ function UserProfileForm({ data: profile }) {
                 react_1.default.createElement("div", null,
                     react_1.default.createElement(inputs_1.FileInput, { label: "Header", field: form.header, accept: "image/*" })),
                 react_1.default.createElement("div", null,
-                    react_1.default.createElement(inputs_1.FileInput, { label: "Avatar", field: form.avatar, accept: "image/*" })))),
+                    react_1.default.createElement(inputs_1.FileInput, { label: "Avatar", field: form.avatar, accept: "image/*" }))),
+            react_1.default.createElement("div", { className: "theme" },
+                react_1.default.createElement("div", null,
+                    react_1.default.createElement("b", { id: "theme-label" }, "Theme"),
+                    react_1.default.createElement("br", null),
+                    react_1.default.createElement("span", null,
+                        "After choosing theme and saving, ",
+                        react_1.default.createElement("a", { href: profile.url, target: "_blank" }, "open your profile"),
+                        " and refresh to see changes.")),
+                react_1.default.createElement(inputs_1.RadioGroup, { "aria-labelledby": "theme-label", field: form.theme }))),
         react_1.default.createElement("div", { className: "form-section-docs" },
             react_1.default.createElement("h3", null, "Basic Information"),
             react_1.default.createElement("a", { href: "https://docs.gotosocial.org/en/latest/user_guide/settings/#basic-information", target: "_blank", className: "docslink", rel: "noreferrer" }, "Learn more about these settings (opens in a new tab)")),
@@ -17977,6 +18006,7 @@ function UserProfileForm({ data: profile }) {
         react_1.default.createElement(inputs_1.Checkbox, { field: form.locked, label: "Manually approve follow requests" }),
         react_1.default.createElement(inputs_1.Checkbox, { field: form.discoverable, label: "Mark account as discoverable by search engines and directories" }),
         react_1.default.createElement(inputs_1.Checkbox, { field: form.enableRSS, label: "Enable RSS feed of Public posts" }),
+        react_1.default.createElement(inputs_1.Checkbox, { field: form.hideCollections, label: "Hide who you follow / are followed by" }),
         react_1.default.createElement("div", { className: "form-section-docs" },
             react_1.default.createElement("h3", null, "Advanced"),
             react_1.default.createElement("a", { href: "https://docs.gotosocial.org/en/latest/user_guide/settings/#advanced", target: "_blank", className: "docslink", rel: "noreferrer" }, "Learn more about these settings (opens in a new tab)")),
