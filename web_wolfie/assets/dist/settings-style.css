@@ -437,7 +437,7 @@ section.with-sidebar > div .titlesave, section.with-sidebar > form .titlesave {
 		display: grid;
 		max-width: 60rem;
 		grid-template-columns: 70% 30%;
-		grid-template-rows: 100%;
+		grid-template-rows: auto;
 		gap: 1rem;
 	}
 
@@ -463,6 +463,12 @@ section.with-sidebar > div .titlesave, section.with-sidebar > form .titlesave {
 			display: flex;
 			gap: 0.5rem;
 		}
+
+.user-profile .theme, .user-profile .form-field.radio {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+	}
 
 .migration-details {
 	display: flex;
