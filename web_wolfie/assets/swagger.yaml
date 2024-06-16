@@ -1,5 +1,9 @@
 basePath: /
 definitions:
+    FilterAction:
+        title: FilterAction is the action to apply to statuses matching a filter.
+        type: string
+        x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
     InstanceConfigurationEmojis:
         properties:
             emoji_size_limit:
@@ -219,7 +223,9 @@ definitions:
                 type: string
                 x-go-name: DisplayName
             emojis:
-                description: Array of custom emojis used in this account's note or display name.
+                description: |-
+                    Array of custom emojis used in this account's note or display name.
+                    Empty for blocked accounts.
                 items:
                     $ref: '#/definitions/emoji'
                 type: array
@@ -231,7 +237,9 @@ definitions:
                 type: boolean
                 x-go-name: EnableRSS
             fields:
-                description: Additional metadata attached to this account's profile.
+                description: |-
+                    Additional metadata attached to this account's profile.
+                    Empty for blocked accounts.
                 items:
                     $ref: '#/definitions/field'
                 type: array
@@ -280,11 +288,6 @@ definitions:
                 x-go-name: Locked
             moved:
                 $ref: '#/definitions/account'
-            mute_expires_at:
-                description: If this account has been muted, when will the mute expire (ISO 8601 Datetime).
-                example: "2021-07-30T09:20:25+00:00"
-                type: string
-                x-go-name: MuteExpiresAt
             note:
                 description: Bio/description of this account.
                 type: string
@@ -439,8 +442,8 @@ definitions:
                 x-go-name: ID
             invite_request:
                 description: |-
-                    The reason given when requesting an invite.
-                    Null if not known / remote account.
+                    The reason given when signing up.
+                    Null if no reason / remote account.
                 example: Pleaaaaaaaaaaaaaaase!!
                 type: string
                 x-go-name: InviteRequest
@@ -818,6 +821,30 @@ definitions:
         type: object
         x-go-name: Card
         x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
+    conversation:
+        description: |-
+            Conversation represents a conversation
+            with "direct message" visibility.
+        properties:
+            accounts:
+                description: Participants in the conversation.
+                items:
+                    $ref: '#/definitions/account'
+                type: array
+                x-go-name: Accounts
+            id:
+                description: Local database ID of the conversation.
+                type: string
+                x-go-name: ID
+            last_status:
+                $ref: '#/definitions/status'
+            unread:
+                description: Is the conversation currently marked as unread?
+                type: boolean
+                x-go-name: Unread
+        type: object
+        x-go-name: Conversation
+        x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
     debugAPUrlResponse:
         description: |-
             DebugAPUrlResponse provides detailed debug
@@ -1013,6 +1040,60 @@ definitions:
         type: string
         x-go-name: FilterContext
         x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
+    filterKeyword:
+        properties:
+            id:
+                description: The ID of the filter keyword entry in the database.
+                type: string
+                x-go-name: ID
+            keyword:
+                description: The text to be filtered.
+                example: fnord
+                type: string
+                x-go-name: Keyword
+            whole_word:
+                description: Should the filter keyword consider word boundaries?
+                example: true
+                type: boolean
+                x-go-name: WholeWord
+        title: FilterKeyword represents text to filter within a v2 filter.
+        type: object
+        x-go-name: FilterKeyword
+        x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
+    filterResult:
+        properties:
+            filter:
+                $ref: '#/definitions/filterV2'
+            keyword_matches:
+                description: The keywords within the filter that were matched.
+                items:
+                    type: string
+                type: array
+                x-go-name: KeywordMatches
+            status_matches:
+                description: The status IDs within the filter that were matched.
+                items:
+                    type: string
+                type: array
+                x-go-name: StatusMatches
+        title: FilterResult is returned along with a filtered status to explain why it was filtered.
+        type: object
+        x-go-name: FilterResult
+        x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
+    filterStatus:
+        properties:
+            id:
+                description: The ID of the filter status entry in the database.
+                type: string
+                x-go-name: ID
+            phrase:
+                description: The status ID to be filtered.
+                type: string
+                x-go-name: StatusID
+        title: FilterStatus represents a single status to filter within a v2 filter.
+        type: object
+        x-go-name: FilterStatus
+        x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
     filterV1:
         description: |-
             Note that v1 filters are mapped to v2 filters and v2 filter keywords internally.
@@ -1061,6 +1142,52 @@ definitions:
         title: FilterV1 represents a user-defined filter for determining which statuses should not be shown to the user.
         type: object
         x-go-name: FilterV1
+        x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
+    filterV2:
+        description: v2 filters have names and can include multiple phrases and status IDs to filter.
+        properties:
+            context:
+                description: The contexts in which the filter should be applied.
+                example:
+                    - home
+                    - public
+                items:
+                    $ref: '#/definitions/filterContext'
+                minItems: 1
+                type: array
+                uniqueItems: true
+                x-go-name: Context
+            expires_at:
+                description: When the filter should no longer be applied. Null if the filter does not expire.
+                example: "2024-02-01T02:57:49Z"
+                type: string
+                x-go-name: ExpiresAt
+            filter_action:
+                $ref: '#/definitions/FilterAction'
+            id:
+                description: The ID of the filter in the database.
+                type: string
+                x-go-name: ID
+            keywords:
+                description: The keywords grouped under this filter.
+                items:
+                    $ref: '#/definitions/filterKeyword'
+                type: array
+                x-go-name: Keywords
+            statuses:
+                description: The statuses grouped under this filter.
+                items:
+                    $ref: '#/definitions/filterStatus'
+                type: array
+                x-go-name: Statuses
+            title:
+                description: The name of the filter.
+                example: Linux Words
+                type: string
+                x-go-name: Title
+        title: FilterV2 represents a user-defined filter for determining which statuses should not be shown to the user.
+        type: object
+        x-go-name: FilterV2
         x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
     headerFilter:
         properties:
@@ -1281,6 +1408,10 @@ definitions:
                 $ref: '#/definitions/instanceV1Configuration'
             contact_account:
                 $ref: '#/definitions/account'
+            debug:
+                description: Whether or not instance is running in DEBUG mode. Omitted if false.
+                type: boolean
+                x-go-name: Debug
             description:
                 description: |-
                     Description of the instance.
@@ -1410,6 +1541,10 @@ definitions:
                 $ref: '#/definitions/InstanceConfigurationEmojis'
             media_attachments:
                 $ref: '#/definitions/instanceConfigurationMediaAttachments'
+            oidc_enabled:
+                description: True if instance is running with OIDC as auth/identity backend, else omitted.
+                type: boolean
+                x-go-name: OIDCEnabled
             polls:
                 $ref: '#/definitions/instanceConfigurationPolls'
             statuses:
@@ -1443,6 +1578,10 @@ definitions:
                 $ref: '#/definitions/instanceV2Configuration'
             contact:
                 $ref: '#/definitions/instanceV2Contact'
+            debug:
+                description: Whether or not instance is running in DEBUG mode. Omitted if false.
+                type: boolean
+                x-go-name: Debug
             description:
                 description: |-
                     Description of the instance.
@@ -1521,6 +1660,10 @@ definitions:
                 $ref: '#/definitions/InstanceConfigurationEmojis'
             media_attachments:
                 $ref: '#/definitions/instanceConfigurationMediaAttachments'
+            oidc_enabled:
+                description: True if instance is running with OIDC as auth/identity backend, else omitted.
+                type: boolean
+                x-go-name: OIDCEnabled
             polls:
                 $ref: '#/definitions/instanceConfigurationPolls'
             statuses:
@@ -1791,6 +1934,157 @@ definitions:
         type: object
         x-go-name: MediaMeta
         x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
+    mutedAccount:
+        properties:
+            acct:
+                description: |-
+                    The account URI as discovered via webfinger.
+                    Equal to username for local users, or username@domain for remote users.
+                example: some_user@example.org
+                type: string
+                x-go-name: Acct
+            avatar:
+                description: Web location of the account's avatar.
+                example: https://example.org/media/some_user/avatar/original/avatar.jpeg
+                type: string
+                x-go-name: Avatar
+            avatar_static:
+                description: |-
+                    Web location of a static version of the account's avatar.
+                    Only relevant when the account's main avatar is a video or a gif.
+                example: https://example.org/media/some_user/avatar/static/avatar.png
+                type: string
+                x-go-name: AvatarStatic
+            bot:
+                description: Account identifies as a bot.
+                type: boolean
+                x-go-name: Bot
+            created_at:
+                description: When the account was created (ISO 8601 Datetime).
+                example: "2021-07-30T09:20:25+00:00"
+                type: string
+                x-go-name: CreatedAt
+            custom_css:
+                description: CustomCSS to include when rendering this account's profile or statuses.
+                type: string
+                x-go-name: CustomCSS
+            discoverable:
+                description: Account has opted into discovery features.
+                type: boolean
+                x-go-name: Discoverable
+            display_name:
+                description: The account's display name.
+                example: big jeff (he/him)
+                type: string
+                x-go-name: DisplayName
+            emojis:
+                description: |-
+                    Array of custom emojis used in this account's note or display name.
+                    Empty for blocked accounts.
+                items:
+                    $ref: '#/definitions/emoji'
+                type: array
+                x-go-name: Emojis
+            enable_rss:
+                description: |-
+                    Account has enabled RSS feed.
+                    Key/value omitted if false.
+                type: boolean
+                x-go-name: EnableRSS
+            fields:
+                description: |-
+                    Additional metadata attached to this account's profile.
+                    Empty for blocked accounts.
+                items:
+                    $ref: '#/definitions/field'
+                type: array
+                x-go-name: Fields
+            followers_count:
+                description: Number of accounts following this account, according to our instance.
+                format: int64
+                type: integer
+                x-go-name: FollowersCount
+            following_count:
+                description: Number of account's followed by this account, according to our instance.
+                format: int64
+                type: integer
+                x-go-name: FollowingCount
+            header:
+                description: Web location of the account's header image.
+                example: https://example.org/media/some_user/header/original/header.jpeg
+                type: string
+                x-go-name: Header
+            header_static:
+                description: |-
+                    Web location of a static version of the account's header.
+                    Only relevant when the account's main header is a video or a gif.
+                example: https://example.org/media/some_user/header/static/header.png
+                type: string
+                x-go-name: HeaderStatic
+            hide_collections:
+                description: |-
+                    Account has opted to hide their followers/following collections.
+                    Key/value omitted if false.
+                type: boolean
+                x-go-name: HideCollections
+            id:
+                description: The account id.
+                example: 01FBVD42CQ3ZEEVMW180SBX03B
+                type: string
+                x-go-name: ID
+            last_status_at:
+                description: When the account's most recent status was posted (ISO 8601 Datetime).
+                example: "2021-07-30T09:20:25+00:00"
+                type: string
+                x-go-name: LastStatusAt
+            locked:
+                description: Account manually approves follow requests.
+                type: boolean
+                x-go-name: Locked
+            moved:
+                $ref: '#/definitions/account'
+            mute_expires_at:
+                description: |-
+                    If this account has been muted, when will the mute expire (ISO 8601 Datetime).
+                    If the mute is indefinite, this will be null.
+                example: "2021-07-30T09:20:25+00:00"
+                type: string
+                x-go-name: MuteExpiresAt
+            note:
+                description: Bio/description of this account.
+                type: string
+                x-go-name: Note
+            role:
+                $ref: '#/definitions/accountRole'
+            source:
+                $ref: '#/definitions/Source'
+            statuses_count:
+                description: Number of statuses posted by this account, according to our instance.
+                format: int64
+                type: integer
+                x-go-name: StatusesCount
+            suspended:
+                description: Account has been suspended by our instance.
+                type: boolean
+                x-go-name: Suspended
+            theme:
+                description: Filename of user-selected CSS theme to include when rendering this account's profile or statuses. Eg., `blurple-light.css`.
+                type: string
+                x-go-name: Theme
+            url:
+                description: Web location of the account's profile page.
+                example: https://example.org/@some_user
+                type: string
+                x-go-name: URL
+            username:
+                description: The username of the account, not including domain.
+                example: some_user
+                type: string
+                x-go-name: Username
+        title: MutedAccount extends Account with a field used only by the muted user list.
+        type: object
+        x-go-name: MutedAccount
+        x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
     nodeinfo:
         description: 'See: https://nodeinfo.diaspora.software/schema.html'
         properties:
@@ -1842,13 +2136,14 @@ definitions:
             type:
                 description: |-
                     The type of event that resulted in the notification.
-                    follow = Someone followed you
-                    follow_request = Someone requested to follow you
-                    mention = Someone mentioned you in their status
-                    reblog = Someone boosted one of your statuses
-                    favourite = Someone favourited one of your statuses
-                    poll = A poll you have voted in or created has ended
-                    status = Someone you enabled notifications for has posted a status
+                    follow = Someone followed you. `account` will be set.
+                    follow_request = Someone requested to follow you. `account` will be set.
+                    mention = Someone mentioned you in their status. `status` will be set. `account` will be set.
+                    reblog = Someone boosted one of your statuses. `status` will be set. `account` will be set.
+                    favourite = Someone favourited one of your statuses. `status` will be set. `account` will be set.
+                    poll = A poll you have voted in or created has ended. `status` will be set. `account` will be set.
+                    status = Someone you enabled notifications for has posted a status. `status` will be set. `account` will be set.
+                    admin.sign_up = Someone has signed up for a new account on the instance. `account` will be set.
                 type: string
                 x-go-name: Type
         title: Notification represents a notification of an event relevant to the user.
@@ -2093,6 +2388,12 @@ definitions:
                 format: int64
                 type: integer
                 x-go-name: FavouritesCount
+            filtered:
+                description: A list of filters that matched this status and why they matched, if there are any such filters.
+                items:
+                    $ref: '#/definitions/filterResult'
+                type: array
+                x-go-name: Filtered
             id:
                 description: ID of the status.
                 example: 01FBVD42CQ3ZEEVMW180SBX03B
@@ -2213,6 +2514,52 @@ definitions:
         type: object
         x-go-name: Context
         x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
+    statusEdit:
+        description: |-
+            StatusEdit represents one historical revision of a status, containing
+            partial information about the state of the status at that revision.
+        properties:
+            account:
+                $ref: '#/definitions/account'
+            content:
+                description: |-
+                    The content of this status at this revision.
+                    Should be HTML, but might also be plaintext in some cases.
+                example: <p>Hey this is a status!</p>
+                type: string
+                x-go-name: Content
+            created_at:
+                description: The date when this revision was created (ISO 8601 Datetime).
+                example: "2021-07-30T09:20:25+00:00"
+                type: string
+                x-go-name: CreatedAt
+            emojis:
+                description: Custom emoji to be used when rendering status content.
+                items:
+                    $ref: '#/definitions/emoji'
+                type: array
+                x-go-name: Emojis
+            media_attachments:
+                description: Media that is attached to this status.
+                items:
+                    $ref: '#/definitions/attachment'
+                type: array
+                x-go-name: MediaAttachments
+            poll:
+                $ref: '#/definitions/poll'
+            sensitive:
+                description: Status marked sensitive at this revision.
+                example: false
+                type: boolean
+                x-go-name: Sensitive
+            spoiler_text:
+                description: Subject, summary, or content warning for the status at this revision.
+                example: warning nsfw
+                type: string
+                x-go-name: SpoilerText
+        type: object
+        x-go-name: StatusEdit
+        x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
     statusReblogged:
         properties:
             account:
@@ -2250,6 +2597,12 @@ definitions:
                 format: int64
                 type: integer
                 x-go-name: FavouritesCount
+            filtered:
+                description: A list of filters that matched this status and why they matched, if there are any such filters.
+                items:
+                    $ref: '#/definitions/filterResult'
+                type: array
+                x-go-name: Filtered
             id:
                 description: ID of the status.
                 example: 01FBVD42CQ3ZEEVMW180SBX03B
@@ -2351,6 +2704,27 @@ definitions:
         title: StatusReblogged represents a reblogged status.
         type: object
         x-go-name: StatusReblogged
+        x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
+    statusSource:
+        description: |-
+            StatusSource represents the source text of a
+            status as submitted to the API when it was created.
+        properties:
+            id:
+                description: ID of the status.
+                example: 01FBVD42CQ3ZEEVMW180SBX03B
+                type: string
+                x-go-name: ID
+            spoiler_text:
+                description: Plain-text version of spoiler text.
+                type: string
+                x-go-name: SpoilerText
+            text:
+                description: Plain-text source of a status.
+                type: string
+                x-go-name: Text
+        type: object
+        x-go-name: StatusSource
         x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
     swaggerCollection:
         properties:
@@ -2493,6 +2867,77 @@ definitions:
         type: object
         x-go-name: Theme
         x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
+    user:
+        properties:
+            admin:
+                description: User is an admin.
+                example: false
+                type: boolean
+                x-go-name: Admin
+            approved:
+                description: User was approved by an admin.
+                example: true
+                type: boolean
+                x-go-name: Approved
+            confirmation_sent_at:
+                description: Time when the last "please confirm your email address" email was sent, if at all. (ISO 8601 Datetime)
+                example: "2021-07-30T09:20:25+00:00"
+                type: string
+                x-go-name: ConfirmationSentAt
+            confirmed_at:
+                description: Time at which the email given in the `email` field was confirmed, if at all. (ISO 8601 Datetime)
+                example: "2021-07-30T09:20:25+00:00"
+                type: string
+                x-go-name: ConfirmedAt
+            created_at:
+                description: Time this user was created. (ISO 8601 Datetime)
+                example: "2021-07-30T09:20:25+00:00"
+                type: string
+                x-go-name: CreatedAt
+            disabled:
+                description: User's account is disabled.
+                example: false
+                type: boolean
+                x-go-name: Disabled
+            email:
+                description: Confirmed email address of this user, if set.
+                example: someone@example.org
+                type: string
+                x-go-name: Email
+            id:
+                description: Database ID of this user.
+                example: 01FBVD42CQ3ZEEVMW180SBX03B
+                type: string
+                x-go-name: ID
+            last_emailed_at:
+                description: Time at which this user was last emailed, if at all. (ISO 8601 Datetime)
+                example: "2021-07-30T09:20:25+00:00"
+                type: string
+                x-go-name: LastEmailedAt
+            moderator:
+                description: User is a moderator.
+                example: false
+                type: boolean
+                x-go-name: Moderator
+            reason:
+                description: Reason for sign-up, if provided.
+                example: Please! Pretty please!
+                type: string
+                x-go-name: Reason
+            reset_password_sent_at:
+                description: Time when the last "please reset your password" email was sent, if at all. (ISO 8601 Datetime)
+                example: "2021-07-30T09:20:25+00:00"
+                type: string
+                x-go-name: ResetPasswordSentAt
+            unconfirmed_email:
+                description: Unconfirmed email address of this user, if set.
+                example: someone.else@somewhere.else.example.org
+                type: string
+                x-go-name: UnconfirmedEmail
+        title: User models fields relevant to one user.
+        type: object
+        x-go-name: User
+        x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
     wellKnownResponse:
         description: See https://webfinger.net/
         properties:
@@ -2524,7 +2969,7 @@ info:
         name: AGPL3
         url: https://www.gnu.org/licenses/agpl-3.0.en.html
     title: GoToSocial Swagger documentation.
-    version: 0.15.1
+    version: 0.16.1
 paths:
     /.well-known/host-meta:
         get:
@@ -2664,6 +3109,9 @@ paths:
                     - `https://example.org/some/arbitrary/url` -- search for an account OR a status with the given URL. Will only ever return 1 result at most.
                     - `#[hashtag_name]` -- search for a hashtag with the given hashtag name, or starting with the given hashtag name. Case insensitive. Can return multiple results.
                     - any arbitrary string -- search for accounts or statuses containing the given string. Can return multiple results.
+
+                    Arbitrary string queries may include the following operators:
+                    - `from:localuser`, `from:remoteuser@instance.tld`: restrict results to statuses created by the specified account.
                   in: query
                   name: q
                   required: true
@@ -2694,6 +3142,10 @@ paths:
                   in: query
                   name: exclude_unreviewed
                   type: boolean
+                - description: Restrict results to statuses created by the specified account.
+                  in: query
+                  name: account_id
+                  type: string
             produces:
                 - application/json
             responses:
@@ -2773,6 +3225,8 @@ paths:
                     description: not found
                 "406":
                     description: not acceptable
+                "422":
+                    description: Unprocessable. Your account creation request cannot be processed because either too many accounts have been created on this instance in the last 24h, or the pending account backlog is full.
                 "500":
                     description: internal server error
             security:
@@ -3063,6 +3517,51 @@ paths:
             summary: See all lists of yours that contain requested account.
             tags:
                 - accounts
+    /api/v1/accounts/{id}/mute:
+        post:
+            description: If account was already muted, succeeds anyway. This can be used to update the details of a mute.
+            operationId: accountMute
+            parameters:
+                - description: The ID of the account to block.
+                  in: path
+                  name: id
+                  required: true
+                  type: string
+                - default: false
+                  description: Mute notifications as well as posts.
+                  in: formData
+                  name: notifications
+                  type: boolean
+                - default: 0
+                  description: How long the mute should last, in seconds. If 0 or not provided, mute lasts indefinitely.
+                  in: formData
+                  name: duration
+                  type: number
+            produces:
+                - application/json
+            responses:
+                "200":
+                    description: Your relationship to the account.
+                    schema:
+                        $ref: '#/definitions/accountRelationship'
+                "400":
+                    description: bad request
+                "401":
+                    description: unauthorized
+                "403":
+                    description: forbidden to moved accounts
+                "404":
+                    description: not found
+                "406":
+                    description: not acceptable
+                "500":
+                    description: internal server error
+            security:
+                - OAuth2 Bearer:
+                    - write:mutes
+            summary: Mute account by ID.
+            tags:
+                - accounts
     /api/v1/accounts/{id}/note:
         post:
             consumes:
@@ -3241,6 +3740,39 @@ paths:
                 - OAuth2 Bearer:
                     - write:follows
             summary: Unfollow account with id.
+            tags:
+                - accounts
+    /api/v1/accounts/{id}/unmute:
+        post:
+            description: If account was already unmuted (or has never been muted), succeeds anyway.
+            operationId: accountUnmute
+            parameters:
+                - description: The ID of the account to unmute.
+                  in: path
+                  name: id
+                  required: true
+                  type: string
+            produces:
+                - application/json
+            responses:
+                "200":
+                    description: Your relationship to this account.
+                    schema:
+                        $ref: '#/definitions/accountRelationship'
+                "400":
+                    description: bad request
+                "401":
+                    description: unauthorized
+                "404":
+                    description: not found
+                "406":
+                    description: not acceptable
+                "500":
+                    description: internal server error
+            security:
+                - OAuth2 Bearer:
+                    - write:mutes
+            summary: Unmute account by ID.
             tags:
                 - accounts
     /api/v1/accounts/alias:
@@ -3677,6 +4209,164 @@ paths:
             summary: Verify a token by returning account details pertaining to it.
             tags:
                 - accounts
+    /api/v1/admin/accounts:
+        get:
+            description: |-
+                Returned accounts will be ordered alphabetically (a-z) by domain + username.
+
+                The next and previous queries can be parsed from the returned Link header.
+                Example:
+
+                ```
+                <https://example.org/api/v1/admin/accounts?limit=80&max_id=example.org%2F%40someone>; rel="next", <https://example.org/api/v1/admin/accounts?limit=80&min_id=example.org%2F%40someone_else>; rel="prev"
+                ````
+            operationId: adminAccountsGetV1
+            parameters:
+                - default: false
+                  description: Filter for local accounts.
+                  in: query
+                  name: local
+                  type: boolean
+                - default: false
+                  description: Filter for remote accounts.
+                  in: query
+                  name: remote
+                  type: boolean
+                - default: false
+                  description: Filter for currently active accounts.
+                  in: query
+                  name: active
+                  type: boolean
+                - default: false
+                  description: Filter for currently pending accounts.
+                  in: query
+                  name: pending
+                  type: boolean
+                - default: false
+                  description: Filter for currently disabled accounts.
+                  in: query
+                  name: disabled
+                  type: boolean
+                - default: false
+                  description: Filter for currently silenced accounts.
+                  in: query
+                  name: silenced
+                  type: boolean
+                - default: false
+                  description: Filter for currently suspended accounts.
+                  in: query
+                  name: suspended
+                  type: boolean
+                - default: false
+                  description: Filter for accounts force-marked as sensitive.
+                  in: query
+                  name: sensitized
+                  type: boolean
+                - description: Search for the given username.
+                  in: query
+                  name: username
+                  type: string
+                - description: Search for the given display name.
+                  in: query
+                  name: display_name
+                  type: string
+                - description: Filter by the given domain.
+                  in: query
+                  name: by_domain
+                  type: string
+                - description: Lookup a user with this email.
+                  in: query
+                  name: email
+                  type: string
+                - description: Lookup users with this IP address.
+                  in: query
+                  name: ip
+                  type: string
+                - default: false
+                  description: Filter for staff accounts.
+                  in: query
+                  name: staff
+                  type: boolean
+                - description: max_id in the form `[domain]/@[username]`. All results returned will be later in the alphabet than `[domain]/@[username]`. For example, if max_id = `example.org/@someone` then returned entries might contain `example.org/@someone_else`, `later.example.org/@someone`, etc. Local account IDs in this form use an empty string for the `[domain]` part, for example local account with username `someone` would be `/@someone`.
+                  in: query
+                  name: max_id
+                  type: string
+                - description: min_id in the form `[domain]/@[username]`. All results returned will be earlier in the alphabet than `[domain]/@[username]`. For example, if min_id = `example.org/@someone` then returned entries might contain `example.org/@earlier_account`, `earlier.example.org/@someone`, etc. Local account IDs in this form use an empty string for the `[domain]` part, for example local account with username `someone` would be `/@someone`.
+                  in: query
+                  name: min_id
+                  type: string
+                - default: 50
+                  description: Maximum number of results to return.
+                  in: query
+                  maximum: 200
+                  minimum: 1
+                  name: limit
+                  type: integer
+            produces:
+                - application/json
+            responses:
+                "200":
+                    description: ""
+                    headers:
+                        Link:
+                            description: Links to the next and previous queries.
+                            type: string
+                    schema:
+                        items:
+                            $ref: '#/definitions/adminAccountInfo'
+                        type: array
+                "400":
+                    description: bad request
+                "401":
+                    description: unauthorized
+                "403":
+                    description: forbidden
+                "404":
+                    description: not found
+                "406":
+                    description: not acceptable
+                "500":
+                    description: internal server error
+            security:
+                - OAuth2 Bearer:
+                    - admin
+            summary: View + page through known accounts according to given filters.
+            tags:
+                - admin
+    /api/v1/admin/accounts/{id}:
+        get:
+            operationId: adminAccountGet
+            parameters:
+                - description: ID of the account.
+                  in: path
+                  name: id
+                  required: true
+                  type: string
+            produces:
+                - application/json
+            responses:
+                "200":
+                    description: OK
+                    schema:
+                        $ref: '#/definitions/adminAccountInfo'
+                "400":
+                    description: bad request
+                "401":
+                    description: unauthorized
+                "403":
+                    description: forbidden
+                "404":
+                    description: not found
+                "406":
+                    description: not acceptable
+                "500":
+                    description: internal server error
+            security:
+                - OAuth2 Bearer:
+                    - admin
+            summary: View one account.
+            tags:
+                - admin
     /api/v1/admin/accounts/{id}/action:
         post:
             consumes:
@@ -3720,6 +4410,86 @@ paths:
                 - OAuth2 Bearer:
                     - admin
             summary: Perform an admin action on an account.
+            tags:
+                - admin
+    /api/v1/admin/accounts/{id}/approve:
+        post:
+            operationId: adminAccountApprove
+            parameters:
+                - description: ID of the account.
+                  in: path
+                  name: id
+                  required: true
+                  type: string
+            produces:
+                - application/json
+            responses:
+                "200":
+                    description: The now-approved account.
+                    schema:
+                        $ref: '#/definitions/adminAccountInfo'
+                "400":
+                    description: bad request
+                "401":
+                    description: unauthorized
+                "403":
+                    description: forbidden
+                "404":
+                    description: not found
+                "406":
+                    description: not acceptable
+                "500":
+                    description: internal server error
+            security:
+                - OAuth2 Bearer:
+                    - admin
+            summary: Approve pending account.
+            tags:
+                - admin
+    /api/v1/admin/accounts/{id}/reject:
+        post:
+            operationId: adminAccountReject
+            parameters:
+                - description: ID of the account.
+                  in: path
+                  name: id
+                  required: true
+                  type: string
+                - description: Comment to leave on why the account was denied. The comment will be visible to admins only.
+                  in: formData
+                  name: private_comment
+                  type: string
+                - description: Message to include in email to applicant. Will be included only if send_email is true.
+                  in: formData
+                  name: message
+                  type: string
+                - description: Send an email to the applicant informing them that their sign-up has been rejected.
+                  in: formData
+                  name: send_email
+                  type: boolean
+            produces:
+                - application/json
+            responses:
+                "200":
+                    description: The now-rejected account.
+                    schema:
+                        $ref: '#/definitions/adminAccountInfo'
+                "400":
+                    description: bad request
+                "401":
+                    description: unauthorized
+                "403":
+                    description: forbidden
+                "404":
+                    description: not found
+                "406":
+                    description: not acceptable
+                "500":
+                    description: internal server error
+            security:
+                - OAuth2 Bearer:
+                    - admin
+            summary: Reject pending account.
             tags:
                 - admin
     /api/v1/admin/custom_emojis:
@@ -4044,6 +4814,31 @@ paths:
                 - OAuth2 Bearer:
                     - admin
             summary: Perform a GET to the specified ActivityPub URL and return detailed debugging information.
+            tags:
+                - debug
+    /api/v1/admin/debug/caches/clear:
+        post:
+            description: Only enabled / exposed if GoToSocial was built and is running with flag DEBUG=1.
+            operationId: debugClearCaches
+            produces:
+                - application/json
+            responses:
+                "200":
+                    description: All good baby!
+                "400":
+                    description: bad request
+                "401":
+                    description: unauthorized
+                "404":
+                    description: not found
+                "406":
+                    description: not acceptable
+                "500":
+                    description: internal server error
+            security:
+                - OAuth2 Bearer:
+                    - admin
+            summary: Sweep/clear all in-memory caches.
             tags:
                 - debug
     /api/v1/admin/domain_allows:
@@ -4446,6 +5241,11 @@ paths:
                 - description: The email address that the test email should be sent to.
                   in: formData
                   name: email
+                  required: true
+                  type: string
+                - description: Optional message to include in the email.
+                  in: formData
+                  name: message
                   type: string
             produces:
                 - application/json
@@ -5285,6 +6085,67 @@ paths:
                     - read:bookmarks
             tags:
                 - bookmarks
+    /api/v1/conversations:
+        get:
+            description: |-
+                NOT IMPLEMENTED YET: Will currently always return an array of length 0.
+
+                The next and previous queries can be parsed from the returned Link header.
+                Example:
+
+                ```
+                <https://example.org/api/v1/conversations?limit=80&max_id=01FC0SKA48HNSVR6YKZCQGS2V8>; rel="next", <https://example.org/api/v1/conversations?limit=80&min_id=01FC0SKW5JK2Q4EVAV2B462YY0>; rel="prev"
+                ````
+            operationId: conversationsGet
+            parameters:
+                - description: 'Return only conversations *OLDER* than the given max ID. The conversation with the specified ID will not be included in the response. NOTE: the ID is of the internal conversation, use the Link header for pagination.'
+                  in: query
+                  name: max_id
+                  type: string
+                - description: 'Return only conversations *NEWER* than the given since ID. The conversation with the specified ID will not be included in the response. NOTE: the ID is of the internal conversation, use the Link header for pagination.'
+                  in: query
+                  name: since_id
+                  type: string
+                - description: 'Return only conversations *IMMEDIATELY NEWER* than the given min ID. The conversation with the specified ID will not be included in the response. NOTE: the ID is of the internal conversation, use the Link header for pagination.'
+                  in: query
+                  name: min_id
+                  type: string
+                - default: 40
+                  description: Number of conversations to return.
+                  in: query
+                  maximum: 80
+                  minimum: 1
+                  name: limit
+                  type: integer
+            produces:
+                - application/json
+            responses:
+                "200":
+                    description: ""
+                    headers:
+                        Link:
+                            description: Links to the next and previous queries.
+                            type: string
+                    schema:
+                        items:
+                            $ref: '#/definitions/conversation'
+                        type: array
+                "400":
+                    description: bad request
+                "401":
+                    description: unauthorized
+                "404":
+                    description: not found
+                "406":
+                    description: not acceptable
+                "500":
+                    description: internal server error
+            security:
+                - OAuth2 Bearer:
+                    - read:statuses
+            summary: Get an array of (direct message) conversations that requesting account is involved in.
+            tags:
+                - conversations
     /api/v1/custom_emojis:
         get:
             operationId: customEmojisGet
@@ -5432,6 +6293,7 @@ paths:
                     Sample: fnord
                   in: formData
                   maxLength: 40
+                  minLength: 1
                   name: phrase
                   required: true
                   type: string
@@ -5488,10 +6350,14 @@ paths:
                     description: bad request
                 "401":
                     description: unauthorized
+                "403":
+                    description: forbidden to moved accounts
                 "404":
                     description: not found
                 "406":
                     description: not acceptable
+                "409":
+                    description: conflict (duplicate keyword)
                 "422":
                     description: unprocessable content
                 "500":
@@ -5506,7 +6372,7 @@ paths:
         delete:
             operationId: filterV1Delete
             parameters:
-                - description: ID of the list
+                - description: ID of the filter
                   in: path
                   name: id
                   required: true
@@ -5581,6 +6447,7 @@ paths:
                     Sample: fnord
                   in: formData
                   maxLength: 40
+                  minLength: 1
                   name: phrase
                   required: true
                   type: string
@@ -5637,10 +6504,14 @@ paths:
                     description: bad request
                 "401":
                     description: unauthorized
+                "403":
+                    description: forbidden to moved accounts
                 "404":
                     description: not found
                 "406":
                     description: not acceptable
+                "409":
+                    description: conflict (duplicate keyword)
                 "422":
                     description: unprocessable content
                 "500":
@@ -6435,6 +7306,65 @@ paths:
             summary: Update a media attachment.
             tags:
                 - media
+    /api/v1/mutes:
+        get:
+            description: |-
+                The next and previous queries can be parsed from the returned Link header.
+                Example:
+
+                ```
+                <https://example.org/api/v1/mutes?limit=80&max_id=01FC0SKA48HNSVR6YKZCQGS2V8>; rel="next", <https://example.org/api/v1/mutes?limit=80&min_id=01FC0SKW5JK2Q4EVAV2B462YY0>; rel="prev"
+                ````
+            operationId: mutesGet
+            parameters:
+                - description: 'Return only muted accounts *OLDER* than the given max ID. The muted account with the specified ID will not be included in the response. NOTE: the ID is of the internal mute, NOT any of the returned accounts.'
+                  in: query
+                  name: max_id
+                  type: string
+                - description: 'Return only muted accounts *NEWER* than the given since ID. The muted account with the specified ID will not be included in the response. NOTE: the ID is of the internal mute, NOT any of the returned accounts.'
+                  in: query
+                  name: since_id
+                  type: string
+                - description: 'Return only muted accounts *IMMEDIATELY NEWER* than the given min ID. The muted account with the specified ID will not be included in the response. NOTE: the ID is of the internal mute, NOT any of the returned accounts.'
+                  in: query
+                  name: min_id
+                  type: string
+                - default: 40
+                  description: Number of muted accounts to return.
+                  in: query
+                  maximum: 80
+                  minimum: 1
+                  name: limit
+                  type: integer
+            produces:
+                - application/json
+            responses:
+                "200":
+                    description: List of muted accounts, including when their mutes expire (if applicable).
+                    headers:
+                        Link:
+                            description: Links to the next and previous queries.
+                            type: string
+                    schema:
+                        items:
+                            $ref: '#/definitions/mutedAccount'
+                        type: array
+                "400":
+                    description: bad request
+                "401":
+                    description: unauthorized
+                "404":
+                    description: not found
+                "406":
+                    description: not acceptable
+                "500":
+                    description: internal server error
+            security:
+                - OAuth2 Bearer:
+                    - read:mutes
+            summary: Get an array of accounts that requesting account has muted.
+            tags:
+                - mutes
     /api/v1/notification/{id}:
         get:
             operationId: notification
@@ -6592,7 +7522,7 @@ paths:
             summary: View poll with given ID.
             tags:
                 - polls
-    /api/v1/polls/{id}/vote:
+    /api/v1/polls/{id}/votes:
         post:
             operationId: pollVote
             parameters:
@@ -6676,6 +7606,60 @@ paths:
             summary: Return an object of user preferences.
             tags:
                 - preferences
+    /api/v1/profile/avatar:
+        delete:
+            description: If the account doesn't have an avatar, the call succeeds anyway.
+            operationId: accountAvatarDelete
+            produces:
+                - application/json
+            responses:
+                "200":
+                    description: The updated account, including profile source information.
+                    schema:
+                        $ref: '#/definitions/account'
+                "400":
+                    description: bad request
+                "401":
+                    description: unauthorized
+                "403":
+                    description: forbidden
+                "406":
+                    description: not acceptable
+                "500":
+                    description: internal server error
+            security:
+                - OAuth2 Bearer:
+                    - admin
+            summary: Delete the authenticated account's avatar.
+            tags:
+                - accounts
+    /api/v1/profile/header:
+        delete:
+            description: If the account doesn't have a header, the call succeeds anyway.
+            operationId: accountHeaderDelete
+            produces:
+                - application/json
+            responses:
+                "200":
+                    description: The updated account, including profile source information.
+                    schema:
+                        $ref: '#/definitions/account'
+                "400":
+                    description: bad request
+                "401":
+                    description: unauthorized
+                "403":
+                    description: forbidden
+                "406":
+                    description: not acceptable
+                "500":
+                    description: internal server error
+            security:
+                - OAuth2 Bearer:
+                    - admin
+            summary: Delete the authenticated account's header.
+            tags:
+                - accounts
     /api/v1/reports:
         get:
             description: |-
@@ -7221,6 +8205,43 @@ paths:
             summary: View accounts that have faved/starred/liked the target status.
             tags:
                 - statuses
+    /api/v1/statuses/{id}/history:
+        get:
+            description: 'UNIMPLEMENTED: Currently this endpoint will always return an array of length 1, containing only the latest/current version of the status.'
+            operationId: statusHistoryGet
+            parameters:
+                - description: Target status ID.
+                  in: path
+                  name: id
+                  required: true
+                  type: string
+            produces:
+                - application/json
+            responses:
+                "200":
+                    description: ""
+                    schema:
+                        items:
+                            $ref: '#/definitions/statusEdit'
+                        type: array
+                "400":
+                    description: bad request
+                "401":
+                    description: unauthorized
+                "403":
+                    description: forbidden
+                "404":
+                    description: not found
+                "406":
+                    description: not acceptable
+                "500":
+                    description: internal server error
+            security:
+                - OAuth2 Bearer:
+                    - read:statuses
+            summary: View edit history of status with the given ID.
+            tags:
+                - statuses
     /api/v1/statuses/{id}/mute:
         post:
             description: |-
@@ -7365,6 +8386,42 @@ paths:
                 - OAuth2 Bearer:
                     - read:accounts
             summary: View accounts that have reblogged/boosted the target status.
+            tags:
+                - statuses
+    /api/v1/statuses/{id}/source:
+        get:
+            operationId: statusSourceGet
+            parameters:
+                - description: Target status ID.
+                  in: path
+                  name: id
+                  required: true
+                  type: string
+            produces:
+                - application/json
+            responses:
+                "200":
+                    description: ""
+                    schema:
+                        items:
+                            $ref: '#/definitions/statusSource'
+                        type: array
+                "400":
+                    description: bad request
+                "401":
+                    description: unauthorized
+                "403":
+                    description: forbidden
+                "404":
+                    description: not found
+                "406":
+                    description: not acceptable
+                "500":
+                    description: internal server error
+            security:
+                - OAuth2 Bearer:
+                    - read:statuses
+            summary: View source text of status with the given ID. Requester must own the status.
             tags:
                 - statuses
     /api/v1/statuses/{id}/unbookmark:
@@ -7602,7 +8659,7 @@ paths:
                                     `update`: a new status has been received.
                                     `notification`: a new notification has been received.
                                     `delete`: a status has been deleted.
-                                    `filters_changed`: not implemented.
+                                    `filters_changed`: filters (including keywords and statuses) have changed.
                                 enum:
                                     - update
                                     - notification
@@ -7619,6 +8676,7 @@ paths:
                                     If `event` = `update`, then the payload will be a JSON string of a status.
                                     If `event` = `notification`, then the payload will be a JSON string of a notification.
                                     If `event` = `delete`, then the payload will be a status ID.
+                                    If `event` = `filters_changed`, then there is no payload.
                                 example: '{"id":"01FC3TZ5CFG6H65GCKCJRKA669","created_at":"2021-08-02T16:25:52Z","sensitive":false,"spoiler_text":"","visibility":"public","language":"en","uri":"https://gts.superseriousbusiness.org/users/dumpsterqueer/statuses/01FC3TZ5CFG6H65GCKCJRKA669","url":"https://gts.superseriousbusiness.org/@dumpsterqueer/statuses/01FC3TZ5CFG6H65GCKCJRKA669","replies_count":0,"reblogs_count":0,"favourites_count":0,"favourited":false,"reblogged":false,"muted":false,"bookmarked":fals…//gts.superseriousbusiness.org/fileserver/01JNN207W98SGG3CBJ76R5MVDN/header/original/019036W043D8FXPJKSKCX7G965.png","header_static":"https://gts.superseriousbusiness.org/fileserver/01JNN207W98SGG3CBJ76R5MVDN/header/small/019036W043D8FXPJKSKCX7G965.png","followers_count":33,"following_count":28,"statuses_count":126,"last_status_at":"2021-08-02T16:25:52Z","emojis":[],"fields":[]},"media_attachments":[],"mentions":[],"tags":[],"emojis":[],"card":null,"poll":null,"text":"a"}'
                                 type: string
                             stream:
@@ -7884,6 +8942,77 @@ paths:
             summary: See public statuses that use the given hashtag (case insensitive).
             tags:
                 - timelines
+    /api/v1/user:
+        get:
+            operationId: getUser
+            produces:
+                - application/json
+            responses:
+                "200":
+                    description: The requested user.
+                    schema:
+                        $ref: '#/definitions/user'
+                "400":
+                    description: bad request
+                "401":
+                    description: unauthorized
+                "403":
+                    description: forbidden
+                "406":
+                    description: not acceptable
+                "500":
+                    description: internal error
+            security:
+                - OAuth2 Bearer:
+                    - read:user
+            summary: Get your own user model.
+            tags:
+                - user
+    /api/v1/user/email_change:
+        post:
+            consumes:
+                - application/json
+                - application/xml
+                - application/x-www-form-urlencoded
+            operationId: userEmailChange
+            parameters:
+                - description: User's current password, for verification.
+                  in: formData
+                  name: password
+                  required: true
+                  type: string
+                  x-go-name: Password
+                - description: Desired new email address.
+                  in: formData
+                  name: new_email
+                  required: true
+                  type: string
+                  x-go-name: NewEmail
+            produces:
+                - application/json
+            responses:
+                "202":
+                    description: 'Accepted: email change is processing; check your inbox to confirm new address.'
+                    schema:
+                        $ref: '#/definitions/user'
+                "400":
+                    description: bad request
+                "401":
+                    description: unauthorized
+                "403":
+                    description: forbidden
+                "406":
+                    description: not acceptable
+                "409":
+                    description: 'Conflict: desired email address already in use'
+                "500":
+                    description: internal error
+            security:
+                - OAuth2 Bearer:
+                    - write:user
+            summary: Request changing the email address of authenticated user.
+            tags:
+                - user
     /api/v1/user/password_change:
         post:
             consumes:
@@ -7923,6 +9052,8 @@ paths:
                     description: forbidden
                 "406":
                     description: not acceptable
+                "422":
+                    description: unprocessable request because instance is running with OIDC backend
                 "500":
                     description: internal error
             security:
@@ -7931,6 +9062,758 @@ paths:
             summary: Change the password of authenticated user.
             tags:
                 - user
+    /api/v2/admin/accounts:
+        get:
+            description: |-
+                Returned accounts will be ordered alphabetically (a-z) by domain + username.
+
+                The next and previous queries can be parsed from the returned Link header.
+                Example:
+
+                ```
+                <https://example.org/api/v2/admin/accounts?limit=80&max_id=example.org%2F%40someone>; rel="next", <https://example.org/api/v2/admin/accounts?limit=80&min_id=example.org%2F%40someone_else>; rel="prev"
+                ````
+            operationId: adminAccountsGetV2
+            parameters:
+                - description: Filter for `local` or `remote` accounts.
+                  in: query
+                  name: origin
+                  type: string
+                - description: Filter for `active`, `pending`, `disabled`, `silenced`, or `suspended` accounts.
+                  in: query
+                  name: status
+                  type: string
+                - description: Filter for accounts with staff permissions (users that can manage reports).
+                  in: query
+                  name: permissions
+                  type: string
+                - description: Filter for users with these roles.
+                  in: query
+                  items:
+                    type: string
+                  name: role_ids[]
+                  type: array
+                - description: Lookup users invited by the account with this ID.
+                  in: query
+                  name: invited_by
+                  type: string
+                - description: Search for the given username.
+                  in: query
+                  name: username
+                  type: string
+                - description: Search for the given display name.
+                  in: query
+                  name: display_name
+                  type: string
+                - description: Filter by the given domain.
+                  in: query
+                  name: by_domain
+                  type: string
+                - description: Lookup a user with this email.
+                  in: query
+                  name: email
+                  type: string
+                - description: Lookup users with this IP address.
+                  in: query
+                  name: ip
+                  type: string
+                - description: max_id in the form `[domain]/@[username]`. All results returned will be later in the alphabet than `[domain]/@[username]`. For example, if max_id = `example.org/@someone` then returned entries might contain `example.org/@someone_else`, `later.example.org/@someone`, etc. Local account IDs in this form use an empty string for the `[domain]` part, for example local account with username `someone` would be `/@someone`.
+                  in: query
+                  name: max_id
+                  type: string
+                - description: min_id in the form `[domain]/@[username]`. All results returned will be earlier in the alphabet than `[domain]/@[username]`. For example, if min_id = `example.org/@someone` then returned entries might contain `example.org/@earlier_account`, `earlier.example.org/@someone`, etc. Local account IDs in this form use an empty string for the `[domain]` part, for example local account with username `someone` would be `/@someone`.
+                  in: query
+                  name: min_id
+                  type: string
+                - default: 50
+                  description: Maximum number of results to return.
+                  in: query
+                  maximum: 200
+                  minimum: 1
+                  name: limit
+                  type: integer
+            produces:
+                - application/json
+            responses:
+                "200":
+                    description: ""
+                    headers:
+                        Link:
+                            description: Links to the next and previous queries.
+                            type: string
+                    schema:
+                        items:
+                            $ref: '#/definitions/adminAccountInfo'
+                        type: array
+                "400":
+                    description: bad request
+                "401":
+                    description: unauthorized
+                "403":
+                    description: forbidden
+                "404":
+                    description: not found
+                "406":
+                    description: not acceptable
+                "500":
+                    description: internal server error
+            security:
+                - OAuth2 Bearer:
+                    - admin
+            summary: View + page through known accounts according to given filters.
+            tags:
+                - admin
+    /api/v2/filters:
+        get:
+            operationId: filtersV2Get
+            produces:
+                - application/json
+            responses:
+                "200":
+                    description: Requested filters.
+                    schema:
+                        items:
+                            $ref: '#/definitions/filterV2'
+                        type: array
+                "400":
+                    description: bad request
+                "401":
+                    description: unauthorized
+                "404":
+                    description: not found
+                "406":
+                    description: not acceptable
+                "500":
+                    description: internal server error
+            security:
+                - OAuth2 Bearer:
+                    - read:filters
+            summary: Get all filters for the authenticated account.
+            tags:
+                - filters
+        post:
+            consumes:
+                - application/json
+                - application/xml
+                - application/x-www-form-urlencoded
+            operationId: filterV2Post
+            parameters:
+                - description: |-
+                    The name of the filter.
+
+                    Sample: illuminati nonsense
+                  in: formData
+                  maxLength: 200
+                  minLength: 1
+                  name: title
+                  required: true
+                  type: string
+                - collectionFormat: multi
+                  description: |-
+                    The contexts in which the filter should be applied.
+
+                    Sample: home, public
+                  enum:
+                    - home
+                    - notifications
+                    - public
+                    - thread
+                    - account
+                  in: formData
+                  items:
+                    type: string
+                  minItems: 1
+                  name: context[]
+                  required: true
+                  type: array
+                  uniqueItems: true
+                - description: |-
+                    Number of seconds from now that the filter should expire. If omitted, filter never expires.
+
+                    Sample: 86400
+                  in: formData
+                  name: expires_in
+                  type: number
+                - default: warn
+                  description: |-
+                    The action to be taken when a status matches this filter.
+
+                    Sample: warn
+                  enum:
+                    - warn
+                    - hide
+                  in: formData
+                  name: filter_action
+                  type: string
+                - collectionFormat: multi
+                  description: Keywords to be added (if not using id param) or updated (if using id param).
+                  in: formData
+                  items:
+                    type: string
+                  name: keywords_attributes[][keyword]
+                  type: array
+                - collectionFormat: multi
+                  description: Should each keyword consider word boundaries?
+                  in: formData
+                  items:
+                    type: boolean
+                  name: keywords_attributes[][whole_word]
+                  type: array
+                - collectionFormat: multi
+                  description: Statuses to be added to the filter.
+                  in: formData
+                  items:
+                    type: string
+                  name: statuses_attributes[][status_id]
+                  type: array
+            produces:
+                - application/json
+            responses:
+                "200":
+                    description: New filter.
+                    schema:
+                        $ref: '#/definitions/filterV2'
+                "400":
+                    description: bad request
+                "401":
+                    description: unauthorized
+                "403":
+                    description: forbidden to moved accounts
+                "404":
+                    description: not found
+                "406":
+                    description: not acceptable
+                "409":
+                    description: conflict (duplicate title, keyword, or status)
+                "422":
+                    description: unprocessable content
+                "500":
+                    description: internal server error
+            security:
+                - OAuth2 Bearer:
+                    - write:filters
+            summary: Create a single filter.
+            tags:
+                - filters
+    /api/v2/filters/{id}:
+        delete:
+            operationId: filterV2Delete
+            parameters:
+                - description: ID of the filter
+                  in: path
+                  name: id
+                  required: true
+                  type: string
+            produces:
+                - application/json
+            responses:
+                "200":
+                    description: filter deleted
+                "400":
+                    description: bad request
+                "401":
+                    description: unauthorized
+                "404":
+                    description: not found
+                "406":
+                    description: not acceptable
+                "500":
+                    description: internal server error
+            security:
+                - OAuth2 Bearer:
+                    - write:filters
+            summary: Delete a single filter with the given ID.
+            tags:
+                - filters
+        get:
+            operationId: filterV2Get
+            parameters:
+                - description: ID of the filter
+                  in: path
+                  name: id
+                  required: true
+                  type: string
+            produces:
+                - application/json
+            responses:
+                "200":
+                    description: Requested filter.
+                    schema:
+                        $ref: '#/definitions/filterV2'
+                "400":
+                    description: bad request
+                "401":
+                    description: unauthorized
+                "404":
+                    description: not found
+                "406":
+                    description: not acceptable
+                "500":
+                    description: internal server error
+            security:
+                - OAuth2 Bearer:
+                    - read:filters
+            summary: Get a single filter with the given ID.
+            tags:
+                - filters
+        put:
+            consumes:
+                - application/json
+                - application/xml
+                - application/x-www-form-urlencoded
+            description: |-
+                Note that this is actually closer to a PATCH operation:
+                only provided fields will be updated, and omitted fields will remain set to previous values.
+            operationId: filterV2Put
+            parameters:
+                - description: ID of the filter.
+                  in: path
+                  name: id
+                  required: true
+                  type: string
+                - description: |-
+                    The name of the filter.
+
+                    Sample: illuminati nonsense
+                  in: formData
+                  maxLength: 200
+                  minLength: 1
+                  name: title
+                  required: true
+                  type: string
+                - collectionFormat: multi
+                  description: Keywords to be added to the created filter.
+                  in: formData
+                  items:
+                    type: string
+                  name: keywords_attributes[][keyword]
+                  type: array
+                - collectionFormat: multi
+                  description: Should each keyword consider word boundaries?
+                  in: formData
+                  items:
+                    type: boolean
+                  name: keywords_attributes[][whole_word]
+                  type: array
+                - collectionFormat: multi
+                  description: Statuses to be added to the newly created filter.
+                  in: formData
+                  items:
+                    type: string
+                  name: statuses_attributes[][status_id]
+                  type: array
+                - collectionFormat: multi
+                  description: |-
+                    The contexts in which the filter should be applied.
+
+                    Sample: home, public
+                  enum:
+                    - home
+                    - notifications
+                    - public
+                    - thread
+                    - account
+                  in: formData
+                  items:
+                    type: string
+                  minItems: 1
+                  name: context[]
+                  required: true
+                  type: array
+                  uniqueItems: true
+                - description: |-
+                    Number of seconds from now that the filter should expire.
+
+                    Sample: 86400
+                  in: formData
+                  name: expires_in
+                  type: number
+            produces:
+                - application/json
+            responses:
+                "200":
+                    description: Updated filter.
+                    schema:
+                        $ref: '#/definitions/filterV2'
+                "400":
+                    description: bad request
+                "401":
+                    description: unauthorized
+                "403":
+                    description: forbidden to moved accounts
+                "404":
+                    description: not found
+                "406":
+                    description: not acceptable
+                "409":
+                    description: conflict (duplicate title, keyword, or status)
+                "422":
+                    description: unprocessable content
+                "500":
+                    description: internal server error
+            security:
+                - OAuth2 Bearer:
+                    - write:filters
+            summary: Update a single filter with the given ID.
+            tags:
+                - filters
+    /api/v2/filters/{id}/keywords:
+        get:
+            operationId: filterKeywordsGet
+            parameters:
+                - description: ID of the filter
+                  in: path
+                  name: id
+                  required: true
+                  type: string
+            produces:
+                - application/json
+            responses:
+                "200":
+                    description: Requested filter keywords.
+                    schema:
+                        items:
+                            $ref: '#/definitions/filterKeyword'
+                        type: array
+                "400":
+                    description: bad request
+                "401":
+                    description: unauthorized
+                "404":
+                    description: not found
+                "406":
+                    description: not acceptable
+                "500":
+                    description: internal server error
+            security:
+                - OAuth2 Bearer:
+                    - read:filters
+            summary: Get all filter keywords for a given filter.
+            tags:
+                - filters
+        post:
+            consumes:
+                - application/json
+                - application/xml
+                - application/x-www-form-urlencoded
+            operationId: filterKeywordPost
+            parameters:
+                - description: ID of the filter to add the filtered status to.
+                  in: path
+                  name: id
+                  required: true
+                  type: string
+                - description: |-
+                    The text to be filtered
+
+                    Sample: fnord
+                  in: formData
+                  maxLength: 40
+                  minLength: 1
+                  name: keyword
+                  required: true
+                  type: string
+                - default: false
+                  description: |-
+                    Should the filter consider word boundaries?
+
+                    Sample: true
+                  in: formData
+                  name: whole_word
+                  type: boolean
+            produces:
+                - application/json
+            responses:
+                "200":
+                    description: New filter keyword.
+                    schema:
+                        $ref: '#/definitions/filterKeyword'
+                "400":
+                    description: bad request
+                "401":
+                    description: unauthorized
+                "403":
+                    description: forbidden to moved accounts
+                "404":
+                    description: not found
+                "406":
+                    description: not acceptable
+                "409":
+                    description: conflict (duplicate keyword)
+                "422":
+                    description: unprocessable content
+                "500":
+                    description: internal server error
+            security:
+                - OAuth2 Bearer:
+                    - write:filters
+            summary: Add a filter keyword to an existing filter.
+            tags:
+                - filters
+    /api/v2/filters/{id}/statuses:
+        get:
+            operationId: filterStatusesGet
+            parameters:
+                - description: ID of the filter
+                  in: path
+                  name: id
+                  required: true
+                  type: string
+            produces:
+                - application/json
+            responses:
+                "200":
+                    description: Requested filter statuses.
+                    schema:
+                        items:
+                            $ref: '#/definitions/filterStatus'
+                        type: array
+                "400":
+                    description: bad request
+                "401":
+                    description: unauthorized
+                "404":
+                    description: not found
+                "406":
+                    description: not acceptable
+                "500":
+                    description: internal server error
+            security:
+                - OAuth2 Bearer:
+                    - read:filters
+            summary: Get all filter statuses for a given filter.
+            tags:
+                - filters
+        post:
+            consumes:
+                - application/json
+                - application/xml
+                - application/x-www-form-urlencoded
+            operationId: filterStatusPost
+            parameters:
+                - description: ID of the filter to add the filtered status to.
+                  in: path
+                  name: id
+                  required: true
+                  type: string
+                - description: |-
+                    The ID of the status to filter.
+
+                    Sample: 01HXA2NE0K8T1C70K90E74GYD0
+                  in: formData
+                  name: status_id
+                  required: true
+                  type: string
+            produces:
+                - application/json
+            responses:
+                "200":
+                    description: New filter status.
+                    schema:
+                        $ref: '#/definitions/filterStatus'
+                "400":
+                    description: bad request
+                "401":
+                    description: unauthorized
+                "403":
+                    description: forbidden to moved accounts
+                "404":
+                    description: not found
+                "406":
+                    description: not acceptable
+                "409":
+                    description: conflict (duplicate status)
+                "422":
+                    description: unprocessable content
+                "500":
+                    description: internal server error
+            security:
+                - OAuth2 Bearer:
+                    - write:filters
+            summary: Add a filter status to an existing filter.
+            tags:
+                - filters
+    /api/v2/filters/keywords/{id}:
+        delete:
+            operationId: filterKeywordDelete
+            parameters:
+                - description: ID of the filter keyword
+                  in: path
+                  name: id
+                  required: true
+                  type: string
+            produces:
+                - application/json
+            responses:
+                "200":
+                    description: filter keyword deleted
+                "400":
+                    description: bad request
+                "401":
+                    description: unauthorized
+                "404":
+                    description: not found
+                "406":
+                    description: not acceptable
+                "500":
+                    description: internal server error
+            security:
+                - OAuth2 Bearer:
+                    - write:filters
+            summary: Delete a single filter keyword with the given ID.
+            tags:
+                - filters
+        get:
+            operationId: filterKeywordGet
+            parameters:
+                - description: ID of the filter keyword
+                  in: path
+                  name: id
+                  required: true
+                  type: string
+            produces:
+                - application/json
+            responses:
+                "200":
+                    description: Requested filter keyword.
+                    schema:
+                        $ref: '#/definitions/filterKeyword'
+                "400":
+                    description: bad request
+                "401":
+                    description: unauthorized
+                "404":
+                    description: not found
+                "406":
+                    description: not acceptable
+                "500":
+                    description: internal server error
+            security:
+                - OAuth2 Bearer:
+                    - read:filters
+            summary: Get a single filter keyword with the given ID.
+            tags:
+                - filters
+    /api/v2/filters/keywords{id}:
+        put:
+            consumes:
+                - application/json
+                - application/xml
+                - application/x-www-form-urlencoded
+            operationId: filterKeywordPut
+            parameters:
+                - description: ID of the filter keyword to update.
+                  in: path
+                  name: id
+                  required: true
+                  type: string
+                - description: |-
+                    The text to be filtered
+
+                    Sample: fnord
+                  in: formData
+                  maxLength: 40
+                  minLength: 1
+                  name: keyword
+                  required: true
+                  type: string
+                - description: |-
+                    Should the filter consider word boundaries?
+
+                    Sample: true
+                  in: formData
+                  name: whole_word
+                  type: boolean
+            produces:
+                - application/json
+            responses:
+                "200":
+                    description: Updated filter keyword.
+                    schema:
+                        $ref: '#/definitions/filterKeyword'
+                "400":
+                    description: bad request
+                "401":
+                    description: unauthorized
+                "403":
+                    description: forbidden to moved accounts
+                "404":
+                    description: not found
+                "406":
+                    description: not acceptable
+                "409":
+                    description: conflict (duplicate keyword)
+                "422":
+                    description: unprocessable content
+                "500":
+                    description: internal server error
+            security:
+                - OAuth2 Bearer:
+                    - write:filters
+            summary: Update a single filter keyword with the given ID.
+            tags:
+                - filters
+    /api/v2/filters/statuses/{id}:
+        delete:
+            operationId: filterStatusDelete
+            parameters:
+                - description: ID of the filter status
+                  in: path
+                  name: id
+                  required: true
+                  type: string
+            produces:
+                - application/json
+            responses:
+                "200":
+                    description: filter status deleted
+                "400":
+                    description: bad request
+                "401":
+                    description: unauthorized
+                "404":
+                    description: not found
+                "406":
+                    description: not acceptable
+                "500":
+                    description: internal server error
+            security:
+                - OAuth2 Bearer:
+                    - write:filters
+            summary: Delete a single filter status with the given ID.
+            tags:
+                - filters
+        get:
+            operationId: filterStatusGet
+            parameters:
+                - description: ID of the filter status
+                  in: path
+                  name: id
+                  required: true
+                  type: string
+            produces:
+                - application/json
+            responses:
+                "200":
+                    description: Requested filter status.
+                    schema:
+                        $ref: '#/definitions/filterStatus'
+                "400":
+                    description: bad request
+                "401":
+                    description: unauthorized
+                "404":
+                    description: not found
+                "406":
+                    description: not acceptable
+                "500":
+                    description: internal server error
+            security:
+                - OAuth2 Bearer:
+                    - read:filters
+            summary: Get a single filter status with the given ID.
+            tags:
+                - filters
     /api/v2/instance:
         get:
             operationId: instanceGetV2
