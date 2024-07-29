@@ -79,6 +79,7 @@ image/png
             {{- include .pageContent . | indent 3 | outdentPre }}
         </div>
         <footer class="page-footer">
+            <script src="/assets/dist/lazyload.min.js"></script>
             {{- include "page_footer.tmpl" . | indent 3 }}
         </footer>
         <div class="bg"></div>
