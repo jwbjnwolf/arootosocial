@@ -281,3 +281,7 @@
 		grid-template-columns: auto 1fr;
 		gap: 0.25rem 1rem;
 	}
+
+.profile .about-user .audio {
+		display: none;
+	}
