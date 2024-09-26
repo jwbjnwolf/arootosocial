@@ -23,19 +23,7 @@
 */ -}}
 
 {{- define "imagePreview" }}
-<img class="lazy-load"
-    data-src="{{- .PreviewURL -}}"
-    loading="lazy"
-    {{- if .Description }}
-    alt="{{- .Description -}}"
-    title="{{- .Description -}}"
-    {{- end }}
-    width="{{- .Meta.Original.Width -}}"
-    height="{{- .Meta.Original.Height -}}"
-/>
-
-<noscript>
-  <img class="lazy-none"
+<img
     src="{{- .PreviewURL -}}"
     loading="lazy"
     {{- if .Description }}
@@ -44,8 +32,7 @@
     {{- end }}
     width="{{- .Meta.Original.Width -}}"
     height="{{- .Meta.Original.Height -}}"
-  />
-</noscript>
+/>
 {{- end }}
 
 {{- define "videoPreview" }}
@@ -108,7 +95,7 @@ media photoswipe-gallery {{ (len .) | oddOrEven }} {{ if eq (len .) 1 }}single{{
             </video>
             {{- else if eq .Type "image" }}
             <a
-                class="photoswipe-slide lazy-hide"
+                class="photoswipe-slide"
                 href="{{- $media.URL -}}"
                 target="_blank"
                 data-pswp-width="{{- $media.Meta.Original.Width -}}px"
