@@ -90,21 +90,38 @@
 		gap: 0 1rem;
 	}
 
-.profile .profile-header .basic-info .avatar {
+.profile .profile-header .basic-info .avatar-image-wrapper {
 			grid-area: avatar;
-			height: var(--avatar-size);
-			width: var(--avatar-size);
+			
 			border: 0.2rem solid var(--avatar-border);
 			border-radius: var(--br);
-			overflow: hidden;
+			
+			/*
+				Wrapper always same
+				size + proportions no
+				matter image inside.
+			*/
+			height: var(--avatar-size);
+			width: var(--avatar-size);
 		}
 
-/* prevents image extending beyond rounded borders */
-
-.profile .profile-header .basic-info .avatar img {
+.profile .profile-header .basic-info .avatar-image-wrapper .avatar {
+				/*
+					Fit 100% of the wrapper.
+				*/
 				height: 100%;
 				width: 100%;
+
+				/*
+					Normalize non-square images.
+				*/
 				object-fit: cover;
+
+				/*
+					Prevent image extending
+					beyond rounded borders.
+				*/
+				border-radius: var(--br-inner);
 			}
 
 .profile .profile-header .basic-info .namerole {
@@ -113,7 +130,7 @@
 			display: grid;
 			gap: 0 1rem;
 			box-sizing: border-box;
-			grid-template-columns: auto 1fr;
+			grid-template-columns: 1fr auto;
 			grid-template-rows: var(--name-size) auto;
 			grid-template-areas:
 				"displayname displayname"
@@ -127,17 +144,48 @@
 				font-weight: bold;
 			}
 
-.profile .profile-header .basic-info .namerole .username {
-				min-width: 0;
+.profile .profile-header .basic-info .namerole .bot-username-wrapper {
+				display: flex;
+				gap: 0.5rem;
 				grid-area: username;
-				line-height: var(--username-size);
-	
-				font-size: 1rem;
-				font-weight: bold;
-				color: var(--fg-accent);
-				-webkit-user-select: all;
-				        user-select: all;
+				align-items: center;
 			}
+
+.profile .profile-header .basic-info .namerole .bot-username-wrapper .bot-legend-wrapper {
+					display: flex;
+					gap: 0.25rem;
+					align-items: center;
+					
+					background: var(--bg);
+					color: var(--fg);
+		
+					border-radius: var(--br);
+					padding: 0.1rem 0.4rem 0.2rem 0.4rem;
+					
+					font-variant: small-caps;
+					font-weight: bold;
+
+					cursor: default;
+				}
+
+.profile .profile-header .basic-info .namerole .bot-username-wrapper .bot-legend-wrapper .bot-icon {
+						/*
+							FA icon is weirdly
+							aligned so tweak it
+						*/
+						margin-top: 0.25rem;
+					}
+
+.profile .profile-header .basic-info .namerole .bot-username-wrapper .username {
+					min-width: 0;
+					line-height: var(--username-size);
+		
+					font-size: 1rem;
+					font-weight: bold;
+					color: var(--fg-accent);
+					-webkit-user-select: all;
+					        user-select: all;
+				}
 
 .profile .profile-header .basic-info .namerole .role {
 				background: var(--bg);
@@ -166,6 +214,10 @@
 					border-color: var(--role-mod);
 				}
 
+/*
+	Tablet-ish-kinda size.
+*/
+
 @media screen and (max-width: 750px) {
 		.profile .profile-header .basic-info {
 			grid-template-columns: auto 1fr;
@@ -176,17 +228,57 @@
 				"namerole namerole";
 		}
 			
-			.profile .profile-header .basic-info .namerole {
-				grid-template-columns: 1fr;
-				grid-template-rows: var(--name-size) auto;
-				grid-template-areas:
-					"displayname displayname"
-					"username role";
-			}
-				
+			/*
+				Make display name a bit smaller
+				so there's more chance of being
+				able to read everything.
+			*/
 				.profile .profile-header .basic-info .namerole .displayname {
-					font-size: 1.4rem;
+					font-size: 1.2rem;
+					line-height: 2rem;
+					margin-top: 0.5rem;
 				}
+}
+
+/*
+	Phone-ish-kinda size.
+*/
+
+@media screen and (max-width: 500px) {
+	.profile
+	.profile-header
+	.basic-info
+	.namerole {
+		/*
+			Line up in smallest possible
+			horizontal space to avoid overflow.
+		*/
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+	}
+
+		/*
+			Don't hug the right anymore
+			(good life advice in general).
+		*/
+		.profile
+	.profile-header
+	.basic-info
+	.namerole .role {
+			align-self: flex-start;
+		}
+
+		/*
+			Allow this to wrap in case
+			of a really skinny screen.
+		*/
+		.profile
+	.profile-header
+	.basic-info
+	.namerole .bot-username-wrapper {
+			flex-wrap: wrap;
+		}
 }
 
 .profile .statuses-wrapper {

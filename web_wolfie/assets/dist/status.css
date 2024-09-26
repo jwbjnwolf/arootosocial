@@ -687,15 +687,19 @@ main {
 		z-index: 2;
 	}
 .status .text-spoiler > summary {
-		display: inline-block;
 		list-style: none;
-
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
 		padding-bottom: 0.5rem;
 	}
 .status .text-spoiler > summary::-webkit-details-marker {
 			display: none; /* Safari */
 		}
 .status .text-spoiler > summary .button {
+			width: -webkit-fit-content;
+			width: -moz-fit-content;
+			width: fit-content;
 			white-space: nowrap;
 			cursor: pointer;
 			padding: 0.2rem 0.3rem;
@@ -749,13 +753,6 @@ main {
 				margin: 0;
 				font-size: 1rem;
 				line-height: initial;
-			}
-.status .text .content img {
-				max-width: 100%;
-				margin: 5px auto;
-			}
-.status .text .content img[alt~="!center"] {
-				display: block;
 			}
 .status .text .poll {
 			background-color: var(--gray2);
@@ -858,6 +855,9 @@ main {
 						"eye sensitive ."
 						".   sensitive  .";
 				}
+.status .media .media-wrapper details summary::-webkit-details-marker {
+						display: none; /* Safari */
+					}
 .status .media .media-wrapper details summary .eye.button {
 						grid-area: eye;
 						align-self: start;
@@ -874,6 +874,10 @@ main {
 .status .media .media-wrapper details summary .show.sensitive {
 						grid-area: sensitive;
 						align-self: center;
+
+						text-overflow: ellipsis;
+						overflow: hidden;
+						white-space: nowrap;
 					}
 .status .media .media-wrapper details summary .show.sensitive .button {
 							cursor: pointer;
@@ -926,8 +930,15 @@ main {
 .status .media.single .media-wrapper {
 			grid-column: span 2;
 		}
-.status .media.odd .media-wrapper:first-child, .status .media.double .media-wrapper {
+.status .media.odd .media-wrapper:first-child,
+		.status .media.double .media-wrapper {
 			grid-row: span 2;
+		}
+@media screen and (max-width: 42rem) {
+			.status .media .media-wrapper {
+				grid-column: span 2;
+				grid-row: span 2;
+			}
 		}
 .status .media img {
 			width: 100%;

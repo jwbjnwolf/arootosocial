@@ -18,7 +18,8 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-.thread {
+.thread,
+.thread-wrapper {
 	display: flex;
 	flex-direction: column;
 	gap: 0.4rem;
@@ -44,9 +45,44 @@
 			margin-right: auto;
 		}
 
+.thread .col-header.replies.hidden-only {
+			/*
+				No visible replies below this column
+				header, so round off the bottom.
+			*/
+			border-bottom-left-radius: var(--br);
+			border-bottom-right-radius: var(--br);
+		}
+
+.thread .status.indent-1 {
+			margin-left: 0.5rem;
+		}
+
+.thread .status.indent-2 {
+			margin-left: 1rem;
+		}
+
+.thread .status.indent-3 {
+			margin-left: 1.5rem;
+		}
+
+.thread .status.indent-4 {
+			margin-left: 2rem;
+		}
+
+.thread .status.indent-5 {
+			margin-left: 2.5rem;
+		}
+
+.thread .status.indent-1 .status-link, .thread .status.indent-2 .status-link, .thread .status.indent-3 .status-link, .thread .status.indent-4 .status-link, .thread .status.indent-5 .status-link {
+				margin-left: -0.5rem;
+				border-left: 0.15rem dashed var(--border-accent);
+			}
+
 .thread .status {
+
 		border-radius: 0;
-	}
+}
 
 .thread .status:last-child {
 			border-bottom-left-radius: var(--br);

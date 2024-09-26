@@ -30,7 +30,8 @@
 			line-height: 2rem;
 		}
 
-.page-header > a > img {
+.page-header > a img,
+		.page-header > a picture {
 			align-self: center;
 			max-height: 6rem;
 		}
@@ -58,6 +59,22 @@
 		box-shadow: var(--boxshadow);
 		border: var(--boxshadow-border);
 		border-radius: var(--br);
+	}
+
+.what-is-this .about-section-contents .activitypub-logo-wrapper {
+	display: flex;
+	flex-direction: column;
+	max-width: -webkit-fit-content;
+	max-width: -moz-fit-content;
+	max-width: fit-content;
+	gap: 0.5rem;
+}
+
+.what-is-this .about-section-contents .activitypub-logo-wrapper .activitypub-logo {
+		background: var(--fg);
+		box-shadow: var(--boxshadow);
+		border-radius: var(--br);	
+		max-width: 100%;
 	}
 
 .apps {
