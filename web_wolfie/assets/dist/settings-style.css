@@ -439,6 +439,11 @@ section.with-sidebar > div .select-wrapper::after, section.with-sidebar > form .
 		max-width: 42rem;
 	}
 
+.user-profile .file-input-with-image-description {
+		max-width: 100%;
+		width: 100%;
+	}
+
 .user-profile .overview {
 		display: flex;
 		flex-direction: column;
