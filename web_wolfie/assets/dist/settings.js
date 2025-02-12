@@ -26174,6 +26174,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importDefault(require("react"));
 const loading_1 = __importDefault(require("./loading"));
+const error_1 = require("./error");
 const oauth_1 = require("../lib/query/oauth");
 const gts_api_1 = require("../lib/query/gts-api");
 function UserLogoutCard() {
@@ -26184,22 +26185,23 @@ function UserLogoutCard() {
     if (isLoading) {
         return react_1.default.createElement(loading_1.default, null);
     }
-    else {
-        return (react_1.default.createElement("div", { className: "account-card" },
-            react_1.default.createElement("img", { className: "avatar", src: profile.avatar, alt: "" }),
-            react_1.default.createElement("h3", { className: "text-cutoff" }, ((_a = profile.display_name) === null || _a === void 0 ? void 0 : _a.length) > 0 ? profile.display_name : profile.acct),
-            react_1.default.createElement("span", { className: "text-cutoff" },
-                "@",
-                profile.username,
-                "@", instance === null || instance === void 0 ? void 0 :
-                instance.account_domain),
-            react_1.default.createElement("a", { onClick: logoutQuery, href: "#", "aria-label": "Log out", title: "Log out", className: "logout" },
-                react_1.default.createElement("i", { className: "fa fa-fw fa-sign-out", "aria-hidden": "true" }))));
+    if (!profile) {
+        return react_1.default.createElement(error_1.Error, { error: new Error("account was undefined") });
     }
+    return (react_1.default.createElement("div", { className: "account-card" },
+        react_1.default.createElement("img", { className: "avatar", src: profile.avatar, alt: "" }),
+        react_1.default.createElement("h3", { className: "text-cutoff" }, ((_a = profile.display_name) === null || _a === void 0 ? void 0 : _a.length) > 0 ? profile.display_name : profile.acct),
+        react_1.default.createElement("span", { className: "text-cutoff" },
+            "@",
+            profile.username,
+            "@", instance === null || instance === void 0 ? void 0 :
+            instance.account_domain),
+        react_1.default.createElement("a", { onClick: logoutQuery, href: "#", "aria-label": "Log out", title: "Log out", className: "logout" },
+            react_1.default.createElement("i", { className: "fa fa-fw fa-sign-out", "aria-hidden": "true" }))));
 }
 exports.default = UserLogoutCard;
 
-},{"../lib/query/gts-api":369,"../lib/query/oauth":370,"./loading":336,"react":198}],363:[function(require,module,exports){
+},{"../lib/query/gts-api":369,"../lib/query/oauth":370,"./error":332,"./loading":336,"react":198}],363:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -30385,16 +30387,20 @@ function UserProfileForm({ data: profile }) {
             form.header.reset();
         }
     });
+    const noAvatarSet = !profile.avatar_media_id;
+    const noHeaderSet = !profile.header_media_id;
     return (react_1.default.createElement("form", { className: "user-profile", onSubmit: submitForm },
         react_1.default.createElement("h1", null, "Profile"),
         react_1.default.createElement("div", { className: "overview" },
             react_1.default.createElement(profile_1.default, { avatar: (_b = form.avatar.previewValue) !== null && _b !== void 0 ? _b : profile.avatar, header: (_c = form.header.previewValue) !== null && _c !== void 0 ? _c : profile.header, display_name: (_d = form.displayName.value) !== null && _d !== void 0 ? _d : profile.username, bot: profile.bot, username: profile.username, role: profile.role }),
-            react_1.default.createElement("div", { className: "file-input-with-image-description" },
-                react_1.default.createElement(inputs_1.FileInput, { label: "Header", field: form.header, accept: "image/png, image/jpeg, image/webp, image/gif" }),
-                react_1.default.createElement(inputs_1.TextInput, { field: form.headerDescription, label: "Header image description", placeholder: "A green field with pink flowers.", autoCapitalize: "sentences" })),
-            react_1.default.createElement("div", { className: "file-input-with-image-description" },
-                react_1.default.createElement(inputs_1.FileInput, { label: "Avatar (1:1 images look best)", field: form.avatar, accept: "image/png, image/jpeg, image/webp, image/gif" }),
-                react_1.default.createElement(inputs_1.TextInput, { field: form.avatarDescription, label: "Avatar image description", placeholder: "A cute drawing of a smiling sloth.", autoCapitalize: "sentences" })),
+            react_1.default.createElement("fieldset", { className: "file-input-with-image-description" },
+                react_1.default.createElement("legend", null, "Header"),
+                react_1.default.createElement(inputs_1.FileInput, { label: "Upload file", field: form.header, accept: "image/png, image/jpeg, image/webp, image/gif" }),
+                react_1.default.createElement(inputs_1.TextInput, { field: form.headerDescription, label: "Image description; only settable if not using default header", placeholder: "A green field with pink flowers.", autoCapitalize: "sentences", disabled: noHeaderSet && !form.header.value })),
+            react_1.default.createElement("fieldset", { className: "file-input-with-image-description" },
+                react_1.default.createElement("legend", null, "Avatar"),
+                react_1.default.createElement(inputs_1.FileInput, { label: "Upload file (1:1 images look best)", field: form.avatar, accept: "image/png, image/jpeg, image/webp, image/gif" }),
+                react_1.default.createElement(inputs_1.TextInput, { field: form.avatarDescription, label: "Image description; only settable if not using default avatar", placeholder: "A cute drawing of a smiling sloth.", autoCapitalize: "sentences", disabled: noAvatarSet && !form.avatar.value })),
             react_1.default.createElement("div", { className: "theme" },
                 react_1.default.createElement("div", null,
                     react_1.default.createElement("b", { id: "theme-label" }, "Theme"),
@@ -32145,6 +32151,9 @@ function PostSettings() {
     }
     if (isError) {
         return react_1.default.createElement(error_1.Error, { error: error });
+    }
+    if (!account) {
+        return react_1.default.createElement(error_1.Error, { error: new Error("account was undefined") });
     }
     return (react_1.default.createElement(react_1.default.Fragment, null,
         react_1.default.createElement("h1", null, "Post Settings"),
