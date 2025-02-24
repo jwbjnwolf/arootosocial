@@ -72,58 +72,20 @@
 
 .what-is-this .about-section-contents .activitypub-logo-wrapper .activitypub-logo {
 		background: var(--fg);
+	}
+
+/* light mode */
+
+@media (prefers-color-scheme: light) {
+
+.what-is-this .about-section-contents .activitypub-logo-wrapper .activitypub-logo {
+			background: none;
+	}
+		}
+
+.what-is-this .about-section-contents .activitypub-logo-wrapper .activitypub-logo {
 		box-shadow: var(--boxshadow);
 		border-radius: var(--br);	
 		max-width: 100%;
-	}
-
-.apps {
-	align-self: start;
-}
-
-.apps .applist {
-		margin: 0;
-		padding: 0;
-
-		display: grid;
-		grid-template-columns: 1fr 1fr;
-		grid-gap: 0.5rem;
-		align-content: start;
-	}
-
-.apps .applist .applist-entry {
-			display: grid;
-			grid-template-columns: 25% 1fr;
-			grid-template-areas: "logo text";
-			gap: 1.5rem;
-			padding: 0.5rem;
-		}
-
-.apps .applist .applist-entry .applist-logo {
-				grid-area: logo;
-				align-self: center;
-				justify-self: center;
-				width: 100%;
-				object-fit: contain;
-				flex: 1 1 auto;
-			}
-
-.apps .applist .applist-entry .applist-logo.redraw {
-				fill: var(--fg);
-				stroke: var(--fg);
-			}
-
-.apps .applist .applist-entry .applist-text {
-				grid-area: text;
-			}
-
-.apps .applist .applist-entry .applist-text a {
-					font-weight: bold;
-				}
-
-@media screen and (max-width: 600px) {
-	.apps .applist {
-		grid-template-columns: 1fr;
-	}
 }
 
