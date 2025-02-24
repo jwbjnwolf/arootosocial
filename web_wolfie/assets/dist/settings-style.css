@@ -197,7 +197,7 @@ nav.menu-tree li.expanding.active a {
 				border-radius: 0;
 			}
 
-/* any deeper nesting, just has indent */
+/* Deeper nesting. */
 
 nav.menu-tree li.nested a.title {
 			padding-left: 1rem;
@@ -215,9 +215,30 @@ nav.menu-tree li.nested a.title:hover {
 				background: var(--settings-nav-bg-hover);
 			}
 
-nav.menu-tree li.nested.active a.title {
-				color: var(--fg-accent);
-				font-weight: bold;
+nav.menu-tree li.nested.active > a.title {
+			color: var(--fg-accent);
+			font-weight: bold;
+		}
+
+nav.menu-tree li.nested.category > a.title::after {
+					content: "▶";
+					left: 0.8rem;
+					bottom: 0.1rem;
+					position: relative;
+				}
+
+nav.menu-tree li.nested.category.active > a.title::after {
+						content: "▼";
+						bottom: 0;
+					}
+
+nav.menu-tree li.nested.category.active > a.title {
+
+					border-bottom: 0.15rem dotted var(--gray1);
+}
+
+nav.menu-tree li.nested.category li.nested > a.title {
+				padding-left: 2rem;
 			}
 
 .capitalize {
@@ -1315,6 +1336,117 @@ button.tab-button.active {
 .info-list .info-list-entry dt .fa, .info-list .info-list-entry dd .fa, .info-list .info-list-entry span .fa {
 				vertical-align: middle;
 			}
+
+.domain-permission-drafts-view .domain-permission-draft,
+	.domain-permission-drafts-view .domain-permission-exclude,
+	.domain-permission-drafts-view .domain-permission-subscription,
+	.domain-permission-excludes-view .domain-permission-draft,
+	.domain-permission-excludes-view .domain-permission-exclude,
+	.domain-permission-excludes-view .domain-permission-subscription,
+	.domain-permission-subscriptions-view .domain-permission-draft,
+	.domain-permission-subscriptions-view .domain-permission-exclude,
+	.domain-permission-subscriptions-view .domain-permission-subscription,
+	.domain-permission-subscriptions-preview .domain-permission-draft,
+	.domain-permission-subscriptions-preview .domain-permission-exclude,
+	.domain-permission-subscriptions-preview .domain-permission-subscription {
+		display: flex;
+		flex-direction: column;
+		flex-wrap: nowrap;
+		gap: 0.5rem;
+	}
+
+.domain-permission-drafts-view .domain-permission-draft.block, .domain-permission-drafts-view .domain-permission-exclude.block, .domain-permission-drafts-view .domain-permission-subscription.block, .domain-permission-excludes-view .domain-permission-draft.block, .domain-permission-excludes-view .domain-permission-exclude.block, .domain-permission-excludes-view .domain-permission-subscription.block, .domain-permission-subscriptions-view .domain-permission-draft.block, .domain-permission-subscriptions-view .domain-permission-exclude.block, .domain-permission-subscriptions-view .domain-permission-subscription.block, .domain-permission-subscriptions-preview .domain-permission-draft.block, .domain-permission-subscriptions-preview .domain-permission-exclude.block, .domain-permission-subscriptions-preview .domain-permission-subscription.block {
+			border-left: 0.3rem solid var(--error3);
+		}
+
+.domain-permission-drafts-view .domain-permission-draft.allow, .domain-permission-drafts-view .domain-permission-exclude.allow, .domain-permission-drafts-view .domain-permission-subscription.allow, .domain-permission-excludes-view .domain-permission-draft.allow, .domain-permission-excludes-view .domain-permission-exclude.allow, .domain-permission-excludes-view .domain-permission-subscription.allow, .domain-permission-subscriptions-view .domain-permission-draft.allow, .domain-permission-subscriptions-view .domain-permission-exclude.allow, .domain-permission-subscriptions-view .domain-permission-subscription.allow, .domain-permission-subscriptions-preview .domain-permission-draft.allow, .domain-permission-subscriptions-preview .domain-permission-exclude.allow, .domain-permission-subscriptions-preview .domain-permission-subscription.allow {
+			border-left: 0.3rem solid var(--green1);
+		}
+
+.domain-permission-drafts-view .domain-permission-draft:hover, .domain-permission-drafts-view .domain-permission-exclude:hover, .domain-permission-drafts-view .domain-permission-subscription:hover, .domain-permission-excludes-view .domain-permission-draft:hover, .domain-permission-excludes-view .domain-permission-exclude:hover, .domain-permission-excludes-view .domain-permission-subscription:hover, .domain-permission-subscriptions-view .domain-permission-draft:hover, .domain-permission-subscriptions-view .domain-permission-exclude:hover, .domain-permission-subscriptions-view .domain-permission-subscription:hover, .domain-permission-subscriptions-preview .domain-permission-draft:hover, .domain-permission-subscriptions-preview .domain-permission-exclude:hover, .domain-permission-subscriptions-preview .domain-permission-subscription:hover {
+			border-color: var(--fg-accent);
+		}
+
+.domain-permission-drafts-view .domain-permission-draft .info-list, .domain-permission-drafts-view .domain-permission-exclude .info-list, .domain-permission-drafts-view .domain-permission-subscription .info-list, .domain-permission-excludes-view .domain-permission-draft .info-list, .domain-permission-excludes-view .domain-permission-exclude .info-list, .domain-permission-excludes-view .domain-permission-subscription .info-list, .domain-permission-subscriptions-view .domain-permission-draft .info-list, .domain-permission-subscriptions-view .domain-permission-exclude .info-list, .domain-permission-subscriptions-view .domain-permission-subscription .info-list, .domain-permission-subscriptions-preview .domain-permission-draft .info-list, .domain-permission-subscriptions-preview .domain-permission-exclude .info-list, .domain-permission-subscriptions-preview .domain-permission-subscription .info-list {
+			border: none;
+		}
+
+.domain-permission-drafts-view .domain-permission-draft .info-list .info-list-entry, .domain-permission-drafts-view .domain-permission-exclude .info-list .info-list-entry, .domain-permission-drafts-view .domain-permission-subscription .info-list .info-list-entry, .domain-permission-excludes-view .domain-permission-draft .info-list .info-list-entry, .domain-permission-excludes-view .domain-permission-exclude .info-list .info-list-entry, .domain-permission-excludes-view .domain-permission-subscription .info-list .info-list-entry, .domain-permission-subscriptions-view .domain-permission-draft .info-list .info-list-entry, .domain-permission-subscriptions-view .domain-permission-exclude .info-list .info-list-entry, .domain-permission-subscriptions-view .domain-permission-subscription .info-list .info-list-entry, .domain-permission-subscriptions-preview .domain-permission-draft .info-list .info-list-entry, .domain-permission-subscriptions-preview .domain-permission-exclude .info-list .info-list-entry, .domain-permission-subscriptions-preview .domain-permission-subscription .info-list .info-list-entry {
+				background: none;
+				padding: 0;
+			}
+
+.domain-permission-drafts-view .domain-permission-draft .action-buttons, .domain-permission-drafts-view .domain-permission-exclude .action-buttons, .domain-permission-drafts-view .domain-permission-subscription .action-buttons, .domain-permission-excludes-view .domain-permission-draft .action-buttons, .domain-permission-excludes-view .domain-permission-exclude .action-buttons, .domain-permission-excludes-view .domain-permission-subscription .action-buttons, .domain-permission-subscriptions-view .domain-permission-draft .action-buttons, .domain-permission-subscriptions-view .domain-permission-exclude .action-buttons, .domain-permission-subscriptions-view .domain-permission-subscription .action-buttons, .domain-permission-subscriptions-preview .domain-permission-draft .action-buttons, .domain-permission-subscriptions-preview .domain-permission-exclude .action-buttons, .domain-permission-subscriptions-preview .domain-permission-subscription .action-buttons {
+			display: flex;
+			gap: 0.5rem;
+			align-items: center;
+		}
+
+.domain-permission-drafts-view .domain-permission-draft .action-buttons > .mutation-button
+			> button, .domain-permission-drafts-view .domain-permission-exclude .action-buttons > .mutation-button
+			> button, .domain-permission-drafts-view .domain-permission-subscription .action-buttons > .mutation-button
+			> button, .domain-permission-excludes-view .domain-permission-draft .action-buttons > .mutation-button
+			> button, .domain-permission-excludes-view .domain-permission-exclude .action-buttons > .mutation-button
+			> button, .domain-permission-excludes-view .domain-permission-subscription .action-buttons > .mutation-button
+			> button, .domain-permission-subscriptions-view .domain-permission-draft .action-buttons > .mutation-button
+			> button, .domain-permission-subscriptions-view .domain-permission-exclude .action-buttons > .mutation-button
+			> button, .domain-permission-subscriptions-view .domain-permission-subscription .action-buttons > .mutation-button
+			> button, .domain-permission-subscriptions-preview .domain-permission-draft .action-buttons > .mutation-button
+			> button, .domain-permission-subscriptions-preview .domain-permission-exclude .action-buttons > .mutation-button
+			> button, .domain-permission-subscriptions-preview .domain-permission-subscription .action-buttons > .mutation-button
+			> button {
+				font-size: 1rem;
+				line-height: 1rem;
+			}
+
+.domain-permission-draft-details .info-list, .domain-permission-exclude-details .info-list, .domain-permission-subscription-details .info-list {
+		margin-top: 1rem;
+	}
+
+.domain-permission-drafts-view dd.permission-type, .domain-permission-draft-details dd.permission-type, .domain-permission-subscriptions-view dd.permission-type, .domain-permission-subscription-details dd.permission-type, .domain-permission-subscriptions-preview dd.permission-type {
+		display: flex;
+		gap: 0.35rem;
+		align-items: center;
+	}
+
+.domain-permission-subscription-details > .list > .entries > .perm-preview {
+		gap: 0.5rem;
+	}
+
+.domain-permission-subscription-details > .perm-issue > b > code {
+		background: var(--info-bg);
+		padding: 0;
+	}
+
+.domain-permission-subscription-title {
+	font-size: 1.2rem;
+	font-weight: bold;
+}
+
+.domain-permission-subscription-create,
+.domain-permission-subscription-update {
+	gap: 1rem;
+}
+
+.domain-permission-subscription-create .password-show-hide, .domain-permission-subscription-update .password-show-hide {
+		display: flex;
+		gap: 0.5rem;
+	}
+
+.domain-permission-subscription-create .password-show-hide .form-field.text, .domain-permission-subscription-update .password-show-hide .form-field.text {
+			flex: 1;
+		}
+
+.domain-permission-subscription-create .password-show-hide .password-show-hide-toggle, .domain-permission-subscription-update .password-show-hide .password-show-hide-toggle {
+			font-size: 1rem;
+			line-height: 1.4rem;
+			align-self: flex-end;
+		}
+
+.domain-permission-subscription-remove,
+.domain-permission-subscription-test {
+	gap: 1rem;
+}
 
 .instance-rules {
 	list-style-position: inside;

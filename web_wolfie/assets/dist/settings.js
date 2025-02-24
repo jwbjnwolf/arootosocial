@@ -17150,26 +17150,39 @@ module.exports={ROOT:0,GROUP:1,POSITION:2,SET:3,RANGE:4,REPETITION:5,REFERENCE:6
 "use strict";module.exports=e=>{if("string"!=typeof e)throw new TypeError("Expected a string");return e.replace(/[|\\{}()[\]^$+*?.]/g,"\\$&").replace(/-/g,"\\x2d")};
 
 },{}],229:[function(require,module,exports){
+// This alphabet uses `A-Za-z0-9_-` symbols.
+// The order of characters is optimized for better gzip and brotli compression.
+// References to the same file (works both for gzip and brotli):
+// `'use`, `andom`, and `rict'`
+// References to the brotli default dictionary:
+// `-26T`, `1983`, `40px`, `75px`, `bush`, `jack`, `mind`, `very`, and `wolf`
 let urlAlphabet =
   'useandom-26T198340PX75pxJACKVERYMINDBUSHWOLF_GQZbfghjklqvwyzrict'
+
 let customAlphabet = (alphabet, defaultSize = 21) => {
   return (size = defaultSize) => {
     let id = ''
-    let i = size
+    // A compact alternative for `for (var i = 0; i < step; i++)`.
+    let i = size | 0
     while (i--) {
+      // `| 0` is more compact and faster than `Math.floor()`.
       id += alphabet[(Math.random() * alphabet.length) | 0]
     }
     return id
   }
 }
+
 let nanoid = (size = 21) => {
   let id = ''
-  let i = size
+  // A compact alternative for `for (var i = 0; i < step; i++)`.
+  let i = size | 0
   while (i--) {
+    // `| 0` is more compact and faster than `Math.floor()`.
     id += urlAlphabet[(Math.random() * 64) | 0]
   }
   return id
 }
+
 module.exports = { nanoid, customAlphabet }
 
 },{}],239:[function(require,module,exports){
@@ -17354,7 +17367,7 @@ function getFormMutations(form, { changedOnly }) {
 }
 exports.default = getFormMutations;
 
-},{}],372:[function(require,module,exports){
+},{}],375:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -17436,7 +17449,7 @@ function listToKeyedObject(key) {
 }
 exports.listToKeyedObject = listToKeyedObject;
 
-},{}],377:[function(require,module,exports){
+},{}],380:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -17473,7 +17486,7 @@ exports.PolicyValueAuthor = PolicyValueAuthor;
 const PolicyValueMe = "me";
 exports.PolicyValueMe = PolicyValueMe;
 
-},{}],378:[function(require,module,exports){
+},{}],381:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -17549,7 +17562,7 @@ var hasMap="function"==typeof Map&&Map.prototype,mapSizeDescriptor=Object.getOwn
 var data=require("./data"),langs={all:allLanguages,has:hasLanguage,codes:getCodes,names:getNames,where:findBy};function allLanguages(){return data}function hasLanguage(a,n){return void 0!==findBy(a,n)}function getCodes(a){if(isValidType(a))return forAll(data,(function(n){return n[a]}))}function getNames(a){return forAll(data,(function(n){return a?n.local:n.name}))}function findBy(a,n){for(var e=0;e<data.length;e++)if(n===data[e][a])return data[e]}function forAll(a,n){var e,t=[];for(e=0;e<a.length;e++)t.push(n(a[e],e));return t}function isValidType(a){return-1!==[1,2,3,"1","2","2B","2T","3"].indexOf(a)}module.exports=langs;
 
 },{"./data":135}],139:[function(require,module,exports){
-"use strict";Object.defineProperty(exports,"__esModule",{value:!0}),exports.random=exports.nanoid=exports.customRandom=exports.customAlphabet=void 0,Object.defineProperty(exports,"urlAlphabet",{enumerable:!0,get:function(){return _index.urlAlphabet}});var _index=require("./url-alphabet/index.js");let random=t=>crypto.getRandomValues(new Uint8Array(t));exports.random=random;let customRandom=(t,e,o)=>{let n=(2<<Math.log(t.length-1)/Math.LN2)-1,r=-~(1.6*n*e/t.length);return function(){let a=arguments.length>0&&void 0!==arguments[0]?arguments[0]:e,l="";for(;;){let e=o(r),u=r;for(;u--;)if(l+=t[e[u]&n]||"",l.length===a)return l}}};exports.customRandom=customRandom;let customAlphabet=function(t){return customRandom(t,arguments.length>1&&void 0!==arguments[1]?arguments[1]:21,random)};exports.customAlphabet=customAlphabet;let nanoid=function(){let t=arguments.length>0&&void 0!==arguments[0]?arguments[0]:21;return crypto.getRandomValues(new Uint8Array(t)).reduce(((t,e)=>t+=(e&=63)<36?e.toString(36):e<62?(e-26).toString(36).toUpperCase():e>62?"-":"_"),"")};exports.nanoid=nanoid;
+"use strict";Object.defineProperty(exports,"__esModule",{value:!0}),exports.random=exports.nanoid=exports.customRandom=exports.customAlphabet=void 0,Object.defineProperty(exports,"urlAlphabet",{enumerable:!0,get:function(){return _index.urlAlphabet}});var _index=require("./url-alphabet/index.js");let random=e=>crypto.getRandomValues(new Uint8Array(e));exports.random=random;let customRandom=(e,t,o)=>{let n=(2<<Math.log2(e.length-1))-1,r=-~(1.6*n*t/e.length);return function(){let a=arguments.length>0&&void 0!==arguments[0]?arguments[0]:t,l="";for(;;){let t=o(r),u=0|r;for(;u--;)if(l+=e[t[u]&n]||"",l.length>=a)return l}}};exports.customRandom=customRandom;let customAlphabet=function(e){return customRandom(e,0|(arguments.length>1&&void 0!==arguments[1]?arguments[1]:21),random)};exports.customAlphabet=customAlphabet;let nanoid=function(){let e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:21,t="",o=crypto.getRandomValues(new Uint8Array(e|=0));for(;e--;)t+=_index.urlAlphabet[63&o[e]];return t};exports.nanoid=nanoid;
 
 },{"./url-alphabet/index.js":140}],147:[function(require,module,exports){
 'use strict';
@@ -18109,7 +18122,7 @@ var _typeof=require("./typeof.js").default,toPrimitive=require("./toPrimitive.js
 "use strict";let{SourceMapConsumer:SourceMapConsumer,SourceMapGenerator:SourceMapGenerator}=require("source-map-js"),{existsSync:existsSync,readFileSync:readFileSync}=require("fs"),{dirname:dirname,join:join}=require("path");function fromBase64(t){return Buffer?Buffer.from(t,"base64").toString():window.atob(t)}class PreviousMap{constructor(t,e){if(!1===e.map)return;this.loadAnnotation(t),this.inline=this.startWith(this.annotation,"data:");let r=e.map?e.map.prev:void 0,n=this.loadMap(e.from,r);!this.mapFile&&e.from&&(this.mapFile=e.from),this.mapFile&&(this.root=dirname(this.mapFile)),n&&(this.text=n)}consumer(){return this.consumerCache||(this.consumerCache=new SourceMapConsumer(this.text)),this.consumerCache}decodeInline(t){if(/^data:application\/json;charset=utf-?8,/.test(t)||/^data:application\/json,/.test(t))return decodeURIComponent(t.substr(RegExp.lastMatch.length));if(/^data:application\/json;charset=utf-?8;base64,/.test(t)||/^data:application\/json;base64,/.test(t))return fromBase64(t.substr(RegExp.lastMatch.length));let e=t.match(/data:application\/json;([^,]+),/)[1];throw new Error("Unsupported source map encoding "+e)}getAnnotationURL(t){return t.replace(/^\/\*\s*# sourceMappingURL=/,"").trim()}isMap(t){return"object"==typeof t&&("string"==typeof t.mappings||"string"==typeof t._mappings||Array.isArray(t.sections))}loadAnnotation(t){let e=t.match(/\/\*\s*# sourceMappingURL=/gm);if(!e)return;let r=t.lastIndexOf(e.pop()),n=t.indexOf("*/",r);r>-1&&n>-1&&(this.annotation=this.getAnnotationURL(t.substring(r,n)))}loadFile(t){if(this.root=dirname(t),existsSync(t))return this.mapFile=t,readFileSync(t,"utf-8").toString().trim()}loadMap(t,e){if(!1===e)return!1;if(e){if("string"==typeof e)return e;if("function"!=typeof e){if(e instanceof SourceMapConsumer)return SourceMapGenerator.fromSourceMap(e).toString();if(e instanceof SourceMapGenerator)return e.toString();if(this.isMap(e))return JSON.stringify(e);throw new Error("Unsupported previous source map format: "+e.toString())}{let r=e(t);if(r){let t=this.loadFile(r);if(!t)throw new Error("Unable to load previous source map: "+r.toString());return t}}}else{if(this.inline)return this.decodeInline(this.annotation);if(this.annotation){let e=this.annotation;return t&&(e=join(dirname(t),e)),this.loadFile(e)}}}startWith(t,e){return!!t&&t.substr(0,e.length)===e}withContent(){return!!(this.consumer().sourcesContent&&this.consumer().sourcesContent.length>0)}}module.exports=PreviousMap,PreviousMap.default=PreviousMap;
 
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"buffer":85,"fs":84,"path":84,"source-map-js":84}],384:[function(require,module,exports){
+},{"buffer":85,"fs":84,"path":84,"source-map-js":84}],388:[function(require,module,exports){
 require("../node_modules/icssify/global-css-loader.js"); module.exports = {};
 },{"../node_modules/icssify/global-css-loader.js":124}],146:[function(require,module,exports){
 'use strict';
@@ -18438,7 +18451,75 @@ exports.serialize = serialize;
 "use strict";function f(e,n){var t=e.length;e.push(n);e:for(;0<t;){var r=t-1>>>1,a=e[r];if(!(0<g(a,n)))break e;e[r]=n,e[t]=a,t=r}}function h(e){return 0===e.length?null:e[0]}function k(e){if(0===e.length)return null;var n=e[0],t=e.pop();if(t!==n){e[0]=t;e:for(var r=0,a=e.length,o=a>>>1;r<o;){var l=2*(r+1)-1,i=e[l],u=l+1,s=e[u];if(0>g(i,t))u<a&&0>g(s,i)?(e[r]=s,e[u]=t,r=u):(e[r]=i,e[l]=t,r=l);else{if(!(u<a&&0>g(s,t)))break e;e[r]=s,e[u]=t,r=u}}}return n}function g(e,n){var t=e.sortIndex-n.sortIndex;return 0!==t?t:e.id-n.id}if("object"==typeof performance&&"function"==typeof performance.now){var l=performance;exports.unstable_now=function(){return l.now()}}else{var p=Date,q=p.now();exports.unstable_now=function(){return p.now()-q}}var r=[],t=[],u=1,v=null,y=3,z=!1,A=!1,B=!1,D="function"==typeof setTimeout?setTimeout:null,E="function"==typeof clearTimeout?clearTimeout:null,F="undefined"!=typeof setImmediate?setImmediate:null;function G(e){for(var n=h(t);null!==n;){if(null===n.callback)k(t);else{if(!(n.startTime<=e))break;k(t),n.sortIndex=n.expirationTime,f(r,n)}n=h(t)}}function H(e){if(B=!1,G(e),!A)if(null!==h(r))A=!0,I(J);else{var n=h(t);null!==n&&K(H,n.startTime-e)}}function J(e,n){A=!1,B&&(B=!1,E(L),L=-1),z=!0;var a=y;try{for(G(n),v=h(r);null!==v&&(!(v.expirationTime>n)||e&&!M());){var o=v.callback;if("function"==typeof o){v.callback=null,y=v.priorityLevel;var l=o(v.expirationTime<=n);n=exports.unstable_now(),"function"==typeof l?v.callback=l:v===h(r)&&k(r),G(n)}else k(r);v=h(r)}if(null!==v)var i=!0;else{var u=h(t);null!==u&&K(H,u.startTime-n),i=!1}return i}finally{v=null,y=a,z=!1}}"undefined"!=typeof navigator&&void 0!==navigator.scheduling&&void 0!==navigator.scheduling.isInputPending&&navigator.scheduling.isInputPending.bind(navigator.scheduling);var S,N=!1,O=null,L=-1,P=5,Q=-1;function M(){return!(exports.unstable_now()-Q<P)}function R(){if(null!==O){var e=exports.unstable_now();Q=e;var n=!0;try{n=O(!0,e)}finally{n?S():(N=!1,O=null)}}else N=!1}if("function"==typeof F)S=function(){F(R)};else if("undefined"!=typeof MessageChannel){var T=new MessageChannel,U=T.port2;T.port1.onmessage=R,S=function(){U.postMessage(null)}}else S=function(){D(R,0)};function I(e){O=e,N||(N=!0,S())}function K(e,n){L=D((function(){e(exports.unstable_now())}),n)}exports.unstable_IdlePriority=5,exports.unstable_ImmediatePriority=1,exports.unstable_LowPriority=4,exports.unstable_NormalPriority=3,exports.unstable_Profiling=null,exports.unstable_UserBlockingPriority=2,exports.unstable_cancelCallback=function(e){e.callback=null},exports.unstable_continueExecution=function(){A||z||(A=!0,I(J))},exports.unstable_forceFrameRate=function(e){0>e||125<e?console.error("forceFrameRate takes a positive int between 0 and 125, forcing frame rates higher than 125 fps is not supported"):P=0<e?Math.floor(1e3/e):5},exports.unstable_getCurrentPriorityLevel=function(){return y},exports.unstable_getFirstCallbackNode=function(){return h(r)},exports.unstable_next=function(e){switch(y){case 1:case 2:case 3:var n=3;break;default:n=y}var t=y;y=n;try{return e()}finally{y=t}},exports.unstable_pauseExecution=function(){},exports.unstable_requestPaint=function(){},exports.unstable_runWithPriority=function(e,n){switch(e){case 1:case 2:case 3:case 4:case 5:break;default:e=3}var t=y;y=e;try{return n()}finally{y=t}},exports.unstable_scheduleCallback=function(e,n,a){var o=exports.unstable_now();switch("object"==typeof a&&null!==a?a="number"==typeof(a=a.delay)&&0<a?o+a:o:a=o,e){case 1:var l=-1;break;case 2:l=250;break;case 5:l=1073741823;break;case 4:l=1e4;break;default:l=5e3}return e={id:u++,callback:n,priorityLevel:e,startTime:a,expirationTime:l=a+l,sortIndex:-1},a>o?(e.sortIndex=a,f(t,e),null===h(r)&&e===h(t)&&(B?(E(L),L=-1):B=!0,K(H,a-o))):(e.sortIndex=l,f(r,e),A||z||(A=!0,I(J))),e},exports.unstable_shouldYield=M,exports.unstable_wrapCallback=function(e){var n=y;return function(){var t=y;y=n;try{return e.apply(this,arguments)}finally{y=t}}};
 
 }).call(this)}).call(this,require("timers").setImmediate)
-},{"timers":261}],379:[function(require,module,exports){
+},{"timers":261}],383:[function(require,module,exports){
+"use strict";
+/*
+    GoToSocial
+    Copyright (C) GoToSocial Authors admin@gotosocial.org
+    SPDX-License-Identifier: AGPL-3.0-or-later
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.urlValidator = exports.formDomainValidator = void 0;
+const is_valid_domain_1 = __importDefault(require("is-valid-domain"));
+/**
+ * Validate the "domain" field of a form.
+ * @param domain
+ * @returns
+ */
+function formDomainValidator(domain) {
+    if (domain.length === 0) {
+        return "";
+    }
+    if (domain[domain.length - 1] === ".") {
+        return "invalid domain";
+    }
+    const valid = (0, is_valid_domain_1.default)(domain, {
+        subdomain: true,
+        wildcard: false,
+        allowUnicode: true,
+        topLevel: false,
+    });
+    if (valid) {
+        return "";
+    }
+    return "invalid domain";
+}
+exports.formDomainValidator = formDomainValidator;
+function urlValidator(urlStr) {
+    if (urlStr.length === 0) {
+        return "";
+    }
+    let url;
+    try {
+        url = new URL(urlStr);
+    }
+    catch (e) {
+        return e.message;
+    }
+    if (url.protocol !== "http:" && url.protocol !== "https:") {
+        return `invalid protocol, must be http or https`;
+    }
+    return formDomainValidator(url.host);
+}
+exports.urlValidator = urlValidator;
+
+},{"is-valid-domain":133}],382:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -18715,7 +18796,11 @@ function Error({ error, reset }) {
     return (react_1.default.createElement("div", { className: className },
         react_1.default.createElement("span", null, message),
         reset &&
-            react_1.default.createElement("span", { className: "dismiss", onClick: reset, role: "button", tabIndex: 0 },
+            react_1.default.createElement("span", { className: "dismiss", onClick: (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    reset();
+                }, role: "button", tabIndex: 0 },
                 react_1.default.createElement("span", null, "Dismiss"),
                 react_1.default.createElement("i", { className: "fa fa-fw fa-close", "aria-hidden": "true" }))));
 }
@@ -18756,7 +18841,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.RadioGroup = exports.Select = exports.Checkbox = exports.FileInput = exports.TextArea = exports.TextInput = void 0;
+exports.RadioGroup = exports.Select = exports.Checkbox = exports.FileInput = exports.TextArea = exports.NumberInput = exports.TextInput = void 0;
 const react_1 = __importDefault(require("react"));
 const nanoid_1 = require("nanoid");
 function TextInput(_a) {
@@ -18768,6 +18853,15 @@ function TextInput(_a) {
             react_1.default.createElement("input", Object.assign({ onChange: onChange, value: value, ref: ref }, props)))));
 }
 exports.TextInput = TextInput;
+function NumberInput(_a) {
+    var { label, field } = _a, props = __rest(_a, ["label", "field"]);
+    const { onChange, value, ref } = field;
+    return (react_1.default.createElement("div", { className: `form-field number${field.valid ? "" : " invalid"}` },
+        react_1.default.createElement("label", null,
+            label,
+            react_1.default.createElement("input", Object.assign({ onChange: onChange, value: value, ref: ref }, props)))));
+}
+exports.NumberInput = NumberInput;
 function TextArea(_a) {
     var { label, field } = _a, props = __rest(_a, ["label", "field"]);
     const { onChange, value, ref } = field;
@@ -19332,14 +19426,19 @@ function useFormSubmit(form, mutationQuery, opts = { changedOnly: true }) {
         }
         usedAction.current = action;
         // Transform the hooked form into an object.
-        const { mutationData, updatedFields, } = (0, get_form_mutations_1.default)(form, { changedOnly });
+        let { mutationData, updatedFields, } = (0, get_form_mutations_1.default)(form, { changedOnly });
         // If there were no updated fields according to
         // the form parsing then there's nothing for us
         // to do, since remote and desired state match.
         if (updatedFields.length == 0) {
             return;
         }
+        // Final tweaks on the mutation
+        // argument before triggering it.
         mutationData.action = action;
+        if (opts.customizeMutationArgs) {
+            mutationData = opts.customizeMutationArgs(mutationData);
+        }
         try {
             const res = yield runMutation(mutationData);
             if (onFinish) {
@@ -19612,7 +19711,97 @@ function useInstanceDebug() {
 }
 exports.useInstanceDebug = useInstanceDebug;
 
-},{"react":198}],414:[function(require,module,exports){
+},{"react":198}],418:[function(require,module,exports){
+"use strict";
+/*
+    GoToSocial
+    Copyright (C) GoToSocial Authors admin@gotosocial.org
+    SPDX-License-Identifier: AGPL-3.0-or-later
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.DomainPermissionDraftDocsLink = exports.DomainPermissionDraftHelpText = void 0;
+const react_1 = __importDefault(require("react"));
+function DomainPermissionDraftHelpText() {
+    return (react_1.default.createElement(react_1.default.Fragment, null,
+        "Domain permission drafts are domain block or domain allow entries that are not yet in force.",
+        react_1.default.createElement("br", null),
+        "You can choose to accept or remove a draft."));
+}
+exports.DomainPermissionDraftHelpText = DomainPermissionDraftHelpText;
+function DomainPermissionDraftDocsLink() {
+    return (react_1.default.createElement("a", { href: "https://docs.gotosocial.org/en/latest/admin/settings/#domain-permission-drafts", target: "_blank", className: "docslink", rel: "noreferrer" }, "Learn more about domain permission drafts (opens in a new tab)"));
+}
+exports.DomainPermissionDraftDocsLink = DomainPermissionDraftDocsLink;
+
+},{"react":198}],422:[function(require,module,exports){
+"use strict";
+/*
+    GoToSocial
+    Copyright (C) GoToSocial Authors admin@gotosocial.org
+    SPDX-License-Identifier: AGPL-3.0-or-later
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.DomainPermissionExcludeDocsLink = exports.DomainPermissionExcludeHelpText = void 0;
+const react_1 = __importDefault(require("react"));
+function DomainPermissionExcludeHelpText() {
+    return (react_1.default.createElement(react_1.default.Fragment, null,
+        "Domain permission excludes prevent permissions for a domain (and all subdomains) from being auomatically managed by domain permission subscriptions.",
+        react_1.default.createElement("br", null),
+        "For example, if you create an exclude entry for ",
+        react_1.default.createElement("code", null, "example.org"),
+        ", then a blocklist or allowlist subscription will ",
+        react_1.default.createElement("em", null, "exclude"),
+        " entries for ",
+        react_1.default.createElement("code", null, "example.org"),
+        "and any of its subdomains (",
+        react_1.default.createElement("code", null, "sub.example.org"),
+        ", ",
+        react_1.default.createElement("code", null, "another.sub.example.org"),
+        " etc.) when creating domain permission drafts and domain blocks/allows.",
+        react_1.default.createElement("br", null),
+        "This functionality allows you to manually manage permissions for excluded domains, in cases where you know you definitely do or don't want to federate with a given domain, no matter what entries are contained in a domain permission subscription.",
+        react_1.default.createElement("br", null),
+        "Note that by itself, creation of an exclude entry for a given domain does not affect federation with that domain at all, it is only useful in combination with permission subscriptions."));
+}
+exports.DomainPermissionExcludeHelpText = DomainPermissionExcludeHelpText;
+function DomainPermissionExcludeDocsLink() {
+    return (react_1.default.createElement("a", { href: "https://docs.gotosocial.org/en/latest/admin/settings/#domain-permission-excludes", target: "_blank", className: "docslink", rel: "noreferrer" }, "Learn more about domain permission excludes (opens in a new tab)"));
+}
+exports.DomainPermissionExcludeDocsLink = DomainPermissionExcludeDocsLink;
+
+},{"react":198}],426:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -20412,7 +20601,7 @@ function FormWithData(_a) {
 }
 exports.default = FormWithData;
 
-},{"../../components/error":332,"../../components/loading":336,"../types/query":378,"react":198}],222:[function(require,module,exports){
+},{"../../components/error":332,"../../components/loading":336,"../types/query":381,"react":198}],222:[function(require,module,exports){
 const util=require("./util"),types=require("./types"),sets=require("./sets"),positions=require("./positions");module.exports=e=>{var s,t,a=0,p={type:types.ROOT,stack:[]},r=p,o=p.stack,u=[],n=s=>{util.error(e,"Nothing to repeat at column "+(s-1))},i=util.strToChars(e);for(s=i.length;a<s;)switch(t=i[a++]){case"\\":switch(t=i[a++]){case"b":o.push(positions.wordBoundary());break;case"B":o.push(positions.nonWordBoundary());break;case"w":o.push(sets.words());break;case"W":o.push(sets.notWords());break;case"d":o.push(sets.ints());break;case"D":o.push(sets.notInts());break;case"s":o.push(sets.whitespace());break;case"S":o.push(sets.notWhitespace());break;default:/\d/.test(t)?o.push({type:types.REFERENCE,value:parseInt(t,10)}):o.push({type:types.CHAR,value:t.charCodeAt(0)})}break;case"^":o.push(positions.begin());break;case"$":o.push(positions.end());break;case"[":var c;"^"===i[a]?(c=!0,a++):c=!1;var h=util.tokenizeClass(i.slice(a),e);a+=h[1],o.push({type:types.SET,set:h[0],not:c});break;case".":o.push(sets.anyChar());break;case"(":var l={type:types.GROUP,stack:[],remember:!0};"?"===(t=i[a])&&(t=i[a+1],a+=2,"="===t?l.followedBy=!0:"!"===t?l.notFollowedBy=!0:":"!==t&&util.error(e,`Invalid group, character '${t}' after '?' at column `+(a-1)),l.remember=!1),o.push(l),u.push(r),r=l,o=l.stack;break;case")":0===u.length&&util.error(e,"Unmatched ) at column "+(a-1)),o=(r=u.pop()).options?r.options[r.options.length-1]:r.stack;break;case"|":r.options||(r.options=[r.stack],delete r.stack);var y=[];r.options.push(y),o=y;break;case"{":var k,b,d=/^(\d+)(,(\d+)?)?\}/.exec(i.slice(a));null!==d?(0===o.length&&n(a),k=parseInt(d[1],10),b=d[2]?d[3]?parseInt(d[3],10):1/0:k,a+=d[0].length,o.push({type:types.REPETITION,min:k,max:b,value:o.pop()})):o.push({type:types.CHAR,value:123});break;case"?":0===o.length&&n(a),o.push({type:types.REPETITION,min:0,max:1,value:o.pop()});break;case"+":0===o.length&&n(a),o.push({type:types.REPETITION,min:1,max:1/0,value:o.pop()});break;case"*":0===o.length&&n(a),o.push({type:types.REPETITION,min:0,max:1/0,value:o.pop()});break;default:o.push({type:types.CHAR,value:t.charCodeAt(0)})}return 0!==u.length&&util.error(e,"Unterminated group"),p},module.exports.types=types;
 
 },{"./positions":223,"./sets":224,"./types":225,"./util":226}],231:[function(require,module,exports){
@@ -20895,75 +21084,7 @@ function PageableList({ isLoading, isFetching, isSuccess, items, itemToEntry, is
 }
 exports.PageableList = PageableList;
 
-},{"./error":332,"./loading":336,"react":198,"wouter":323}],341:[function(require,module,exports){
-"use strict";
-/*
-    GoToSocial
-    Copyright (C) GoToSocial Authors admin@gotosocial.org
-    SPDX-License-Identifier: AGPL-3.0-or-later
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Affero General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Affero General Public License for more details.
-
-    You should have received a copy of the GNU Affero General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const react_1 = __importDefault(require("react"));
-const wouter_1 = require("wouter");
-function Username({ account, linkTo, backLocation, classNames }) {
-    const [_location, setLocation] = (0, wouter_1.useLocation)();
-    let className = "username-lozenge";
-    let isLocal = account.domain == null;
-    if (account.suspended) {
-        className += " suspended";
-    }
-    if (isLocal) {
-        className += " local";
-    }
-    if (classNames) {
-        className = [className, classNames].flat().join(" ");
-    }
-    let icon = isLocal
-        ? { fa: "fa-home", info: "Local user" }
-        : { fa: "fa-external-link-square", info: "Remote user" };
-    const content = (react_1.default.createElement(react_1.default.Fragment, null,
-        react_1.default.createElement("i", { className: `fa fa-fw ${icon.fa}`, "aria-hidden": "true", title: icon.info }),
-        react_1.default.createElement("span", { className: "sr-only" }, icon.info),
-        "\u00A0",
-        react_1.default.createElement("span", { className: "acct" },
-            "@",
-            account.account.acct)));
-    if (linkTo) {
-        className += " pseudolink";
-        return (react_1.default.createElement("span", { className: className, onClick: () => {
-                // When clicking on an account, direct
-                // to the detail view for that account.
-                setLocation(linkTo, {
-                    // Store the back location in history so
-                    // the detail view can use it to return to
-                    // this page (including query parameters).
-                    state: { backLocation: backLocation }
-                });
-            }, role: "link", tabIndex: 0 }, content));
-    }
-    else {
-        return (react_1.default.createElement("div", { className: className }, content));
-    }
-}
-exports.default = Username;
-
-},{"react":198,"wouter":323}],286:[function(require,module,exports){
+},{"./error":332,"./loading":336,"react":198,"wouter":323}],286:[function(require,module,exports){
 "use strict";Object.defineProperty(exports,"__esModule",{value:!0}),exports.createParameter=exports.createValidateHeaders=exports.createIsHeaders=exports.createAssertHeaders=exports.createHeaders=exports.createValidateQuery=exports.createIsQuery=exports.createAssertQuery=exports.createQuery=exports.parameter=exports.validateHeaders=exports.isHeaders=exports.assertHeaders=exports.headers=exports.validateQuery=exports.isQuery=exports.assertQuery=exports.query=void 0;var Namespace_1=require("./functional/Namespace");function query(){halt("query")}function assertQuery(){halt("assertQuery")}function isQuery(){halt("isQuery")}function validateQuery(){halt("validateQuery")}function headers(){halt("headers")}function assertHeaders(){halt("assertHeaders")}function isHeaders(){halt("isHeaders")}function validateHeaders(){halt("validateHeaders")}function parameter(){halt("parameter")}function createQuery(){halt("createQuery")}function createAssertQuery(){halt("createAssertQuery")}function createIsQuery(){halt("createIsQuery")}function createValidateQuery(){halt("createValidateQuery")}function createHeaders(){halt("createHeaders")}function createAssertHeaders(){halt("createAssertHeaders")}function createIsHeaders(){halt("createIsHeaders")}function createValidateHeaders(){halt("createValidateHeaders")}function createParameter(){halt("createParameter")}function halt(e){throw new Error("Error on typia.http.".concat(e,"(): no transform has been configured. Read and follow https://typia.misc.io/docs/setup please."))}exports.query=query,Object.assign(query,Namespace_1.Namespace.http.query()),exports.assertQuery=assertQuery,Object.assign(assertQuery,Namespace_1.Namespace.http.query()),Object.assign(assertQuery,Namespace_1.Namespace.assert("http.assertQuery")),exports.isQuery=isQuery,Object.assign(isQuery,Namespace_1.Namespace.http.query()),Object.assign(isQuery,Namespace_1.Namespace.is()),exports.validateQuery=validateQuery,Object.assign(validateQuery,Namespace_1.Namespace.http.query()),Object.assign(validateQuery,Namespace_1.Namespace.validate()),exports.headers=headers,Object.assign(headers,Namespace_1.Namespace.http.headers()),exports.assertHeaders=assertHeaders,Object.assign(assertHeaders,Namespace_1.Namespace.http.headers()),Object.assign(assertHeaders,Namespace_1.Namespace.assert("http.assertHeaders")),exports.isHeaders=isHeaders,Object.assign(isHeaders,Namespace_1.Namespace.http.headers()),Object.assign(isHeaders,Namespace_1.Namespace.is()),exports.validateHeaders=validateHeaders,Object.assign(validateHeaders,Namespace_1.Namespace.http.headers()),Object.assign(validateHeaders,Namespace_1.Namespace.validate()),exports.parameter=parameter,Object.assign(parameter,Namespace_1.Namespace.http.parameter()),Object.assign(parameter,Namespace_1.Namespace.assert("http.parameter")),exports.createQuery=createQuery,Object.assign(createQuery,Namespace_1.Namespace.http.query()),exports.createAssertQuery=createAssertQuery,Object.assign(createAssertQuery,Namespace_1.Namespace.http.query()),Object.assign(createAssertQuery,Namespace_1.Namespace.assert("http.createAssertQuery")),exports.createIsQuery=createIsQuery,Object.assign(createIsQuery,Namespace_1.Namespace.http.query()),Object.assign(createIsQuery,Namespace_1.Namespace.is()),exports.createValidateQuery=createValidateQuery,Object.assign(createValidateQuery,Namespace_1.Namespace.http.query()),Object.assign(createValidateQuery,Namespace_1.Namespace.validate()),exports.createHeaders=createHeaders,Object.assign(createHeaders,Namespace_1.Namespace.http.headers()),exports.createAssertHeaders=createAssertHeaders,Object.assign(createAssertHeaders,Namespace_1.Namespace.http.headers()),Object.assign(createAssertHeaders,Namespace_1.Namespace.assert("http.createAssertHeaders")),exports.createIsHeaders=createIsHeaders,Object.assign(createIsHeaders,Namespace_1.Namespace.http.headers()),Object.assign(createIsHeaders,Namespace_1.Namespace.is()),exports.createValidateHeaders=createValidateHeaders,Object.assign(createValidateHeaders,Namespace_1.Namespace.http.headers()),Object.assign(createValidateHeaders,Namespace_1.Namespace.validate()),exports.createParameter=createParameter,Object.assign(createParameter,Namespace_1.Namespace.http.parameter()),Object.assign(createParameter,Namespace_1.Namespace.assert("http.createParameter"));
 
 },{"./functional/Namespace":285}],288:[function(require,module,exports){
@@ -20988,7 +21109,7 @@ var QueryStatus,__generator=this&&this.__generator||function(e,t){var r,n,i,a,o=
 var e,t,n=this&&this.__generator||function(e,t){var n,r,i,a,u={label:0,sent:function(){if(1&i[0])throw i[1];return i[1]},trys:[],ops:[]};return a={next:o(0),throw:o(1),return:o(2)},"function"==typeof Symbol&&(a[Symbol.iterator]=function(){return this}),a;function o(a){return function(o){return function(a){if(n)throw new TypeError("Generator is already executing.");for(;u;)try{if(n=1,r&&(i=2&a[0]?r.return:a[0]?r.throw||((i=r.return)&&i.call(r),0):r.next)&&!(i=i.call(r,a[1])).done)return i;switch(r=0,i&&(a=[2&a[0],i.value]),a[0]){case 0:case 1:i=a;break;case 4:return u.label++,{value:a[1],done:!1};case 5:u.label++,r=a[1],a=[0];continue;case 7:a=u.ops.pop(),u.trys.pop();continue;default:if(!((i=(i=u.trys).length>0&&i[i.length-1])||6!==a[0]&&2!==a[0])){u=0;continue}if(3===a[0]&&(!i||a[1]>i[0]&&a[1]<i[3])){u.label=a[1];break}if(6===a[0]&&u.label<i[1]){u.label=i[1],i=a;break}if(i&&u.label<i[2]){u.label=i[2],u.ops.push(a);break}i[2]&&u.ops.pop(),u.trys.pop();continue}a=t.call(e,u)}catch(e){a=[6,e],r=0}finally{n=i=0}if(5&a[0])throw a[1];return{value:a[0]?a[1]:void 0,done:!0}}([a,o])}}},r=this&&this.__spreadArray||function(e,t){for(var n=0,r=t.length,i=e.length;n<r;n++,i++)e[i]=t[n];return e},i=Object.create,a=Object.defineProperty,u=Object.defineProperties,o=Object.getOwnPropertyDescriptor,s=Object.getOwnPropertyDescriptors,c=Object.getOwnPropertyNames,l=Object.getOwnPropertySymbols,d=Object.getPrototypeOf,f=Object.prototype.hasOwnProperty,p=Object.prototype.propertyIsEnumerable,h=function(e,t,n){return t in e?a(e,t,{enumerable:!0,configurable:!0,writable:!0,value:n}):e[t]=n},v=function(e,t){for(var n in t||(t={}))f.call(t,n)&&h(e,n,t[n]);if(l)for(var r=0,i=l(t);r<i.length;r++)p.call(t,n=i[r])&&h(e,n,t[n]);return e},y=function(e,t){return u(e,s(t))},m=function(e){return a(e,"__esModule",{value:!0})},g=function(e,t){var n={};for(var r in e)f.call(e,r)&&t.indexOf(r)<0&&(n[r]=e[r]);if(null!=e&&l)for(var i=0,a=l(e);i<a.length;i++)t.indexOf(r=a[i])<0&&p.call(e,r)&&(n[r]=e[r]);return n},b=function(e){return function(e,t,n){if(t&&"object"==typeof t||"function"==typeof t)for(var r=function(r){f.call(e,r)||"default"===r||a(e,r,{get:function(){return t[r]},enumerable:!(n=o(t,r))||n.enumerable})},i=0,u=c(t);i<u.length;i++)r(u[i]);return e}(m(a(null!=e?i(d(e)):{},"default",e&&e.__esModule&&"default"in e?{get:function(){return e.default},enumerable:!0}:{value:e,enumerable:!0})),e)},q=function(e,t,n){return new Promise((function(r,i){var a=function(e){try{o(n.next(e))}catch(e){i(e)}},u=function(e){try{o(n.throw(e))}catch(e){i(e)}},o=function(e){return e.done?r(e.value):Promise.resolve(e.value).then(a,u)};o((n=n.apply(e,t)).next())}))};m(exports),function(e,t){for(var n in t)a(e,n,{get:t[n],enumerable:!0})}(exports,{QueryStatus:function(){return e},buildCreateApi:function(){return ge},copyWithStructuralSharing:function(){return A},coreModule:function(){return Ke},coreModuleName:function(){return Ne},createApi:function(){return Ee},defaultSerializeQueryArgs:function(){return ve},fakeBaseQuery:function(){return be},fetchBaseQuery:function(){return x},retry:function(){return I},setupListeners:function(){return F},skipSelector:function(){return ce},skipToken:function(){return se}}),(t=e||(e={})).uninitialized="uninitialized",t.pending="pending",t.fulfilled="fulfilled",t.rejected="rejected";var S=function(e){return[].concat.apply([],e)},O=b(require("@reduxjs/toolkit")).isPlainObject;function A(e,t){if(e===t||!(O(e)&&O(t)||Array.isArray(e)&&Array.isArray(t)))return t;for(var n=Object.keys(t),r=Object.keys(e),i=n.length===r.length,a=Array.isArray(t)?[]:{},u=0,o=n;u<o.length;u++){var s=o[u];a[s]=A(e[s],t[s]),i&&(i=e[s]===a[s])}return i?e:a}var T=b(require("@reduxjs/toolkit")),R=function(){for(var e=[],t=0;t<arguments.length;t++)e[t]=arguments[t];return fetch.apply(void 0,e)},j=function(e){return e.status>=200&&e.status<=299},w=function(e){return/ion\/(vnd\.api\+)?json/.test(e.get("content-type")||"")};function k(e){if(!(0,T.isPlainObject)(e))return e;for(var t=v({},e),n=0,r=Object.entries(t);n<r.length;n++){var i=r[n];void 0===i[1]&&delete t[i[0]]}return t}function x(e){var t=this;void 0===e&&(e={});var r=e.baseUrl,i=e.prepareHeaders,a=void 0===i?function(e){return e}:i,u=e.fetchFn,o=void 0===u?R:u,s=e.paramsSerializer,c=e.isJsonContentType,l=void 0===c?w:c,d=e.jsonContentType,f=void 0===d?"application/json":d,p=e.jsonReplacer,h=e.timeout,m=e.responseHandler,b=e.validateStatus,S=g(e,["baseUrl","prepareHeaders","fetchFn","paramsSerializer","isJsonContentType","jsonContentType","jsonReplacer","timeout","responseHandler","validateStatus"]);return"undefined"==typeof fetch&&o===R&&console.warn("Warning: `fetch` is not available. Please supply a custom `fetchFn` property to use `fetchBaseQuery` on SSR environments."),function(e,i){return q(t,null,(function(){var t,u,c,d,q,A,R,w,x,P,C,Q,I,M,D,N,K,E,z,_,F,J,U,B,L,W,H,V,$,G,Z,Y,X,ee,te,ne;return n(this,(function(n){switch(n.label){case 0:return t=i.signal,u=i.getState,c=i.extra,d=i.endpoint,q=i.forced,A=i.type,x=(w="string"==typeof e?{url:e}:e).url,C=void 0===(P=w.headers)?new Headers(S.headers):P,I=void 0===(Q=w.params)?void 0:Q,D=void 0===(M=w.responseHandler)?null!=m?m:"json":M,K=void 0===(N=w.validateStatus)?null!=b?b:j:N,z=void 0===(E=w.timeout)?h:E,_=g(w,["url","headers","params","responseHandler","validateStatus","timeout"]),F=v(y(v({},S),{signal:t}),_),C=new Headers(k(C)),J=F,[4,a(C,{getState:u,extra:c,endpoint:d,forced:q,type:A})];case 1:J.headers=n.sent()||C,U=function(e){return"object"==typeof e&&((0,T.isPlainObject)(e)||Array.isArray(e)||"function"==typeof e.toJSON)},!F.headers.has("content-type")&&U(F.body)&&F.headers.set("content-type",f),U(F.body)&&l(F.headers)&&(F.body=JSON.stringify(F.body,p)),I&&(B=~x.indexOf("?")?"&":"?",L=s?s(I):new URLSearchParams(k(I)),x+=B+L),x=function(e,t){if(!e)return t;if(!t)return e;if(function(e){return new RegExp("(^|:)//").test(e)}(t))return t;var n=e.endsWith("/")||!t.startsWith("?")?"/":"";return""+(e=function(e){return e.replace(/\/$/,"")}(e))+n+function(e){return e.replace(/^\//,"")}(t)}(r,x),W=new Request(x,F),H=new Request(x,F),R={request:H},$=!1,G=z&&setTimeout((function(){$=!0,i.abort()}),z),n.label=2;case 2:return n.trys.push([2,4,5,6]),[4,o(W)];case 3:return V=n.sent(),[3,6];case 4:return Z=n.sent(),[2,{error:{status:$?"TIMEOUT_ERROR":"FETCH_ERROR",error:String(Z)},meta:R}];case 5:return G&&clearTimeout(G),[7];case 6:Y=V.clone(),R.response=Y,ee="",n.label=7;case 7:return n.trys.push([7,9,,10]),[4,Promise.all([O(V,D).then((function(e){return X=e}),(function(e){return te=e})),Y.text().then((function(e){return ee=e}),(function(){}))])];case 8:if(n.sent(),te)throw te;return[3,10];case 9:return ne=n.sent(),[2,{error:{status:"PARSING_ERROR",originalStatus:V.status,data:ee,error:String(ne)},meta:R}];case 10:return[2,K(V,X)?{data:X,meta:R}:{error:{status:V.status,data:X},meta:R}]}}))}))};function O(e,t){return q(this,null,(function(){var r;return n(this,(function(n){switch(n.label){case 0:return"function"==typeof t?[2,t(e)]:("content-type"===t&&(t=l(e.headers)?"json":"text"),"json"!==t?[3,2]:[4,e.text()]);case 1:return[2,(r=n.sent()).length?JSON.parse(r):null];case 2:return[2,e.text()]}}))}))}}var P=function(e,t){void 0===t&&(t=void 0),this.value=e,this.meta=t};function Q(e,t){return void 0===e&&(e=0),void 0===t&&(t=5),q(this,null,(function(){var r,i;return n(this,(function(n){switch(n.label){case 0:return r=Math.min(e,t),i=~~((Math.random()+.4)*(300<<r)),[4,new Promise((function(e){return setTimeout((function(t){return e(t)}),i)}))];case 1:return n.sent(),[2]}}))}))}var C={},I=Object.assign((function(e,t){return function(r,i,a){return q(void 0,null,(function(){var u,o,s,c,l,d,f;return n(this,(function(n){switch(n.label){case 0:u=[5,(t||C).maxRetries,(a||C).maxRetries].filter((function(e){return void 0!==e})),o=u.slice(-1)[0],s=function(e,t,n){return n.attempt<=o},c=v(v({maxRetries:o,backoff:Q,retryCondition:s},t),a),l=0,n.label=1;case 1:n.label=2;case 2:return n.trys.push([2,4,,6]),[4,e(r,i,a)];case 3:if((d=n.sent()).error)throw new P(d);return[2,d];case 4:if(f=n.sent(),l++,f.throwImmediately){if(f instanceof P)return[2,f.value];throw f}return f instanceof P&&!c.retryCondition(f.value.error,r,{attempt:l,baseQueryApi:i,extraOptions:a})?[2,f.value]:[4,c.backoff(l,c.maxRetries)];case 5:return n.sent(),[3,6];case 6:return[3,1];case 7:return[2]}}))}))}}),{fail:function(e){throw Object.assign(new P({error:e}),{throwImmediately:!0})}}),M=b(require("@reduxjs/toolkit")),D=(0,M.createAction)("__rtkq/focused"),N=(0,M.createAction)("__rtkq/unfocused"),K=(0,M.createAction)("__rtkq/online"),E=(0,M.createAction)("__rtkq/offline"),_=!1;function F(e,t){return t?t(e,{onFocus:D,onFocusLost:N,onOffline:E,onOnline:K}):(n=function(){return e(D())},r=function(){return e(K())},i=function(){return e(E())},a=function(){"visible"===window.document.visibilityState?n():e(N())},_||"undefined"!=typeof window&&window.addEventListener&&(window.addEventListener("visibilitychange",a,!1),window.addEventListener("focus",n,!1),window.addEventListener("online",r,!1),window.addEventListener("offline",i,!1),_=!0),function(){window.removeEventListener("focus",n),window.removeEventListener("visibilitychange",a),window.removeEventListener("online",r),window.removeEventListener("offline",i),_=!1});var n,r,i,a}var z,U,B=b(require("@reduxjs/toolkit"));function L(e){return e.type===z.query}function W(e,t,n,r,i,a){return"function"==typeof e?e(t,n,r,i).map(H).map(a):Array.isArray(e)?e.map(H).map(a):[]}function H(e){return"string"==typeof e?{type:e}:e}(U=z||(z={})).query="query",U.mutation="mutation";var J=b(require("@reduxjs/toolkit"));function V(e){return null!=e}var G=Symbol("forceQueryFn"),Y=function(e){return"function"==typeof e[G]},$=b(require("@reduxjs/toolkit")),X=b(require("immer")),Z=b(require("@reduxjs/toolkit"));function ee(e){return e}function te(e,t,n,r){return W(n[e.meta.arg.endpointName][t],(0,$.isFulfilled)(e)?e.payload:void 0,(0,$.isRejectedWithValue)(e)?e.payload:void 0,e.meta.arg.originalArgs,"baseQueryMeta"in e.meta?e.meta.baseQueryMeta:void 0,r)}var ne=b(require("immer")),re=b(require("immer"));function ie(e,t,n){var r=e[t];r&&n(r)}function ae(e){var t;return null!=(t="arg"in e?e.arg.fixedCacheKey:e.fixedCacheKey)?t:e.requestId}function ue(e,t,n){var r=e[ae(t)];r&&n(r)}var oe={},se=Symbol.for("RTKQ/skipToken"),ce=se,le={status:e.uninitialized},de=(0,B.createNextState)(le,(function(){})),fe=(0,B.createNextState)(le,(function(){})),pe=b(require("@reduxjs/toolkit")),he=WeakMap?new WeakMap:void 0,ve=function(e){var t=e.endpointName,n=e.queryArgs,r="",i=null==he?void 0:he.get(n);if("string"==typeof i)r=i;else{var a=JSON.stringify(n,(function(e,t){return(0,pe.isPlainObject)(t)?Object.keys(t).sort().reduce((function(e,n){return e[n]=t[n],e}),{}):t}));(0,pe.isPlainObject)(n)&&(null==he||he.set(n,a)),r=a}return t+"("+r+")"},ye=b(require("@reduxjs/toolkit")),me=b(require("reselect"));function ge(){for(var e=[],t=0;t<arguments.length;t++)e[t]=arguments[t];return function(t){var n=(0,me.defaultMemoize)((function(e){var n,r;return null==(r=t.extractRehydrationInfo)?void 0:r.call(t,e,{reducerPath:null!=(n=t.reducerPath)?n:"api"})})),i=y(v({reducerPath:"api",keepUnusedDataFor:60,refetchOnMountOrArgChange:!1,refetchOnFocus:!1,refetchOnReconnect:!1},t),{extractRehydrationInfo:n,serializeQueryArgs:function(e){var n=ve;if("serializeQueryArgs"in e.endpointDefinition){var r=e.endpointDefinition.serializeQueryArgs;n=function(e){var t=r(e);return"string"==typeof t?t:ve(y(v({},e),{queryArgs:t}))}}else t.serializeQueryArgs&&(n=t.serializeQueryArgs);return n(e)},tagTypes:r([],t.tagTypes||[])}),a={endpointDefinitions:{},batch:function(e){e()},apiUid:(0,ye.nanoid)(),extractRehydrationInfo:n,hasRehydrationInfo:(0,me.defaultMemoize)((function(e){return null!=n(e)}))},u={injectEndpoints:function(e){for(var t=e.endpoints({query:function(e){return y(v({},e),{type:z.query})},mutation:function(e){return y(v({},e),{type:z.mutation})}}),n=0,r=Object.entries(t);n<r.length;n++){var i=r[n],s=i[0],c=i[1];if(e.overrideExisting||!(s in a.endpointDefinitions)){a.endpointDefinitions[s]=c;for(var l=0,d=o;l<d.length;l++)d[l].injectEndpoint(s,c)}}return u},enhanceEndpoints:function(e){var t=e.addTagTypes,n=e.endpoints;if(t)for(var r=0,o=t;r<o.length;r++){var s=o[r];i.tagTypes.includes(s)||i.tagTypes.push(s)}if(n)for(var c=0,l=Object.entries(n);c<l.length;c++){var d=l[c],f=d[0],p=d[1];"function"==typeof p?p(a.endpointDefinitions[f]):Object.assign(a.endpointDefinitions[f]||{},p)}return u}},o=e.map((function(e){return e.init(u,i,a)}));return u.injectEndpoints({endpoints:t.endpoints})}}function be(){return function(){throw new Error("When using `fakeBaseQuery`, all queries & mutations must use the `queryFn` definition syntax.")}}var qe,Se=b(require("@reduxjs/toolkit")),Oe=function(e){var t=e.reducerPath,n=e.api,r=e.context,i=e.internalState,a=n.internalActions,u=a.removeQueryResult,o=a.unsubscribeQueryResult;function s(e){var t=i.currentSubscriptions[e];return!!t&&!function(e){for(var t in e)return!1;return!0}(t)}var c={};function l(e,t,n,i){var a,o=r.endpointDefinitions[t],l=null!=(a=null==o?void 0:o.keepUnusedDataFor)?a:i.keepUnusedDataFor;if(1/0!==l){var d=Math.max(0,Math.min(l,2147482.647));if(!s(e)){var f=c[e];f&&clearTimeout(f),c[e]=setTimeout((function(){s(e)||n.dispatch(u({queryCacheKey:e})),delete c[e]}),1e3*d)}}}return function(e,i,a){var u;if(o.match(e)){var s=i.getState()[t];l(b=e.payload.queryCacheKey,null==(u=s.queries[b])?void 0:u.endpointName,i,s.config)}if(n.util.resetApiState.match(e))for(var d=0,f=Object.entries(c);d<f.length;d++){var p=f[d],v=p[0],h=p[1];h&&clearTimeout(h),delete c[v]}if(r.hasRehydrationInfo(e)){s=i.getState()[t];for(var y=r.extractRehydrationInfo(e).queries,m=0,g=Object.entries(y);m<g.length;m++){var b,q=g[m],S=q[1];l(b=q[0],null==S?void 0:S.endpointName,i,s.config)}}}},Ae=b(require("@reduxjs/toolkit")),Te=function(t){var n=t.reducerPath,r=t.context,i=t.context.endpointDefinitions,a=t.mutationThunk,u=t.api,o=t.assertTagType,s=t.refetchQuery,c=u.internalActions.removeQueryResult,l=(0,Ae.isAnyOf)((0,Ae.isFulfilled)(a),(0,Ae.isRejectedWithValue)(a));function d(t,i){var a=i.getState(),o=a[n],l=u.util.selectInvalidatedBy(a,t);r.batch((function(){for(var t,n=0,r=Array.from(l.values());n<r.length;n++){var a=r[n].queryCacheKey,u=o.queries[a],d=null!=(t=o.subscriptions[a])?t:{};u&&(0===Object.keys(d).length?i.dispatch(c({queryCacheKey:a})):u.status!==e.uninitialized&&i.dispatch(s(u,a)))}}))}return function(e,t){l(e)&&d(te(e,"invalidatesTags",i,o),t),u.util.invalidateTags.match(e)&&d(W(e.payload,void 0,void 0,void 0,void 0,o),t)}},Re=function(t){var n=t.reducerPath,r=t.queryThunk,i=t.api,a=t.refetchQuery,u=t.internalState,o={};function s(t,r){var i=t.queryCacheKey,s=r.getState()[n].queries[i];if(s&&s.status!==e.uninitialized){var c=d(u.currentSubscriptions[i]);if(Number.isFinite(c)){var l=o[i];(null==l?void 0:l.timeout)&&(clearTimeout(l.timeout),l.timeout=void 0);var f=Date.now()+c,p=o[i]={nextPollTimestamp:f,pollingInterval:c,timeout:setTimeout((function(){p.timeout=void 0,r.dispatch(a(s,i))}),c)}}}}function c(t,r){var i=t.queryCacheKey,a=r.getState()[n].queries[i];if(a&&a.status!==e.uninitialized){var c=d(u.currentSubscriptions[i]);if(Number.isFinite(c)){var f=o[i],p=Date.now()+c;(!f||p<f.nextPollTimestamp)&&s({queryCacheKey:i},r)}else l(i)}}function l(e){var t=o[e];(null==t?void 0:t.timeout)&&clearTimeout(t.timeout),delete o[e]}function d(e){void 0===e&&(e={});var t=Number.POSITIVE_INFINITY;for(var n in e)e[n].pollingInterval&&(t=Math.min(e[n].pollingInterval,t));return t}return function(e,t){(i.internalActions.updateSubscriptionOptions.match(e)||i.internalActions.unsubscribeQueryResult.match(e))&&c(e.payload,t),(r.pending.match(e)||r.rejected.match(e)&&e.meta.condition)&&c(e.meta.arg,t),(r.fulfilled.match(e)||r.rejected.match(e)&&!e.meta.condition)&&s(e.meta.arg,t),i.util.resetApiState.match(e)&&function(){for(var e=0,t=Object.keys(o);e<t.length;e++)l(t[e])}()}},je=b(require("@reduxjs/toolkit")),we=new Error("Promise never resolved before cacheEntryRemoved."),ke=function(e){var t=e.api,n=e.reducerPath,r=e.context,i=e.queryThunk,a=e.mutationThunk,u=(0,je.isAsyncThunkAction)(i),o=(0,je.isAsyncThunkAction)(a),s=(0,je.isFulfilled)(i,a),c={};function l(e,n,i,a,u){var o=r.endpointDefinitions[e],s=null==o?void 0:o.onCacheEntryAdded;if(s){var l={},d=new Promise((function(e){l.cacheEntryRemoved=e})),f=Promise.race([new Promise((function(e){l.valueResolved=e})),d.then((function(){throw we}))]);f.catch((function(){})),c[i]=l;var p=t.endpoints[e].select(o.type===z.query?n:i),h=a.dispatch((function(e,t,n){return n})),m=y(v({},a),{getCacheEntry:function(){return p(a.getState())},requestId:u,extra:h,updateCachedData:o.type===z.query?function(r){return a.dispatch(t.util.updateQueryData(e,n,r))}:void 0,cacheDataLoaded:f,cacheEntryRemoved:d}),g=s(n,m);Promise.resolve(g).catch((function(e){if(e!==we)throw e}))}}return function(e,r,d){var f=function(e){return u(e)?e.meta.arg.queryCacheKey:o(e)?e.meta.requestId:t.internalActions.removeQueryResult.match(e)?e.payload.queryCacheKey:t.internalActions.removeMutationResult.match(e)?ae(e.payload):""}(e);if(i.pending.match(e)){var p=d[n].queries[f],v=r.getState()[n].queries[f];!p&&v&&l(e.meta.arg.endpointName,e.meta.arg.originalArgs,f,r,e.meta.requestId)}else if(a.pending.match(e))(v=r.getState()[n].mutations[f])&&l(e.meta.arg.endpointName,e.meta.arg.originalArgs,f,r,e.meta.requestId);else if(s(e))(null==(g=c[f])?void 0:g.valueResolved)&&(g.valueResolved({data:e.payload,meta:e.meta.baseQueryMeta}),delete g.valueResolved);else if(t.internalActions.removeQueryResult.match(e)||t.internalActions.removeMutationResult.match(e))(g=c[f])&&(delete c[f],g.cacheEntryRemoved());else if(t.util.resetApiState.match(e))for(var h=0,y=Object.entries(c);h<y.length;h++){var m=y[h],g=m[1];delete c[m[0]],g.cacheEntryRemoved()}}},xe=b(require("@reduxjs/toolkit")),Pe=function(e){var t=e.api,n=e.context,r=e.queryThunk,i=e.mutationThunk,a=(0,xe.isPending)(r,i),u=(0,xe.isRejected)(r,i),o=(0,xe.isFulfilled)(r,i),s={};return function(e,r){var i,c,l;if(a(e)){var d=e.meta,f=d.requestId,p=d.arg,h=p.endpointName,m=p.originalArgs,g=n.endpointDefinitions[h],b=null==g?void 0:g.onQueryStarted;if(b){var q={},S=new Promise((function(e,t){q.resolve=e,q.reject=t}));S.catch((function(){})),s[f]=q;var O=t.endpoints[h].select(g.type===z.query?m:f),A=r.dispatch((function(e,t,n){return n})),T=y(v({},r),{getCacheEntry:function(){return O(r.getState())},requestId:f,extra:A,updateCachedData:g.type===z.query?function(e){return r.dispatch(t.util.updateQueryData(h,m,e))}:void 0,queryFulfilled:S});b(m,T)}}else if(o(e)){var R=e.meta,j=R.baseQueryMeta;null==(i=s[f=R.requestId])||i.resolve({data:e.payload,meta:j}),delete s[f]}else if(u(e)){var w=e.meta;j=w.baseQueryMeta,null==(l=s[f=w.requestId])||l.reject({error:null!=(c=e.payload)?c:e.error,isUnhandledError:!w.rejectedWithValue,meta:j}),delete s[f]}}},Qe=function(e){var t=e.api,n=e.context.apiUid;return function(e,r){t.util.resetApiState.match(e)&&r.dispatch(t.internalActions.middlewareRegistered(n))}},Ce=b(require("immer")),Ie="function"==typeof queueMicrotask?queueMicrotask.bind("undefined"!=typeof window?window:"undefined"!=typeof global?global:globalThis):function(e){return(qe||(qe=Promise.resolve())).then(e).catch((function(e){return setTimeout((function(){throw e}),0)}))};function Me(e){for(var t=[],n=1;n<arguments.length;n++)t[n-1]=arguments[n];Object.assign.apply(Object,r([e],t))}var De=b(require("immer")),Ne=Symbol(),Ke=function(){return{name:Ne,init:function(t,i,a){var u=i.baseQuery,o=i.reducerPath,s=i.serializeQueryArgs,c=i.keepUnusedDataFor,l=i.refetchOnMountOrArgChange,d=i.refetchOnFocus,f=i.refetchOnReconnect;(0,De.enablePatches)();var p=function(e){return e};Object.assign(t,{reducerPath:o,endpoints:{},internalActions:{onOnline:K,onOffline:E,onFocus:D,onFocusLost:N},util:{}});var h=function(t){var r=this,i=t.reducerPath,a=t.baseQuery,u=t.context.endpointDefinitions,o=t.serializeQueryArgs,s=t.api,c=t.assertTagType,l=function(e,t){return q(r,[e,t],(function(e,t){var r,i,o,s,c,l,f,p,v,h,y,m,g,b=t.signal,q=t.abort,S=t.rejectWithValue,O=t.fulfillWithValue,A=t.dispatch,T=t.getState,R=t.extra;return n(this,(function(t){switch(t.label){case 0:r=u[e.endpointName],t.label=1;case 1:return t.trys.push([1,8,,13]),i=ee,o=void 0,s={signal:b,abort:q,dispatch:A,getState:T,extra:R,endpoint:e.endpointName,type:e.type,forced:"query"===e.type?d(e,T()):void 0},(c="query"===e.type?e[G]:void 0)?(o=c(),[3,6]):[3,2];case 2:return r.query?[4,a(r.query(e.originalArgs),s,r.extraOptions)]:[3,4];case 3:return o=t.sent(),r.transformResponse&&(i=r.transformResponse),[3,6];case 4:return[4,r.queryFn(e.originalArgs,s,r.extraOptions,(function(e){return a(e,s,r.extraOptions)}))];case 5:o=t.sent(),t.label=6;case 6:if(o.error)throw new P(o.error,o.meta);return l=O,[4,i(o.data,o.meta,e.originalArgs)];case 7:return[2,l.apply(void 0,[t.sent(),(m={fulfilledTimeStamp:Date.now(),baseQueryMeta:o.meta},m[Z.SHOULD_AUTOBATCH]=!0,m)])];case 8:if(f=t.sent(),!((p=f)instanceof P))return[3,12];v=ee,r.query&&r.transformErrorResponse&&(v=r.transformErrorResponse),t.label=9;case 9:return t.trys.push([9,11,,12]),h=S,[4,v(p.value,p.meta,e.originalArgs)];case 10:return[2,h.apply(void 0,[t.sent(),(g={baseQueryMeta:p.meta},g[Z.SHOULD_AUTOBATCH]=!0,g)])];case 11:return y=t.sent(),p=y,[3,12];case 12:throw console.error(p),p;case 13:return[2]}}))}))};function d(e,t){var n,r,a,u,o=null==(r=null==(n=t[i])?void 0:n.queries)?void 0:r[e.queryCacheKey],s=null==(a=t[i])?void 0:a.config.refetchOnMountOrArgChange,c=null==o?void 0:o.fulfilledTimeStamp,l=null!=(u=e.forceRefetch)?u:e.subscribe&&s;return!!l&&(!0===l||(Number(new Date)-Number(c))/1e3>=l)}var f=(0,Z.createAsyncThunk)(i+"/executeQuery",l,{getPendingMeta:function(){var e;return(e={startedTimeStamp:Date.now()})[Z.SHOULD_AUTOBATCH]=!0,e},condition:function(e,t){var n,r,a,o=(0,t.getState)(),s=null==(r=null==(n=o[i])?void 0:n.queries)?void 0:r[e.queryCacheKey],c=null==s?void 0:s.fulfilledTimeStamp,l=e.originalArgs,f=null==s?void 0:s.originalArgs,p=u[e.endpointName];return!(!Y(e)&&("pending"===(null==s?void 0:s.status)||!d(e,o)&&(!L(p)||!(null==(a=null==p?void 0:p.forceRefetch)?void 0:a.call(p,{currentArg:l,previousArg:f,endpointState:s,state:o})))&&c))},dispatchConditionRejection:!0}),p=(0,Z.createAsyncThunk)(i+"/executeMutation",l,{getPendingMeta:function(){var e;return(e={startedTimeStamp:Date.now()})[Z.SHOULD_AUTOBATCH]=!0,e}});function v(e){return function(t){var n,r;return(null==(r=null==(n=null==t?void 0:t.meta)?void 0:n.arg)?void 0:r.endpointName)===e}}return{queryThunk:f,mutationThunk:p,prefetch:function(e,t,n){return function(r,i){var a=function(e){return"force"in e}(n)&&n.force,u=function(e){return"ifOlderThan"in e}(n)&&n.ifOlderThan,o=function(n){return void 0===n&&(n=!0),s.endpoints[e].initiate(t,{forceRefetch:n})},c=s.endpoints[e].select(t)(i());if(a)r(o());else if(u){var l=null==c?void 0:c.fulfilledTimeStamp;if(!l)return void r(o());(Number(new Date)-Number(new Date(l)))/1e3>=u&&r(o())}else r(o(!1))}},updateQueryData:function(t,n,r,i){return void 0===i&&(i=!0),function(a,u){var o,c,l,d=s.endpoints[t].select(n)(u()),f={patches:[],inversePatches:[],undo:function(){return a(s.util.patchQueryData(t,n,f.inversePatches,i))}};if(d.status===e.uninitialized)return f;if("data"in d)if((0,X.isDraftable)(d.data)){var p=(0,X.produceWithPatches)(d.data,r),v=p[0],h=p[2];(o=f.patches).push.apply(o,p[1]),(c=f.inversePatches).push.apply(c,h),l=v}else l=r(d.data),f.patches.push({op:"replace",path:[],value:l}),f.inversePatches.push({op:"replace",path:[],value:d.data});return a(s.util.patchQueryData(t,n,f.patches,i)),f}},upsertQueryData:function(e,t,n){return function(r){var i;return r(s.endpoints[e].initiate(t,((i={subscribe:!1,forceRefetch:!0})[G]=function(){return{data:n}},i)))}},patchQueryData:function(e,t,n,r){return function(i,a){var l=u[e],d=o({queryArgs:t,endpointDefinition:l,endpointName:e});if(i(s.internalActions.queryResultPatched({queryCacheKey:d,patches:n})),r){var f=s.endpoints[e].select(t)(a()),p=W(l.providesTags,f.data,void 0,t,{},c);i(s.internalActions.updateProvidedBy({queryCacheKey:d,providedTags:p}))}}},buildMatchThunkActions:function(e,t){return{matchPending:(0,$.isAllOf)((0,$.isPending)(e),v(t)),matchFulfilled:(0,$.isAllOf)((0,$.isFulfilled)(e),v(t)),matchRejected:(0,$.isAllOf)((0,$.isRejected)(e),v(t))}}}}({baseQuery:u,reducerPath:o,context:a,api:t,serializeQueryArgs:s,assertTagType:p}),m=h.queryThunk,g=h.mutationThunk,b=h.patchQueryData,O=h.updateQueryData,T=h.upsertQueryData,R=h.prefetch,j=h.buildMatchThunkActions,w=function(t){var n=t.reducerPath,r=t.queryThunk,i=t.mutationThunk,a=t.context,u=a.endpointDefinitions,o=a.apiUid,s=a.extractRehydrationInfo,c=a.hasRehydrationInfo,l=t.assertTagType,d=t.config,f=(0,J.createAction)(n+"/resetApiState"),p=(0,J.createSlice)({name:n+"/queries",initialState:oe,reducers:{removeQueryResult:{reducer:function(e,t){delete e[t.payload.queryCacheKey]},prepare:(0,J.prepareAutoBatched)()},queryResultPatched:{reducer:function(e,t){var n=t.payload,r=n.patches;ie(e,n.queryCacheKey,(function(e){e.data=(0,re.applyPatches)(e.data,r.concat())}))},prepare:(0,J.prepareAutoBatched)()}},extraReducers:function(t){t.addCase(r.pending,(function(t,n){var r,i=n.meta,a=n.meta.arg,u=Y(a);(a.subscribe||u)&&(null!=t[r=a.queryCacheKey]||(t[r]={status:e.uninitialized,endpointName:a.endpointName})),ie(t,a.queryCacheKey,(function(t){t.status=e.pending,t.requestId=u&&t.requestId?t.requestId:i.requestId,void 0!==a.originalArgs&&(t.originalArgs=a.originalArgs),t.startedTimeStamp=i.startedTimeStamp}))})).addCase(r.fulfilled,(function(t,n){var r=n.meta,i=n.payload;ie(t,r.arg.queryCacheKey,(function(t){var n;if(t.requestId===r.requestId||Y(r.arg)){var a=u[r.arg.endpointName].merge;if(t.status=e.fulfilled,a)if(void 0!==t.data){var o=r.fulfilledTimeStamp,s=r.arg,c=r.baseQueryMeta,l=r.requestId,d=(0,J.createNextState)(t.data,(function(e){return a(e,i,{arg:s.originalArgs,baseQueryMeta:c,fulfilledTimeStamp:o,requestId:l})}));t.data=d}else t.data=i;else t.data=null==(n=u[r.arg.endpointName].structuralSharing)||n?A((0,ne.isDraft)(t.data)?(0,re.original)(t.data):t.data,i):i;delete t.error,t.fulfilledTimeStamp=r.fulfilledTimeStamp}}))})).addCase(r.rejected,(function(t,n){var r=n.meta,i=r.condition,a=r.requestId,u=n.error,o=n.payload;ie(t,r.arg.queryCacheKey,(function(t){if(i);else{if(t.requestId!==a)return;t.status=e.rejected,t.error=null!=o?o:u}}))})).addMatcher(c,(function(t,n){for(var r=s(n).queries,i=0,a=Object.entries(r);i<a.length;i++){var u=a[i],o=u[1];(null==o?void 0:o.status)!==e.fulfilled&&(null==o?void 0:o.status)!==e.rejected||(t[u[0]]=o)}}))}}),h=(0,J.createSlice)({name:n+"/mutations",initialState:oe,reducers:{removeMutationResult:{reducer:function(e,t){var n=ae(t.payload);n in e&&delete e[n]},prepare:(0,J.prepareAutoBatched)()}},extraReducers:function(t){t.addCase(i.pending,(function(t,n){var r=n.meta,i=r.requestId,a=r.arg,u=r.startedTimeStamp;a.track&&(t[ae(n.meta)]={requestId:i,status:e.pending,endpointName:a.endpointName,startedTimeStamp:u})})).addCase(i.fulfilled,(function(t,n){var r=n.payload,i=n.meta;i.arg.track&&ue(t,i,(function(t){t.requestId===i.requestId&&(t.status=e.fulfilled,t.data=r,t.fulfilledTimeStamp=i.fulfilledTimeStamp)}))})).addCase(i.rejected,(function(t,n){var r=n.payload,i=n.error,a=n.meta;a.arg.track&&ue(t,a,(function(t){t.requestId===a.requestId&&(t.status=e.rejected,t.error=null!=r?r:i)}))})).addMatcher(c,(function(t,n){for(var r=s(n).mutations,i=0,a=Object.entries(r);i<a.length;i++){var u=a[i],o=u[0],c=u[1];(null==c?void 0:c.status)!==e.fulfilled&&(null==c?void 0:c.status)!==e.rejected||o===(null==c?void 0:c.requestId)||(t[o]=c)}}))}}),m=(0,J.createSlice)({name:n+"/invalidation",initialState:oe,reducers:{updateProvidedBy:{reducer:function(e,t){for(var n,r,i,a,u=t.payload,o=u.queryCacheKey,s=u.providedTags,c=0,l=Object.values(e);c<l.length;c++)for(var d=0,f=Object.values(l[c]);d<f.length;d++){var p=f[d],v=p.indexOf(o);-1!==v&&p.splice(v,1)}for(var h=0,y=s;h<y.length;h++){var m=y[h],g=m.type,b=m.id,q=null!=(a=(r=null!=(n=e[g])?n:e[g]={})[i=b||"__internal_without_id"])?a:r[i]=[];q.includes(o)||q.push(o)}},prepare:(0,J.prepareAutoBatched)()}},extraReducers:function(e){e.addCase(p.actions.removeQueryResult,(function(e,t){for(var n=t.payload.queryCacheKey,r=0,i=Object.values(e);r<i.length;r++)for(var a=0,u=Object.values(i[r]);a<u.length;a++){var o=u[a],s=o.indexOf(n);-1!==s&&o.splice(s,1)}})).addMatcher(c,(function(e,t){for(var n,r,i,a,u=s(t).provided,o=0,c=Object.entries(u);o<c.length;o++)for(var l=c[o],d=l[0],f=0,p=Object.entries(l[1]);f<p.length;f++)for(var v=p[f],h=v[0],y=v[1],m=null!=(a=(r=null!=(n=e[d])?n:e[d]={})[i=h||"__internal_without_id"])?a:r[i]=[],g=0,b=y;g<b.length;g++){var q=b[g];m.includes(q)||m.push(q)}})).addMatcher((0,J.isAnyOf)((0,J.isFulfilled)(r),(0,J.isRejectedWithValue)(r)),(function(e,t){var n=te(t,"providesTags",u,l);m.caseReducers.updateProvidedBy(e,m.actions.updateProvidedBy({queryCacheKey:t.meta.arg.queryCacheKey,providedTags:n}))}))}}),g=(0,J.createSlice)({name:n+"/subscriptions",initialState:oe,reducers:{updateSubscriptionOptions:function(e,t){},unsubscribeQueryResult:function(e,t){},internal_probeSubscription:function(e,t){}}}),b=(0,J.createSlice)({name:n+"/internalSubscriptions",initialState:oe,reducers:{subscriptionsUpdated:{reducer:function(e,t){return(0,re.applyPatches)(e,t.payload)},prepare:(0,J.prepareAutoBatched)()}}}),q=(0,J.createSlice)({name:n+"/config",initialState:v({online:"undefined"==typeof navigator||void 0===navigator.onLine||navigator.onLine,focused:"undefined"==typeof document||"hidden"!==document.visibilityState,middlewareRegistered:!1},d),reducers:{middlewareRegistered:function(e,t){e.middlewareRegistered="conflict"!==e.middlewareRegistered&&o===t.payload||"conflict"}},extraReducers:function(e){e.addCase(K,(function(e){e.online=!0})).addCase(E,(function(e){e.online=!1})).addCase(D,(function(e){e.focused=!0})).addCase(N,(function(e){e.focused=!1})).addMatcher(c,(function(e){return v({},e)}))}}),S=(0,J.combineReducers)({queries:p.reducer,mutations:h.reducer,provided:m.reducer,subscriptions:b.reducer,config:q.reducer});return{reducer:function(e,t){return S(f.match(t)?void 0:e,t)},actions:y(v(v(v(v(v(v({},q.actions),p.actions),g.actions),b.actions),h.actions),m.actions),{unsubscribeMutationResult:h.actions.removeMutationResult,resetApiState:f})}}({context:a,queryThunk:m,mutationThunk:g,reducerPath:o,assertTagType:p,config:{refetchOnFocus:d,refetchOnReconnect:f,refetchOnMountOrArgChange:l,keepUnusedDataFor:c,reducerPath:o}}),k=w.reducer,x=w.actions;Me(t.util,{patchQueryData:b,updateQueryData:O,upsertQueryData:T,prefetch:R,resetApiState:x.resetApiState}),Me(t.internalActions,x);var C=function(t){var n=t.reducerPath,r=t.queryThunk,i=t.api,a=t.context,u=a.apiUid,o={invalidateTags:(0,Se.createAction)(n+"/invalidateTags")},s=[Qe,Oe,Te,Re,ke,Pe];return{middleware:function(r){var o=!1,l=y(v({},t),{internalState:{currentSubscriptions:{}},refetchQuery:c}),d=s.map((function(e){return e(l)})),f=function(e){var t=e.api,n=e.queryThunk,r=e.internalState,i=t.reducerPath+"/subscriptions",a=null,u=!1,o=t.internalActions,s=o.updateSubscriptionOptions,c=o.unsubscribeQueryResult;return function(e,o){var l,d;if(a||(a=JSON.parse(JSON.stringify(r.currentSubscriptions))),t.util.resetApiState.match(e))return a=r.currentSubscriptions={},[!0,!1];if(t.internalActions.internal_probeSubscription.match(e)){var f=e.payload;return[!1,!!(null==(l=r.currentSubscriptions[f.queryCacheKey])?void 0:l[f.requestId])]}var p=function(e,r){var i,a,u,o,l,d,f,p,v;if(s.match(r)){var h=r.payload,y=h.queryCacheKey,m=h.requestId;return(null==(i=null==e?void 0:e[y])?void 0:i[m])&&(e[y][m]=h.options),!0}if(c.match(r)){var g=r.payload;return m=g.requestId,e[y=g.queryCacheKey]&&delete e[y][m],!0}if(t.internalActions.removeQueryResult.match(r))return delete e[r.payload.queryCacheKey],!0;if(n.pending.match(r)){var b=r.meta;if(m=b.requestId,(O=b.arg).subscribe)return(q=null!=(u=e[a=O.queryCacheKey])?u:e[a]={})[m]=null!=(l=null!=(o=O.subscriptionOptions)?o:q[m])?l:{},!0}if(n.rejected.match(r)){var q,S=r.meta,O=S.arg;if(m=S.requestId,S.condition&&O.subscribe)return(q=null!=(f=e[d=O.queryCacheKey])?f:e[d]={})[m]=null!=(v=null!=(p=O.subscriptionOptions)?p:q[m])?v:{},!0}return!1}(r.currentSubscriptions,e);if(p){u||(Ie((function(){var e=JSON.parse(JSON.stringify(r.currentSubscriptions)),n=(0,Ce.produceWithPatches)(a,(function(){return e}));o.next(t.internalActions.subscriptionsUpdated(n[1])),a=e,u=!1})),u=!0);var v=!!(null==(d=e.type)?void 0:d.startsWith(i)),h=n.rejected.match(e)&&e.meta.condition&&!!e.meta.arg.subscribe;return[!v&&!h,!1]}return[!0,!1]}}(l),p=function(t){var n=t.reducerPath,r=t.context,i=t.refetchQuery,a=t.internalState,u=t.api.internalActions.removeQueryResult;function o(t,o){var s=t.getState()[n],c=s.queries,l=a.currentSubscriptions;r.batch((function(){for(var n=0,r=Object.keys(l);n<r.length;n++){var a=r[n],d=c[a],f=l[a];f&&d&&(Object.values(f).some((function(e){return!0===e[o]}))||Object.values(f).every((function(e){return void 0===e[o]}))&&s.config[o])&&(0===Object.keys(f).length?t.dispatch(u({queryCacheKey:a})):d.status!==e.uninitialized&&t.dispatch(i(d,a)))}}))}return function(e,t){D.match(e)&&o(t,"refetchOnFocus"),K.match(e)&&o(t,"refetchOnReconnect")}}(l);return function(e){return function(t){o||(o=!0,r.dispatch(i.internalActions.middlewareRegistered(u)));var s,c=y(v({},r),{next:e}),l=r.getState(),h=f(t,c,l),m=h[1];if(s=h[0]?e(t):m,r.getState()[n]&&(p(t,c,l),function(e){return!!e&&"string"==typeof e.type&&e.type.startsWith(n+"/")}(t)||a.hasRehydrationInfo(t)))for(var g=0,b=d;g<b.length;g++)(0,b[g])(t,c,l);return s}}},actions:o};function c(e,t,n){return void 0===n&&(n={}),r(v({type:"query",endpointName:e.endpointName,originalArgs:e.originalArgs,subscribe:!1,forceRefetch:!0,queryCacheKey:t},n))}}({reducerPath:o,context:a,queryThunk:m,mutationThunk:g,api:t,assertTagType:p}),Q=C.middleware;Me(t.util,C.actions),Me(t,{reducer:k,middleware:Q});var I=function(t){var n=t.serializeQueryArgs,r=t.reducerPath,i=function(e){return de},a=function(e){return fe};return{buildQuerySelector:function(e,t){return function(r){var a=n({queryArgs:r,endpointDefinition:t,endpointName:e});return(0,B.createSelector)(r===se?i:function(e){var t,n,r;return null!=(r=null==(n=null==(t=o(e))?void 0:t.queries)?void 0:n[a])?r:de},u)}},buildMutationSelector:function(){return function(e){var t,n;return n="object"==typeof e?null!=(t=ae(e))?t:se:e,(0,B.createSelector)(n===se?a:function(e){var t,r,i;return null!=(i=null==(r=null==(t=o(e))?void 0:t.mutations)?void 0:r[n])?i:fe},u)}},selectInvalidatedBy:function(e,t){for(var n,i=e[r],a=new Set,u=0,o=t.map(H);u<o.length;u++){var s=o[u],c=i.provided[s.type];if(c)for(var l=0,d=null!=(n=void 0!==s.id?c[s.id]:S(Object.values(c)))?n:[];l<d.length;l++)a.add(d[l])}return S(Array.from(a.values()).map((function(e){var t=i.queries[e];return t?[{queryCacheKey:e,endpointName:t.endpointName,originalArgs:t.originalArgs}]:[]})))}};function u(t){return v(v({},t),{status:n=t.status,isUninitialized:n===e.uninitialized,isLoading:n===e.pending,isSuccess:n===e.fulfilled,isError:n===e.rejected});var n}function o(e){return e[r]}}({serializeQueryArgs:s,reducerPath:o}),M=I.buildQuerySelector,_=I.buildMutationSelector;Me(t.util,{selectInvalidatedBy:I.selectInvalidatedBy});var F=function(e){var t=e.serializeQueryArgs,i=e.queryThunk,a=e.mutationThunk,u=e.api,o=e.context,s=new Map,c=new Map,l=u.internalActions,d=l.unsubscribeQueryResult,f=l.removeMutationResult,p=l.updateSubscriptionOptions;return{buildInitiateQuery:function(e,r){var a=function(o,c){var l=void 0===c?{}:c,f=l.subscribe,v=void 0===f||f,h=l.forceRefetch,y=l.subscriptionOptions,m=l[G];return function(c,l){var f,g,b=t({queryArgs:o,endpointDefinition:r,endpointName:e}),S=i(((f={type:"query",subscribe:v,forceRefetch:h,subscriptionOptions:y,endpointName:e,originalArgs:o,queryCacheKey:b})[G]=m,f)),O=u.endpoints[e].select(o),A=c(S),T=O(l()),R=A.requestId,j=A.abort,w=T.requestId!==R,k=null==(g=s.get(c))?void 0:g[b],x=function(){return O(l())},P=Object.assign(m?A.then(x):w&&!k?Promise.resolve(T):Promise.all([k,A]).then(x),{arg:o,requestId:R,subscriptionOptions:y,queryCacheKey:b,abort:j,unwrap:function(){return q(this,null,(function(){var e;return n(this,(function(t){switch(t.label){case 0:return[4,P];case 1:if((e=t.sent()).isError)throw e.error;return[2,e.data]}}))}))},refetch:function(){return c(a(o,{subscribe:!1,forceRefetch:!0}))},unsubscribe:function(){v&&c(d({queryCacheKey:b,requestId:R}))},updateSubscriptionOptions:function(t){P.subscriptionOptions=t,c(p({endpointName:e,requestId:R,queryCacheKey:b,options:t}))}});if(!k&&!w&&!m){var C=s.get(c)||{};C[b]=P,s.set(c,C),P.then((function(){delete C[b],Object.keys(C).length||s.delete(c)}))}return P}};return a},buildInitiateMutation:function(e){return function(t,n){var r=void 0===n?{}:n,i=r.track,u=void 0===i||i,o=r.fixedCacheKey;return function(n,r){var i=a({type:"mutation",endpointName:e,originalArgs:t,track:u,fixedCacheKey:o}),s=n(i),l=s.requestId,d=s.abort,p=s.unwrap,v=s.unwrap().then((function(e){return{data:e}})).catch((function(e){return{error:e}})),h=function(){n(f({requestId:l,fixedCacheKey:o}))},y=Object.assign(v,{arg:s.arg,requestId:l,abort:d,unwrap:p,unsubscribe:h,reset:h}),m=c.get(n)||{};return c.set(n,m),m[l]=y,y.then((function(){delete m[l],Object.keys(m).length||c.delete(n)})),o&&(m[o]=y,y.then((function(){m[o]===y&&(delete m[o],Object.keys(m).length||c.delete(n))}))),y}}},getRunningQueryThunk:function(e,n){return function(r){var i,a=t({queryArgs:n,endpointDefinition:o.endpointDefinitions[e],endpointName:e});return null==(i=s.get(r))?void 0:i[a]}},getRunningMutationThunk:function(e,t){return function(e){var n;return null==(n=c.get(e))?void 0:n[t]}},getRunningQueriesThunk:function(){return function(e){return Object.values(s.get(e)||{}).filter(V)}},getRunningMutationsThunk:function(){return function(e){return Object.values(c.get(e)||{}).filter(V)}},getRunningOperationPromises:function(){var e=function(e){return Array.from(e.values()).flatMap((function(e){return e?Object.values(e):[]}))};return r(r([],e(s)),e(c)).filter(V)},removalWarning:function(){throw new Error("This method had to be removed due to a conceptual bug in RTK.\n       Please see https://github.com/reduxjs/redux-toolkit/pull/2481 for details.\n       See https://redux-toolkit.js.org/rtk-query/usage/server-side-rendering for new guidance on SSR.")}}}({queryThunk:m,mutationThunk:g,api:t,serializeQueryArgs:s,context:a}),U=F.buildInitiateQuery,ce=F.buildInitiateMutation;return Me(t.util,{getRunningOperationPromises:F.getRunningOperationPromises,getRunningOperationPromise:F.removalWarning,getRunningMutationThunk:F.getRunningMutationThunk,getRunningMutationsThunk:F.getRunningMutationsThunk,getRunningQueryThunk:F.getRunningQueryThunk,getRunningQueriesThunk:F.getRunningQueriesThunk}),{name:Ne,injectEndpoint:function(e,n){var r,i=t;null!=(r=i.endpoints)[e]||(r[e]={}),L(n)?Me(i.endpoints[e],{name:e,select:M(e,n),initiate:U(e,n)},j(m,e)):n.type===z.mutation&&Me(i.endpoints[e],{name:e,select:_(),initiate:ce(e)},j(g,e))}}}}},Ee=ge(Ke());
 
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"@reduxjs/toolkit":12,"immer":128,"reselect":221}],381:[function(require,module,exports){
+},{"@reduxjs/toolkit":12,"immer":128,"reselect":221}],385:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -21114,7 +21235,7 @@ const useChecklistReducer = (entries, uniqueKey, initialValue) => {
 };
 exports.useChecklistReducer = useChecklistReducer;
 
-},{"@reduxjs/toolkit":12,"immer":128,"react":198}],382:[function(require,module,exports){
+},{"@reduxjs/toolkit":12,"immer":128,"react":198}],386:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -23446,7 +23567,7 @@ function useCheckListInput(
 }
 exports.default = useCheckListInput;
 
-},{"../../redux/checklist":381,"react":198}],144:[function(require,module,exports){
+},{"../../redux/checklist":385,"react":198}],144:[function(require,module,exports){
 (function (process){(function (){
 "use strict";var qs=require("querystring"),url=require("url"),xtend=require("xtend");const PARSE_LINK_HEADER_MAXLEN=parseInt(process.env.PARSE_LINK_HEADER_MAXLEN)||2e3,PARSE_LINK_HEADER_THROW_ON_MAXLEN_EXCEEDED=null!=process.env.PARSE_LINK_HEADER_THROW_ON_MAXLEN_EXCEEDED;function hasRel(r){return r&&r.rel}function intoRels(r,e){return e.rel.split(/\s+/).forEach((function(t){r[t]=xtend(e,{rel:t})})),r}function createObjects(r,e){var t=e.match(/\s*(.+)\s*=\s*"?([^"]+)"?/);return t&&(r[t[1]]=t[2]),r}function parseLink(r){try{var e=r.match(/<?([^>]*)>(.*)/),t=e[1],n=e[2].split(";"),E=url.parse(t),u=qs.parse(E.query);n.shift();var s=n.reduce(createObjects,{});return(s=xtend(u,s)).url=t,s}catch(r){return null}}function checkHeader(r){if(!r)return!1;if(r.length>PARSE_LINK_HEADER_MAXLEN){if(PARSE_LINK_HEADER_THROW_ON_MAXLEN_EXCEEDED)throw new Error("Input string too long, it should be under "+PARSE_LINK_HEADER_MAXLEN+" characters.");return!1}return!0}module.exports=function(r){return checkHeader(r)?r.split(/,\s*</).map(parseLink).filter(hasRel).reduce(intoRels,{}):null};
 
@@ -23475,7 +23596,7 @@ var e=this&&this.__spreadArray||function(e,r){for(var t=0,n=r.length,u=e.length;
 },{"../dialog/dialog-disclosure.js":64,"ariakit-react-utils/hooks":22,"ariakit-react-utils/system":25,"react/jsx-runtime":199}],48:[function(require,module,exports){
 "use strict";var system=require("ariakit-react-utils/system"),dom=require("ariakit-utils/dom"),popover_popover=require("../popover/popover.js"),combobox_comboboxList=require("./combobox-list.js");function isController(o){if(!o)return!1;if("id"in o){for(var e=arguments.length,r=new Array(e>1?e-1:0),t=1;t<e;t++)r[t-1]=arguments[t];const s=r.filter(Boolean).map((o=>`[aria-controls="${o}"]`)).join(", ");return!!s&&dom.matches(o,s)}return!1}const useComboboxPopover=system.createHook((o=>{let{state:e,tabIndex:r,hideOnInteractOutside:t=!0,...s}=o;return s=combobox_comboboxList.useComboboxList({state:e,...s}),s=popover_popover.usePopover({state:e,autoFocusOnShow:!1,autoFocusOnHide:!1,finalFocusRef:e.baseRef,...s,modal:!1,hideOnInteractOutside:o=>{const r=e.contentElement?.id,s=e.baseRef.current?.id;if(isController(o.target,r,s))return!1;return"function"==typeof t?t(o):t}}),s})),ComboboxPopover=system.createComponent((o=>{const e=useComboboxPopover(o);return system.createElement("div",e)}));"production"!=="production"&&(ComboboxPopover.displayName="ComboboxPopover"),exports.ComboboxPopover=ComboboxPopover,exports.useComboboxPopover=useComboboxPopover;
 
-},{"../popover/popover.js":78,"./combobox-list.js":47,"ariakit-react-utils/system":25,"ariakit-utils/dom":27}],376:[function(require,module,exports){
+},{"../popover/popover.js":78,"./combobox-list.js":47,"ariakit-react-utils/system":25,"ariakit-utils/dom":27}],379:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -23499,12 +23620,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.isDomainPermInternalKey = exports.validateDomainPerms = void 0;
+exports.stripOnImport = exports.validateDomainPerms = void 0;
 const typia_1 = __importDefault(require("typia"));
 const validateDomainPerms = input => {
     const errors = [];
     const __is = input => {
-        const $io0 = input => (undefined === input.id || "string" === typeof input.id) && "string" === typeof input.domain && (undefined === input.obfuscate || "boolean" === typeof input.obfuscate) && (undefined === input.private_comment || "string" === typeof input.private_comment) && (undefined === input.public_comment || "string" === typeof input.public_comment) && (undefined === input.created_at || "string" === typeof input.created_at) && (undefined === input.key || "string" === typeof input.key) && (undefined === input.permType || "block" === input.permType || "allow" === input.permType) && (undefined === input.suggest || "string" === typeof input.suggest) && (undefined === input.valid || "boolean" === typeof input.valid) && (undefined === input.checked || "boolean" === typeof input.checked) && (undefined === input.commentType || "string" === typeof input.commentType) && (undefined === input.private_comment_behavior || "replace" === input.private_comment_behavior || "append" === input.private_comment_behavior) && (undefined === input.public_comment_behavior || "replace" === input.public_comment_behavior || "append" === input.public_comment_behavior);
+        const $io0 = input => (undefined === input.id || "string" === typeof input.id) && "string" === typeof input.domain && (undefined === input.obfuscate || "boolean" === typeof input.obfuscate) && (undefined === input.private_comment || "string" === typeof input.private_comment) && (undefined === input.public_comment || "string" === typeof input.public_comment) && (undefined === input.created_at || "string" === typeof input.created_at) && (undefined === input.created_by || "string" === typeof input.created_by) && (undefined === input.subscription_id || "string" === typeof input.subscription_id) && (undefined === input.permission_type || "block" === input.permission_type || "allow" === input.permission_type) && (undefined === input.key || "string" === typeof input.key) && (undefined === input.suggest || "string" === typeof input.suggest) && (undefined === input.valid || "boolean" === typeof input.valid) && (undefined === input.checked || "boolean" === typeof input.checked) && (undefined === input.commentType || "string" === typeof input.commentType) && (undefined === input.private_comment_behavior || "replace" === input.private_comment_behavior || "append" === input.private_comment_behavior) && (undefined === input.public_comment_behavior || "replace" === input.public_comment_behavior || "append" === input.public_comment_behavior);
         return Array.isArray(input) && input.every(elem => "object" === typeof elem && null !== elem && $io0(elem));
     };
     if (false === __is(input)) {
@@ -23534,14 +23655,22 @@ const validateDomainPerms = input => {
                     path: _path + ".created_at",
                     expected: "(string | undefined)",
                     value: input.created_at
+                }), undefined === input.created_by || "string" === typeof input.created_by || $report(_exceptionable, {
+                    path: _path + ".created_by",
+                    expected: "(string | undefined)",
+                    value: input.created_by
+                }), undefined === input.subscription_id || "string" === typeof input.subscription_id || $report(_exceptionable, {
+                    path: _path + ".subscription_id",
+                    expected: "(string | undefined)",
+                    value: input.subscription_id
+                }), undefined === input.permission_type || "block" === input.permission_type || "allow" === input.permission_type || $report(_exceptionable, {
+                    path: _path + ".permission_type",
+                    expected: "(\"allow\" | \"block\" | undefined)",
+                    value: input.permission_type
                 }), undefined === input.key || "string" === typeof input.key || $report(_exceptionable, {
                     path: _path + ".key",
                     expected: "(string | undefined)",
                     value: input.key
-                }), undefined === input.permType || "block" === input.permType || "allow" === input.permType || $report(_exceptionable, {
-                    path: _path + ".permType",
-                    expected: "(\"allow\" | \"block\" | undefined)",
-                    value: input.permType
                 }), undefined === input.suggest || "string" === typeof input.suggest || $report(_exceptionable, {
                     path: _path + ".suggest",
                     expected: "(string | undefined)",
@@ -23594,9 +23723,9 @@ const validateDomainPerms = input => {
     };
 };
 exports.validateDomainPerms = validateDomainPerms;
-const domainPermInternalKeys = new Set([
+const domainPermStripOnImport = new Set([
     "key",
-    "permType",
+    "permission_type",
     "suggest",
     "valid",
     "checked",
@@ -23605,17 +23734,16 @@ const domainPermInternalKeys = new Set([
     "public_comment_behavior",
 ]);
 /**
- * Returns true if provided DomainPerm Object key is
- * "internal"; ie., it's just for our use, and it shouldn't
- * be serialized to or deserialized from the GtS API.
+ * Returns true if provided DomainPerm Object key is one
+ * that should be stripped when importing a domain permission.
  *
  * @param key
  * @returns
  */
-function isDomainPermInternalKey(key) {
-    return domainPermInternalKeys.has(key);
+function stripOnImport(key) {
+    return domainPermStripOnImport.has(key);
 }
-exports.isDomainPermInternalKey = isDomainPermInternalKey;
+exports.stripOnImport = stripOnImport;
 
 },{"typia":287}],245:[function(require,module,exports){
 "use strict";let CssSyntaxError=require("./css-syntax-error"),Declaration=require("./declaration"),LazyResult=require("./lazy-result"),Container=require("./container"),Processor=require("./processor"),stringify=require("./stringify"),fromJSON=require("./fromJSON"),Document=require("./document"),Warning=require("./warning"),Comment=require("./comment"),AtRule=require("./at-rule"),Result=require("./result.js"),Input=require("./input"),parse=require("./parse"),list=require("./list"),Rule=require("./rule"),Root=require("./root"),Node=require("./node");function postcss(...s){return 1===s.length&&Array.isArray(s[0])&&(s=s[0]),new Processor(s)}postcss.plugin=function(s,e){let t,r=!1;function o(...t){console&&console.warn&&!r&&(r=!0,console.warn(s+": postcss.plugin was deprecated. Migration guide:\nhttps://evilmartians.com/chronicles/postcss-8-plugin-migration"),"en_GB.UTF-8"&&"en_GB.UTF-8".startsWith("cn")&&console.warn(s+": 里面 postcss.plugin 被弃用. 迁移指南:\nhttps://www.w3ctech.com/topic/2226"));let o=e(...t);return o.postcssPlugin=s,o.postcssVersion=(new Processor).version,o}return Object.defineProperty(o,"postcss",{get:()=>(t||(t=o()),t)}),o.process=function(s,e,t){return postcss([o(t)]).process(s,e)},o},postcss.stringify=stringify,postcss.parse=parse,postcss.fromJSON=fromJSON,postcss.list=list,postcss.comment=s=>new Comment(s),postcss.atRule=s=>new AtRule(s),postcss.decl=s=>new Declaration(s),postcss.rule=s=>new Rule(s),postcss.root=s=>new Root(s),postcss.document=s=>new Document(s),postcss.CssSyntaxError=CssSyntaxError,postcss.Declaration=Declaration,postcss.Container=Container,postcss.Processor=Processor,postcss.Document=Document,postcss.Comment=Comment,postcss.Warning=Warning,postcss.AtRule=AtRule,postcss.Result=Result,postcss.Input=Input,postcss.Rule=Rule,postcss.Root=Root,postcss.Node=Node,LazyResult.registerPostcss(postcss),module.exports=postcss,postcss.default=postcss;
@@ -23629,7 +23757,7 @@ exports.isDomainPermInternalKey = isDomainPermInternalKey;
 },{"./combobox-cancel.js":41,"./combobox-disclosure.js":42,"./combobox-group-label.js":43,"./combobox-group.js":44,"./combobox-item-value.js":45,"./combobox-item.js":46,"./combobox-list.js":47,"./combobox-popover.js":48,"./combobox-row.js":49,"./combobox-separator.js":50,"./combobox-state.js":51,"./combobox.js":52}],227:[function(require,module,exports){
 const htmlparser=require("htmlparser2"),escapeStringRegexp=require("escape-string-regexp"),{isPlainObject:isPlainObject}=require("is-plain-object"),deepmerge=require("deepmerge"),parseSrcset=require("parse-srcset"),{parse:postcssParse}=require("postcss"),mediaTags=["img","audio","video","picture","svg","object","map","iframe","embed"],vulnerableTags=["script","style"];function each(e,t){e&&Object.keys(e).forEach((function(n){t(e[n],n)}))}function has(e,t){return{}.hasOwnProperty.call(e,t)}function filter(e,t){const n=[];return each(e,(function(e){t(e)&&n.push(e)})),n}function isEmptyObject(e){for(const t in e)if(has(e,t))return!1;return!0}function stringifySrcset(e){return e.map((function(e){if(!e.url)throw new Error("URL missing");return e.url+(e.w?` ${e.w}w`:"")+(e.h?` ${e.h}h`:"")+(e.d?` ${e.d}x`:"")})).join(", ")}module.exports=sanitizeHtml;const VALID_HTML_ATTRIBUTE_NAME=/^[^\0\t\n\f\r /<=>]+$/;function sanitizeHtml(e,t,n){if(null==e)return"";"number"==typeof e&&(e=e.toString());let o="",r="";function i(e,t){const n=this;this.tag=e,this.attribs=t||{},this.tagPosition=o.length,this.text="",this.mediaChildren=[],this.updateParentNodeText=function(){if(m.length){m[m.length-1].text+=n.text}},this.updateParentNodeMediaChildren=function(){if(m.length&&mediaTags.includes(this.tag)){m[m.length-1].mediaChildren.push(this.tag)}}}(t=Object.assign({},sanitizeHtml.defaults,t)).parser=Object.assign({},htmlParserDefaults,t.parser);const a=function(e){return!1===t.allowedTags||(t.allowedTags||[]).indexOf(e)>-1};vulnerableTags.forEach((function(e){a(e)&&!t.allowVulnerableTags&&console.warn(`\n\n⚠️ Your \`allowedTags\` option includes, \`${e}\`, which is inherently\nvulnerable to XSS attacks. Please remove it from \`allowedTags\`.\nOr, to disable this warning, add the \`allowVulnerableTags\` option\nand ensure you are accounting for this risk.\n\n`)}));const s=t.nonTextTags||["script","style","textarea","option"];let l,c;t.allowedAttributes&&(l={},c={},each(t.allowedAttributes,(function(e,t){l[t]=[];const n=[];e.forEach((function(e){"string"==typeof e&&e.indexOf("*")>=0?n.push(escapeStringRegexp(e).replace(/\\\*/g,".*")):l[t].push(e)})),n.length&&(c[t]=new RegExp("^("+n.join("|")+")$"))})));const d={},u={},p={};each(t.allowedClasses,(function(e,t){if(l&&(has(l,t)||(l[t]=[]),l[t].push("class")),d[t]=e,Array.isArray(e)){const n=[];d[t]=[],p[t]=[],e.forEach((function(e){"string"==typeof e&&e.indexOf("*")>=0?n.push(escapeStringRegexp(e).replace(/\\\*/g,".*")):e instanceof RegExp?p[t].push(e):d[t].push(e)})),n.length&&(u[t]=new RegExp("^("+n.join("|")+")$"))}}));const f={};let g,h,m,w,b,y,x;each(t.transformTags,(function(e,t){let n;"function"==typeof e?n=e:"string"==typeof e&&(n=sanitizeHtml.simpleTransform(e)),"*"===t?g=n:f[t]=n}));let v=!1;S();const T=new htmlparser.Parser({onopentag:function(e,n){if(t.enforceHtmlBoundary&&"html"===e&&S(),y)return void x++;const T=new i(e,n);m.push(T);let M=!1;const P=!!T.text;let j;if(has(f,e)&&(j=f[e](e,n),T.attribs=n=j.attribs,void 0!==j.text&&(T.innerText=j.text),e!==j.tagName&&(T.name=e=j.tagName,b[h]=j.tagName)),g&&(j=g(e,n),T.attribs=n=j.attribs,e!==j.tagName&&(T.name=e=j.tagName,b[h]=j.tagName)),(!a(e)||"recursiveEscape"===t.disallowedTagsMode&&!isEmptyObject(w)||null!=t.nestingLimit&&h>=t.nestingLimit)&&(M=!0,w[h]=!0,"discard"!==t.disallowedTagsMode&&"completelyDiscard"!==t.disallowedTagsMode||-1!==s.indexOf(e)&&(y=!0,x=1),w[h]=!0),h++,M){if("discard"===t.disallowedTagsMode||"completelyDiscard"===t.disallowedTagsMode)return;r=o,o=""}o+="<"+e,"script"===e&&(t.allowedScriptHostnames||t.allowedScriptDomains)&&(T.innerText=""),(!l||has(l,e)||l["*"])&&each(n,(function(n,r){if(!VALID_HTML_ATTRIBUTE_NAME.test(r))return void delete T.attribs[r];if(""===n&&!t.allowedEmptyAttributes.includes(r)&&(t.nonBooleanAttributes.includes(r)||t.nonBooleanAttributes.includes("*")))return void delete T.attribs[r];let i=!1;if(!l||has(l,e)&&-1!==l[e].indexOf(r)||l["*"]&&-1!==l["*"].indexOf(r)||has(c,e)&&c[e].test(r)||c["*"]&&c["*"].test(r))i=!0;else if(l&&l[e])for(const t of l[e])if(isPlainObject(t)&&t.name&&t.name===r){i=!0;let e="";if(!0===t.multiple){const o=n.split(" ");for(const n of o)-1!==t.values.indexOf(n)&&(""===e?e=n:e+=" "+n)}else t.values.indexOf(n)>=0&&(e=n);n=e}if(i){if(-1!==t.allowedSchemesAppliedToAttributes.indexOf(r)&&O(e,n))return void delete T.attribs[r];if("script"===e&&"src"===r){let e=!0;try{const o=E(n);if(t.allowedScriptHostnames||t.allowedScriptDomains){const n=(t.allowedScriptHostnames||[]).find((function(e){return e===o.url.hostname})),r=(t.allowedScriptDomains||[]).find((function(e){return o.url.hostname===e||o.url.hostname.endsWith(`.${e}`)}));e=n||r}}catch(t){e=!1}if(!e)return void delete T.attribs[r]}if("iframe"===e&&"src"===r){let e=!0;try{const o=E(n);if(o.isRelativeUrl)e=has(t,"allowIframeRelativeUrls")?t.allowIframeRelativeUrls:!t.allowedIframeHostnames&&!t.allowedIframeDomains;else if(t.allowedIframeHostnames||t.allowedIframeDomains){const n=(t.allowedIframeHostnames||[]).find((function(e){return e===o.url.hostname})),r=(t.allowedIframeDomains||[]).find((function(e){return o.url.hostname===e||o.url.hostname.endsWith(`.${e}`)}));e=n||r}}catch(t){e=!1}if(!e)return void delete T.attribs[r]}if("srcset"===r)try{let e=parseSrcset(n);if(e.forEach((function(e){O("srcset",e.url)&&(e.evil=!0)})),e=filter(e,(function(e){return!e.evil})),!e.length)return void delete T.attribs[r];n=stringifySrcset(filter(e,(function(e){return!e.evil}))),T.attribs[r]=n}catch(e){return void delete T.attribs[r]}if("class"===r){const t=d[e],o=d["*"],i=u[e],a=p[e],s=[i,u["*"]].concat(a).filter((function(e){return e}));if(!(n=k(n,t&&o?deepmerge(t,o):t||o,s)).length)return void delete T.attribs[r]}if("style"===r)if(t.parseStyleAttributes)try{const o=function(e,t){if(!t)return e;const n=e.nodes[0];let o;o=t[n.selector]&&t["*"]?deepmerge(t[n.selector],t["*"]):t[n.selector]||t["*"];o&&(e.nodes[0].nodes=n.nodes.reduce(function(e){return function(t,n){if(has(e,n.prop)){e[n.prop].some((function(e){return e.test(n.value)}))&&t.push(n)}return t}}(o),[]));return e}(postcssParse(e+" {"+n+"}",{map:!1}),t.allowedStyles);if(n=function(e){return e.nodes[0].nodes.reduce((function(e,t){return e.push(`${t.prop}:${t.value}${t.important?" !important":""}`),e}),[]).join(";")}(o),0===n.length)return void delete T.attribs[r]}catch(t){return"undefined"!=typeof window&&console.warn('Failed to parse "'+e+" {"+n+"}\", If you're running this in a browser, we recommend to disable style parsing: options.parseStyleAttributes: false, since this only works in a node environment due to a postcss dependency, More info: https://github.com/apostrophecms/sanitize-html/issues/547"),void delete T.attribs[r]}else if(t.allowedStyles)throw new Error("allowedStyles option cannot be used together with parseStyleAttributes: false.");o+=" "+r,n&&n.length?o+='="'+A(n,!0)+'"':t.allowedEmptyAttributes.includes(r)&&(o+='=""')}else delete T.attribs[r]})),-1!==t.selfClosing.indexOf(e)?o+=" />":(o+=">",!T.innerText||P||t.textFilter||(o+=A(T.innerText),v=!0)),M&&(o=r+A(o),r="")},ontext:function(e){if(y)return;const n=m[m.length-1];let r;if(n&&(r=n.tag,e=void 0!==n.innerText?n.innerText:e),"completelyDiscard"!==t.disallowedTagsMode||a(r))if("discard"!==t.disallowedTagsMode&&"completelyDiscard"!==t.disallowedTagsMode||"script"!==r&&"style"!==r){const n=A(e,!1);t.textFilter&&!v?o+=t.textFilter(n,r):v||(o+=n)}else o+=e;else e="";if(m.length){m[m.length-1].text+=e}},onclosetag:function(e,n){if(y){if(x--,x)return;y=!1}const i=m.pop();if(!i)return;if(i.tag!==e)return void m.push(i);y=!!t.enforceHtmlBoundary&&"html"===e,h--;const s=w[h];if(s){if(delete w[h],"discard"===t.disallowedTagsMode||"completelyDiscard"===t.disallowedTagsMode)return void i.updateParentNodeText();r=o,o=""}b[h]&&(e=b[h],delete b[h]),t.exclusiveFilter&&t.exclusiveFilter(i)?o=o.substr(0,i.tagPosition):(i.updateParentNodeMediaChildren(),i.updateParentNodeText(),-1!==t.selfClosing.indexOf(e)||n&&!a(e)&&["escape","recursiveEscape"].indexOf(t.disallowedTagsMode)>=0?s&&(o=r,r=""):(o+="</"+e+">",s&&(o=r+A(o),r=""),v=!1))}},t.parser);return T.write(e),T.end(),o;function S(){o="",h=0,m=[],w={},b={},y=!1,x=0}function A(e,n){return"string"!=typeof e&&(e+=""),t.parser.decodeEntities&&(e=e.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"),n&&(e=e.replace(/"/g,"&quot;"))),e=e.replace(/&(?![a-zA-Z0-9#]{1,20};)/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"),n&&(e=e.replace(/"/g,"&quot;")),e}function O(e,n){for(n=n.replace(/[\x00-\x20]+/g,"");;){const e=n.indexOf("\x3c!--");if(-1===e)break;const t=n.indexOf("--\x3e",e+4);if(-1===t)break;n=n.substring(0,e)+n.substring(t+3)}const o=n.match(/^([a-zA-Z][a-zA-Z0-9.\-+]*):/);if(!o)return!!n.match(/^[/\\]{2}/)&&!t.allowProtocolRelative;const r=o[1].toLowerCase();return has(t.allowedSchemesByTag,e)?-1===t.allowedSchemesByTag[e].indexOf(r):!t.allowedSchemes||-1===t.allowedSchemes.indexOf(r)}function E(e){if((e=e.replace(/^(\w+:)?\s*[\\/]\s*[\\/]/,"$1//")).startsWith("relative:"))throw new Error("relative: exploit attempt");let t="relative://relative-site";for(let e=0;e<100;e++)t+=`/${e}`;const n=new URL(e,t);return{isRelativeUrl:n&&"relative-site"===n.hostname&&"relative:"===n.protocol,url:n}}function k(e,t,n){return t?(e=e.split(/\s+/)).filter((function(e){return-1!==t.indexOf(e)||n.some((function(t){return t.test(e)}))})).join(" "):e}}const htmlParserDefaults={decodeEntities:!0};sanitizeHtml.defaults={allowedTags:["address","article","aside","footer","header","h1","h2","h3","h4","h5","h6","hgroup","main","nav","section","blockquote","dd","div","dl","dt","figcaption","figure","hr","li","main","ol","p","pre","ul","a","abbr","b","bdi","bdo","br","cite","code","data","dfn","em","i","kbd","mark","q","rb","rp","rt","rtc","ruby","s","samp","small","span","strong","sub","sup","time","u","var","wbr","caption","col","colgroup","table","tbody","td","tfoot","th","thead","tr"],nonBooleanAttributes:["abbr","accept","accept-charset","accesskey","action","allow","alt","as","autocapitalize","autocomplete","blocking","charset","cite","class","color","cols","colspan","content","contenteditable","coords","crossorigin","data","datetime","decoding","dir","dirname","download","draggable","enctype","enterkeyhint","fetchpriority","for","form","formaction","formenctype","formmethod","formtarget","headers","height","hidden","high","href","hreflang","http-equiv","id","imagesizes","imagesrcset","inputmode","integrity","is","itemid","itemprop","itemref","itemtype","kind","label","lang","list","loading","low","max","maxlength","media","method","min","minlength","name","nonce","optimum","pattern","ping","placeholder","popover","popovertarget","popovertargetaction","poster","preload","referrerpolicy","rel","rows","rowspan","sandbox","scope","shape","size","sizes","slot","span","spellcheck","src","srcdoc","srclang","srcset","start","step","style","tabindex","target","title","translate","type","usemap","value","width","wrap","onauxclick","onafterprint","onbeforematch","onbeforeprint","onbeforeunload","onbeforetoggle","onblur","oncancel","oncanplay","oncanplaythrough","onchange","onclick","onclose","oncontextlost","oncontextmenu","oncontextrestored","oncopy","oncuechange","oncut","ondblclick","ondrag","ondragend","ondragenter","ondragleave","ondragover","ondragstart","ondrop","ondurationchange","onemptied","onended","onerror","onfocus","onformdata","onhashchange","oninput","oninvalid","onkeydown","onkeypress","onkeyup","onlanguagechange","onload","onloadeddata","onloadedmetadata","onloadstart","onmessage","onmessageerror","onmousedown","onmouseenter","onmouseleave","onmousemove","onmouseout","onmouseover","onmouseup","onoffline","ononline","onpagehide","onpageshow","onpaste","onpause","onplay","onplaying","onpopstate","onprogress","onratechange","onreset","onresize","onrejectionhandled","onscroll","onscrollend","onsecuritypolicyviolation","onseeked","onseeking","onselect","onslotchange","onstalled","onstorage","onsubmit","onsuspend","ontimeupdate","ontoggle","onunhandledrejection","onunload","onvolumechange","onwaiting","onwheel"],disallowedTagsMode:"discard",allowedAttributes:{a:["href","name","target"],img:["src","srcset","alt","title","width","height","loading"]},allowedEmptyAttributes:["alt"],selfClosing:["img","br","hr","area","base","basefont","input","link","meta"],allowedSchemes:["http","https","ftp","mailto","tel"],allowedSchemesByTag:{},allowedSchemesAppliedToAttributes:["href","src","cite"],allowProtocolRelative:!0,enforceHtmlBoundary:!1,parseStyleAttributes:!0},sanitizeHtml.simpleTransform=function(e,t,n){return n=void 0===n||n,t=t||{},function(o,r){let i;if(n)for(i in t)r[i]=t[i];else r=t;return{tagName:e,attribs:r}}};
 
-},{"deepmerge":88,"escape-string-regexp":228,"htmlparser2":123,"is-plain-object":130,"parse-srcset":145,"postcss":245}],369:[function(require,module,exports){
+},{"deepmerge":88,"escape-string-regexp":228,"htmlparser2":123,"is-plain-object":130,"parse-srcset":145,"postcss":245}],372:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -23760,6 +23888,9 @@ exports.gtsApi = (0, react_1.createApi)({
         "HTTPHeaderBlocks",
         "DefaultInteractionPolicies",
         "InteractionRequest",
+        "DomainPermissionDraft",
+        "DomainPermissionExclude",
+        "DomainPermissionSubscription"
     ],
     endpoints: (build) => ({
         instanceV1: build.query({
@@ -23884,7 +24015,7 @@ function useComboBoxInput({ name, Name }, { initialValue = _default }) {
 }
 exports.default = useComboBoxInput;
 
-},{"ariakit/combobox":53,"react":198}],430:[function(require,module,exports){
+},{"ariakit/combobox":53,"react":198}],447:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -24053,7 +24184,7 @@ exports.useInstanceKeysExpireMutation = useInstanceKeysExpireMutation;
 const useSendTestEmailMutation = extended.useSendTestEmailMutation;
 exports.useSendTestEmailMutation = useSendTestEmailMutation;
 
-},{"../../gts-api":369}],359:[function(require,module,exports){
+},{"../../gts-api":372}],359:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -24363,7 +24494,7 @@ exports.useSearchItemForEmojiMutation = useSearchItemForEmojiMutation;
 const usePatchRemoteEmojisMutation = extended.usePatchRemoteEmojisMutation;
 exports.usePatchRemoteEmojisMutation = usePatchRemoteEmojisMutation;
 
-},{"../../gts-api":369}],360:[function(require,module,exports){
+},{"../../gts-api":372}],360:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -24418,7 +24549,267 @@ exports.useLazyApURLQuery = useLazyApURLQuery;
 const useClearCachesMutation = extended.useClearCachesMutation;
 exports.useClearCachesMutation = useClearCachesMutation;
 
-},{"../../gts-api":369}],361:[function(require,module,exports){
+},{"../../gts-api":372}],361:[function(require,module,exports){
+"use strict";
+/*
+    GoToSocial
+    Copyright (C) GoToSocial Authors admin@gotosocial.org
+    SPDX-License-Identifier: AGPL-3.0-or-later
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.useRemoveDomainPermissionDraftMutation = exports.useAcceptDomainPermissionDraftMutation = exports.useCreateDomainPermissionDraftMutation = exports.useGetDomainPermissionDraftQuery = exports.useLazySearchDomainPermissionDraftsQuery = void 0;
+const gts_api_1 = require("../../gts-api");
+const parse_link_header_1 = __importDefault(require("parse-link-header"));
+const extended = gts_api_1.gtsApi.injectEndpoints({
+    endpoints: (build) => ({
+        searchDomainPermissionDrafts: build.query({
+            query: (form) => {
+                const params = new (URLSearchParams);
+                Object.entries(form).forEach(([k, v]) => {
+                    if (v !== undefined) {
+                        params.append(k, v);
+                    }
+                });
+                let query = "";
+                if (params.size !== 0) {
+                    query = `?${params.toString()}`;
+                }
+                return {
+                    url: `/api/v1/admin/domain_permission_drafts${query}`
+                };
+            },
+            // Headers required for paging.
+            transformResponse: (apiResp, meta) => {
+                var _a;
+                const drafts = apiResp;
+                const linksStr = (_a = meta === null || meta === void 0 ? void 0 : meta.response) === null || _a === void 0 ? void 0 : _a.headers.get("Link");
+                const links = (0, parse_link_header_1.default)(linksStr);
+                return { drafts, links };
+            },
+            // Only provide TRANSFORMED tag id since this model is not the same
+            // as getDomainPermissionDraft model (due to transformResponse).
+            providesTags: [{ type: "DomainPermissionDraft", id: "TRANSFORMED" }]
+        }),
+        getDomainPermissionDraft: build.query({
+            query: (id) => ({
+                url: `/api/v1/admin/domain_permission_drafts/${id}`
+            }),
+            providesTags: (_result, _error, id) => [
+                { type: 'DomainPermissionDraft', id }
+            ],
+        }),
+        createDomainPermissionDraft: build.mutation({
+            query: (formData) => ({
+                method: "POST",
+                url: `/api/v1/admin/domain_permission_drafts`,
+                asForm: true,
+                body: formData,
+                discardEmpty: true
+            }),
+            invalidatesTags: [{ type: "DomainPermissionDraft", id: "TRANSFORMED" }],
+        }),
+        acceptDomainPermissionDraft: build.mutation({
+            query: ({ id, overwrite }) => ({
+                method: "POST",
+                url: `/api/v1/admin/domain_permission_drafts/${id}/accept`,
+                asForm: true,
+                body: {
+                    overwrite: overwrite,
+                },
+                discardEmpty: true
+            }),
+            invalidatesTags: (res, _error, { id, permType }) => {
+                const invalidated = [];
+                // If error, nothing to invalidate.
+                if (!res) {
+                    return invalidated;
+                }
+                // Invalidate this draft by ID, and
+                // the transformed list of all drafts.
+                invalidated.push({ type: 'DomainPermissionDraft', id: id }, { type: "DomainPermissionDraft", id: "TRANSFORMED" });
+                // Invalidate cached blocks/allows depending
+                // on the permType of the accepted draft.
+                if (permType === "allow") {
+                    invalidated.push("domainAllows");
+                }
+                else {
+                    invalidated.push("domainBlocks");
+                }
+                return invalidated;
+            }
+        }),
+        removeDomainPermissionDraft: build.mutation({
+            query: ({ id, exclude_target }) => ({
+                method: "POST",
+                url: `/api/v1/admin/domain_permission_drafts/${id}/remove`,
+                asForm: true,
+                body: {
+                    exclude_target: exclude_target,
+                },
+                discardEmpty: true
+            }),
+            invalidatesTags: (res, _error, { id }) => res
+                ? [
+                    { type: "DomainPermissionDraft", id },
+                    { type: "DomainPermissionDraft", id: "TRANSFORMED" },
+                ]
+                : [],
+        })
+    }),
+});
+/**
+ * View domain permission drafts.
+ */
+const useLazySearchDomainPermissionDraftsQuery = extended.useLazySearchDomainPermissionDraftsQuery;
+exports.useLazySearchDomainPermissionDraftsQuery = useLazySearchDomainPermissionDraftsQuery;
+/**
+ * Get domain permission draft with the given ID.
+ */
+const useGetDomainPermissionDraftQuery = extended.useGetDomainPermissionDraftQuery;
+exports.useGetDomainPermissionDraftQuery = useGetDomainPermissionDraftQuery;
+/**
+ * Create a domain permission draft with the given parameters.
+ */
+const useCreateDomainPermissionDraftMutation = extended.useCreateDomainPermissionDraftMutation;
+exports.useCreateDomainPermissionDraftMutation = useCreateDomainPermissionDraftMutation;
+/**
+ * Accept a domain permission draft, turning it into an enforced domain permission.
+ */
+const useAcceptDomainPermissionDraftMutation = extended.useAcceptDomainPermissionDraftMutation;
+exports.useAcceptDomainPermissionDraftMutation = useAcceptDomainPermissionDraftMutation;
+/**
+ * Remove a domain permission draft, optionally ignoring all future drafts targeting the given domain.
+ */
+const useRemoveDomainPermissionDraftMutation = extended.useRemoveDomainPermissionDraftMutation;
+exports.useRemoveDomainPermissionDraftMutation = useRemoveDomainPermissionDraftMutation;
+
+},{"../../gts-api":372,"parse-link-header":144}],362:[function(require,module,exports){
+"use strict";
+/*
+    GoToSocial
+    Copyright (C) GoToSocial Authors admin@gotosocial.org
+    SPDX-License-Identifier: AGPL-3.0-or-later
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.useDeleteDomainPermissionExcludeMutation = exports.useCreateDomainPermissionExcludeMutation = exports.useGetDomainPermissionExcludeQuery = exports.useLazySearchDomainPermissionExcludesQuery = void 0;
+const gts_api_1 = require("../../gts-api");
+const parse_link_header_1 = __importDefault(require("parse-link-header"));
+const extended = gts_api_1.gtsApi.injectEndpoints({
+    endpoints: (build) => ({
+        searchDomainPermissionExcludes: build.query({
+            query: (form) => {
+                const params = new (URLSearchParams);
+                Object.entries(form).forEach(([k, v]) => {
+                    if (v !== undefined) {
+                        params.append(k, v);
+                    }
+                });
+                let query = "";
+                if (params.size !== 0) {
+                    query = `?${params.toString()}`;
+                }
+                return {
+                    url: `/api/v1/admin/domain_permission_excludes${query}`
+                };
+            },
+            // Headers required for paging.
+            transformResponse: (apiResp, meta) => {
+                var _a;
+                const excludes = apiResp;
+                const linksStr = (_a = meta === null || meta === void 0 ? void 0 : meta.response) === null || _a === void 0 ? void 0 : _a.headers.get("Link");
+                const links = (0, parse_link_header_1.default)(linksStr);
+                return { excludes, links };
+            },
+            // Only provide TRANSFORMED tag id since this model is not the same
+            // as getDomainPermissionExclude model (due to transformResponse).
+            providesTags: [{ type: "DomainPermissionExclude", id: "TRANSFORMED" }]
+        }),
+        getDomainPermissionExclude: build.query({
+            query: (id) => ({
+                url: `/api/v1/admin/domain_permission_excludes/${id}`
+            }),
+            providesTags: (_result, _error, id) => [
+                { type: 'DomainPermissionExclude', id }
+            ],
+        }),
+        createDomainPermissionExclude: build.mutation({
+            query: (formData) => ({
+                method: "POST",
+                url: `/api/v1/admin/domain_permission_excludes`,
+                asForm: true,
+                body: formData,
+                discardEmpty: true
+            }),
+            invalidatesTags: [{ type: "DomainPermissionExclude", id: "TRANSFORMED" }],
+        }),
+        deleteDomainPermissionExclude: build.mutation({
+            query: (id) => ({
+                method: "DELETE",
+                url: `/api/v1/admin/domain_permission_excludes/${id}`,
+            }),
+            invalidatesTags: (res, _error, id) => res
+                ? [
+                    { type: "DomainPermissionExclude", id },
+                    { type: "DomainPermissionExclude", id: "TRANSFORMED" },
+                ]
+                : [],
+        })
+    }),
+});
+/**
+ * View domain permission excludes.
+ */
+const useLazySearchDomainPermissionExcludesQuery = extended.useLazySearchDomainPermissionExcludesQuery;
+exports.useLazySearchDomainPermissionExcludesQuery = useLazySearchDomainPermissionExcludesQuery;
+/**
+ * Get domain permission exclude with the given ID.
+ */
+const useGetDomainPermissionExcludeQuery = extended.useGetDomainPermissionExcludeQuery;
+exports.useGetDomainPermissionExcludeQuery = useGetDomainPermissionExcludeQuery;
+/**
+ * Create a domain permission exclude with the given parameters.
+ */
+const useCreateDomainPermissionExcludeMutation = extended.useCreateDomainPermissionExcludeMutation;
+exports.useCreateDomainPermissionExcludeMutation = useCreateDomainPermissionExcludeMutation;
+/**
+ * Delete a domain permission exclude.
+ */
+const useDeleteDomainPermissionExcludeMutation = extended.useDeleteDomainPermissionExcludeMutation;
+exports.useDeleteDomainPermissionExcludeMutation = useDeleteDomainPermissionExcludeMutation;
+
+},{"../../gts-api":372,"parse-link-header":144}],363:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -24569,7 +24960,7 @@ const extended = gts_api_1.gtsApi.injectEndpoints({
 const useExportDomainListMutation = extended.useExportDomainListMutation;
 exports.useExportDomainListMutation = useExportDomainListMutation;
 
-},{"../../gts-api":369,"js-file-download":134,"papaparse":143}],362:[function(require,module,exports){
+},{"../../gts-api":372,"js-file-download":134,"papaparse":143}],364:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -24607,6 +24998,11 @@ const extended = gts_api_1.gtsApi.injectEndpoints({
             }),
             transformResponse: (0, transforms_1.listToKeyedObject)("domain"),
         }),
+        domainPermissionDrafts: build.query({
+            query: () => ({
+                url: `/api/v1/admin/domain_permission_drafts`
+            }),
+        }),
     }),
 });
 /**
@@ -24620,7 +25016,7 @@ exports.useDomainBlocksQuery = useDomainBlocksQuery;
 const useDomainAllowsQuery = extended.useDomainAllowsQuery;
 exports.useDomainAllowsQuery = useDomainAllowsQuery;
 
-},{"../../gts-api":369,"../../transforms":372}],364:[function(require,module,exports){
+},{"../../gts-api":372,"../../transforms":375}],366:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -24797,7 +25193,163 @@ const extended = gts_api_1.gtsApi.injectEndpoints({
 const useProcessDomainPermissionsMutation = extended.useProcessDomainPermissionsMutation;
 exports.useProcessDomainPermissionsMutation = useProcessDomainPermissionsMutation;
 
-},{"../../../types/domain-permission":376,"../../../util/domain-permission":379,"../../gts-api":369,"nanoid":139,"papaparse":143}],366:[function(require,module,exports){
+},{"../../../types/domain-permission":379,"../../../util/domain-permission":382,"../../gts-api":372,"nanoid":139,"papaparse":143}],367:[function(require,module,exports){
+"use strict";
+/*
+    GoToSocial
+    Copyright (C) GoToSocial Authors admin@gotosocial.org
+    SPDX-License-Identifier: AGPL-3.0-or-later
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.useTestDomainPermissionSubscriptionMutation = exports.useRemoveDomainPermissionSubscriptionMutation = exports.useUpdateDomainPermissionSubscriptionMutation = exports.useGetDomainPermissionSubscriptionsPreviewQuery = exports.useCreateDomainPermissionSubscriptionMutation = exports.useGetDomainPermissionSubscriptionQuery = exports.useLazySearchDomainPermissionSubscriptionsQuery = void 0;
+const gts_api_1 = require("../../gts-api");
+const parse_link_header_1 = __importDefault(require("parse-link-header"));
+const extended = gts_api_1.gtsApi.injectEndpoints({
+    endpoints: (build) => ({
+        searchDomainPermissionSubscriptions: build.query({
+            query: (form) => {
+                const params = new (URLSearchParams);
+                Object.entries(form).forEach(([k, v]) => {
+                    if (v !== undefined) {
+                        params.append(k, v);
+                    }
+                });
+                let query = "";
+                if (params.size !== 0) {
+                    query = `?${params.toString()}`;
+                }
+                return {
+                    url: `/api/v1/admin/domain_permission_subscriptions${query}`
+                };
+            },
+            // Headers required for paging.
+            transformResponse: (apiResp, meta) => {
+                var _a;
+                const subs = apiResp;
+                const linksStr = (_a = meta === null || meta === void 0 ? void 0 : meta.response) === null || _a === void 0 ? void 0 : _a.headers.get("Link");
+                const links = (0, parse_link_header_1.default)(linksStr);
+                return { subs, links };
+            },
+            // Only provide TRANSFORMED tag id since this model is not the same
+            // as getDomainPermissionSubscription model (due to transformResponse).
+            providesTags: [{ type: "DomainPermissionSubscription", id: "TRANSFORMED" }]
+        }),
+        getDomainPermissionSubscriptionsPreview: build.query({
+            query: (permType) => ({
+                url: `/api/v1/admin/domain_permission_subscriptions/preview?permission_type=${permType}`
+            }),
+            providesTags: (_result, _error, permType) => 
+            // Cache by permission type.
+            [{ type: "DomainPermissionSubscription", id: `${permType}sByPriority` }]
+        }),
+        getDomainPermissionSubscription: build.query({
+            query: (id) => ({
+                url: `/api/v1/admin/domain_permission_subscriptions/${id}`
+            }),
+            providesTags: (_result, _error, id) => [
+                { type: 'DomainPermissionSubscription', id }
+            ],
+        }),
+        createDomainPermissionSubscription: build.mutation({
+            query: (formData) => ({
+                method: "POST",
+                url: `/api/v1/admin/domain_permission_subscriptions`,
+                asForm: true,
+                body: formData,
+                discardEmpty: true
+            }),
+            invalidatesTags: (_res, _error, formData) => [
+                // Invalidate transformed list of all perm subs.
+                { type: "DomainPermissionSubscription", id: "TRANSFORMED" },
+                // Invalidate perm subs of this type sorted by priority.
+                { type: "DomainPermissionSubscription", id: `${formData.permission_type}sByPriority` }
+            ]
+        }),
+        updateDomainPermissionSubscription: build.mutation({
+            query: ({ id, formData }) => ({
+                method: "PATCH",
+                url: `/api/v1/admin/domain_permission_subscriptions/${id}`,
+                asForm: true,
+                body: formData,
+            }),
+            invalidatesTags: (_res, _error, { id, permType }) => [
+                // Invalidate this perm sub.
+                { type: "DomainPermissionSubscription", id: id },
+                // Invalidate transformed list of all perms subs.
+                { type: "DomainPermissionSubscription", id: "TRANSFORMED" },
+                // Invalidate perm subs of this type sorted by priority.
+                { type: "DomainPermissionSubscription", id: `${permType}sByPriority` }
+            ],
+        }),
+        removeDomainPermissionSubscription: build.mutation({
+            query: ({ id, remove_children }) => ({
+                method: "POST",
+                url: `/api/v1/admin/domain_permission_subscriptions/${id}/remove`,
+                asForm: true,
+                body: { remove_children: remove_children },
+            }),
+        }),
+        testDomainPermissionSubscription: build.mutation({
+            query: (id) => ({
+                method: "POST",
+                url: `/api/v1/admin/domain_permission_subscriptions/${id}/test`,
+            }),
+        })
+    }),
+});
+/**
+ * View domain permission subscriptions.
+ */
+const useLazySearchDomainPermissionSubscriptionsQuery = extended.useLazySearchDomainPermissionSubscriptionsQuery;
+exports.useLazySearchDomainPermissionSubscriptionsQuery = useLazySearchDomainPermissionSubscriptionsQuery;
+/**
+ * Get domain permission subscription with the given ID.
+ */
+const useGetDomainPermissionSubscriptionQuery = extended.useGetDomainPermissionSubscriptionQuery;
+exports.useGetDomainPermissionSubscriptionQuery = useGetDomainPermissionSubscriptionQuery;
+/**
+ * Create a domain permission subscription with the given parameters.
+ */
+const useCreateDomainPermissionSubscriptionMutation = extended.useCreateDomainPermissionSubscriptionMutation;
+exports.useCreateDomainPermissionSubscriptionMutation = useCreateDomainPermissionSubscriptionMutation;
+/**
+ * View domain permission subscriptions of selected perm type, sorted by priority descending.
+ */
+const useGetDomainPermissionSubscriptionsPreviewQuery = extended.useGetDomainPermissionSubscriptionsPreviewQuery;
+exports.useGetDomainPermissionSubscriptionsPreviewQuery = useGetDomainPermissionSubscriptionsPreviewQuery;
+/**
+ * Update domain permission subscription.
+ */
+const useUpdateDomainPermissionSubscriptionMutation = extended.useUpdateDomainPermissionSubscriptionMutation;
+exports.useUpdateDomainPermissionSubscriptionMutation = useUpdateDomainPermissionSubscriptionMutation;
+/**
+ * Remove a domain permission subscription and optionally its children (harsh).
+ */
+const useRemoveDomainPermissionSubscriptionMutation = extended.useRemoveDomainPermissionSubscriptionMutation;
+exports.useRemoveDomainPermissionSubscriptionMutation = useRemoveDomainPermissionSubscriptionMutation;
+/**
+ * Test a domain permission subscription to see if data can be fetched + parsed.
+ */
+const useTestDomainPermissionSubscriptionMutation = extended.useTestDomainPermissionSubscriptionMutation;
+exports.useTestDomainPermissionSubscriptionMutation = useTestDomainPermissionSubscriptionMutation;
+
+},{"../../gts-api":372,"parse-link-header":144}],369:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -24935,7 +25487,7 @@ exports.usePostHeaderBlockMutation = usePostHeaderBlockMutation;
 const useDeleteHeaderBlockMutation = extended.useDeleteHeaderBlockMutation;
 exports.useDeleteHeaderBlockMutation = useDeleteHeaderBlockMutation;
 
-},{"../../gts-api":369}],368:[function(require,module,exports){
+},{"../../gts-api":372}],371:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -25029,7 +25581,7 @@ exports.useGetReportQuery = useGetReportQuery;
 const useResolveReportMutation = extended.useResolveReportMutation;
 exports.useResolveReportMutation = useResolveReportMutation;
 
-},{"../../gts-api":369,"parse-link-header":144}],370:[function(require,module,exports){
+},{"../../gts-api":372,"parse-link-header":144}],373:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -25210,7 +25762,7 @@ const extended = gts_api_1.gtsApi.injectEndpoints({
 });
 exports.useVerifyCredentialsQuery = extended.useVerifyCredentialsQuery, exports.useAuthorizeFlowMutation = extended.useAuthorizeFlowMutation, exports.useLogoutMutation = extended.useLogoutMutation;
 
-},{"../../../redux/oauth":382,"../gts-api":369}],371:[function(require,module,exports){
+},{"../../../redux/oauth":386,"../gts-api":372}],374:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -25343,7 +25895,7 @@ const removeFromCacheOnMutation = makeCacheMutation((draft, newData, { key }) =>
 });
 exports.removeFromCacheOnMutation = removeFromCacheOnMutation;
 
-},{"../types/query":378,"./gts-api":369}],373:[function(require,module,exports){
+},{"../types/query":381,"./gts-api":372}],376:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -25494,7 +26046,7 @@ const extended = gts_api_1.gtsApi.injectEndpoints({
 });
 exports.useExportStatsQuery = extended.useExportStatsQuery, exports.useExportFollowingMutation = extended.useExportFollowingMutation, exports.useExportFollowersMutation = extended.useExportFollowersMutation, exports.useExportListsMutation = extended.useExportListsMutation, exports.useExportBlocksMutation = extended.useExportBlocksMutation, exports.useExportMutesMutation = extended.useExportMutesMutation, exports.useImportDataMutation = extended.useImportDataMutation;
 
-},{"../gts-api":369,"js-file-download":134}],375:[function(require,module,exports){
+},{"../gts-api":372,"js-file-download":134}],378:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -25580,7 +26132,7 @@ const extended = gts_api_1.gtsApi.injectEndpoints({
 });
 exports.useGetInteractionRequestQuery = extended.useGetInteractionRequestQuery, exports.useLazySearchInteractionRequestsQuery = extended.useLazySearchInteractionRequestsQuery, exports.useApproveInteractionRequestMutation = extended.useApproveInteractionRequestMutation, exports.useRejectInteractionRequestMutation = extended.useRejectInteractionRequestMutation;
 
-},{"../gts-api":369,"parse-link-header":144}],383:[function(require,module,exports){
+},{"../gts-api":372,"parse-link-header":144}],387:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -25657,7 +26209,7 @@ exports.store = (0, toolkit_1.configureStore)({
 });
 exports.persistor = (0, redux_persist_1.persistStore)(exports.store);
 
-},{"../lib/query/gts-api":369,"./oauth":382,"@reduxjs/toolkit":12,"redux":217,"redux-persist":205,"redux-persist/lib/stateReconciler/autoMergeLevel1":211,"redux-persist/lib/storage":215}],351:[function(require,module,exports){
+},{"../lib/query/gts-api":372,"./oauth":386,"@reduxjs/toolkit":12,"redux":217,"redux-persist":205,"redux-persist/lib/stateReconciler/autoMergeLevel1":211,"redux-persist/lib/storage":215}],351:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -25681,7 +26233,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.useValue = exports.useFieldArrayInput = exports.useArrayInput = exports.useCheckListInput = exports.useComboBoxInput = exports.useRadioInput = exports.useBoolInput = exports.useFileInput = exports.useTextInput = void 0;
+exports.useValue = exports.useFieldArrayInput = exports.useArrayInput = exports.useCheckListInput = exports.useComboBoxInput = exports.useRadioInput = exports.useBoolInput = exports.useFileInput = exports.useNumberInput = exports.useTextInput = void 0;
 const react_1 = require("react");
 const get_by_dot_1 = __importDefault(require("get-by-dot"));
 const text_1 = __importDefault(require("./text"));
@@ -25749,10 +26301,11 @@ function value(name, initialValue) {
         name,
         Name: "",
         value: initialValue,
-        hasChanged: () => true, // always included
+        hasChanged: () => true,
     };
 }
 exports.useTextInput = inputHook(text_1.default);
+exports.useNumberInput = inputHook(text_1.default);
 exports.useFileInput = inputHook(file_1.default);
 exports.useBoolInput = inputHook(bool_1.default);
 exports.useRadioInput = inputHook(radio_1.default);
@@ -25762,7 +26315,7 @@ exports.useArrayInput = inputHook(array_1.default);
 exports.useFieldArrayInput = inputHook(field_array_1.default);
 exports.useValue = value;
 
-},{"./array":342,"./bool":343,"./check-list":344,"./combo-box":345,"./field-array":347,"./file":348,"./radio":352,"./text":354,"get-by-dot":113,"react":198}],393:[function(require,module,exports){
+},{"./array":342,"./bool":343,"./check-list":344,"./combo-box":345,"./field-array":347,"./file":348,"./radio":352,"./text":354,"get-by-dot":113,"react":198}],397:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -25890,7 +26443,7 @@ function CategorySelect({ field, children }) {
 }
 exports.CategorySelect = CategorySelect;
 
-},{"../../../components/combo-box":331,"../../../components/error":332,"../../../components/loading":336,"../../../lib/query/admin/custom-emoji":359,"match-sorter":138,"react":198}],392:[function(require,module,exports){
+},{"../../../components/combo-box":331,"../../../components/error":332,"../../../components/loading":336,"../../../lib/query/admin/custom-emoji":359,"match-sorter":138,"react":198}],396:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -25935,7 +26488,7 @@ function Caches({}) {
 }
 exports.default = Caches;
 
-},{"../../../../components/form/mutation-button":334,"../../../../lib/query/admin/debug":360,"react":198}],415:[function(require,module,exports){
+},{"../../../../components/form/mutation-button":334,"../../../../lib/query/admin/debug":360,"react":198}],427:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -26017,7 +26570,7 @@ function ImportExportForm({ form, submitParse, parseResult }) {
 }
 exports.default = ImportExportForm;
 
-},{"../../../components/error":332,"../../../components/form/inputs":333,"../../../components/form/mutation-button":334,"../../../lib/form/submit":353,"../../../lib/query/admin/domain-permissions/export":361,"./export-format-table":414,"react":198}],339:[function(require,module,exports){
+},{"../../../components/error":332,"../../../components/form/inputs":333,"../../../components/form/mutation-button":334,"../../../lib/form/submit":353,"../../../lib/query/admin/domain-permissions/export":363,"./export-format-table":426,"react":198}],339:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -26148,7 +26701,7 @@ function StatusFooter({ status }) {
                 react_1.default.createElement("dd", null, status.language)))));
 }
 
-},{"../lib/query/oauth":370,"react":198,"sanitize-html":227}],340:[function(require,module,exports){
+},{"../lib/query/oauth":373,"react":198,"sanitize-html":227}],340:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -26201,7 +26754,7 @@ function UserLogoutCard() {
 }
 exports.default = UserLogoutCard;
 
-},{"../lib/query/gts-api":369,"../lib/query/oauth":370,"./error":332,"./loading":336,"react":198}],363:[function(require,module,exports){
+},{"../lib/query/gts-api":372,"../lib/query/oauth":373,"./error":332,"./loading":336,"react":198}],365:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -26277,7 +26830,7 @@ function importEntriesProcessor(formData) {
         // Unset all internal processing keys
         // and any undefined keys on this entry.
         Object.entries(entry).forEach(([key, val]) => {
-            if (val == undefined || (0, domain_permission_1.isDomainPermInternalKey)(key)) {
+            if (val == undefined || (0, domain_permission_1.stripOnImport)(key)) {
                 delete entry[key];
             }
         });
@@ -26318,7 +26871,7 @@ const extended = gts_api_1.gtsApi.injectEndpoints({
 const useImportDomainPermsMutation = extended.useImportDomainPermsMutation;
 exports.useImportDomainPermsMutation = useImportDomainPermsMutation;
 
-},{"../../../types/domain-permission":376,"../../gts-api":369,"../../query-modifiers":371,"../../transforms":372}],365:[function(require,module,exports){
+},{"../../../types/domain-permission":379,"../../gts-api":372,"../../query-modifiers":374,"../../transforms":375}],368:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -26398,7 +26951,7 @@ exports.useRemoveDomainBlockMutation = useRemoveDomainBlockMutation;
 const useRemoveDomainAllowMutation = extended.useRemoveDomainAllowMutation;
 exports.useRemoveDomainAllowMutation = useRemoveDomainAllowMutation;
 
-},{"../../gts-api":369,"../../query-modifiers":371,"../../transforms":372}],367:[function(require,module,exports){
+},{"../../gts-api":372,"../../query-modifiers":374,"../../transforms":375}],370:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -26596,7 +27149,7 @@ const extended = gts_api_1.gtsApi.injectEndpoints({
 });
 exports.useUpdateInstanceMutation = extended.useUpdateInstanceMutation, exports.useGetAccountQuery = extended.useGetAccountQuery, exports.useLazyGetAccountQuery = extended.useLazyGetAccountQuery, exports.useActionAccountMutation = extended.useActionAccountMutation, exports.useSearchAccountsQuery = extended.useSearchAccountsQuery, exports.useLazySearchAccountsQuery = extended.useLazySearchAccountsQuery, exports.useHandleSignupMutation = extended.useHandleSignupMutation, exports.useInstanceRulesQuery = extended.useInstanceRulesQuery, exports.useAddInstanceRuleMutation = extended.useAddInstanceRuleMutation, exports.useUpdateInstanceRuleMutation = extended.useUpdateInstanceRuleMutation, exports.useDeleteInstanceRuleMutation = extended.useDeleteInstanceRuleMutation;
 
-},{"../gts-api":369,"../query-modifiers":371,"../transforms":372,"parse-link-header":144}],374:[function(require,module,exports){
+},{"../gts-api":372,"../query-modifiers":374,"../transforms":375,"parse-link-header":144}],377:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -26706,7 +27259,7 @@ const extended = gts_api_1.gtsApi.injectEndpoints({
 });
 exports.useUpdateCredentialsMutation = extended.useUpdateCredentialsMutation, exports.useUserQuery = extended.useUserQuery, exports.usePasswordChangeMutation = extended.usePasswordChangeMutation, exports.useEmailChangeMutation = extended.useEmailChangeMutation, exports.useAliasAccountMutation = extended.useAliasAccountMutation, exports.useMoveAccountMutation = extended.useMoveAccountMutation, exports.useAccountThemesQuery = extended.useAccountThemesQuery, exports.useDefaultInteractionPoliciesQuery = extended.useDefaultInteractionPoliciesQuery, exports.useUpdateDefaultInteractionPoliciesMutation = extended.useUpdateDefaultInteractionPoliciesMutation, exports.useResetDefaultInteractionPoliciesMutation = extended.useResetDefaultInteractionPoliciesMutation;
 
-},{"../gts-api":369,"../query-modifiers":371}],380:[function(require,module,exports){
+},{"../gts-api":372,"../query-modifiers":374}],384:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -26727,7 +27280,7 @@ exports.useUpdateCredentialsMutation = extended.useUpdateCredentialsMutation, ex
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UseOurInstanceAccount = exports.yesOrNo = void 0;
+exports.useCapitalize = exports.UseOurInstanceAccount = exports.yesOrNo = void 0;
 const react_1 = require("react");
 const store_1 = require("../../redux/store");
 function yesOrNo(b) {
@@ -26748,8 +27301,20 @@ function UseOurInstanceAccount(account) {
     return !account.domain && account.username == ourDomain;
 }
 exports.UseOurInstanceAccount = UseOurInstanceAccount;
+/**
+ * Uppercase first letter of given string.
+ */
+function useCapitalize(i) {
+    return (0, react_1.useMemo)(() => {
+        if (i === undefined) {
+            return "";
+        }
+        return i.charAt(0).toUpperCase() + i.slice(1);
+    }, [i]);
+}
+exports.useCapitalize = useCapitalize;
 
-},{"../../redux/store":383,"react":198}],328:[function(require,module,exports){
+},{"../../redux/store":387,"react":198}],328:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -26806,7 +27371,7 @@ function Login({}) {
 }
 exports.default = Login;
 
-},{"../../lib/form":351,"../../lib/form/submit":353,"../../lib/query/oauth":370,"../form/inputs":333,"../form/mutation-button":334,"../loading":336,"react":198}],386:[function(require,module,exports){
+},{"../../lib/form":351,"../../lib/form/submit":353,"../../lib/query/oauth":373,"../form/inputs":333,"../form/mutation-button":334,"../loading":336,"react":198}],390:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -26860,7 +27425,7 @@ function Test({}) {
 }
 exports.default = Test;
 
-},{"../../../../components/form/inputs":333,"../../../../components/form/mutation-button":334,"../../../../lib/form":351,"../../../../lib/form/submit":353,"../../../../lib/query/admin/actions":358,"../../../../lib/query/gts-api":369,"react":198}],387:[function(require,module,exports){
+},{"../../../../components/form/inputs":333,"../../../../components/form/mutation-button":334,"../../../../lib/form":351,"../../../../lib/form/submit":353,"../../../../lib/query/admin/actions":358,"../../../../lib/query/gts-api":372,"react":198}],391:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -26889,27 +27454,10 @@ const inputs_1 = require("../../../../components/form/inputs");
 const mutation_button_1 = __importDefault(require("../../../../components/form/mutation-button"));
 const form_1 = require("../../../../lib/form");
 const actions_1 = require("../../../../lib/query/admin/actions");
-const is_valid_domain_1 = __importDefault(require("is-valid-domain"));
+const formvalidators_1 = require("../../../../lib/util/formvalidators");
 function ExpireRemote({}) {
     const domainField = (0, form_1.useTextInput)("domain", {
-        validator: (v) => {
-            if (v.length === 0) {
-                return "";
-            }
-            if (v[v.length - 1] === ".") {
-                return "invalid domain";
-            }
-            const valid = (0, is_valid_domain_1.default)(v, {
-                subdomain: true,
-                wildcard: false,
-                allowUnicode: true,
-                topLevel: false,
-            });
-            if (valid) {
-                return "";
-            }
-            return "invalid domain";
-        }
+        validator: formvalidators_1.formDomainValidator,
     });
     const [expire, expireResult] = (0, actions_1.useInstanceKeysExpireMutation)();
     function submitExpire(e) {
@@ -26930,7 +27478,7 @@ function ExpireRemote({}) {
 }
 exports.default = ExpireRemote;
 
-},{"../../../../components/form/inputs":333,"../../../../components/form/mutation-button":334,"../../../../lib/form":351,"../../../../lib/query/admin/actions":358,"is-valid-domain":133,"react":198}],389:[function(require,module,exports){
+},{"../../../../components/form/inputs":333,"../../../../components/form/mutation-button":334,"../../../../lib/form":351,"../../../../lib/query/admin/actions":358,"../../../../lib/util/formvalidators":383,"react":198}],393:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -26981,7 +27529,7 @@ function Cleanup({}) {
 }
 exports.default = Cleanup;
 
-},{"../../../../components/form/inputs":333,"../../../../components/form/mutation-button":334,"../../../../lib/form":351,"../../../../lib/query/admin/actions":358,"react":198}],391:[function(require,module,exports){
+},{"../../../../components/form/inputs":333,"../../../../components/form/mutation-button":334,"../../../../lib/form":351,"../../../../lib/query/admin/actions":358,"react":198}],395:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -27088,7 +27636,7 @@ function Highlighted({ jsonStr }) {
             react_1.default.createElement("code", { ref: ref, className: "language-json" }, jsonStr))));
 }
 
-},{"../../../../../frontend/prism":1,"../../../../components/form/inputs":333,"../../../../components/form/mutation-button":334,"../../../../components/loading":336,"../../../../lib/form":351,"../../../../lib/query/admin/debug":360,"react":198}],397:[function(require,module,exports){
+},{"../../../../../frontend/prism":1,"../../../../components/form/inputs":333,"../../../../components/form/mutation-button":334,"../../../../components/loading":336,"../../../../lib/form":351,"../../../../lib/query/admin/debug":360,"react":198}],401:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -27112,7 +27660,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = require("react");
 const form_1 = require("../../../../lib/form");
 const custom_emoji_1 = require("../../../../lib/query/admin/custom-emoji");
-const shortcodeRegex = /^\w{2,30}$/;
+const shortcodeRegex = /^\w{1,30}$/;
 function useShortcode() {
     const { data: emoji = [] } = (0, custom_emoji_1.useListEmojiQuery)({
         filter: "domain:local"
@@ -27129,8 +27677,8 @@ function useShortcode() {
             if (emojiCodes.has(code)) {
                 return "Shortcode already in use";
             }
-            if (code.length < 2 || code.length > 30) {
-                return "Shortcode must be between 2 and 30 characters";
+            if (code.length < 1 || code.length > 30) {
+                return "Shortcode must be between 1 and 30 characters";
             }
             if (!shortcodeRegex.test(code)) {
                 return "Shortcode must only contain letters, numbers, and underscores";
@@ -27141,7 +27689,7 @@ function useShortcode() {
 }
 exports.default = useShortcode;
 
-},{"../../../../lib/form":351,"../../../../lib/query/admin/custom-emoji":359,"react":198}],400:[function(require,module,exports){
+},{"../../../../lib/form":351,"../../../../lib/query/admin/custom-emoji":359,"react":198}],404:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -27244,7 +27792,7 @@ function HeaderPermCreateForm({ permType }) {
 }
 exports.default = HeaderPermCreateForm;
 
-},{"../../../components/form/inputs":333,"../../../components/form/mutation-button":334,"../../../lib/form":351,"../../../lib/form/submit":353,"../../../lib/query/admin/http-header-permissions":366,"re2js":159,"react":198}],417:[function(require,module,exports){
+},{"../../../components/form/inputs":333,"../../../components/form/mutation-button":334,"../../../lib/form":351,"../../../lib/form/submit":353,"../../../lib/query/admin/http-header-permissions":369,"re2js":159,"react":198}],421:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -27269,113 +27817,61 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importDefault(require("react"));
-const react_2 = require("react");
+const submit_1 = __importDefault(require("../../../../lib/form/submit"));
+const drafts_1 = require("../../../../lib/query/admin/domain-permissions/drafts");
+const form_1 = require("../../../../lib/form");
+const formvalidators_1 = require("../../../../lib/util/formvalidators");
+const mutation_button_1 = __importDefault(require("../../../../components/form/mutation-button"));
+const inputs_1 = require("../../../../components/form/inputs");
 const wouter_1 = require("wouter");
-const match_sorter_1 = require("match-sorter");
-const form_1 = require("../../../lib/form");
-const inputs_1 = require("../../../components/form/inputs");
-const loading_1 = __importDefault(require("../../../components/loading"));
-const get_1 = require("../../../lib/query/admin/domain-permissions/get");
-const query_1 = require("../../../lib/types/query");
-const util_1 = require("../../../lib/navigation/util");
-function DomainPermissionsOverview() {
-    const baseUrl = (0, util_1.useBaseUrl)();
-    // Parse perm type from routing params.
-    let params = (0, wouter_1.useParams)();
-    if (params.permType !== "blocks" && params.permType !== "allows") {
-        throw "unrecognized perm type " + params.permType;
-    }
-    const permType = params.permType.slice(0, -1);
-    // Uppercase first letter of given permType.
-    const permTypeUpper = (0, react_2.useMemo)(() => {
-        return permType.charAt(0).toUpperCase() + permType.slice(1);
-    }, [permType]);
-    // Fetch / wait for desired perms to load.
-    const { data: blocks, isLoading: isLoadingBlocks } = (0, get_1.useDomainBlocksQuery)(query_1.NoArg, { skip: permType !== "block" });
-    const { data: allows, isLoading: isLoadingAllows } = (0, get_1.useDomainAllowsQuery)(query_1.NoArg, { skip: permType !== "allow" });
-    let data;
-    let isLoading;
-    if (permType == "block") {
-        data = blocks;
-        isLoading = isLoadingBlocks;
-    }
-    else {
-        data = allows;
-        isLoading = isLoadingAllows;
-    }
-    if (isLoading || data === undefined) {
-        return react_1.default.createElement(loading_1.default, null);
-    }
-    return (react_1.default.createElement("div", { className: `domain-${permType}` },
-        react_1.default.createElement("div", { className: "form-section-docs" },
-            react_1.default.createElement("h1", null,
-                "Domain ",
-                permTypeUpper,
-                "s"),
-            permType == "block" ? react_1.default.createElement(BlockHelperText, null) : react_1.default.createElement(AllowHelperText, null)),
-        react_1.default.createElement(DomainPermsList, { data: data, permType: permType, permTypeUpper: permTypeUpper }),
-        react_1.default.createElement(wouter_1.Link, { to: `~${baseUrl}/import-export` }, "Or use the bulk import/export interface")));
-}
-exports.default = DomainPermissionsOverview;
-function DomainPermsList({ data, permType, permTypeUpper }) {
-    var _a;
-    // Format perms into a list.
-    const perms = (0, react_2.useMemo)(() => {
-        return Object.values(data);
-    }, [data]);
+const common_1 = require("./common");
+function DomainPermissionDraftNew() {
     const [_location, setLocation] = (0, wouter_1.useLocation)();
-    const filterField = (0, form_1.useTextInput)("filter");
-    function filterFormSubmit(e) {
-        e.preventDefault();
-        setLocation(`/${permType}s/${filter}`);
-    }
-    const filter = (_a = filterField.value) !== null && _a !== void 0 ? _a : "";
-    const filteredPerms = (0, react_2.useMemo)(() => {
-        return (0, match_sorter_1.matchSorter)(perms, filter, { keys: ["domain"] });
-    }, [perms, filter]);
-    const filtered = perms.length - filteredPerms.length;
-    const filterInfo = (react_1.default.createElement("span", null,
-        perms.length,
-        " ",
-        permType,
-        "ed domain",
-        perms.length != 1 ? "s" : "",
-        " ",
-        filtered > 0 && `(${filtered} filtered by search)`));
-    const entries = filteredPerms.map((entry) => {
-        var _a;
-        return (react_1.default.createElement(wouter_1.Link, { className: "entry nounderline", key: entry.domain, to: `/${permType}s/${entry.domain}` },
-            react_1.default.createElement("span", { id: "domain" }, entry.domain),
-            react_1.default.createElement("span", { id: "date" }, new Date((_a = entry.created_at) !== null && _a !== void 0 ? _a : "").toLocaleString())));
+    const form = {
+        domain: (0, form_1.useTextInput)("domain", {
+            validator: formvalidators_1.formDomainValidator,
+        }),
+        permission_type: (0, form_1.useRadioInput)("permission_type", {
+            options: {
+                block: "Block domain",
+                allow: "Allow domain",
+            }
+        }),
+        obfuscate: (0, form_1.useBoolInput)("obfuscate"),
+        public_comment: (0, form_1.useTextInput)("public_comment"),
+        private_comment: (0, form_1.useTextInput)("private_comment"),
+    };
+    const [formSubmit, result] = (0, submit_1.default)(form, (0, drafts_1.useCreateDomainPermissionDraftMutation)(), {
+        changedOnly: false,
+        onFinish: (res) => {
+            if (res.data) {
+                // Creation successful,
+                // redirect to drafts overview.
+                setLocation(`/drafts/search`);
+            }
+        },
     });
-    return (react_1.default.createElement("div", { className: "domain-permissions-list" },
-        react_1.default.createElement("form", { className: "filter", role: "search", onSubmit: filterFormSubmit },
-            react_1.default.createElement(inputs_1.TextInput, { field: filterField, placeholder: "example.org", label: `Search or add domain ${permType}` }),
-            react_1.default.createElement("button", { type: "submit", disabled: filterField.value === undefined ||
-                    filterField.value.length == 0 },
-                permTypeUpper,
-                "\u00A0",
-                filter)),
-        react_1.default.createElement("div", null,
-            filterInfo,
-            react_1.default.createElement("div", { className: "list" },
-                react_1.default.createElement("div", { className: "entries scrolling" }, entries)))));
+    return (react_1.default.createElement("form", { onSubmit: formSubmit, 
+        // Prevent password managers
+        // trying to fill in fields.
+        autoComplete: "off" },
+        react_1.default.createElement("div", { className: "form-section-docs" },
+            react_1.default.createElement("h2", null, "New Domain Permission Draft"),
+            react_1.default.createElement("p", null,
+                react_1.default.createElement(common_1.DomainPermissionDraftHelpText, null)),
+            react_1.default.createElement(common_1.DomainPermissionDraftDocsLink, null)),
+        react_1.default.createElement(inputs_1.RadioGroup, { field: form.permission_type }),
+        react_1.default.createElement(inputs_1.TextInput, { field: form.domain, label: `Domain (without "https://" prefix)`, placeholder: "example.org", autoCapitalize: "none", spellCheck: "false" }),
+        react_1.default.createElement(inputs_1.TextArea, { field: form.private_comment, label: "Private comment", placeholder: "This domain is like unto a clown car full of clowns, I suggest we block it forthwith.", autoCapitalize: "sentences", rows: 3 }),
+        react_1.default.createElement(inputs_1.TextArea, { field: form.public_comment, label: "Public comment", placeholder: "Bad posters", autoCapitalize: "sentences", rows: 3 }),
+        react_1.default.createElement(inputs_1.Checkbox, { field: form.obfuscate, label: "Obfuscate domain in public lists" }),
+        react_1.default.createElement(mutation_button_1.default, { label: "Save", result: result, disabled: !form.domain.value ||
+                !form.domain.valid ||
+                !form.permission_type.value })));
 }
-function BlockHelperText() {
-    return (react_1.default.createElement("p", null,
-        "Blocking a domain blocks interaction between your instance, and all current and future accounts on instance(s) running on the blocked domain. Stored content will be removed, and no more data is sent to the remote server. This extends to all subdomains as well, so blocking 'example.com' also blocks 'social.example.com'.",
-        react_1.default.createElement("br", null),
-        react_1.default.createElement("a", { href: "https://docs.gotosocial.org/en/latest/admin/domain_blocks/", target: "_blank", className: "docslink", rel: "noreferrer" }, "Learn more about domain blocks (opens in a new tab)"),
-        react_1.default.createElement("br", null)));
-}
-function AllowHelperText() {
-    return (react_1.default.createElement("p", null,
-        "Allowing a domain explicitly allows instance(s) running on that domain to interact with your instance. If you're running in allowlist mode, this is how you \"allow\" instances through. If you're running in blocklist mode (the default federation mode), you can use explicit domain allows to override domain blocks. In blocklist mode, explicitly allowed instances will be able to interact with your instance regardless of any domain blocks in place.  This extends to all subdomains as well, so allowing 'example.com' also allows 'social.example.com'. This is useful when you're importing a block list but there are some domains on the list you don't want to block: just create an explicit allow for those domains before importing the list.",
-        react_1.default.createElement("br", null),
-        react_1.default.createElement("a", { href: "https://docs.gotosocial.org/en/latest/admin/federation_modes/", target: "_blank", className: "docslink", rel: "noreferrer" }, "Learn more about federation modes (opens in a new tab)")));
-}
+exports.default = DomainPermissionDraftNew;
 
-},{"../../../components/form/inputs":333,"../../../components/loading":336,"../../../lib/form":351,"../../../lib/navigation/util":357,"../../../lib/query/admin/domain-permissions/get":362,"../../../lib/types/query":378,"match-sorter":138,"react":198,"wouter":323}],421:[function(require,module,exports){
+},{"../../../../components/form/inputs":333,"../../../../components/form/mutation-button":334,"../../../../lib/form":351,"../../../../lib/form/submit":353,"../../../../lib/query/admin/domain-permissions/drafts":361,"../../../../lib/util/formvalidators":383,"./common":418,"react":198,"wouter":323}],424:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -27423,65 +27919,62 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importStar(require("react"));
-const reports_1 = require("../../../lib/query/admin/reports");
-const form_1 = require("../../../lib/form");
-const pageable_list_1 = require("../../../components/pageable-list");
-const inputs_1 = require("../../../components/form/inputs");
-const mutation_button_1 = __importDefault(require("../../../components/form/mutation-button"));
+const form_1 = require("../../../../lib/form");
+const pageable_list_1 = require("../../../../components/pageable-list");
+const mutation_button_1 = __importDefault(require("../../../../components/form/mutation-button"));
 const wouter_1 = require("wouter");
-const username_1 = __importDefault(require("../../../components/username"));
-function ReportsSearch() {
-    return (react_1.default.createElement("div", { className: "reports-view" },
-        react_1.default.createElement("h1", null, "Reports Search"),
-        react_1.default.createElement("span", null, "You can use the form below to search through reports created by, or directed towards, accounts on this instance."),
-        react_1.default.createElement(ReportSearchForm, null)));
+const excludes_1 = require("../../../../lib/query/admin/domain-permissions/excludes");
+const error_1 = require("../../../../components/error");
+const inputs_1 = require("../../../../components/form/inputs");
+const formvalidators_1 = require("../../../../lib/util/formvalidators");
+const common_1 = require("./common");
+function DomainPermissionExcludesSearch() {
+    return (react_1.default.createElement("div", { className: "domain-permission-excludes-view" },
+        react_1.default.createElement("div", { className: "form-section-docs" },
+            react_1.default.createElement("h1", null, "Domain Permission Excludes"),
+            react_1.default.createElement("p", null,
+                "You can use the form below to search through domain permission excludes.",
+                react_1.default.createElement("br", null),
+                react_1.default.createElement(common_1.DomainPermissionExcludeHelpText, null)),
+            react_1.default.createElement(common_1.DomainPermissionExcludeDocsLink, null)),
+        react_1.default.createElement(DomainPermissionExcludesSearchForm, null)));
 }
-exports.default = ReportsSearch;
-function ReportSearchForm() {
-    var _a, _b, _c, _d, _e;
+exports.default = DomainPermissionExcludesSearch;
+function DomainPermissionExcludesSearchForm() {
+    var _a, _b, _c, _d;
     const [location, setLocation] = (0, wouter_1.useLocation)();
     const search = (0, wouter_1.useSearch)();
     const urlQueryParams = (0, react_1.useMemo)(() => new URLSearchParams(search), [search]);
     const hasParams = urlQueryParams.size != 0;
-    const [searchReports, searchRes] = (0, reports_1.useLazySearchReportsQuery)();
-    // Populate search form using values from
-    // urlQueryParams, to allow paging.
-    const resolved = (0, react_1.useMemo)(() => {
-        const resolvedRaw = urlQueryParams.get("resolved");
-        if (resolvedRaw !== null) {
-            return resolvedRaw;
-        }
-    }, [urlQueryParams]);
+    const [searchExcludes, searchRes] = (0, excludes_1.useLazySearchDomainPermissionExcludesQuery)();
     const form = {
-        resolved: (0, form_1.useTextInput)("resolved", { defaultValue: resolved }),
-        account_id: (0, form_1.useTextInput)("account_id", { defaultValue: (_a = urlQueryParams.get("account_id")) !== null && _a !== void 0 ? _a : "" }),
-        target_account_id: (0, form_1.useTextInput)("target_account_id", { defaultValue: (_b = urlQueryParams.get("target_account_id")) !== null && _b !== void 0 ? _b : "" }),
-        limit: (0, form_1.useTextInput)("limit", { defaultValue: (_c = urlQueryParams.get("limit")) !== null && _c !== void 0 ? _c : "20" })
+        domain: (0, form_1.useTextInput)("domain", {
+            defaultValue: (_a = urlQueryParams.get("domain")) !== null && _a !== void 0 ? _a : "",
+            validator: formvalidators_1.formDomainValidator,
+        }),
+        limit: (0, form_1.useTextInput)("limit", { defaultValue: (_b = urlQueryParams.get("limit")) !== null && _b !== void 0 ? _b : "20" })
     };
-    const setResolved = form.resolved.setter;
     // On mount, if urlQueryParams were provided,
     // trigger the search. For example, if page
     // was accessed at /search?origin=local&limit=20,
     // then run a search with origin=local and
     // limit=20 and immediately render the results.
     //
-    // If no urlQueryParams set, use the default
-    // search (just show unresolved reports).
+    // If no urlQueryParams set, trigger default
+    // search (first page, no filtering).
     (0, react_1.useEffect)(() => {
         if (hasParams) {
-            searchReports(Object.fromEntries(urlQueryParams));
+            searchExcludes(Object.fromEntries(urlQueryParams));
         }
         else {
-            setResolved("false");
-            setLocation(location + "?resolved=false");
+            setLocation(location + "?limit=20");
         }
     }, [
         urlQueryParams,
         hasParams,
-        searchReports,
+        searchExcludes,
         location,
         setLocation,
-        setResolved,
     ]);
     // Rather than triggering the search directly,
     // the "submit" button changes the location
@@ -27506,32 +27999,35 @@ function ReportSearchForm() {
     // Location to return to when user clicks "back" on the detail view.
     const backLocation = location + (hasParams ? `?${urlQueryParams}` : "");
     // Function to map an item to a list entry.
-    function itemToEntry(report) {
-        return (react_1.default.createElement(ReportListEntry, { key: report.id, report: report, linkTo: `/${report.id}`, backLocation: backLocation }));
+    function itemToEntry(exclude) {
+        return (react_1.default.createElement(ExcludeListEntry, { key: exclude.id, permExclude: exclude, linkTo: `/excludes/${exclude.id}`, backLocation: backLocation }));
     }
     return (react_1.default.createElement(react_1.default.Fragment, null,
         react_1.default.createElement("form", { onSubmit: submitQuery, 
             // Prevent password managers
             // trying to fill in fields.
             autoComplete: "off" },
-            react_1.default.createElement(inputs_1.Select, { field: form.resolved, label: "Report status", options: react_1.default.createElement(react_1.default.Fragment, null,
-                    react_1.default.createElement("option", { value: "false" }, "Unresolved only"),
-                    react_1.default.createElement("option", { value: "true" }, "Resolved only"),
-                    react_1.default.createElement("option", { value: "" }, "Any")) }),
+            react_1.default.createElement(inputs_1.TextInput, { field: form.domain, label: `Domain (without "https://" prefix)`, placeholder: "example.org", autoCapitalize: "none", spellCheck: "false" }),
+            react_1.default.createElement(inputs_1.Select, { field: form.limit, label: "Items per page", options: react_1.default.createElement(react_1.default.Fragment, null,
+                    react_1.default.createElement("option", { value: "20" }, "20"),
+                    react_1.default.createElement("option", { value: "50" }, "50"),
+                    react_1.default.createElement("option", { value: "100" }, "100")) }),
             react_1.default.createElement(mutation_button_1.default, { disabled: false, label: "Search", result: searchRes })),
-        react_1.default.createElement(pageable_list_1.PageableList, { isLoading: searchRes.isLoading, isFetching: searchRes.isFetching, isSuccess: searchRes.isSuccess, items: (_d = searchRes.data) === null || _d === void 0 ? void 0 : _d.accounts, itemToEntry: itemToEntry, isError: searchRes.isError, error: searchRes.error, emptyMessage: react_1.default.createElement("b", null, "No reports found that match your query."), prevNextLinks: (_e = searchRes.data) === null || _e === void 0 ? void 0 : _e.links })));
+        react_1.default.createElement(pageable_list_1.PageableList, { isLoading: searchRes.isLoading, isFetching: searchRes.isFetching, isSuccess: searchRes.isSuccess, items: (_c = searchRes.data) === null || _c === void 0 ? void 0 : _c.excludes, itemToEntry: itemToEntry, isError: searchRes.isError, error: searchRes.error, emptyMessage: react_1.default.createElement("b", null, "No excludes found that match your query."), prevNextLinks: (_d = searchRes.data) === null || _d === void 0 ? void 0 : _d.links })));
 }
-function ReportListEntry({ report, linkTo, backLocation }) {
+function ExcludeListEntry({ permExclude, linkTo, backLocation }) {
+    var _a;
     const [_location, setLocation] = (0, wouter_1.useLocation)();
-    const from = report.account;
-    const target = report.target_account;
-    const comment = report.comment;
-    const status = report.action_taken ? "Resolved" : "Unresolved";
-    const created = new Date(report.created_at).toLocaleString();
-    const title = `${status}. @${target.account.acct} was reported by @${from.account.acct} on ${created}. Reason: "${comment}"`;
-    return (react_1.default.createElement("span", { className: `pseudolink report entry${report.action_taken ? " resolved" : ""}`, "aria-label": title, title: title, onClick: () => {
-            // When clicking on a report, direct
-            // to the detail view for that report.
+    const [deleteExclude, deleteResult] = (0, excludes_1.useDeleteDomainPermissionExcludeMutation)();
+    const domain = permExclude.domain;
+    const privateComment = (_a = permExclude.private_comment) !== null && _a !== void 0 ? _a : "[none]";
+    const id = permExclude.id;
+    if (!id) {
+        return react_1.default.createElement(error_1.Error, { error: new Error("id was undefined") });
+    }
+    return (react_1.default.createElement("span", { className: `pseudolink domain-permission-exclude entry`, "aria-label": `Exclude ${domain}`, title: `Exclude ${domain}`, onClick: () => {
+            // When clicking on a exclude, direct
+            // to the detail view for that exclude.
             setLocation(linkTo, {
                 // Store the back location in history so
                 // the detail view can use it to return to
@@ -27541,30 +28037,86 @@ function ReportListEntry({ report, linkTo, backLocation }) {
         }, role: "link", tabIndex: 0 },
         react_1.default.createElement("dl", { className: "info-list" },
             react_1.default.createElement("div", { className: "info-list-entry" },
-                react_1.default.createElement("dt", null, "Reported account:"),
-                react_1.default.createElement("dd", { className: "text-cutoff" },
-                    react_1.default.createElement(username_1.default, { account: target, classNames: ["text-cutoff report-byline"] }))),
+                react_1.default.createElement("dt", null, "Domain:"),
+                react_1.default.createElement("dd", { className: "text-cutoff" }, domain)),
             react_1.default.createElement("div", { className: "info-list-entry" },
-                react_1.default.createElement("dt", null, "Reported by:"),
-                react_1.default.createElement("dd", { className: "text-cutoff reported-by" },
-                    react_1.default.createElement(username_1.default, { account: from }))),
-            react_1.default.createElement("div", { className: "info-list-entry" },
-                react_1.default.createElement("dt", null, "Status:"),
-                react_1.default.createElement("dd", { className: "text-cutoff" }, report.action_taken
-                    ? react_1.default.createElement(react_1.default.Fragment, null, status)
-                    : react_1.default.createElement("b", null, status))),
-            react_1.default.createElement("div", { className: "info-list-entry" },
-                react_1.default.createElement("dt", null, "Reason:"),
-                react_1.default.createElement("dd", { className: "text-cutoff" }, comment.length > 0
-                    ? react_1.default.createElement(react_1.default.Fragment, null, comment)
-                    : react_1.default.createElement("i", null, "none provided"))),
-            react_1.default.createElement("div", { className: "info-list-entry" },
-                react_1.default.createElement("dt", null, "Created:"),
-                react_1.default.createElement("dd", { className: "text-cutoff" },
-                    react_1.default.createElement("time", { dateTime: report.created_at }, created))))));
+                react_1.default.createElement("dt", null, "Private comment:"),
+                react_1.default.createElement("dd", { className: "text-cutoff" }, privateComment))),
+        react_1.default.createElement("div", { className: "action-buttons" },
+            react_1.default.createElement(mutation_button_1.default, { label: `Delete exclude`, title: `Delete exclude`, type: "button", className: "button danger", onClick: (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    deleteExclude(id);
+                }, disabled: false, showError: true, result: deleteResult }))));
 }
 
-},{"../../../components/form/inputs":333,"../../../components/form/mutation-button":334,"../../../components/pageable-list":337,"../../../components/username":341,"../../../lib/form":351,"../../../lib/query/admin/reports":368,"react":198,"wouter":323}],424:[function(require,module,exports){
+},{"../../../../components/error":332,"../../../../components/form/inputs":333,"../../../../components/form/mutation-button":334,"../../../../components/pageable-list":337,"../../../../lib/form":351,"../../../../lib/query/admin/domain-permissions/excludes":362,"../../../../lib/util/formvalidators":383,"./common":422,"react":198,"wouter":323}],425:[function(require,module,exports){
+"use strict";
+/*
+    GoToSocial
+    Copyright (C) GoToSocial Authors admin@gotosocial.org
+    SPDX-License-Identifier: AGPL-3.0-or-later
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const react_1 = __importDefault(require("react"));
+const submit_1 = __importDefault(require("../../../../lib/form/submit"));
+const excludes_1 = require("../../../../lib/query/admin/domain-permissions/excludes");
+const form_1 = require("../../../../lib/form");
+const formvalidators_1 = require("../../../../lib/util/formvalidators");
+const mutation_button_1 = __importDefault(require("../../../../components/form/mutation-button"));
+const inputs_1 = require("../../../../components/form/inputs");
+const wouter_1 = require("wouter");
+const common_1 = require("./common");
+function DomainPermissionExcludeNew() {
+    const [_location, setLocation] = (0, wouter_1.useLocation)();
+    const form = {
+        domain: (0, form_1.useTextInput)("domain", {
+            validator: formvalidators_1.formDomainValidator,
+        }),
+        private_comment: (0, form_1.useTextInput)("private_comment"),
+    };
+    const [formSubmit, result] = (0, submit_1.default)(form, (0, excludes_1.useCreateDomainPermissionExcludeMutation)(), {
+        changedOnly: false,
+        onFinish: (res) => {
+            if (res.data) {
+                // Creation successful,
+                // redirect to excludes overview.
+                setLocation(`/excludes/search`);
+            }
+        },
+    });
+    return (react_1.default.createElement("form", { onSubmit: formSubmit, 
+        // Prevent password managers
+        // trying to fill in fields.
+        autoComplete: "off" },
+        react_1.default.createElement("div", { className: "form-section-docs" },
+            react_1.default.createElement("h2", null, "New Domain Permission Exclude"),
+            react_1.default.createElement("p", null,
+                react_1.default.createElement(common_1.DomainPermissionExcludeHelpText, null)),
+            react_1.default.createElement(common_1.DomainPermissionExcludeDocsLink, null)),
+        react_1.default.createElement(inputs_1.TextInput, { field: form.domain, label: `Domain (without "https://" prefix)`, placeholder: "example.org", autoCapitalize: "none", spellCheck: "false" }),
+        react_1.default.createElement(inputs_1.TextArea, { field: form.private_comment, label: "Private comment", placeholder: "Created an exclude for this domain because we should manage it manually.", autoCapitalize: "sentences", rows: 3 }),
+        react_1.default.createElement(mutation_button_1.default, { label: "Save", result: result, disabled: !form.domain.value || !form.domain.valid })));
+}
+exports.default = DomainPermissionExcludeNew;
+
+},{"../../../../components/form/inputs":333,"../../../../components/form/mutation-button":334,"../../../../lib/form":351,"../../../../lib/form/submit":353,"../../../../lib/query/admin/domain-permissions/excludes":362,"../../../../lib/util/formvalidators":383,"./common":422,"react":198,"wouter":323}],441:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -27677,7 +28229,7 @@ function Export({ exportStats }) {
 }
 exports.default = Export;
 
-},{"../../../components/form/mutation-button":334,"../../../lib/form":351,"../../../lib/form/submit":353,"../../../lib/query/user/export-import":373,"react":198}],425:[function(require,module,exports){
+},{"../../../components/form/mutation-button":334,"../../../lib/form":351,"../../../lib/form/submit":353,"../../../lib/query/user/export-import":376,"react":198}],442:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -27740,7 +28292,7 @@ function Import() {
 }
 exports.default = Import;
 
-},{"../../../components/form/inputs":333,"../../../components/form/mutation-button":334,"../../../lib/form":351,"../../../lib/form/submit":353,"../../../lib/query/user/export-import":373,"react":198}],429:[function(require,module,exports){
+},{"../../../components/form/inputs":333,"../../../components/form/mutation-button":334,"../../../lib/form":351,"../../../lib/form/submit":353,"../../../lib/query/user/export-import":376,"react":198}],446:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -27919,7 +28471,7 @@ function ReqsListEntry({ req, linkTo, backLocation }) {
                 }, disabled: false, showError: false, result: rejectResult }))));
 }
 
-},{"../../../components/form/inputs":333,"../../../components/form/mutation-button":334,"../../../components/pageable-list":337,"../../../lib/form":351,"../../../lib/query/user/interactions":375,"./util":430,"react":198,"wouter":323}],435:[function(require,module,exports){
+},{"../../../components/form/inputs":333,"../../../components/form/mutation-button":334,"../../../components/pageable-list":337,"../../../lib/form":351,"../../../lib/query/user/interactions":378,"./util":447,"react":198,"wouter":323}],452:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -28080,7 +28632,7 @@ function useBasicFor(forVis, forAction, currentAlways, currentWithApproval) {
 }
 exports.useBasicFor = useBasicFor;
 
-},{"../../../../lib/form":351,"../../../../lib/types/interaction":377,"react":198}],437:[function(require,module,exports){
+},{"../../../../lib/form":351,"../../../../lib/types/interaction":380,"react":198}],454:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -28197,7 +28749,7 @@ function useSomethingElseFor(forVis, forAction, currentAlways, currentWithApprov
 }
 exports.useSomethingElseFor = useSomethingElseFor;
 
-},{"../../../../lib/form":351,"../../../../lib/types/interaction":377,"react":198}],399:[function(require,module,exports){
+},{"../../../../lib/form":351,"../../../../lib/types/interaction":380,"react":198}],403:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -28384,7 +28936,7 @@ function EmojiEntry({ entry: emoji, onChange, extraProps: { localEmojiCodes } })
             } })));
 }
 
-},{"../../../../components/check-list":330,"../../../../components/error":332,"../../../../components/form/inputs":333,"../../../../components/form/mutation-button":334,"../../../../lib/form":351,"../../../../lib/form/submit":353,"../../../../lib/query/admin/custom-emoji":359,"../category-select":393,"react":198}],394:[function(require,module,exports){
+},{"../../../../components/check-list":330,"../../../../components/error":332,"../../../../components/form/inputs":333,"../../../../components/form/mutation-button":334,"../../../../lib/form":351,"../../../../lib/form/submit":353,"../../../../lib/query/admin/custom-emoji":359,"../category-select":397,"react":198}],398:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -28508,7 +29060,7 @@ function EmojiDetailForm({ data: emoji }) {
                 deleteResult.error && react_1.default.createElement(error_1.Error, { error: deleteResult.error })))));
 }
 
-},{"../../../../components/back-button":329,"../../../../components/error":332,"../../../../components/form/inputs":333,"../../../../components/form/mutation-button":334,"../../../../components/loading":336,"../../../../components/status":339,"../../../../lib/form":351,"../../../../lib/form/form-with-data":349,"../../../../lib/form/submit":353,"../../../../lib/navigation/util":357,"../../../../lib/query/admin/custom-emoji":359,"../../../../lib/query/gts-api":369,"../category-select":393,"react":198,"wouter":323}],427:[function(require,module,exports){
+},{"../../../../components/back-button":329,"../../../../components/error":332,"../../../../components/form/inputs":333,"../../../../components/form/mutation-button":334,"../../../../components/loading":336,"../../../../components/status":339,"../../../../lib/form":351,"../../../../lib/form/form-with-data":349,"../../../../lib/form/submit":353,"../../../../lib/navigation/util":357,"../../../../lib/query/admin/custom-emoji":359,"../../../../lib/query/gts-api":372,"../category-select":397,"react":198,"wouter":323}],444:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -28611,7 +29163,7 @@ function InteractionRequestDetailForm({ data: req, backLocation }) {
                 }, disabled: false, showError: false, result: rejectResult }))));
 }
 
-},{"../../../components/back-button":329,"../../../components/form/mutation-button":334,"../../../components/status":339,"../../../lib/form/form-with-data":349,"../../../lib/navigation/util":357,"../../../lib/query/user/interactions":375,"./util":430,"react":198,"wouter":323}],356:[function(require,module,exports){
+},{"../../../components/back-button":329,"../../../components/form/mutation-button":334,"../../../components/status":339,"../../../lib/form/form-with-data":349,"../../../lib/navigation/util":357,"../../../lib/query/user/interactions":378,"./util":447,"react":198,"wouter":323}],356:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -28677,14 +29229,19 @@ function MenuItem(props) {
         classNames.push("category", "top-level");
     }
     else {
-        if (thisLevel === 1 && hasChildren) {
-            classNames.push("category", "expanding");
-        }
-        else if (thisLevel === 1 && !hasChildren) {
-            classNames.push("view", "expanding");
-        }
-        else if (thisLevel === 2) {
-            classNames.push("view", "nested");
+        switch (true) {
+            case thisLevel === 1 && hasChildren:
+                classNames.push("category", "expanding");
+                break;
+            case thisLevel === 1 && !hasChildren:
+                classNames.push("view", "expanding");
+                break;
+            case thisLevel >= 2 && hasChildren:
+                classNames.push("nested", "category");
+                break;
+            case thisLevel >= 2 && !hasChildren:
+                classNames.push("nested", "view");
+                break;
         }
     }
     if (isActive) {
@@ -28724,7 +29281,7 @@ function SidebarMenu({ children }) {
 }
 exports.SidebarMenu = SidebarMenu;
 
-},{"../../components/user-logout-card":340,"./util":357,"nanoid":139,"react":198,"wouter":323}],418:[function(require,module,exports){
+},{"../../components/user-logout-card":340,"./util":357,"nanoid":139,"react":198,"wouter":323}],430:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -28947,217 +29504,7 @@ function DomainEntryIcon({ alreadyExists, suggestion, permTypeString }) {
         react_1.default.createElement("span", { className: "sr-only" }, text)));
 }
 
-},{"../../../components/check-list":330,"../../../components/form/inputs":333,"../../../components/form/mutation-button":334,"../../../lib/form":351,"../../../lib/form/form-with-data":349,"../../../lib/form/submit":353,"../../../lib/query/admin/domain-permissions/get":362,"../../../lib/query/admin/domain-permissions/import":363,"../../../lib/util/domain-permission":379,"react":198}],413:[function(require,module,exports){
-"use strict";
-/*
-    GoToSocial
-    Copyright (C) GoToSocial Authors admin@gotosocial.org
-    SPDX-License-Identifier: AGPL-3.0-or-later
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Affero General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Affero General Public License for more details.
-
-    You should have received a copy of the GNU Affero General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const react_1 = __importDefault(require("react"));
-const react_2 = require("react");
-const wouter_1 = require("wouter");
-const form_1 = require("../../../lib/form");
-const submit_1 = __importDefault(require("../../../lib/form/submit"));
-const inputs_1 = require("../../../components/form/inputs");
-const loading_1 = __importDefault(require("../../../components/loading"));
-const back_button_1 = __importDefault(require("../../../components/back-button"));
-const mutation_button_1 = __importDefault(require("../../../components/form/mutation-button"));
-const get_1 = require("../../../lib/query/admin/domain-permissions/get");
-const update_1 = require("../../../lib/query/admin/domain-permissions/update");
-const query_1 = require("../../../lib/types/query");
-const error_1 = require("../../../components/error");
-const util_1 = require("../../../lib/navigation/util");
-const is_valid_domain_1 = __importDefault(require("is-valid-domain"));
-function DomainPermDetail() {
-    var _a;
-    const baseUrl = (0, util_1.useBaseUrl)();
-    // Parse perm type from routing params.
-    let params = (0, wouter_1.useParams)();
-    if (params.permType !== "blocks" && params.permType !== "allows") {
-        throw "unrecognized perm type " + params.permType;
-    }
-    const permType = params.permType.slice(0, -1);
-    const { data: domainBlocks = {}, isLoading: isLoadingDomainBlocks } = (0, get_1.useDomainBlocksQuery)(query_1.NoArg, { skip: permType !== "block" });
-    const { data: domainAllows = {}, isLoading: isLoadingDomainAllows } = (0, get_1.useDomainAllowsQuery)(query_1.NoArg, { skip: permType !== "allow" });
-    let isLoading;
-    switch (permType) {
-        case "block":
-            isLoading = isLoadingDomainBlocks;
-            break;
-        case "allow":
-            isLoading = isLoadingDomainAllows;
-            break;
-        default:
-            throw "perm type unknown";
-    }
-    // Parse domain from routing params.
-    let domain = (_a = params.domain) !== null && _a !== void 0 ? _a : "unknown";
-    const search = (0, wouter_1.useSearch)();
-    if (domain === "view") {
-        // Retrieve domain from form field submission.
-        const searchParams = new URLSearchParams(search);
-        const searchDomain = searchParams.get("domain");
-        if (!searchDomain) {
-            throw "empty view domain";
-        }
-        domain = searchDomain;
-    }
-    // Normalize / decode domain (it may be URL-encoded).
-    domain = decodeURIComponent(domain);
-    // Check if we already have a perm of the desired type for this domain.
-    const existingPerm = (0, react_2.useMemo)(() => {
-        if (permType == "block") {
-            return domainBlocks[domain];
-        }
-        else {
-            return domainAllows[domain];
-        }
-    }, [domainBlocks, domainAllows, domain, permType]);
-    let infoContent;
-    if (isLoading) {
-        infoContent = react_1.default.createElement(loading_1.default, null);
-    }
-    else if (existingPerm == undefined) {
-        infoContent = react_1.default.createElement("span", null,
-            "No stored ",
-            permType,
-            " yet, you can add one below:");
-    }
-    else {
-        infoContent = (react_1.default.createElement("div", { className: "info" },
-            react_1.default.createElement("i", { className: "fa fa-fw fa-exclamation-triangle", "aria-hidden": "true" }),
-            react_1.default.createElement("b", null,
-                "Editing domain permissions isn't implemented yet, ",
-                react_1.default.createElement("a", { href: "https://github.com/superseriousbusiness/gotosocial/issues/1198", target: "_blank", rel: "noopener noreferrer" }, "check here for progress"))));
-    }
-    return (react_1.default.createElement("div", null,
-        react_1.default.createElement("h1", { className: "text-cutoff" },
-            react_1.default.createElement(back_button_1.default, { to: `~${baseUrl}/${permType}s` }),
-            " Domain ",
-            permType,
-            " for: ",
-            react_1.default.createElement("span", { title: domain }, domain)),
-        infoContent,
-        react_1.default.createElement(DomainPermForm, { defaultDomain: domain, perm: existingPerm, permType: permType })));
-}
-exports.default = DomainPermDetail;
-function DomainPermForm({ defaultDomain, perm, permType }) {
-    const isExistingPerm = perm !== undefined;
-    const disabledForm = isExistingPerm
-        ? {
-            disabled: true,
-            title: "Domain permissions currently cannot be edited."
-        }
-        : {
-            disabled: false,
-            title: "",
-        };
-    const form = {
-        domain: (0, form_1.useTextInput)("domain", {
-            source: perm,
-            defaultValue: defaultDomain,
-            validator: (v) => {
-                if (v.length === 0) {
-                    return "";
-                }
-                if (v[v.length - 1] === ".") {
-                    return "invalid domain";
-                }
-                const valid = (0, is_valid_domain_1.default)(v, {
-                    subdomain: true,
-                    wildcard: false,
-                    allowUnicode: true,
-                    topLevel: false,
-                });
-                if (valid) {
-                    return "";
-                }
-                return "invalid domain";
-            }
-        }),
-        obfuscate: (0, form_1.useBoolInput)("obfuscate", { source: perm }),
-        commentPrivate: (0, form_1.useTextInput)("private_comment", { source: perm }),
-        commentPublic: (0, form_1.useTextInput)("public_comment", { source: perm })
-    };
-    // Check which perm type we're meant to be handling
-    // here, and use appropriate mutations and results.
-    // We can't call these hooks conditionally because
-    // react is like "weh" (mood), but we can decide
-    // which ones to use conditionally.
-    const [addBlock, addBlockResult] = (0, update_1.useAddDomainBlockMutation)();
-    const [removeBlock, removeBlockResult] = (0, update_1.useRemoveDomainBlockMutation)({ fixedCacheKey: perm === null || perm === void 0 ? void 0 : perm.id });
-    const [addAllow, addAllowResult] = (0, update_1.useAddDomainAllowMutation)();
-    const [removeAllow, removeAllowResult] = (0, update_1.useRemoveDomainAllowMutation)({ fixedCacheKey: perm === null || perm === void 0 ? void 0 : perm.id });
-    const [addTrigger, addResult, removeTrigger, removeResult,] = (0, react_2.useMemo)(() => {
-        return permType == "block"
-            ? [
-                addBlock,
-                addBlockResult,
-                removeBlock,
-                removeBlockResult,
-            ]
-            : [
-                addAllow,
-                addAllowResult,
-                removeAllow,
-                removeAllowResult,
-            ];
-    }, [permType,
-        addBlock, addBlockResult, removeBlock, removeBlockResult,
-        addAllow, addAllowResult, removeAllow, removeAllowResult,
-    ]);
-    // Use appropriate submission params for this permType.
-    const [submitForm, submitFormResult] = (0, submit_1.default)(form, [addTrigger, addResult], { changedOnly: false });
-    // Uppercase first letter of given permType.
-    const permTypeUpper = (0, react_2.useMemo)(() => {
-        return permType.charAt(0).toUpperCase() + permType.slice(1);
-    }, [permType]);
-    const [location, setLocation] = (0, wouter_1.useLocation)();
-    function verifyUrlThenSubmit(e) {
-        // Adding a new domain permissions happens on a url like
-        // "/settings/admin/domain-permissions/:permType/domain.com",
-        // but if domain input changes, that doesn't match anymore
-        // and causes issues later on so, before submitting the form,
-        // silently change url, and THEN submit.
-        let correctUrl = `/${permType}s/${form.domain.value}`;
-        if (location != correctUrl) {
-            setLocation(correctUrl);
-        }
-        return submitForm(e);
-    }
-    return (react_1.default.createElement("form", { onSubmit: verifyUrlThenSubmit },
-        react_1.default.createElement(inputs_1.TextInput, Object.assign({ field: form.domain, label: "Domain", placeholder: "example.com", autoCapitalize: "none", spellCheck: "false" }, disabledForm)),
-        react_1.default.createElement(inputs_1.Checkbox, Object.assign({ field: form.obfuscate, label: "Obfuscate domain in public lists" }, disabledForm)),
-        react_1.default.createElement(inputs_1.TextArea, Object.assign({ field: form.commentPrivate, label: "Private comment", autoCapitalize: "sentences", rows: 3 }, disabledForm)),
-        react_1.default.createElement(inputs_1.TextArea, Object.assign({ field: form.commentPublic, label: "Public comment", autoCapitalize: "sentences", rows: 3 }, disabledForm)),
-        react_1.default.createElement("div", { className: "action-buttons row" },
-            react_1.default.createElement(mutation_button_1.default, Object.assign({ label: permTypeUpper, result: submitFormResult, showError: false }, disabledForm)),
-            isExistingPerm &&
-                react_1.default.createElement(mutation_button_1.default, { type: "button", onClick: () => { var _a; return removeTrigger((_a = perm.id) !== null && _a !== void 0 ? _a : ""); }, label: "Remove", result: removeResult, className: "button danger", showError: false, disabled: !isExistingPerm })),
-        react_1.default.createElement(react_1.default.Fragment, null,
-            addResult.error && react_1.default.createElement(error_1.Error, { error: addResult.error }),
-            removeResult.error && react_1.default.createElement(error_1.Error, { error: removeResult.error }))));
-}
-
-},{"../../../components/back-button":329,"../../../components/error":332,"../../../components/form/inputs":333,"../../../components/form/mutation-button":334,"../../../components/loading":336,"../../../lib/form":351,"../../../lib/form/submit":353,"../../../lib/navigation/util":357,"../../../lib/query/admin/domain-permissions/get":362,"../../../lib/query/admin/domain-permissions/update":365,"../../../lib/types/query":378,"is-valid-domain":133,"react":198,"wouter":323}],401:[function(require,module,exports){
+},{"../../../components/check-list":330,"../../../components/form/inputs":333,"../../../components/form/mutation-button":334,"../../../lib/form":351,"../../../lib/form/form-with-data":349,"../../../lib/form/submit":353,"../../../lib/query/admin/domain-permissions/get":364,"../../../lib/query/admin/domain-permissions/import":365,"../../../lib/util/domain-permission":382,"react":198}],341:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -29206,148 +29553,81 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importStar(require("react"));
 const wouter_1 = require("wouter");
-const http_header_permissions_1 = require("../../../lib/query/admin/http-header-permissions");
-const loading_1 = __importDefault(require("../../../components/loading"));
-const error_1 = require("../../../components/error");
-const admin_1 = require("../../../lib/query/admin");
-const username_1 = __importDefault(require("../../../components/username"));
-const util_1 = require("../../../lib/navigation/util");
-const back_button_1 = __importDefault(require("../../../components/back-button"));
-const mutation_button_1 = __importDefault(require("../../../components/form/mutation-button"));
-const testString = `/* To test this properly, set "flavor" to "Golang", as that's the language GoToSocial uses for regular expressions */
-
-/* Amazon crawler User-Agent example */
-Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/600.2.5 (KHTML\\, like Gecko) Version/8.0.2 Safari/600.2.5 (Amazonbot/0.1; +https://developer.amazon.com/support/amazonbot)
-
-/* Some other test strings */
-Some Test Value
-Another Test Value`;
-function HeaderPermDetail() {
-    let params = (0, wouter_1.useParams)();
-    if (params.permType !== "blocks" && params.permType !== "allows") {
-        throw "unrecognized perm type " + params.permType;
+const admin_1 = require("../lib/query/admin");
+const loading_1 = __importDefault(require("./loading"));
+const error_1 = require("./error");
+function UsernameLozenge({ account, linkTo, backLocation, classNames }) {
+    if (account === undefined) {
+        return react_1.default.createElement(react_1.default.Fragment, null, "[unknown]");
     }
-    const permType = (0, react_1.useMemo)(() => {
-        var _a;
-        return (_a = params.permType) === null || _a === void 0 ? void 0 : _a.slice(0, -1);
-    }, [params]);
-    let permID = params.permId;
-    if (!permID) {
-        throw "no perm ID";
-    }
-    if (permType === "block") {
-        return react_1.default.createElement(BlockDetail, { id: permID });
+    else if (typeof account === "string") {
+        return (react_1.default.createElement(FetchUsernameLozenge, { accountID: account, linkTo: linkTo, backLocation: backLocation, classNames: classNames }));
     }
     else {
-        return react_1.default.createElement(AllowDetail, { id: permID });
+        return (react_1.default.createElement(ReadyUsernameLozenge, { account: account, linkTo: linkTo, backLocation: backLocation, classNames: classNames }));
     }
 }
-exports.default = HeaderPermDetail;
-function BlockDetail({ id }) {
-    return (react_1.default.createElement(PermDeets, Object.assign({ permType: "Block" }, (0, http_header_permissions_1.useGetHeaderBlockQuery)(id))));
-}
-function AllowDetail({ id }) {
-    return (react_1.default.createElement(PermDeets, Object.assign({ permType: "Allow" }, (0, http_header_permissions_1.useGetHeaderAllowQuery)(id))));
-}
-function PermDeets({ permType, data: perm, isLoading: isLoadingPerm, isFetching: isFetchingPerm, isError: isErrorPerm, error: errorPerm, }) {
-    const [location] = (0, wouter_1.useLocation)();
-    const baseUrl = (0, util_1.useBaseUrl)();
-    // Once we've loaded the perm, trigger
-    // getting the account that created it.
-    const [getAccount, getAccountRes] = (0, admin_1.useLazyGetAccountQuery)();
+exports.default = UsernameLozenge;
+function FetchUsernameLozenge({ accountID, linkTo, backLocation, classNames }) {
+    const [trigger, result] = (0, admin_1.useLazyGetAccountQuery)();
+    // Call to get the account
+    // using the provided ID.
     (0, react_1.useEffect)(() => {
-        if (!perm) {
-            return;
-        }
-        getAccount(perm.created_by, true);
-    }, [getAccount, perm]);
-    // Load the createdByAccount if possible,
-    // returning a username lozenge with
-    // a link to the account.
-    const createdByAccount = (0, react_1.useMemo)(() => {
-        const { data: account, isLoading: isLoadingAccount, isFetching: isFetchingAccount, isError: isErrorAccount, } = getAccountRes;
-        // Wait for query to finish, returning
-        // loading spinner in the meantime.
-        if (isLoadingAccount || isFetchingAccount || !perm) {
-            return react_1.default.createElement(loading_1.default, null);
-        }
-        else if (isErrorAccount || account === undefined) {
-            // Fall back to account ID.
-            return perm === null || perm === void 0 ? void 0 : perm.created_by;
-        }
-        return (react_1.default.createElement(username_1.default, { account: account, linkTo: `~/settings/moderation/accounts/${account.id}`, backLocation: `~${baseUrl}${location}` }));
-    }, [getAccountRes, perm, baseUrl, location]);
-    // Now wait til the perm itself is loaded.
-    if (isLoadingPerm || isFetchingPerm) {
+        trigger(accountID, true);
+    }, [trigger, accountID]);
+    const { data: account, isLoading, isFetching, isError, error, } = result;
+    // Wait for the account
+    // model to be returned.
+    if (isError) {
+        return react_1.default.createElement(error_1.Error, { error: error });
+    }
+    else if (isLoading || isFetching || account === undefined) {
         return react_1.default.createElement(loading_1.default, null);
     }
-    else if (isErrorPerm) {
-        return react_1.default.createElement(error_1.Error, { error: errorPerm });
-    }
-    else if (perm === undefined) {
-        throw "perm undefined";
-    }
-    const created = new Date(perm.created_at).toDateString();
-    // Create parameters to link to regex101
-    // with this regular expression prepopulated.
-    const testParams = new URLSearchParams();
-    testParams.set("regex", perm.regex);
-    testParams.set("flags", "gm");
-    testParams.set("testString", testString);
-    const regexLink = `https://regex101.com/?${testParams.toString()}`;
-    return (react_1.default.createElement("div", { className: "http-header-permission-details" },
-        react_1.default.createElement("h1", null,
-            react_1.default.createElement(back_button_1.default, { to: `~${baseUrl}/${permType.toLowerCase()}s` }),
-            " HTTP Header ",
-            permType,
-            " Detail"),
-        react_1.default.createElement("dl", { className: "info-list" },
-            react_1.default.createElement("div", { className: "info-list-entry" },
-                react_1.default.createElement("dt", null, "ID"),
-                react_1.default.createElement("dd", { className: "monospace" }, perm.id)),
-            react_1.default.createElement("div", { className: "info-list-entry" },
-                react_1.default.createElement("dt", null, "Created"),
-                react_1.default.createElement("dd", null,
-                    react_1.default.createElement("time", { dateTime: perm.created_at }, created))),
-            react_1.default.createElement("div", { className: "info-list-entry" },
-                react_1.default.createElement("dt", null, "Created By"),
-                react_1.default.createElement("dd", null, createdByAccount)),
-            react_1.default.createElement("div", { className: "info-list-entry" },
-                react_1.default.createElement("dt", null, "Header Name"),
-                react_1.default.createElement("dd", { className: "monospace" }, perm.header)),
-            react_1.default.createElement("div", { className: "info-list-entry" },
-                react_1.default.createElement("dt", null, "Value Regex"),
-                react_1.default.createElement("dd", { className: "monospace" }, perm.regex)),
-            react_1.default.createElement("div", { className: "info-list-entry" },
-                react_1.default.createElement("dt", null, "Test This Regex"),
-                react_1.default.createElement("dd", null,
-                    react_1.default.createElement("a", { href: regexLink, target: "_blank", rel: "noreferrer" },
-                        react_1.default.createElement("i", { className: "fa fa-fw fa-external-link", "aria-hidden": "true" }),
-                        " Link to Regex101 (opens in a new tab)")))),
-        permType === "Block"
-            ? react_1.default.createElement(DeleteBlock, { id: perm.id })
-            : react_1.default.createElement(DeleteAllow, { id: perm.id })));
+    return (react_1.default.createElement(ReadyUsernameLozenge, { account: account, linkTo: linkTo, backLocation: backLocation, classNames: classNames }));
 }
-function DeleteBlock({ id }) {
+function ReadyUsernameLozenge({ account, linkTo, backLocation, classNames }) {
     const [_location, setLocation] = (0, wouter_1.useLocation)();
-    const baseUrl = (0, util_1.useBaseUrl)();
-    const [removeTrigger, removeResult] = (0, http_header_permissions_1.useDeleteHeaderBlockMutation)();
-    return (react_1.default.createElement(mutation_button_1.default, { type: "button", onClick: () => {
-            removeTrigger(id);
-            setLocation(`~${baseUrl}/blocks`);
-        }, label: "Remove this block", result: removeResult, className: "button danger", showError: false, disabled: false }));
-}
-function DeleteAllow({ id }) {
-    const [_location, setLocation] = (0, wouter_1.useLocation)();
-    const baseUrl = (0, util_1.useBaseUrl)();
-    const [removeTrigger, removeResult] = (0, http_header_permissions_1.useDeleteHeaderAllowMutation)();
-    return (react_1.default.createElement(mutation_button_1.default, { type: "button", onClick: () => {
-            removeTrigger(id);
-            setLocation(`~${baseUrl}/allows`);
-        }, label: "Remove this allow", result: removeResult, className: "button danger", showError: false, disabled: false }));
+    let className = "username-lozenge";
+    let isLocal = account.domain == null;
+    if (account.suspended) {
+        className += " suspended";
+    }
+    if (isLocal) {
+        className += " local";
+    }
+    if (classNames) {
+        className = [className, classNames].flat().join(" ");
+    }
+    let icon = isLocal
+        ? { fa: "fa-home", info: "Local user" }
+        : { fa: "fa-external-link-square", info: "Remote user" };
+    const content = (react_1.default.createElement(react_1.default.Fragment, null,
+        react_1.default.createElement("i", { className: `fa fa-fw ${icon.fa}`, "aria-hidden": "true", title: icon.info }),
+        react_1.default.createElement("span", { className: "sr-only" }, icon.info),
+        "\u00A0",
+        react_1.default.createElement("span", { className: "acct" },
+            "@",
+            account.account.acct)));
+    if (linkTo) {
+        className += " pseudolink";
+        return (react_1.default.createElement("span", { className: className, onClick: () => {
+                // When clicking on an account, direct
+                // to the detail view for that account.
+                setLocation(linkTo, {
+                    // Store the back location in history so
+                    // the detail view can use it to return to
+                    // this page (including query parameters).
+                    state: { backLocation: backLocation }
+                });
+            }, role: "link", tabIndex: 0 }, content));
+    }
+    else {
+        return (react_1.default.createElement("div", { className: className }, content));
+    }
 }
 
-},{"../../../components/back-button":329,"../../../components/error":332,"../../../components/form/mutation-button":334,"../../../components/loading":336,"../../../components/username":341,"../../../lib/navigation/util":357,"../../../lib/query/admin":367,"../../../lib/query/admin/http-header-permissions":366,"react":198,"wouter":323}],403:[function(require,module,exports){
+},{"../lib/query/admin":370,"./error":332,"./loading":336,"react":198,"wouter":323}],407:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -29421,7 +29701,7 @@ function EditInstanceRuleForm({ rule }) {
             deleteResult.error && react_1.default.createElement(error_1.Error, { error: deleteResult.error }))));
 }
 
-},{"../../../components/back-button":329,"../../../components/error":332,"../../../components/form/inputs":333,"../../../components/form/mutation-button":334,"../../../components/loading":336,"../../../lib/form":351,"../../../lib/form/submit":353,"../../../lib/navigation/util":357,"../../../lib/query/admin":367,"react":198,"wouter":323}],404:[function(require,module,exports){
+},{"../../../components/back-button":329,"../../../components/error":332,"../../../components/form/inputs":333,"../../../components/form/mutation-button":334,"../../../components/loading":336,"../../../lib/form":351,"../../../lib/form/submit":353,"../../../lib/navigation/util":357,"../../../lib/query/admin":370,"react":198,"wouter":323}],408:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -29479,7 +29759,7 @@ function InstanceRulesForm({ data: rules }) {
         react_1.default.createElement(mutation_button_1.default, { disabled: newRule.value === undefined || newRule.value.length === 0, label: "Add rule", result: result })));
 }
 
-},{"../../../components/form/inputs":333,"../../../components/form/mutation-button":334,"../../../lib/form":351,"../../../lib/form/form-with-data":349,"../../../lib/form/submit":353,"../../../lib/navigation/util":357,"../../../lib/query/admin":367,"react":198,"wouter":323}],405:[function(require,module,exports){
+},{"../../../components/form/inputs":333,"../../../components/form/mutation-button":334,"../../../lib/form":351,"../../../lib/form/form-with-data":349,"../../../lib/form/submit":353,"../../../lib/navigation/util":357,"../../../lib/query/admin":370,"react":198,"wouter":323}],409:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -29540,6 +29820,10 @@ function InstanceSettingsForm({ data: instance }) {
             valueSelector: (s) => s.description_text,
             validator: (val) => val.length <= descLimit ? "" : `Instance description is ${val.length} characters; must be ${descLimit} characters or less`
         }),
+        customCSS: (0, form_1.useTextInput)("custom_css", {
+            source: instance,
+            valueSelector: (s) => s.custom_css
+        }),
         terms: (0, form_1.useTextInput)("terms", {
             source: instance,
             // Select "raw" text version of parsed field for editing.
@@ -29574,10 +29858,11 @@ function InstanceSettingsForm({ data: instance }) {
             react_1.default.createElement("a", { href: "https://docs.gotosocial.org/en/latest/admin/settings/#instance-contact-info", target: "_blank", className: "docslink", rel: "noreferrer" }, "Learn more about these settings (opens in a new tab)")),
         react_1.default.createElement(inputs_1.TextInput, { field: form.contactUser, label: "Contact user (local account username)", placeholder: "admin", autoCapitalize: "none", spellCheck: "false" }),
         react_1.default.createElement(inputs_1.TextInput, { field: form.contactEmail, label: "Contact email", placeholder: "admin@example.com", type: "email" }),
+        react_1.default.createElement(inputs_1.TextArea, { field: form.customCSS, label: "Custom CSS", className: "monospace", rows: 8, autoCapitalize: "none", spellCheck: "false" }),
         react_1.default.createElement(mutation_button_1.default, { label: "Save", result: result, disabled: false })));
 }
 
-},{"../../../components/form/inputs":333,"../../../components/form/mutation-button":334,"../../../lib/form":351,"../../../lib/form/form-with-data":349,"../../../lib/form/submit":353,"../../../lib/query/admin":367,"../../../lib/query/gts-api":369,"react":198}],408:[function(require,module,exports){
+},{"../../../components/form/inputs":333,"../../../components/form/mutation-button":334,"../../../lib/form":351,"../../../lib/form/form-with-data":349,"../../../lib/form/submit":353,"../../../lib/query/admin":370,"../../../lib/query/gts-api":372,"react":198}],412:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -29697,215 +29982,7 @@ function HandleSignup({ account, backLocation }) {
         react_1.default.createElement(mutation_button_1.default, { disabled: false, label: form.approveOrReject.value === "approve" ? "Approve" : "Reject", result: result })));
 }
 
-},{"../../../../components/form/inputs":333,"../../../../components/form/mutation-button":334,"../../../../lib/form":351,"../../../../lib/form/submit":353,"../../../../lib/query/admin":367,"react":198,"wouter":323}],411:[function(require,module,exports){
-"use strict";
-/*
-    GoToSocial
-    Copyright (C) GoToSocial Authors admin@gotosocial.org
-    SPDX-License-Identifier: AGPL-3.0-or-later
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Affero General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Affero General Public License for more details.
-
-    You should have received a copy of the GNU Affero General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const react_1 = __importDefault(require("react"));
-const admin_1 = require("../../../../lib/query/admin");
-const pageable_list_1 = require("../../../../components/pageable-list");
-const wouter_1 = require("wouter");
-const username_1 = __importDefault(require("../../../../components/username"));
-function AccountsPending() {
-    var _a;
-    const [location, _setLocation] = (0, wouter_1.useLocation)();
-    const searchRes = (0, admin_1.useSearchAccountsQuery)({ status: "pending" });
-    // Function to map an item to a list entry.
-    function itemToEntry(account) {
-        const acc = account.account;
-        return (react_1.default.createElement(username_1.default, { key: acc.acct, account: account, linkTo: `/${account.id}`, backLocation: location, classNames: ["entry"] }));
-    }
-    return (react_1.default.createElement("div", { className: "accounts-view" },
-        react_1.default.createElement("div", { className: "form-section-docs" },
-            react_1.default.createElement("h1", null, "Pending Accounts"),
-            react_1.default.createElement("p", null,
-                "You can see a list of pending account sign-ups below.",
-                react_1.default.createElement("br", null),
-                "To approve or reject a sign-up, click on the account's name in the list, and use the controls at the bottom of the account detail view."),
-            react_1.default.createElement("a", { href: "https://docs.gotosocial.org/en/latest/admin/signups/", target: "_blank", className: "docslink", rel: "noreferrer" }, "Learn more about account sign-ups (opens in a new tab)")),
-        react_1.default.createElement(pageable_list_1.PageableList, { isLoading: searchRes.isLoading, isFetching: searchRes.isFetching, isSuccess: searchRes.isSuccess, items: (_a = searchRes.data) === null || _a === void 0 ? void 0 : _a.accounts, itemToEntry: itemToEntry, isError: searchRes.isError, error: searchRes.error, emptyMessage: react_1.default.createElement("b", null, "No pending account sign-ups.") })));
-}
-exports.default = AccountsPending;
-
-},{"../../../../components/pageable-list":337,"../../../../components/username":341,"../../../../lib/query/admin":367,"react":198,"wouter":323}],412:[function(require,module,exports){
-"use strict";
-/*
-    GoToSocial
-    Copyright (C) GoToSocial Authors admin@gotosocial.org
-    SPDX-License-Identifier: AGPL-3.0-or-later
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Affero General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Affero General Public License for more details.
-
-    You should have received a copy of the GNU Affero General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.AccountSearchForm = void 0;
-const react_1 = __importStar(require("react"));
-const admin_1 = require("../../../../lib/query/admin");
-const form_1 = require("../../../../lib/form");
-const pageable_list_1 = require("../../../../components/pageable-list");
-const inputs_1 = require("../../../../components/form/inputs");
-const mutation_button_1 = __importDefault(require("../../../../components/form/mutation-button"));
-const wouter_1 = require("wouter");
-const username_1 = __importDefault(require("../../../../components/username"));
-const is_valid_domain_1 = __importDefault(require("is-valid-domain"));
-function AccountSearchForm() {
-    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l;
-    const [location, setLocation] = (0, wouter_1.useLocation)();
-    const search = (0, wouter_1.useSearch)();
-    const urlQueryParams = (0, react_1.useMemo)(() => new URLSearchParams(search), [search]);
-    const [searchAcct, searchRes] = (0, admin_1.useLazySearchAccountsQuery)();
-    // Populate search form using values from
-    // urlQueryParams, to allow paging.
-    const form = {
-        origin: (0, form_1.useTextInput)("origin", { defaultValue: (_a = urlQueryParams.get("origin")) !== null && _a !== void 0 ? _a : "" }),
-        status: (0, form_1.useTextInput)("status", { defaultValue: (_b = urlQueryParams.get("status")) !== null && _b !== void 0 ? _b : "" }),
-        permissions: (0, form_1.useTextInput)("permissions", { defaultValue: (_c = urlQueryParams.get("permissions")) !== null && _c !== void 0 ? _c : "" }),
-        username: (0, form_1.useTextInput)("username", { defaultValue: (_d = urlQueryParams.get("username")) !== null && _d !== void 0 ? _d : "" }),
-        display_name: (0, form_1.useTextInput)("display_name", { defaultValue: (_e = urlQueryParams.get("display_name")) !== null && _e !== void 0 ? _e : "" }),
-        by_domain: (0, form_1.useTextInput)("by_domain", {
-            defaultValue: (_f = urlQueryParams.get("by_domain")) !== null && _f !== void 0 ? _f : "",
-            validator: (v) => {
-                if (v.length === 0) {
-                    return "";
-                }
-                if (v[v.length - 1] === ".") {
-                    return "invalid domain";
-                }
-                const valid = (0, is_valid_domain_1.default)(v, {
-                    subdomain: true,
-                    wildcard: false,
-                    allowUnicode: true,
-                    topLevel: false,
-                });
-                if (valid) {
-                    return "";
-                }
-                return "invalid domain";
-            }
-        }),
-        email: (0, form_1.useTextInput)("email", { defaultValue: (_g = urlQueryParams.get("email")) !== null && _g !== void 0 ? _g : "" }),
-        ip: (0, form_1.useTextInput)("ip", { defaultValue: (_h = urlQueryParams.get("ip")) !== null && _h !== void 0 ? _h : "" }),
-        limit: (0, form_1.useTextInput)("limit", { defaultValue: (_j = urlQueryParams.get("limit")) !== null && _j !== void 0 ? _j : "50" })
-    };
-    // On mount, if urlQueryParams were provided,
-    // trigger the search. For example, if page
-    // was accessed at /search?origin=local&limit=20,
-    // then run a search with origin=local and
-    // limit=20 and immediately render the results.
-    (0, react_1.useEffect)(() => {
-        if (urlQueryParams.size > 0) {
-            searchAcct(Object.fromEntries(urlQueryParams), true);
-        }
-    }, [urlQueryParams, searchAcct]);
-    // Rather than triggering the search directly,
-    // the "submit" button changes the location
-    // based on form field params, and lets the
-    // useEffect hook above actually do the search.
-    function submitQuery(e) {
-        e.preventDefault();
-        // Parse query parameters.
-        const entries = Object.entries(form).map(([k, v]) => {
-            // Take only defined form fields.
-            if (v.value === undefined || v.value.length === 0) {
-                return null;
-            }
-            return [[k, v.value]];
-        }).flatMap(kv => {
-            // Remove any nulls.
-            return kv || [];
-        });
-        const searchParams = new URLSearchParams(entries);
-        setLocation(location + "?" + searchParams.toString());
-    }
-    // Location to return to when user clicks "back" on the account detail view.
-    const backLocation = location + (urlQueryParams.size > 0 ? `?${urlQueryParams}` : "");
-    // Function to map an item to a list entry.
-    function itemToEntry(account) {
-        const acc = account.account;
-        return (react_1.default.createElement(username_1.default, { key: acc.acct, account: account, linkTo: `/${account.id}`, backLocation: backLocation, classNames: ["entry"] }));
-    }
-    return (react_1.default.createElement(react_1.default.Fragment, null,
-        react_1.default.createElement("form", { onSubmit: submitQuery, 
-            // Prevent password managers trying
-            // to fill in username/email fields.
-            autoComplete: "off" },
-            react_1.default.createElement(inputs_1.TextInput, { field: form.username, label: `Username (without "@" prefix) - case sensitive`, placeholder: "someone", autoCapitalize: "none", spellCheck: "false" }),
-            react_1.default.createElement(inputs_1.TextInput, { field: form.by_domain, label: `Domain (without "https://" prefix)`, placeholder: "example.org", autoCapitalize: "none", spellCheck: "false" }),
-            react_1.default.createElement(inputs_1.Select, { field: form.origin, label: "Account origin", options: react_1.default.createElement(react_1.default.Fragment, null,
-                    react_1.default.createElement("option", { value: "" }, "Local or remote"),
-                    react_1.default.createElement("option", { value: "local" }, "Local only"),
-                    react_1.default.createElement("option", { value: "remote" }, "Remote only")) }),
-            react_1.default.createElement(inputs_1.TextInput, { field: form.email, label: "Email address (local accounts only)", placeholder: "someone@example.org", 
-                // Get email validation for free.
-                type: "email" }),
-            react_1.default.createElement(inputs_1.TextInput, { field: form.ip, label: "IP address (local accounts only)", placeholder: "198.51.100.0", autoCapitalize: "none", spellCheck: "false", className: "monospace" }),
-            react_1.default.createElement(inputs_1.Select, { field: form.status, label: "Account status", options: react_1.default.createElement(react_1.default.Fragment, null,
-                    react_1.default.createElement("option", { value: "" }, "Any"),
-                    react_1.default.createElement("option", { value: "pending" }, "Pending only"),
-                    react_1.default.createElement("option", { value: "disabled" }, "Disabled only"),
-                    react_1.default.createElement("option", { value: "suspended" }, "Suspended only")) }),
-            react_1.default.createElement(mutation_button_1.default, { disabled: false, label: "Search", result: searchRes })),
-        react_1.default.createElement(pageable_list_1.PageableList, { isLoading: searchRes.isLoading, isFetching: searchRes.isFetching, isSuccess: searchRes.isSuccess, items: (_k = searchRes.data) === null || _k === void 0 ? void 0 : _k.accounts, itemToEntry: itemToEntry, isError: searchRes.isError, error: searchRes.error, emptyMessage: react_1.default.createElement("b", null, "No accounts found that match your query."), prevNextLinks: (_l = searchRes.data) === null || _l === void 0 ? void 0 : _l.links })));
-}
-exports.AccountSearchForm = AccountSearchForm;
-
-},{"../../../../components/form/inputs":333,"../../../../components/form/mutation-button":334,"../../../../components/pageable-list":337,"../../../../components/username":341,"../../../../lib/form":351,"../../../../lib/query/admin":367,"is-valid-domain":133,"react":198,"wouter":323}],423:[function(require,module,exports){
+},{"../../../../components/form/inputs":333,"../../../../components/form/mutation-button":334,"../../../../lib/form":351,"../../../../lib/form/submit":353,"../../../../lib/query/admin":370,"react":198,"wouter":323}],440:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -30060,7 +30137,7 @@ function EmailChangeForm({ user, oidcEnabled }) {
         react_1.default.createElement(mutation_button_1.default, { disabled: !form.password || !form.newEmail || !form.newEmail.valid, label: "Change email address", result: result })));
 }
 
-},{"../../components/form/inputs":333,"../../components/form/mutation-button":334,"../../components/loading":336,"../../lib/form":351,"../../lib/form/submit":353,"../../lib/query/gts-api":369,"../../lib/query/user":374,"react":198}],432:[function(require,module,exports){
+},{"../../components/form/inputs":333,"../../components/form/mutation-button":334,"../../components/loading":336,"../../lib/form":351,"../../lib/form/submit":353,"../../lib/query/gts-api":372,"../../lib/query/user":377,"react":198}],449:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -30196,7 +30273,7 @@ function MoveForm({ data: profile }) {
         react_1.default.createElement(mutation_button_1.default, { disabled: false, label: "Confirm account move", result: result })));
 }
 
-},{"../../components/form/inputs":333,"../../components/form/mutation-button":334,"../../lib/form":351,"../../lib/form/context":346,"../../lib/form/form-with-data":349,"../../lib/form/submit":353,"../../lib/query/oauth":370,"../../lib/query/user":374,"../../redux/store":383,"react":198}],433:[function(require,module,exports){
+},{"../../components/form/inputs":333,"../../components/form/mutation-button":334,"../../lib/form":351,"../../lib/form/context":346,"../../lib/form/form-with-data":349,"../../lib/form/submit":353,"../../lib/query/oauth":373,"../../lib/query/user":377,"../../redux/store":387,"react":198}],450:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -30258,7 +30335,7 @@ function BasicSettings({ account }) {
 }
 exports.default = BasicSettings;
 
-},{"../../../../components/form/inputs":333,"../../../../components/form/mutation-button":334,"../../../../components/languages":335,"../../../../lib/form":351,"../../../../lib/form/submit":353,"../../../../lib/query/user":374,"react":198}],438:[function(require,module,exports){
+},{"../../../../components/form/inputs":333,"../../../../components/form/mutation-button":334,"../../../../components/languages":335,"../../../../lib/form":351,"../../../../lib/form/submit":353,"../../../../lib/query/user":377,"react":198}],455:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -30450,7 +30527,7 @@ function Field({ index, data }) {
         react_1.default.createElement(inputs_1.TextInput, { field: form.value, placeholder: "Value", autoCapitalize: "none", spellCheck: "false" })));
 }
 
-},{"../../components/form/inputs":333,"../../components/form/mutation-button":334,"../../components/profile":338,"../../lib/form":351,"../../lib/form/context":346,"../../lib/form/form-with-data":349,"../../lib/form/submit":353,"../../lib/query/gts-api":369,"../../lib/query/oauth":370,"../../lib/query/user":374,"react":198}],420:[function(require,module,exports){
+},{"../../components/form/inputs":333,"../../components/form/mutation-button":334,"../../components/profile":338,"../../lib/form":351,"../../lib/form/context":346,"../../lib/form/form-with-data":349,"../../lib/form/submit":353,"../../lib/query/gts-api":372,"../../lib/query/oauth":373,"../../lib/query/user":377,"react":198}],417:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -30475,129 +30552,662 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importDefault(require("react"));
+const react_2 = require("react");
 const wouter_1 = require("wouter");
-const form_with_data_1 = __importDefault(require("../../../lib/form/form-with-data"));
-const back_button_1 = __importDefault(require("../../../components/back-button"));
 const form_1 = require("../../../lib/form");
 const submit_1 = __importDefault(require("../../../lib/form/submit"));
 const inputs_1 = require("../../../components/form/inputs");
+const loading_1 = __importDefault(require("../../../components/loading"));
+const back_button_1 = __importDefault(require("../../../components/back-button"));
 const mutation_button_1 = __importDefault(require("../../../components/form/mutation-button"));
-const username_1 = __importDefault(require("../../../components/username"));
-const reports_1 = require("../../../lib/query/admin/reports");
+const get_1 = require("../../../lib/query/admin/domain-permissions/get");
+const update_1 = require("../../../lib/query/admin/domain-permissions/update");
+const query_1 = require("../../../lib/types/query");
+const error_1 = require("../../../components/error");
 const util_1 = require("../../../lib/navigation/util");
 const util_2 = require("../../../lib/util");
-const status_1 = require("../../../components/status");
-function ReportDetail({}) {
-    var _a, _b;
-    const params = (0, wouter_1.useParams)();
-    const baseUrl = (0, util_1.useBaseUrl)();
-    const backLocation = (_b = (_a = history.state) === null || _a === void 0 ? void 0 : _a.backLocation) !== null && _b !== void 0 ? _b : `~${baseUrl}`;
-    return (react_1.default.createElement("div", { className: "report-detail" },
-        react_1.default.createElement("h1", null,
-            react_1.default.createElement(back_button_1.default, { to: backLocation }),
-            " Report Details"),
-        react_1.default.createElement(form_with_data_1.default, { dataQuery: reports_1.useGetReportQuery, queryArg: params.reportId, DataForm: ReportDetailForm, backLocation: backLocation })));
-}
-exports.default = ReportDetail;
-function ReportDetailForm({ data: report }) {
-    const [location] = (0, wouter_1.useLocation)();
-    const baseUrl = (0, util_1.useBaseUrl)();
-    return (react_1.default.createElement(react_1.default.Fragment, null,
-        react_1.default.createElement(ReportBasicInfo, { report: report, baseUrl: baseUrl, location: location }),
-        report.action_taken
-            && react_1.default.createElement(ReportHistory, { report: report, baseUrl: baseUrl, location: location }),
-        report.statuses &&
-            react_1.default.createElement(ReportStatuses, { report: report }),
-        !report.action_taken &&
-            react_1.default.createElement(ReportActionForm, { report: report })));
-}
-function ReportBasicInfo({ report, baseUrl, location }) {
-    const from = report.account;
-    const target = report.target_account;
-    const comment = report.comment;
-    const status = report.action_taken ? "Resolved" : "Unresolved";
-    const created = new Date(report.created_at).toLocaleString();
-    return (react_1.default.createElement("dl", { className: "info-list overview" },
-        react_1.default.createElement("div", { className: "info-list-entry" },
-            react_1.default.createElement("dt", null, "Reported account"),
-            react_1.default.createElement("dd", null,
-                react_1.default.createElement(username_1.default, { account: target, linkTo: `~/settings/moderation/accounts/${target.id}`, backLocation: `~${baseUrl}${location}` }))),
-        react_1.default.createElement("div", { className: "info-list-entry" },
-            react_1.default.createElement("dt", null, "Reported by"),
-            react_1.default.createElement("dd", null,
-                react_1.default.createElement(username_1.default, { account: from, linkTo: `~/settings/moderation/accounts/${from.id}`, backLocation: `~${baseUrl}${location}` }))),
-        react_1.default.createElement("div", { className: "info-list-entry" },
-            react_1.default.createElement("dt", null, "Status"),
-            react_1.default.createElement("dd", null, report.action_taken
-                ? react_1.default.createElement(react_1.default.Fragment, null, status)
-                : react_1.default.createElement("b", null, status))),
-        react_1.default.createElement("div", { className: "info-list-entry" },
-            react_1.default.createElement("dt", null, "Reason"),
-            react_1.default.createElement("dd", null, comment.length > 0
-                ? react_1.default.createElement(react_1.default.Fragment, null, comment)
-                : react_1.default.createElement("i", null, "none provided"))),
-        react_1.default.createElement("div", { className: "info-list-entry" },
-            react_1.default.createElement("dt", null, "Created"),
-            react_1.default.createElement("dd", null,
-                react_1.default.createElement("time", { dateTime: report.created_at }, created))),
-        react_1.default.createElement("div", { className: "info-list-entry" },
-            react_1.default.createElement("dt", null, "Category"),
-            react_1.default.createElement("dd", null, report.category)),
-        react_1.default.createElement("div", { className: "info-list-entry" },
-            react_1.default.createElement("dt", null, "Forwarded"),
-            react_1.default.createElement("dd", null, (0, util_2.yesOrNo)(report.forwarded)))));
-}
-function ReportHistory({ report, baseUrl, location }) {
+const formvalidators_1 = require("../../../lib/util/formvalidators");
+function DomainPermDetail() {
     var _a;
-    const handled_by = report.action_taken_by_account;
-    if (!handled_by) {
-        throw "report handled by action_taken_by_account undefined";
+    const baseUrl = (0, util_1.useBaseUrl)();
+    const search = (0, wouter_1.useSearch)();
+    // Parse perm type from routing params, converting
+    // "blocks" => "block" and "allows" => "allow".
+    const params = (0, wouter_1.useParams)();
+    const permTypeRaw = params.permType;
+    if (permTypeRaw !== "blocks" && permTypeRaw !== "allows") {
+        throw "unrecognized perm type " + params.permType;
     }
-    const handled = report.action_taken_at ? new Date(report.action_taken_at).toLocaleString() : "never";
-    return (react_1.default.createElement(react_1.default.Fragment, null,
-        react_1.default.createElement("h3", null, "Moderation History"),
-        react_1.default.createElement("dl", { className: "info-list" },
-            react_1.default.createElement("div", { className: "info-list-entry" },
-                react_1.default.createElement("dt", null, "Handled by"),
-                react_1.default.createElement("dd", null,
-                    react_1.default.createElement(username_1.default, { account: handled_by, linkTo: `~/settings/moderation/accounts/${handled_by.id}`, backLocation: `~${baseUrl}${location}` }))),
-            react_1.default.createElement("div", { className: "info-list-entry" },
-                react_1.default.createElement("dt", null, "Handled"),
-                react_1.default.createElement("dd", null,
-                    react_1.default.createElement("time", { dateTime: report.action_taken_at }, handled))),
-            react_1.default.createElement("div", { className: "info-list-entry" },
-                react_1.default.createElement("dt", null, "Comment"),
-                react_1.default.createElement("dd", null, (_a = report.action_taken_comment) !== null && _a !== void 0 ? _a : "none")))));
+    const permType = (0, react_2.useMemo)(() => {
+        return permTypeRaw.slice(0, -1);
+    }, [permTypeRaw]);
+    // Conditionally fetch either domain blocks or domain
+    // allows depending on which perm type we're looking at.
+    const { data: blocks = {}, isLoading: loadingBlocks, isFetching: fetchingBlocks, } = (0, get_1.useDomainBlocksQuery)(query_1.NoArg, { skip: permType !== "block" });
+    const { data: allows = {}, isLoading: loadingAllows, isFetching: fetchingAllows, } = (0, get_1.useDomainAllowsQuery)(query_1.NoArg, { skip: permType !== "allow" });
+    // Wait until we're done loading.
+    const loading = permType === "block"
+        ? loadingBlocks || fetchingBlocks
+        : loadingAllows || fetchingAllows;
+    if (loading) {
+        return react_1.default.createElement(loading_1.default, null);
+    }
+    // Parse domain from routing params.
+    let domain = (_a = params.domain) !== null && _a !== void 0 ? _a : "unknown";
+    if (domain === "view") {
+        // Retrieve domain from form field submission.
+        const searchParams = new URLSearchParams(search);
+        const searchDomain = searchParams.get("domain");
+        if (!searchDomain) {
+            throw "empty view domain";
+        }
+        domain = searchDomain;
+    }
+    // Normalize / decode domain
+    // (it may be URL-encoded).
+    domain = decodeURIComponent(domain);
+    // Check if we already have a perm
+    // of the desired type for this domain.
+    const existingPerm = permType === "block"
+        ? blocks[domain]
+        : allows[domain];
+    // Render different into content depending on
+    // if we have a perm already for this domain.
+    let infoContent;
+    if (existingPerm === undefined) {
+        infoContent = (react_1.default.createElement("span", null,
+            "No stored ",
+            permType,
+            " yet, you can add one below:"));
+    }
+    else {
+        infoContent = (react_1.default.createElement("div", { className: "info" },
+            react_1.default.createElement("i", { className: "fa fa-fw fa-exclamation-triangle", "aria-hidden": "true" }),
+            react_1.default.createElement("b", null,
+                "Editing existing domain ",
+                permTypeRaw,
+                " isn't implemented yet, ",
+                react_1.default.createElement("a", { href: "https://github.com/superseriousbusiness/gotosocial/issues/1198", target: "_blank", rel: "noopener noreferrer" }, "check here for progress"))));
+    }
+    return (react_1.default.createElement("div", null,
+        react_1.default.createElement("h1", { className: "text-cutoff" },
+            react_1.default.createElement(back_button_1.default, { to: `~${baseUrl}/${permTypeRaw}` }),
+            " ",
+            "Domain ",
+            permType,
+            " for ",
+            domain),
+        infoContent,
+        react_1.default.createElement(DomainPermForm, { defaultDomain: domain, perm: existingPerm, permType: permType })));
 }
-function ReportActionForm({ report }) {
+exports.default = DomainPermDetail;
+function DomainPermForm({ defaultDomain, perm, permType }) {
+    const isExistingPerm = perm !== undefined;
+    const disabledForm = isExistingPerm
+        ? {
+            disabled: true,
+            title: "Domain permissions currently cannot be edited."
+        }
+        : {
+            disabled: false,
+            title: "",
+        };
     const form = {
-        id: (0, form_1.useValue)("id", report.id),
-        comment: (0, form_1.useTextInput)("action_taken_comment")
+        domain: (0, form_1.useTextInput)("domain", {
+            source: perm,
+            defaultValue: defaultDomain,
+            validator: formvalidators_1.formDomainValidator,
+        }),
+        obfuscate: (0, form_1.useBoolInput)("obfuscate", { source: perm }),
+        commentPrivate: (0, form_1.useTextInput)("private_comment", { source: perm }),
+        commentPublic: (0, form_1.useTextInput)("public_comment", { source: perm })
     };
-    const [submit, result] = (0, submit_1.default)(form, (0, reports_1.useResolveReportMutation)(), { changedOnly: false });
-    return (react_1.default.createElement("form", { onSubmit: submit },
-        react_1.default.createElement("h3", null, "Resolve this report"),
-        react_1.default.createElement(react_1.default.Fragment, null,
-            "An optional comment can be included while resolving this report. This is useful for providing an explanation about what action was taken (if any) before the report was marked as resolved.",
-            react_1.default.createElement("br", null),
-            react_1.default.createElement("div", { className: "info" },
-                react_1.default.createElement("i", { className: "fa fa-fw fa-exclamation-triangle", "aria-hidden": "true" }),
-                react_1.default.createElement("b", null, "If the report was created by a local account, then any comment made here will be emailed to that account's user!"))),
-        react_1.default.createElement(inputs_1.TextArea, { field: form.comment, label: "Comment", autoCapitalize: "sentences" }),
-        react_1.default.createElement(mutation_button_1.default, { disabled: false, label: "Resolve", result: result })));
-}
-function ReportStatuses({ report }) {
-    if (report.statuses.length === 0) {
-        return null;
+    // Check which perm type we're meant to be handling
+    // here, and use appropriate mutations and results.
+    // We can't call these hooks conditionally because
+    // react is like "weh" (mood), but we can decide
+    // which ones to use conditionally.
+    const [addBlock, addBlockResult] = (0, update_1.useAddDomainBlockMutation)();
+    const [removeBlock, removeBlockResult] = (0, update_1.useRemoveDomainBlockMutation)({ fixedCacheKey: perm === null || perm === void 0 ? void 0 : perm.id });
+    const [addAllow, addAllowResult] = (0, update_1.useAddDomainAllowMutation)();
+    const [removeAllow, removeAllowResult] = (0, update_1.useRemoveDomainAllowMutation)({ fixedCacheKey: perm === null || perm === void 0 ? void 0 : perm.id });
+    const [addTrigger, addResult, removeTrigger, removeResult,] = (0, react_2.useMemo)(() => {
+        return permType == "block"
+            ? [
+                addBlock,
+                addBlockResult,
+                removeBlock,
+                removeBlockResult,
+            ]
+            : [
+                addAllow,
+                addAllowResult,
+                removeAllow,
+                removeAllowResult,
+            ];
+    }, [permType,
+        addBlock, addBlockResult, removeBlock, removeBlockResult,
+        addAllow, addAllowResult, removeAllow, removeAllowResult,
+    ]);
+    // Use appropriate submission params for this permType.
+    const [submitForm, submitFormResult] = (0, submit_1.default)(form, [addTrigger, addResult], { changedOnly: false });
+    // Uppercase first letter of given permType.
+    const permTypeUpper = (0, util_2.useCapitalize)(permType);
+    const [location, setLocation] = (0, wouter_1.useLocation)();
+    function verifyUrlThenSubmit(e) {
+        // Adding a new domain permissions happens on a url like
+        // "/settings/admin/domain-permissions/:permType/domain.com",
+        // but if domain input changes, that doesn't match anymore
+        // and causes issues later on so, before submitting the form,
+        // silently change url, and THEN submit.
+        let correctUrl = `/${permType}s/${form.domain.value}`;
+        if (location != correctUrl) {
+            setLocation(correctUrl);
+        }
+        return submitForm(e);
     }
-    return (react_1.default.createElement("div", { className: "report-statuses" },
-        react_1.default.createElement("h3", null, "Reported Statuses"),
-        react_1.default.createElement("ul", { className: "thread" }, report.statuses.map((status) => {
-            return (react_1.default.createElement(status_1.Status, { key: status.id, status: status }));
-        }))));
+    return (react_1.default.createElement("form", { onSubmit: verifyUrlThenSubmit },
+        react_1.default.createElement(inputs_1.TextInput, Object.assign({ field: form.domain, label: "Domain", placeholder: "example.com", autoCapitalize: "none", spellCheck: "false" }, disabledForm)),
+        react_1.default.createElement(inputs_1.Checkbox, Object.assign({ field: form.obfuscate, label: "Obfuscate domain in public lists" }, disabledForm)),
+        react_1.default.createElement(inputs_1.TextArea, Object.assign({ field: form.commentPrivate, label: "Private comment", autoCapitalize: "sentences", rows: 3 }, disabledForm)),
+        react_1.default.createElement(inputs_1.TextArea, Object.assign({ field: form.commentPublic, label: "Public comment", autoCapitalize: "sentences", rows: 3 }, disabledForm)),
+        react_1.default.createElement("div", { className: "action-buttons row" },
+            react_1.default.createElement(mutation_button_1.default, Object.assign({ label: permTypeUpper, result: submitFormResult, showError: false }, disabledForm)),
+            isExistingPerm &&
+                react_1.default.createElement(mutation_button_1.default, { type: "button", onClick: () => { var _a; return removeTrigger((_a = perm.id) !== null && _a !== void 0 ? _a : ""); }, label: "Remove", result: removeResult, className: "button danger", showError: false, disabled: !isExistingPerm })),
+        react_1.default.createElement(react_1.default.Fragment, null,
+            addResult.error && react_1.default.createElement(error_1.Error, { error: addResult.error }),
+            removeResult.error && react_1.default.createElement(error_1.Error, { error: removeResult.error }))));
 }
 
-},{"../../../components/back-button":329,"../../../components/form/inputs":333,"../../../components/form/mutation-button":334,"../../../components/status":339,"../../../components/username":341,"../../../lib/form":351,"../../../lib/form/form-with-data":349,"../../../lib/form/submit":353,"../../../lib/navigation/util":357,"../../../lib/query/admin/reports":368,"../../../lib/util":380,"react":198,"wouter":323}],327:[function(require,module,exports){
+},{"../../../components/back-button":329,"../../../components/error":332,"../../../components/form/inputs":333,"../../../components/form/mutation-button":334,"../../../components/loading":336,"../../../lib/form":351,"../../../lib/form/submit":353,"../../../lib/navigation/util":357,"../../../lib/query/admin/domain-permissions/get":364,"../../../lib/query/admin/domain-permissions/update":368,"../../../lib/types/query":381,"../../../lib/util":384,"../../../lib/util/formvalidators":383,"react":198,"wouter":323}],420:[function(require,module,exports){
+"use strict";
+/*
+    GoToSocial
+    Copyright (C) GoToSocial Authors admin@gotosocial.org
+    SPDX-License-Identifier: AGPL-3.0-or-later
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const react_1 = __importStar(require("react"));
+const form_1 = require("../../../../lib/form");
+const pageable_list_1 = require("../../../../components/pageable-list");
+const mutation_button_1 = __importDefault(require("../../../../components/form/mutation-button"));
+const wouter_1 = require("wouter");
+const drafts_1 = require("../../../../lib/query/admin/domain-permissions/drafts");
+const error_1 = require("../../../../components/error");
+const inputs_1 = require("../../../../components/form/inputs");
+const formvalidators_1 = require("../../../../lib/util/formvalidators");
+const util_1 = require("../../../../lib/util");
+const common_1 = require("./common");
+function DomainPermissionDraftsSearch() {
+    return (react_1.default.createElement("div", { className: "domain-permission-drafts-view" },
+        react_1.default.createElement("div", { className: "form-section-docs" },
+            react_1.default.createElement("h1", null, "Domain Permission Drafts"),
+            react_1.default.createElement("p", null,
+                "You can use the form below to search through domain permission drafts.",
+                react_1.default.createElement("br", null),
+                react_1.default.createElement(common_1.DomainPermissionDraftHelpText, null)),
+            react_1.default.createElement(common_1.DomainPermissionDraftDocsLink, null)),
+        react_1.default.createElement(DomainPermissionDraftsSearchForm, null)));
+}
+exports.default = DomainPermissionDraftsSearch;
+function DomainPermissionDraftsSearchForm() {
+    var _a, _b, _c, _d, _e, _f;
+    const [location, setLocation] = (0, wouter_1.useLocation)();
+    const search = (0, wouter_1.useSearch)();
+    const urlQueryParams = (0, react_1.useMemo)(() => new URLSearchParams(search), [search]);
+    const hasParams = urlQueryParams.size != 0;
+    const [searchDrafts, searchRes] = (0, drafts_1.useLazySearchDomainPermissionDraftsQuery)();
+    const form = {
+        subscription_id: (0, form_1.useTextInput)("subscription_id", { defaultValue: (_a = urlQueryParams.get("subscription_id")) !== null && _a !== void 0 ? _a : "" }),
+        domain: (0, form_1.useTextInput)("domain", {
+            defaultValue: (_b = urlQueryParams.get("domain")) !== null && _b !== void 0 ? _b : "",
+            validator: formvalidators_1.formDomainValidator,
+        }),
+        permission_type: (0, form_1.useTextInput)("permission_type", { defaultValue: (_c = urlQueryParams.get("permission_type")) !== null && _c !== void 0 ? _c : "" }),
+        limit: (0, form_1.useTextInput)("limit", { defaultValue: (_d = urlQueryParams.get("limit")) !== null && _d !== void 0 ? _d : "20" })
+    };
+    // On mount, if urlQueryParams were provided,
+    // trigger the search. For example, if page
+    // was accessed at /search?origin=local&limit=20,
+    // then run a search with origin=local and
+    // limit=20 and immediately render the results.
+    //
+    // If no urlQueryParams set, trigger default
+    // search (first page, no filtering).
+    (0, react_1.useEffect)(() => {
+        if (hasParams) {
+            searchDrafts(Object.fromEntries(urlQueryParams));
+        }
+        else {
+            setLocation(location + "?limit=20");
+        }
+    }, [
+        urlQueryParams,
+        hasParams,
+        searchDrafts,
+        location,
+        setLocation,
+    ]);
+    // Rather than triggering the search directly,
+    // the "submit" button changes the location
+    // based on form field params, and lets the
+    // useEffect hook above actually do the search.
+    function submitQuery(e) {
+        e.preventDefault();
+        // Parse query parameters.
+        const entries = Object.entries(form).map(([k, v]) => {
+            // Take only defined form fields.
+            if (v.value === undefined || v.value.length === 0 || v.value === "any") {
+                return null;
+            }
+            return [[k, v.value]];
+        }).flatMap(kv => {
+            // Remove any nulls.
+            return kv || [];
+        });
+        const searchParams = new URLSearchParams(entries);
+        setLocation(location + "?" + searchParams.toString());
+    }
+    // Location to return to when user clicks "back" on the detail view.
+    const backLocation = location + (hasParams ? `?${urlQueryParams}` : "");
+    // Function to map an item to a list entry.
+    function itemToEntry(draft) {
+        return (react_1.default.createElement(DraftListEntry, { key: draft.id, permDraft: draft, linkTo: `/drafts/${draft.id}`, backLocation: backLocation }));
+    }
+    return (react_1.default.createElement(react_1.default.Fragment, null,
+        react_1.default.createElement("form", { onSubmit: submitQuery, 
+            // Prevent password managers
+            // trying to fill in fields.
+            autoComplete: "off" },
+            react_1.default.createElement(inputs_1.Select, { field: form.permission_type, label: "Permission type", options: react_1.default.createElement(react_1.default.Fragment, null,
+                    react_1.default.createElement("option", { value: "" }, "Any"),
+                    react_1.default.createElement("option", { value: "block" }, "Block"),
+                    react_1.default.createElement("option", { value: "allow" }, "Allow")) }),
+            react_1.default.createElement(inputs_1.TextInput, { field: form.domain, label: `Domain (without "https://" prefix)`, placeholder: "example.org", autoCapitalize: "none", spellCheck: "false" }),
+            react_1.default.createElement(inputs_1.Select, { field: form.limit, label: "Items per page", options: react_1.default.createElement(react_1.default.Fragment, null,
+                    react_1.default.createElement("option", { value: "20" }, "20"),
+                    react_1.default.createElement("option", { value: "50" }, "50"),
+                    react_1.default.createElement("option", { value: "100" }, "100")) }),
+            react_1.default.createElement(mutation_button_1.default, { disabled: false, label: "Search", result: searchRes })),
+        react_1.default.createElement(pageable_list_1.PageableList, { isLoading: searchRes.isLoading, isFetching: searchRes.isFetching, isSuccess: searchRes.isSuccess, items: (_e = searchRes.data) === null || _e === void 0 ? void 0 : _e.drafts, itemToEntry: itemToEntry, isError: searchRes.isError, error: searchRes.error, emptyMessage: react_1.default.createElement("b", null, "No drafts found that match your query."), prevNextLinks: (_f = searchRes.data) === null || _f === void 0 ? void 0 : _f.links })));
+}
+function DraftListEntry({ permDraft, linkTo, backLocation }) {
+    var _a, _b, _c;
+    const [_location, setLocation] = (0, wouter_1.useLocation)();
+    const [accept, acceptResult] = (0, drafts_1.useAcceptDomainPermissionDraftMutation)();
+    const [remove, removeResult] = (0, drafts_1.useRemoveDomainPermissionDraftMutation)();
+    const domain = permDraft.domain;
+    const permType = permDraft.permission_type;
+    const permTypeUpper = (0, util_1.useCapitalize)(permType);
+    if (!permType) {
+        return react_1.default.createElement(error_1.Error, { error: new Error("permission_type was undefined") });
+    }
+    const publicComment = (_a = permDraft.public_comment) !== null && _a !== void 0 ? _a : "[none]";
+    const privateComment = (_b = permDraft.private_comment) !== null && _b !== void 0 ? _b : "[none]";
+    const subscriptionID = (_c = permDraft.subscription_id) !== null && _c !== void 0 ? _c : "[none]";
+    const id = permDraft.id;
+    if (!id) {
+        return react_1.default.createElement(error_1.Error, { error: new Error("id was undefined") });
+    }
+    const title = `${permTypeUpper} ${domain}`;
+    return (react_1.default.createElement("span", { className: `pseudolink domain-permission-draft entry ${permType}`, "aria-label": title, title: title, onClick: () => {
+            // When clicking on a draft, direct
+            // to the detail view for that draft.
+            setLocation(linkTo, {
+                // Store the back location in history so
+                // the detail view can use it to return to
+                // this page (including query parameters).
+                state: { backLocation: backLocation }
+            });
+        }, role: "link", tabIndex: 0 },
+        react_1.default.createElement("h3", null, title),
+        react_1.default.createElement("dl", { className: "info-list" },
+            react_1.default.createElement("div", { className: "info-list-entry" },
+                react_1.default.createElement("dt", null, "Domain:"),
+                react_1.default.createElement("dd", { className: "text-cutoff" }, domain)),
+            react_1.default.createElement("div", { className: "info-list-entry" },
+                react_1.default.createElement("dt", null, "Permission type:"),
+                react_1.default.createElement("dd", { className: `permission-type ${permType}` },
+                    react_1.default.createElement("i", { "aria-hidden": true, className: `fa fa-${permType === "allow" ? "check" : "close"}` }),
+                    permType)),
+            react_1.default.createElement("div", { className: "info-list-entry" },
+                react_1.default.createElement("dt", null, "Private comment:"),
+                react_1.default.createElement("dd", { className: "text-cutoff" }, privateComment)),
+            react_1.default.createElement("div", { className: "info-list-entry" },
+                react_1.default.createElement("dt", null, "Public comment:"),
+                react_1.default.createElement("dd", null, publicComment)),
+            react_1.default.createElement("div", { className: "info-list-entry" },
+                react_1.default.createElement("dt", null, "Subscription:"),
+                react_1.default.createElement("dd", { className: "text-cutoff" }, subscriptionID))),
+        react_1.default.createElement("div", { className: "action-buttons" },
+            react_1.default.createElement(mutation_button_1.default, { label: `Accept ${permType}`, title: `Accept ${permType}`, type: "button", className: "button", onClick: (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    accept({ id, permType });
+                }, disabled: false, showError: true, result: acceptResult }),
+            react_1.default.createElement(mutation_button_1.default, { label: `Remove draft`, title: `Remove draft`, type: "button", className: "button danger", onClick: (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    remove({ id });
+                }, disabled: false, showError: true, result: removeResult }))));
+}
+
+},{"../../../../components/error":332,"../../../../components/form/inputs":333,"../../../../components/form/mutation-button":334,"../../../../components/pageable-list":337,"../../../../lib/form":351,"../../../../lib/query/admin/domain-permissions/drafts":361,"../../../../lib/util":384,"../../../../lib/util/formvalidators":383,"./common":418,"react":198,"wouter":323}],429:[function(require,module,exports){
+"use strict";
+/*
+    GoToSocial
+    Copyright (C) GoToSocial Authors admin@gotosocial.org
+    SPDX-License-Identifier: AGPL-3.0-or-later
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const react_1 = __importDefault(require("react"));
+const react_2 = require("react");
+const wouter_1 = require("wouter");
+const match_sorter_1 = require("match-sorter");
+const form_1 = require("../../../lib/form");
+const inputs_1 = require("../../../components/form/inputs");
+const loading_1 = __importDefault(require("../../../components/loading"));
+const get_1 = require("../../../lib/query/admin/domain-permissions/get");
+const query_1 = require("../../../lib/types/query");
+const util_1 = require("../../../lib/navigation/util");
+const util_2 = require("../../../lib/util");
+function DomainPermissionsOverview() {
+    const baseUrl = (0, util_1.useBaseUrl)();
+    // Parse perm type from routing params.
+    let params = (0, wouter_1.useParams)();
+    if (params.permType !== "blocks" && params.permType !== "allows") {
+        throw "unrecognized perm type " + params.permType;
+    }
+    const permType = params.permType.slice(0, -1);
+    // Uppercase first letter of given permType.
+    const permTypeUpper = (0, util_2.useCapitalize)(permType);
+    // Fetch / wait for desired perms to load.
+    const { data: blocks, isLoading: isLoadingBlocks } = (0, get_1.useDomainBlocksQuery)(query_1.NoArg, { skip: permType !== "block" });
+    const { data: allows, isLoading: isLoadingAllows } = (0, get_1.useDomainAllowsQuery)(query_1.NoArg, { skip: permType !== "allow" });
+    let data;
+    let isLoading;
+    if (permType == "block") {
+        data = blocks;
+        isLoading = isLoadingBlocks;
+    }
+    else {
+        data = allows;
+        isLoading = isLoadingAllows;
+    }
+    if (isLoading || data === undefined) {
+        return react_1.default.createElement(loading_1.default, null);
+    }
+    return (react_1.default.createElement("div", { className: `domain-${permType}` },
+        react_1.default.createElement("div", { className: "form-section-docs" },
+            react_1.default.createElement("h1", null,
+                "Domain ",
+                permTypeUpper,
+                "s"),
+            permType == "block" ? react_1.default.createElement(BlockHelperText, null) : react_1.default.createElement(AllowHelperText, null)),
+        react_1.default.createElement(DomainPermsList, { data: data, permType: permType, permTypeUpper: permTypeUpper }),
+        react_1.default.createElement(wouter_1.Link, { to: `~${baseUrl}/import-export` }, "Or use the bulk import/export interface")));
+}
+exports.default = DomainPermissionsOverview;
+function DomainPermsList({ data, permType, permTypeUpper }) {
+    var _a;
+    // Format perms into a list.
+    const perms = (0, react_2.useMemo)(() => {
+        return Object.values(data);
+    }, [data]);
+    const [_location, setLocation] = (0, wouter_1.useLocation)();
+    const filterField = (0, form_1.useTextInput)("filter");
+    function filterFormSubmit(e) {
+        e.preventDefault();
+        setLocation(`/${permType}s/${filter}`);
+    }
+    const filter = (_a = filterField.value) !== null && _a !== void 0 ? _a : "";
+    const filteredPerms = (0, react_2.useMemo)(() => {
+        return (0, match_sorter_1.matchSorter)(perms, filter, { keys: ["domain"] });
+    }, [perms, filter]);
+    const filtered = perms.length - filteredPerms.length;
+    const filterInfo = (react_1.default.createElement("span", null,
+        perms.length,
+        " ",
+        permType,
+        "ed domain",
+        perms.length != 1 ? "s" : "",
+        " ",
+        filtered > 0 && `(${filtered} filtered by search)`));
+    const entries = filteredPerms.map((entry) => {
+        var _a;
+        return (react_1.default.createElement(wouter_1.Link, { className: "entry nounderline", key: entry.domain, to: `/${permType}s/${entry.domain}` },
+            react_1.default.createElement("span", { id: "domain" }, entry.domain),
+            react_1.default.createElement("span", { id: "date" }, new Date((_a = entry.created_at) !== null && _a !== void 0 ? _a : "").toLocaleString())));
+    });
+    return (react_1.default.createElement("div", { className: "domain-permissions-list" },
+        react_1.default.createElement("form", { className: "filter", role: "search", onSubmit: filterFormSubmit },
+            react_1.default.createElement(inputs_1.TextInput, { field: filterField, placeholder: "example.org", label: `Search or add domain ${permType}` }),
+            react_1.default.createElement("button", { type: "submit", disabled: filterField.value === undefined ||
+                    filterField.value.length == 0 },
+                permTypeUpper,
+                "\u00A0",
+                filter)),
+        react_1.default.createElement("div", null,
+            filterInfo,
+            react_1.default.createElement("div", { className: "list" },
+                react_1.default.createElement("div", { className: "entries scrolling" }, entries)))));
+}
+function BlockHelperText() {
+    return (react_1.default.createElement("p", null,
+        "Blocking a domain blocks interaction between your instance, and all current and future accounts on instance(s) running on the blocked domain. Stored content will be removed, and no more data is sent to the remote server. This extends to all subdomains as well, so blocking 'example.com' also blocks 'social.example.com'.",
+        react_1.default.createElement("br", null),
+        react_1.default.createElement("a", { href: "https://docs.gotosocial.org/en/latest/admin/domain_blocks/", target: "_blank", className: "docslink", rel: "noreferrer" }, "Learn more about domain blocks (opens in a new tab)"),
+        react_1.default.createElement("br", null)));
+}
+function AllowHelperText() {
+    return (react_1.default.createElement("p", null,
+        "Allowing a domain explicitly allows instance(s) running on that domain to interact with your instance. If you're running in allowlist mode, this is how you \"allow\" instances through. If you're running in blocklist mode (the default federation mode), you can use explicit domain allows to override domain blocks. In blocklist mode, explicitly allowed instances will be able to interact with your instance regardless of any domain blocks in place.  This extends to all subdomains as well, so allowing 'example.com' also allows 'social.example.com'. This is useful when you're importing a block list but there are some domains on the list you don't want to block: just create an explicit allow for those domains before importing the list.",
+        react_1.default.createElement("br", null),
+        react_1.default.createElement("a", { href: "https://docs.gotosocial.org/en/latest/admin/federation_modes/", target: "_blank", className: "docslink", rel: "noreferrer" }, "Learn more about federation modes (opens in a new tab)")));
+}
+
+},{"../../../components/form/inputs":333,"../../../components/loading":336,"../../../lib/form":351,"../../../lib/navigation/util":357,"../../../lib/query/admin/domain-permissions/get":364,"../../../lib/types/query":381,"../../../lib/util":384,"match-sorter":138,"react":198,"wouter":323}],431:[function(require,module,exports){
+"use strict";
+/*
+    GoToSocial
+    Copyright (C) GoToSocial Authors admin@gotosocial.org
+    SPDX-License-Identifier: AGPL-3.0-or-later
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.SubscriptionListEntry = exports.DomainPermissionSubscriptionDocsLink = exports.DomainPermissionSubscriptionHelpText = void 0;
+const react_1 = __importStar(require("react"));
+const wouter_1 = require("wouter");
+const util_1 = require("../../../../lib/util");
+function DomainPermissionSubscriptionHelpText() {
+    return (react_1.default.createElement(react_1.default.Fragment, null,
+        "Domain permission subscriptions allow your instance to \"subscribe\" to a list of block or allows at a given url.",
+        react_1.default.createElement("br", null),
+        "Every 24 hours, each subscribed list is fetched by your instance, and any discovered permissions in each list are loaded into your instance as blocks/allows/drafts."));
+}
+exports.DomainPermissionSubscriptionHelpText = DomainPermissionSubscriptionHelpText;
+function DomainPermissionSubscriptionDocsLink() {
+    return (react_1.default.createElement("a", { href: "https://docs.gotosocial.org/en/latest/admin/settings/#domain-permission-subscriptions", target: "_blank", className: "docslink", rel: "noreferrer" }, "Learn more about domain permission subscriptions (opens in a new tab)"));
+}
+exports.DomainPermissionSubscriptionDocsLink = DomainPermissionSubscriptionDocsLink;
+function SubscriptionListEntry({ permSub, linkTo, backLocation }) {
+    const [_location, setLocation] = (0, wouter_1.useLocation)();
+    const permType = permSub.permission_type;
+    if (!permType) {
+        throw "permission_type was undefined";
+    }
+    const { priority, title, uri, as_draft: asDraft, adopt_orphans: adoptOrphans, content_type: contentType, fetched_at: fetchedAt, successfully_fetched_at: successfullyFetchedAt, count, } = permSub;
+    const ariaLabel = (0, react_1.useMemo)(() => {
+        let ariaLabel = "";
+        // Prepend title.
+        if (title.length !== 0) {
+            ariaLabel += `${title}, create `;
+        }
+        else {
+            ariaLabel += "Create ";
+        }
+        // Add perm type.
+        ariaLabel += permType;
+        // Alter wording
+        // if using drafts.
+        if (asDraft) {
+            ariaLabel += " drafts from ";
+        }
+        else {
+            ariaLabel += "s from ";
+        }
+        // Add url.
+        ariaLabel += uri;
+        return ariaLabel;
+    }, [title, permType, asDraft, uri]);
+    let fetchedAtStr = "never";
+    if (fetchedAt) {
+        fetchedAtStr = new Date(fetchedAt).toDateString();
+    }
+    let successfullyFetchedAtStr = "never";
+    if (successfullyFetchedAt) {
+        successfullyFetchedAtStr = new Date(successfullyFetchedAt).toDateString();
+    }
+    return (react_1.default.createElement("span", { className: `pseudolink domain-permission-subscription entry`, "aria-label": ariaLabel, title: ariaLabel, onClick: () => {
+            // When clicking on a subscription, direct
+            // to the detail view for that subscription.
+            setLocation(linkTo, {
+                // Store the back location in history so
+                // the detail view can use it to return to
+                // this page (including query parameters).
+                state: { backLocation: backLocation }
+            });
+        }, role: "link", tabIndex: 0 },
+        react_1.default.createElement("dl", { className: "info-list" },
+            permSub.title !== "" &&
+                react_1.default.createElement("span", { className: "domain-permission-subscription-title" }, title),
+            react_1.default.createElement("div", { className: "info-list-entry" },
+                react_1.default.createElement("dt", null, "Priority:"),
+                react_1.default.createElement("dd", null, priority)),
+            react_1.default.createElement("div", { className: "info-list-entry" },
+                react_1.default.createElement("dt", null, "Permission type:"),
+                react_1.default.createElement("dd", { className: `permission-type ${permType}` },
+                    react_1.default.createElement("i", { "aria-hidden": true, className: `fa fa-${permType === "allow" ? "check" : "close"}` }),
+                    permType)),
+            react_1.default.createElement("div", { className: "info-list-entry" },
+                react_1.default.createElement("dt", null, "URL:"),
+                react_1.default.createElement("dd", { className: "text-cutoff" }, uri)),
+            react_1.default.createElement("div", { className: "info-list-entry" },
+                react_1.default.createElement("dt", null, "Content type:"),
+                react_1.default.createElement("dd", null, contentType)),
+            react_1.default.createElement("div", { className: "info-list-entry" },
+                react_1.default.createElement("dt", null, "Create as draft:"),
+                react_1.default.createElement("dd", null, (0, util_1.yesOrNo)(asDraft))),
+            react_1.default.createElement("div", { className: "info-list-entry" },
+                react_1.default.createElement("dt", null, "Adopt orphans:"),
+                react_1.default.createElement("dd", null, (0, util_1.yesOrNo)(adoptOrphans))),
+            react_1.default.createElement("div", { className: "info-list-entry" },
+                react_1.default.createElement("dt", null, "Last fetch attempt:"),
+                react_1.default.createElement("dd", { className: "text-cutoff" }, fetchedAtStr)),
+            react_1.default.createElement("div", { className: "info-list-entry" },
+                react_1.default.createElement("dt", null, "Last successful fetch:"),
+                react_1.default.createElement("dd", { className: "text-cutoff" }, successfullyFetchedAtStr)),
+            react_1.default.createElement("div", { className: "info-list-entry" },
+                react_1.default.createElement("dt", null,
+                    "Discovered ",
+                    permType,
+                    "s:"),
+                react_1.default.createElement("dd", null, count)))));
+}
+exports.SubscriptionListEntry = SubscriptionListEntry;
+
+},{"../../../../lib/util":384,"react":198,"wouter":323}],327:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -30674,7 +31284,7 @@ function Authorization({ App }) {
 }
 exports.Authorization = Authorization;
 
-},{"../../lib/query/oauth":370,"../../lib/types/query":378,"../../redux/store":383,"../error":332,"../loading":336,"./login":328,"react":198}],385:[function(require,module,exports){
+},{"../../lib/query/oauth":373,"../../lib/types/query":381,"../../redux/store":387,"../error":332,"../loading":336,"./login":328,"react":198}],389:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -30706,7 +31316,7 @@ function Email() {
 }
 exports.default = Email;
 
-},{"./test":386,"react":198}],388:[function(require,module,exports){
+},{"./test":390,"react":198}],392:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -30738,7 +31348,7 @@ function Keys() {
 }
 exports.default = Keys;
 
-},{"./expireremote":387,"react":198}],390:[function(require,module,exports){
+},{"./expireremote":391,"react":198}],394:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -30770,7 +31380,7 @@ function Media() {
 }
 exports.default = Media;
 
-},{"./cleanup":389,"react":198}],395:[function(require,module,exports){
+},{"./cleanup":393,"react":198}],399:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -30890,13 +31500,13 @@ function NewEmojiForm() {
             " isn't it cool?"),
         react_1.default.createElement("form", { onSubmit: submitForm, className: "form-flex" },
             react_1.default.createElement(inputs_1.FileInput, { field: form.image, label: `Image file: png, gif, or static webp; max size ${prettierMaxSize}`, accept: "image/png,image/gif,image/webp" }),
-            react_1.default.createElement(inputs_1.TextInput, { field: form.shortcode, label: "Shortcode, must be unique among the instance's local emoji", autoCapitalize: "none", spellCheck: "false", pattern: "^\\w{2,30}$" }),
+            react_1.default.createElement(inputs_1.TextInput, { field: form.shortcode, label: "Shortcode, must be unique among the instance's local emoji", autoCapitalize: "none", spellCheck: "false", pattern: "^\\w{1,30}$" }),
             react_1.default.createElement(category_select_1.CategorySelect, { field: form.category }),
             react_1.default.createElement(mutation_button_1.default, { disabled: form.image.previewValue === undefined || ((_a = form.shortcode.value) === null || _a === void 0 ? void 0 : _a.length) === 0, label: "Upload emoji", result: result }))));
 }
 exports.default = NewEmojiForm;
 
-},{"../../../../components/form/inputs":333,"../../../../components/form/mutation-button":334,"../../../../components/status":339,"../../../../lib/form":351,"../../../../lib/form/submit":353,"../../../../lib/query/admin/custom-emoji":359,"../../../../lib/query/gts-api":369,"../category-select":393,"./use-shortcode":397,"prettier-bytes":150,"react":198}],402:[function(require,module,exports){
+},{"../../../../components/form/inputs":333,"../../../../components/form/mutation-button":334,"../../../../components/status":339,"../../../../lib/form":351,"../../../../lib/form/submit":353,"../../../../lib/query/admin/custom-emoji":359,"../../../../lib/query/gts-api":372,"../category-select":397,"./use-shortcode":401,"prettier-bytes":150,"react":198}],406:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -30949,6 +31559,7 @@ const query_1 = require("../../../lib/types/query");
 const pageable_list_1 = require("../../../components/pageable-list");
 const wouter_1 = require("wouter");
 const create_1 = __importDefault(require("./create"));
+const util_1 = require("../../../lib/util");
 function HeaderPermsOverview() {
     const [location, setLocation] = (0, wouter_1.useLocation)();
     // Parse perm type from routing params.
@@ -30961,9 +31572,7 @@ function HeaderPermsOverview() {
         return (_a = params.permType) === null || _a === void 0 ? void 0 : _a.slice(0, -1);
     }, [params]);
     // Uppercase first letter of given permType.
-    const permTypeUpper = (0, react_1.useMemo)(() => {
-        return permType.charAt(0).toUpperCase() + permType.slice(1);
-    }, [permType]);
+    const permTypeUpper = (0, util_1.useCapitalize)(permType);
     // Fetch desired perms, skipping
     // the ones we don't want.
     const { data: blocks, isLoading: isLoadingBlocks, isFetching: isFetchingBlocks, isSuccess: isSuccessBlocks, isError: isErrorBlocks, error: errorBlocks } = (0, http_header_permissions_1.useGetHeaderBlocksQuery)(query_1.NoArg, { skip: permType !== "block" });
@@ -31040,7 +31649,7 @@ function HeaderPermsOverview() {
 }
 exports.default = HeaderPermsOverview;
 
-},{"../../../components/pageable-list":337,"../../../lib/query/admin/http-header-permissions":366,"../../../lib/types/query":378,"./create":400,"react":198,"wouter":323}],426:[function(require,module,exports){
+},{"../../../components/pageable-list":337,"../../../lib/query/admin/http-header-permissions":369,"../../../lib/types/query":381,"../../../lib/util":384,"./create":404,"react":198,"wouter":323}],443:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -31089,7 +31698,7 @@ function ExportImport() {
 }
 exports.default = ExportImport;
 
-},{"../../../components/error":332,"../../../components/loading":336,"../../../lib/query/user/export-import":373,"./export":424,"./import":425,"react":198}],428:[function(require,module,exports){
+},{"../../../components/error":332,"../../../components/loading":336,"../../../lib/query/user/export-import":376,"./export":441,"./import":442,"react":198}],445:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -31124,7 +31733,7 @@ function InteractionRequests() {
 }
 exports.default = InteractionRequests;
 
-},{"./search":429,"react":198}],436:[function(require,module,exports){
+},{"./search":446,"react":198}],453:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -31441,7 +32050,7 @@ function assemblePolicyEntry(forVis, forAction, policyForm) {
     };
 }
 
-},{"../../../../components/error":332,"../../../../components/form/inputs":333,"../../../../components/form/mutation-button":334,"../../../../components/loading":336,"../../../../lib/form":351,"../../../../lib/query/user":374,"../../../../lib/types/interaction":377,"./basic":435,"./something-else":437,"react":198}],398:[function(require,module,exports){
+},{"../../../../components/error":332,"../../../../components/form/inputs":333,"../../../../components/form/mutation-button":334,"../../../../components/loading":336,"../../../../lib/form":351,"../../../../lib/query/user":377,"../../../../lib/types/interaction":380,"./basic":452,"./something-else":454,"react":198}],402:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -31505,7 +32114,7 @@ function RemoteEmoji() {
 }
 exports.default = RemoteEmoji;
 
-},{"../../../../components/error":332,"../../../../components/loading":336,"../../../../lib/query/admin/custom-emoji":359,"./steal-this-look":399,"react":198}],406:[function(require,module,exports){
+},{"../../../../components/error":332,"../../../../components/loading":336,"../../../../lib/query/admin/custom-emoji":359,"./steal-this-look":403,"react":198}],410:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -31602,7 +32211,7 @@ function AdminDebugMenu() {
         react_1.default.createElement(menu_1.MenuItem, { name: "Caches", itemUrl: "caches", icon: "fa-archive" })));
 }
 
-},{"../../lib/navigation/menu":356,"../../lib/navigation/util":357,"react":198}],419:[function(require,module,exports){
+},{"../../lib/navigation/menu":356,"../../lib/navigation/util":357,"react":198}],436:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -31670,10 +32279,20 @@ function ModerationDomainPermsMenu() {
     return (react_1.default.createElement(menu_1.MenuItem, { name: "Domain Permissions", itemUrl: "domain-permissions", defaultChild: "blocks", icon: "fa-hubzilla" },
         react_1.default.createElement(menu_1.MenuItem, { name: "Blocks", itemUrl: "blocks", icon: "fa-close" }),
         react_1.default.createElement(menu_1.MenuItem, { name: "Allows", itemUrl: "allows", icon: "fa-check" }),
-        react_1.default.createElement(menu_1.MenuItem, { name: "Import/Export", itemUrl: "import-export", icon: "fa-floppy-o" })));
+        react_1.default.createElement(menu_1.MenuItem, { name: "Import/Export", itemUrl: "import-export", icon: "fa-floppy-o" }),
+        react_1.default.createElement(menu_1.MenuItem, { name: "Drafts", itemUrl: "drafts", defaultChild: "search", icon: "fa-pencil" },
+            react_1.default.createElement(menu_1.MenuItem, { name: "Search", itemUrl: "search", icon: "fa-list" }),
+            react_1.default.createElement(menu_1.MenuItem, { name: "New draft", itemUrl: "new", icon: "fa-plus" })),
+        react_1.default.createElement(menu_1.MenuItem, { name: "Excludes", itemUrl: "excludes", defaultChild: "search", icon: "fa-minus-square" },
+            react_1.default.createElement(menu_1.MenuItem, { name: "Search", itemUrl: "search", icon: "fa-list" }),
+            react_1.default.createElement(menu_1.MenuItem, { name: "New exclude", itemUrl: "new", icon: "fa-plus" })),
+        react_1.default.createElement(menu_1.MenuItem, { name: "Subscriptions", itemUrl: "subscriptions", defaultChild: "search", icon: "fa-cloud-download" },
+            react_1.default.createElement(menu_1.MenuItem, { name: "Search", itemUrl: "search", icon: "fa-list" }),
+            react_1.default.createElement(menu_1.MenuItem, { name: "New subscription", itemUrl: "new", icon: "fa-plus" }),
+            react_1.default.createElement(menu_1.MenuItem, { name: "Preview", itemUrl: "preview", icon: "fa-eye" }))));
 }
 
-},{"../../lib/navigation/menu":356,"../../lib/navigation/util":357,"react":198}],431:[function(require,module,exports){
+},{"../../lib/navigation/menu":356,"../../lib/navigation/util":357,"react":198}],448:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -31716,7 +32335,7 @@ function UserMenu() {
 }
 exports.default = UserMenu;
 
-},{"../../lib/navigation/menu":356,"react":198}],416:[function(require,module,exports){
+},{"../../lib/navigation/menu":356,"react":198}],428:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -31782,7 +32401,1244 @@ function ImportExport() {
 }
 exports.default = ImportExport;
 
-},{"../../../lib/form":351,"../../../lib/form/submit":353,"../../../lib/query/admin/domain-permissions/process":364,"./form":415,"./process":418,"react":198,"wouter":323}],409:[function(require,module,exports){
+},{"../../../lib/form":351,"../../../lib/form/submit":353,"../../../lib/query/admin/domain-permissions/process":366,"./form":427,"./process":430,"react":198,"wouter":323}],405:[function(require,module,exports){
+"use strict";
+/*
+    GoToSocial
+    Copyright (C) GoToSocial Authors admin@gotosocial.org
+    SPDX-License-Identifier: AGPL-3.0-or-later
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const react_1 = __importStar(require("react"));
+const wouter_1 = require("wouter");
+const http_header_permissions_1 = require("../../../lib/query/admin/http-header-permissions");
+const loading_1 = __importDefault(require("../../../components/loading"));
+const error_1 = require("../../../components/error");
+const username_lozenge_1 = __importDefault(require("../../../components/username-lozenge"));
+const util_1 = require("../../../lib/navigation/util");
+const back_button_1 = __importDefault(require("../../../components/back-button"));
+const mutation_button_1 = __importDefault(require("../../../components/form/mutation-button"));
+const testString = `/* To test this properly, set "flavor" to "Golang", as that's the language GoToSocial uses for regular expressions */
+
+/* Amazon crawler User-Agent example */
+Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/600.2.5 (KHTML\\, like Gecko) Version/8.0.2 Safari/600.2.5 (Amazonbot/0.1; +https://developer.amazon.com/support/amazonbot)
+
+/* Some other test strings */
+Some Test Value
+Another Test Value`;
+function HeaderPermDetail() {
+    let params = (0, wouter_1.useParams)();
+    if (params.permType !== "blocks" && params.permType !== "allows") {
+        throw "unrecognized perm type " + params.permType;
+    }
+    const permType = (0, react_1.useMemo)(() => {
+        var _a;
+        return (_a = params.permType) === null || _a === void 0 ? void 0 : _a.slice(0, -1);
+    }, [params]);
+    let permID = params.permId;
+    if (!permID) {
+        throw "no perm ID";
+    }
+    if (permType === "block") {
+        return react_1.default.createElement(BlockDetail, { id: permID });
+    }
+    else {
+        return react_1.default.createElement(AllowDetail, { id: permID });
+    }
+}
+exports.default = HeaderPermDetail;
+function BlockDetail({ id }) {
+    return (react_1.default.createElement(PermDeets, Object.assign({ permType: "Block" }, (0, http_header_permissions_1.useGetHeaderBlockQuery)(id))));
+}
+function AllowDetail({ id }) {
+    return (react_1.default.createElement(PermDeets, Object.assign({ permType: "Allow" }, (0, http_header_permissions_1.useGetHeaderAllowQuery)(id))));
+}
+function PermDeets({ permType, data: perm, isLoading, isFetching, isError, error, }) {
+    const [location] = (0, wouter_1.useLocation)();
+    const baseUrl = (0, util_1.useBaseUrl)();
+    // Wait til the perm itself is loaded.
+    if (isLoading || isFetching) {
+        return react_1.default.createElement(loading_1.default, null);
+    }
+    else if (isError) {
+        return react_1.default.createElement(error_1.Error, { error: error });
+    }
+    else if (perm === undefined) {
+        throw "perm undefined";
+    }
+    const created = new Date(perm.created_at).toDateString();
+    // Create parameters to link to regex101
+    // with this regular expression prepopulated.
+    const testParams = new URLSearchParams();
+    testParams.set("regex", perm.regex);
+    testParams.set("flags", "gm");
+    testParams.set("testString", testString);
+    const regexLink = `https://regex101.com/?${testParams.toString()}`;
+    return (react_1.default.createElement("div", { className: "http-header-permission-details" },
+        react_1.default.createElement("h1", null,
+            react_1.default.createElement(back_button_1.default, { to: `~${baseUrl}/${permType.toLowerCase()}s` }),
+            " HTTP Header ",
+            permType,
+            " Detail"),
+        react_1.default.createElement("dl", { className: "info-list" },
+            react_1.default.createElement("div", { className: "info-list-entry" },
+                react_1.default.createElement("dt", null, "ID"),
+                react_1.default.createElement("dd", { className: "monospace" }, perm.id)),
+            react_1.default.createElement("div", { className: "info-list-entry" },
+                react_1.default.createElement("dt", null, "Created"),
+                react_1.default.createElement("dd", null,
+                    react_1.default.createElement("time", { dateTime: perm.created_at }, created))),
+            react_1.default.createElement("div", { className: "info-list-entry" },
+                react_1.default.createElement("dt", null, "Created By"),
+                react_1.default.createElement("dd", null,
+                    react_1.default.createElement(username_lozenge_1.default, { account: perm.created_by, linkTo: `~/settings/moderation/accounts/${perm.created_by}`, backLocation: `~${baseUrl}${location}` }))),
+            react_1.default.createElement("div", { className: "info-list-entry" },
+                react_1.default.createElement("dt", null, "Header Name"),
+                react_1.default.createElement("dd", { className: "monospace" }, perm.header)),
+            react_1.default.createElement("div", { className: "info-list-entry" },
+                react_1.default.createElement("dt", null, "Value Regex"),
+                react_1.default.createElement("dd", { className: "monospace" }, perm.regex)),
+            react_1.default.createElement("div", { className: "info-list-entry" },
+                react_1.default.createElement("dt", null, "Test This Regex"),
+                react_1.default.createElement("dd", null,
+                    react_1.default.createElement("a", { href: regexLink, target: "_blank", rel: "noreferrer" },
+                        react_1.default.createElement("i", { className: "fa fa-fw fa-external-link", "aria-hidden": "true" }),
+                        " Link to Regex101 (opens in a new tab)")))),
+        permType === "Block"
+            ? react_1.default.createElement(DeleteBlock, { id: perm.id })
+            : react_1.default.createElement(DeleteAllow, { id: perm.id })));
+}
+function DeleteBlock({ id }) {
+    const [_location, setLocation] = (0, wouter_1.useLocation)();
+    const baseUrl = (0, util_1.useBaseUrl)();
+    const [removeTrigger, removeResult] = (0, http_header_permissions_1.useDeleteHeaderBlockMutation)();
+    return (react_1.default.createElement(mutation_button_1.default, { type: "button", onClick: () => {
+            removeTrigger(id);
+            setLocation(`~${baseUrl}/blocks`);
+        }, label: "Remove this block", result: removeResult, className: "button danger", showError: false, disabled: false }));
+}
+function DeleteAllow({ id }) {
+    const [_location, setLocation] = (0, wouter_1.useLocation)();
+    const baseUrl = (0, util_1.useBaseUrl)();
+    const [removeTrigger, removeResult] = (0, http_header_permissions_1.useDeleteHeaderAllowMutation)();
+    return (react_1.default.createElement(mutation_button_1.default, { type: "button", onClick: () => {
+            removeTrigger(id);
+            setLocation(`~${baseUrl}/allows`);
+        }, label: "Remove this allow", result: removeResult, className: "button danger", showError: false, disabled: false }));
+}
+
+},{"../../../components/back-button":329,"../../../components/error":332,"../../../components/form/mutation-button":334,"../../../components/loading":336,"../../../components/username-lozenge":341,"../../../lib/navigation/util":357,"../../../lib/query/admin/http-header-permissions":369,"react":198,"wouter":323}],415:[function(require,module,exports){
+"use strict";
+/*
+    GoToSocial
+    Copyright (C) GoToSocial Authors admin@gotosocial.org
+    SPDX-License-Identifier: AGPL-3.0-or-later
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const react_1 = __importDefault(require("react"));
+const admin_1 = require("../../../../lib/query/admin");
+const pageable_list_1 = require("../../../../components/pageable-list");
+const wouter_1 = require("wouter");
+const username_lozenge_1 = __importDefault(require("../../../../components/username-lozenge"));
+function AccountsPending() {
+    var _a;
+    const [location, _setLocation] = (0, wouter_1.useLocation)();
+    const searchRes = (0, admin_1.useSearchAccountsQuery)({ status: "pending" });
+    // Function to map an item to a list entry.
+    function itemToEntry(account) {
+        const acc = account.account;
+        return (react_1.default.createElement(username_lozenge_1.default, { key: acc.acct, account: account, linkTo: `/${account.id}`, backLocation: location, classNames: ["entry"] }));
+    }
+    return (react_1.default.createElement("div", { className: "accounts-view" },
+        react_1.default.createElement("div", { className: "form-section-docs" },
+            react_1.default.createElement("h1", null, "Pending Accounts"),
+            react_1.default.createElement("p", null,
+                "You can see a list of pending account sign-ups below.",
+                react_1.default.createElement("br", null),
+                "To approve or reject a sign-up, click on the account's name in the list, and use the controls at the bottom of the account detail view."),
+            react_1.default.createElement("a", { href: "https://docs.gotosocial.org/en/latest/admin/signups/", target: "_blank", className: "docslink", rel: "noreferrer" }, "Learn more about account sign-ups (opens in a new tab)")),
+        react_1.default.createElement(pageable_list_1.PageableList, { isLoading: searchRes.isLoading, isFetching: searchRes.isFetching, isSuccess: searchRes.isSuccess, items: (_a = searchRes.data) === null || _a === void 0 ? void 0 : _a.accounts, itemToEntry: itemToEntry, isError: searchRes.isError, error: searchRes.error, emptyMessage: react_1.default.createElement("b", null, "No pending account sign-ups.") })));
+}
+exports.default = AccountsPending;
+
+},{"../../../../components/pageable-list":337,"../../../../components/username-lozenge":341,"../../../../lib/query/admin":370,"react":198,"wouter":323}],416:[function(require,module,exports){
+"use strict";
+/*
+    GoToSocial
+    Copyright (C) GoToSocial Authors admin@gotosocial.org
+    SPDX-License-Identifier: AGPL-3.0-or-later
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.AccountSearchForm = void 0;
+const react_1 = __importStar(require("react"));
+const admin_1 = require("../../../../lib/query/admin");
+const form_1 = require("../../../../lib/form");
+const pageable_list_1 = require("../../../../components/pageable-list");
+const inputs_1 = require("../../../../components/form/inputs");
+const mutation_button_1 = __importDefault(require("../../../../components/form/mutation-button"));
+const wouter_1 = require("wouter");
+const username_lozenge_1 = __importDefault(require("../../../../components/username-lozenge"));
+const formvalidators_1 = require("../../../../lib/util/formvalidators");
+function AccountSearchForm() {
+    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l;
+    const [location, setLocation] = (0, wouter_1.useLocation)();
+    const search = (0, wouter_1.useSearch)();
+    const urlQueryParams = (0, react_1.useMemo)(() => new URLSearchParams(search), [search]);
+    const [searchAcct, searchRes] = (0, admin_1.useLazySearchAccountsQuery)();
+    // Populate search form using values from
+    // urlQueryParams, to allow paging.
+    const form = {
+        origin: (0, form_1.useTextInput)("origin", { defaultValue: (_a = urlQueryParams.get("origin")) !== null && _a !== void 0 ? _a : "" }),
+        status: (0, form_1.useTextInput)("status", { defaultValue: (_b = urlQueryParams.get("status")) !== null && _b !== void 0 ? _b : "" }),
+        permissions: (0, form_1.useTextInput)("permissions", { defaultValue: (_c = urlQueryParams.get("permissions")) !== null && _c !== void 0 ? _c : "" }),
+        username: (0, form_1.useTextInput)("username", { defaultValue: (_d = urlQueryParams.get("username")) !== null && _d !== void 0 ? _d : "" }),
+        display_name: (0, form_1.useTextInput)("display_name", { defaultValue: (_e = urlQueryParams.get("display_name")) !== null && _e !== void 0 ? _e : "" }),
+        by_domain: (0, form_1.useTextInput)("by_domain", {
+            defaultValue: (_f = urlQueryParams.get("by_domain")) !== null && _f !== void 0 ? _f : "",
+            validator: formvalidators_1.formDomainValidator,
+        }),
+        email: (0, form_1.useTextInput)("email", { defaultValue: (_g = urlQueryParams.get("email")) !== null && _g !== void 0 ? _g : "" }),
+        ip: (0, form_1.useTextInput)("ip", { defaultValue: (_h = urlQueryParams.get("ip")) !== null && _h !== void 0 ? _h : "" }),
+        limit: (0, form_1.useTextInput)("limit", { defaultValue: (_j = urlQueryParams.get("limit")) !== null && _j !== void 0 ? _j : "50" })
+    };
+    // On mount, if urlQueryParams were provided,
+    // trigger the search. For example, if page
+    // was accessed at /search?origin=local&limit=20,
+    // then run a search with origin=local and
+    // limit=20 and immediately render the results.
+    (0, react_1.useEffect)(() => {
+        if (urlQueryParams.size > 0) {
+            searchAcct(Object.fromEntries(urlQueryParams), true);
+        }
+    }, [urlQueryParams, searchAcct]);
+    // Rather than triggering the search directly,
+    // the "submit" button changes the location
+    // based on form field params, and lets the
+    // useEffect hook above actually do the search.
+    function submitQuery(e) {
+        e.preventDefault();
+        // Parse query parameters.
+        const entries = Object.entries(form).map(([k, v]) => {
+            // Take only defined form fields.
+            if (v.value === undefined || v.value.length === 0) {
+                return null;
+            }
+            return [[k, v.value]];
+        }).flatMap(kv => {
+            // Remove any nulls.
+            return kv || [];
+        });
+        const searchParams = new URLSearchParams(entries);
+        setLocation(location + "?" + searchParams.toString());
+    }
+    // Location to return to when user clicks "back" on the account detail view.
+    const backLocation = location + (urlQueryParams.size > 0 ? `?${urlQueryParams}` : "");
+    // Function to map an item to a list entry.
+    function itemToEntry(account) {
+        const acc = account.account;
+        return (react_1.default.createElement(username_lozenge_1.default, { key: acc.acct, account: account, linkTo: `/${account.id}`, backLocation: backLocation, classNames: ["entry"] }));
+    }
+    return (react_1.default.createElement(react_1.default.Fragment, null,
+        react_1.default.createElement("form", { onSubmit: submitQuery, 
+            // Prevent password managers trying
+            // to fill in username/email fields.
+            autoComplete: "off" },
+            react_1.default.createElement(inputs_1.TextInput, { field: form.username, label: `Username (without "@" prefix) - case sensitive`, placeholder: "someone", autoCapitalize: "none", spellCheck: "false" }),
+            react_1.default.createElement(inputs_1.TextInput, { field: form.by_domain, label: `Domain (without "https://" prefix)`, placeholder: "example.org", autoCapitalize: "none", spellCheck: "false" }),
+            react_1.default.createElement(inputs_1.Select, { field: form.origin, label: "Account origin", options: react_1.default.createElement(react_1.default.Fragment, null,
+                    react_1.default.createElement("option", { value: "" }, "Local or remote"),
+                    react_1.default.createElement("option", { value: "local" }, "Local only"),
+                    react_1.default.createElement("option", { value: "remote" }, "Remote only")) }),
+            react_1.default.createElement(inputs_1.TextInput, { field: form.email, label: "Email address (local accounts only)", placeholder: "someone@example.org", 
+                // Get email validation for free.
+                type: "email" }),
+            react_1.default.createElement(inputs_1.TextInput, { field: form.ip, label: "IP address (local accounts only)", placeholder: "198.51.100.0", autoCapitalize: "none", spellCheck: "false", className: "monospace" }),
+            react_1.default.createElement(inputs_1.Select, { field: form.status, label: "Account status", options: react_1.default.createElement(react_1.default.Fragment, null,
+                    react_1.default.createElement("option", { value: "" }, "Any"),
+                    react_1.default.createElement("option", { value: "pending" }, "Pending only"),
+                    react_1.default.createElement("option", { value: "disabled" }, "Disabled only"),
+                    react_1.default.createElement("option", { value: "suspended" }, "Suspended only")) }),
+            react_1.default.createElement(mutation_button_1.default, { disabled: false, label: "Search", result: searchRes })),
+        react_1.default.createElement(pageable_list_1.PageableList, { isLoading: searchRes.isLoading, isFetching: searchRes.isFetching, isSuccess: searchRes.isSuccess, items: (_k = searchRes.data) === null || _k === void 0 ? void 0 : _k.accounts, itemToEntry: itemToEntry, isError: searchRes.isError, error: searchRes.error, emptyMessage: react_1.default.createElement("b", null, "No accounts found that match your query."), prevNextLinks: (_l = searchRes.data) === null || _l === void 0 ? void 0 : _l.links })));
+}
+exports.AccountSearchForm = AccountSearchForm;
+
+},{"../../../../components/form/inputs":333,"../../../../components/form/mutation-button":334,"../../../../components/pageable-list":337,"../../../../components/username-lozenge":341,"../../../../lib/form":351,"../../../../lib/query/admin":370,"../../../../lib/util/formvalidators":383,"react":198,"wouter":323}],419:[function(require,module,exports){
+"use strict";
+/*
+    GoToSocial
+    Copyright (C) GoToSocial Authors admin@gotosocial.org
+    SPDX-License-Identifier: AGPL-3.0-or-later
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const react_1 = __importDefault(require("react"));
+const wouter_1 = require("wouter");
+const loading_1 = __importDefault(require("../../../../components/loading"));
+const util_1 = require("../../../../lib/navigation/util");
+const back_button_1 = __importDefault(require("../../../../components/back-button"));
+const drafts_1 = require("../../../../lib/query/admin/domain-permissions/drafts");
+const error_1 = require("../../../../components/error");
+const username_lozenge_1 = __importDefault(require("../../../../components/username-lozenge"));
+const mutation_button_1 = __importDefault(require("../../../../components/form/mutation-button"));
+const form_1 = require("../../../../lib/form");
+const inputs_1 = require("../../../../components/form/inputs");
+function DomainPermissionDraftDetail() {
+    var _a, _b, _c, _d, _e;
+    const baseUrl = (0, util_1.useBaseUrl)();
+    const backLocation = (_b = (_a = history.state) === null || _a === void 0 ? void 0 : _a.backLocation) !== null && _b !== void 0 ? _b : `~${baseUrl}`;
+    const params = (0, wouter_1.useParams)();
+    let id = params.permDraftId;
+    if (!id) {
+        throw "no perm ID";
+    }
+    const { data: permDraft, isLoading, isFetching, isError, error, } = (0, drafts_1.useGetDomainPermissionDraftQuery)(id);
+    if (isLoading || isFetching) {
+        return react_1.default.createElement(loading_1.default, null);
+    }
+    else if (isError) {
+        return react_1.default.createElement(error_1.Error, { error: error });
+    }
+    else if (permDraft === undefined) {
+        return react_1.default.createElement(error_1.Error, { error: new Error("permission draft was undefined") });
+    }
+    const created = permDraft.created_at ? new Date(permDraft.created_at).toDateString() : "unknown";
+    const domain = permDraft.domain;
+    const permType = permDraft.permission_type;
+    if (!permType) {
+        return react_1.default.createElement(error_1.Error, { error: new Error("permission_type was undefined") });
+    }
+    const publicComment = (_c = permDraft.public_comment) !== null && _c !== void 0 ? _c : "[none]";
+    const privateComment = (_d = permDraft.private_comment) !== null && _d !== void 0 ? _d : "[none]";
+    const subscriptionID = (_e = permDraft.subscription_id) !== null && _e !== void 0 ? _e : "[none]";
+    return (react_1.default.createElement("div", { className: "domain-permission-draft-details" },
+        react_1.default.createElement("h1", null,
+            react_1.default.createElement(back_button_1.default, { to: backLocation }),
+            " Domain Permission Draft Detail"),
+        react_1.default.createElement("dl", { className: "info-list" },
+            react_1.default.createElement("div", { className: "info-list-entry" },
+                react_1.default.createElement("dt", null, "Created"),
+                react_1.default.createElement("dd", null,
+                    react_1.default.createElement("time", { dateTime: permDraft.created_at }, created))),
+            react_1.default.createElement("div", { className: "info-list-entry" },
+                react_1.default.createElement("dt", null, "Created By"),
+                react_1.default.createElement("dd", null,
+                    react_1.default.createElement(username_lozenge_1.default, { account: permDraft.created_by, linkTo: `~/settings/moderation/accounts/${permDraft.created_by}`, backLocation: `~${location}` }))),
+            react_1.default.createElement("div", { className: "info-list-entry" },
+                react_1.default.createElement("dt", null, "Domain"),
+                react_1.default.createElement("dd", null, domain)),
+            react_1.default.createElement("div", { className: "info-list-entry" },
+                react_1.default.createElement("dt", null, "Permission type"),
+                react_1.default.createElement("dd", { className: `permission-type ${permType}` },
+                    react_1.default.createElement("i", { "aria-hidden": true, className: `fa fa-${permType === "allow" ? "check" : "close"}` }),
+                    permType)),
+            react_1.default.createElement("div", { className: "info-list-entry" },
+                react_1.default.createElement("dt", null, "Private comment"),
+                react_1.default.createElement("dd", null, privateComment)),
+            react_1.default.createElement("div", { className: "info-list-entry" },
+                react_1.default.createElement("dt", null, "Public comment"),
+                react_1.default.createElement("dd", null, publicComment)),
+            react_1.default.createElement("div", { className: "info-list-entry" },
+                react_1.default.createElement("dt", null, "Subscription ID"),
+                react_1.default.createElement("dd", null, subscriptionID))),
+        react_1.default.createElement(HandleDraft, { id: id, permType: permType, backLocation: backLocation })));
+}
+exports.default = DomainPermissionDraftDetail;
+function HandleDraft({ id, permType, backLocation }) {
+    const [accept, acceptResult] = (0, drafts_1.useAcceptDomainPermissionDraftMutation)();
+    const [remove, removeResult] = (0, drafts_1.useRemoveDomainPermissionDraftMutation)();
+    const [_location, setLocation] = (0, wouter_1.useLocation)();
+    const form = {
+        acceptOrRemove: (0, form_1.useTextInput)("accept_or_remove", { defaultValue: "accept" }),
+        overwrite: (0, form_1.useBoolInput)("overwrite"),
+        exclude_target: (0, form_1.useBoolInput)("exclude_target"),
+    };
+    const onClick = (e) => {
+        e.preventDefault();
+        if (form.acceptOrRemove.value === "accept") {
+            const overwrite = form.overwrite.value;
+            accept({ id, overwrite, permType }).then(res => {
+                if ("data" in res) {
+                    setLocation(backLocation);
+                }
+            });
+        }
+        else {
+            const exclude_target = form.exclude_target.value;
+            remove({ id, exclude_target }).then(res => {
+                if ("data" in res) {
+                    setLocation(backLocation);
+                }
+            });
+        }
+    };
+    return (react_1.default.createElement("form", null,
+        react_1.default.createElement(inputs_1.Select, { field: form.acceptOrRemove, label: "Accept or remove draft", options: react_1.default.createElement(react_1.default.Fragment, null,
+                react_1.default.createElement("option", { value: "accept" }, "Accept"),
+                react_1.default.createElement("option", { value: "remove" }, "Remove")) }),
+        form.acceptOrRemove.value === "accept" &&
+            react_1.default.createElement(react_1.default.Fragment, null,
+                react_1.default.createElement(inputs_1.Checkbox, { field: form.overwrite, label: `Overwrite any existing ${permType} for this domain` })),
+        form.acceptOrRemove.value === "remove" &&
+            react_1.default.createElement(react_1.default.Fragment, null,
+                react_1.default.createElement(inputs_1.Checkbox, { field: form.exclude_target, label: `Add a domain permission exclude for this domain` })),
+        react_1.default.createElement(mutation_button_1.default, { label: form.acceptOrRemove.value === "accept"
+                ? `Accept ${permType}`
+                : "Remove draft", type: "button", className: form.acceptOrRemove.value === "accept"
+                ? "button"
+                : "button danger", onClick: onClick, disabled: false, showError: true, result: form.acceptOrRemove.value === "accept"
+                ? acceptResult
+                : removeResult })));
+}
+
+},{"../../../../components/back-button":329,"../../../../components/error":332,"../../../../components/form/inputs":333,"../../../../components/form/mutation-button":334,"../../../../components/loading":336,"../../../../components/username-lozenge":341,"../../../../lib/form":351,"../../../../lib/navigation/util":357,"../../../../lib/query/admin/domain-permissions/drafts":361,"react":198,"wouter":323}],423:[function(require,module,exports){
+"use strict";
+/*
+    GoToSocial
+    Copyright (C) GoToSocial Authors admin@gotosocial.org
+    SPDX-License-Identifier: AGPL-3.0-or-later
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const react_1 = __importDefault(require("react"));
+const wouter_1 = require("wouter");
+const loading_1 = __importDefault(require("../../../../components/loading"));
+const util_1 = require("../../../../lib/navigation/util");
+const back_button_1 = __importDefault(require("../../../../components/back-button"));
+const error_1 = require("../../../../components/error");
+const username_lozenge_1 = __importDefault(require("../../../../components/username-lozenge"));
+const excludes_1 = require("../../../../lib/query/admin/domain-permissions/excludes");
+const mutation_button_1 = __importDefault(require("../../../../components/form/mutation-button"));
+function DomainPermissionExcludeDetail() {
+    var _a, _b, _c;
+    const baseUrl = (0, util_1.useBaseUrl)();
+    const backLocation = (_b = (_a = history.state) === null || _a === void 0 ? void 0 : _a.backLocation) !== null && _b !== void 0 ? _b : `~${baseUrl}`;
+    const params = (0, wouter_1.useParams)();
+    let id = params.excludeId;
+    if (!id) {
+        throw "no perm ID";
+    }
+    const { data: permExclude, isLoading, isFetching, isError, error, } = (0, excludes_1.useGetDomainPermissionExcludeQuery)(id);
+    if (isLoading || isFetching) {
+        return react_1.default.createElement(loading_1.default, null);
+    }
+    else if (isError) {
+        return react_1.default.createElement(error_1.Error, { error: error });
+    }
+    else if (permExclude === undefined) {
+        return react_1.default.createElement(error_1.Error, { error: new Error("permission exclude was undefined") });
+    }
+    const created = permExclude.created_at ? new Date(permExclude.created_at).toDateString() : "unknown";
+    const domain = permExclude.domain;
+    const privateComment = (_c = permExclude.private_comment) !== null && _c !== void 0 ? _c : "[none]";
+    return (react_1.default.createElement("div", { className: "domain-permission-exclude-details" },
+        react_1.default.createElement("h1", null,
+            react_1.default.createElement(back_button_1.default, { to: backLocation }),
+            " Domain Permission Exclude Detail"),
+        react_1.default.createElement("dl", { className: "info-list" },
+            react_1.default.createElement("div", { className: "info-list-entry" },
+                react_1.default.createElement("dt", null, "Created"),
+                react_1.default.createElement("dd", null,
+                    react_1.default.createElement("time", { dateTime: permExclude.created_at }, created))),
+            react_1.default.createElement("div", { className: "info-list-entry" },
+                react_1.default.createElement("dt", null, "Created By"),
+                react_1.default.createElement("dd", null,
+                    react_1.default.createElement(username_lozenge_1.default, { account: permExclude.created_by, linkTo: `~/settings/moderation/accounts/${permExclude.created_by}`, backLocation: `~${location}` }))),
+            react_1.default.createElement("div", { className: "info-list-entry" },
+                react_1.default.createElement("dt", null, "Domain"),
+                react_1.default.createElement("dd", null, domain)),
+            react_1.default.createElement("div", { className: "info-list-entry" },
+                react_1.default.createElement("dt", null, "Private comment"),
+                react_1.default.createElement("dd", null, privateComment))),
+        react_1.default.createElement(HandleExclude, { id: id, backLocation: backLocation })));
+}
+exports.default = DomainPermissionExcludeDetail;
+function HandleExclude({ id, backLocation }) {
+    const [_location, setLocation] = (0, wouter_1.useLocation)();
+    const [deleteExclude, deleteResult] = (0, excludes_1.useDeleteDomainPermissionExcludeMutation)();
+    return (react_1.default.createElement(mutation_button_1.default, { label: `Delete exclude`, title: `Delete exclude`, type: "button", className: "button danger", onClick: (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            deleteExclude(id).then(res => {
+                if ("data" in res) {
+                    setLocation(backLocation);
+                }
+            });
+        }, disabled: false, showError: true, result: deleteResult }));
+}
+
+},{"../../../../components/back-button":329,"../../../../components/error":332,"../../../../components/form/mutation-button":334,"../../../../components/loading":336,"../../../../components/username-lozenge":341,"../../../../lib/navigation/util":357,"../../../../lib/query/admin/domain-permissions/excludes":362,"react":198,"wouter":323}],432:[function(require,module,exports){
+"use strict";
+/*
+    GoToSocial
+    Copyright (C) GoToSocial Authors admin@gotosocial.org
+    SPDX-License-Identifier: AGPL-3.0-or-later
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const react_1 = __importStar(require("react"));
+const wouter_1 = require("wouter");
+const util_1 = require("../../../../lib/navigation/util");
+const back_button_1 = __importDefault(require("../../../../components/back-button"));
+const subscriptions_1 = require("../../../../lib/query/admin/domain-permissions/subscriptions");
+const form_1 = require("../../../../lib/form");
+const form_with_data_1 = __importDefault(require("../../../../lib/form/form-with-data"));
+const mutation_button_1 = __importDefault(require("../../../../components/form/mutation-button"));
+const inputs_1 = require("../../../../components/form/inputs");
+const submit_1 = __importDefault(require("../../../../lib/form/submit"));
+const username_lozenge_1 = __importDefault(require("../../../../components/username-lozenge"));
+const formvalidators_1 = require("../../../../lib/util/formvalidators");
+const pageable_list_1 = require("../../../../components/pageable-list");
+function DomainPermissionSubscriptionDetail() {
+    const params = (0, wouter_1.useParams)();
+    let id = params.permSubId;
+    if (!id) {
+        throw "no permSub ID";
+    }
+    return (react_1.default.createElement(form_with_data_1.default, { dataQuery: subscriptions_1.useGetDomainPermissionSubscriptionQuery, queryArg: id, DataForm: DomainPermSubForm }));
+}
+exports.default = DomainPermissionSubscriptionDetail;
+function DomainPermSubForm({ data: permSub }) {
+    var _a, _b;
+    const baseUrl = (0, util_1.useBaseUrl)();
+    const backLocation = (_b = (_a = history.state) === null || _a === void 0 ? void 0 : _a.backLocation) !== null && _b !== void 0 ? _b : `~${baseUrl}/subscriptions/search`;
+    return (react_1.default.createElement("div", { className: "domain-permission-subscription-details" },
+        react_1.default.createElement("h1", null,
+            react_1.default.createElement(back_button_1.default, { to: backLocation }),
+            " Domain Permission Subscription Detail"),
+        react_1.default.createElement(DomainPermSubDetails, { permSub: permSub }),
+        react_1.default.createElement(UpdateDomainPermSub, { permSub: permSub }),
+        react_1.default.createElement(TestDomainPermSub, { permSub: permSub }),
+        react_1.default.createElement(DeleteDomainPermSub, { permSub: permSub, backLocation: backLocation })));
+}
+function DomainPermSubDetails({ permSub }) {
+    const [location] = (0, wouter_1.useLocation)();
+    const baseUrl = (0, util_1.useBaseUrl)();
+    const permType = permSub.permission_type;
+    if (!permType) {
+        throw "permission_type was undefined";
+    }
+    const created = new Date(permSub.created_at).toDateString();
+    let fetchedAtStr = "never";
+    if (permSub.fetched_at) {
+        fetchedAtStr = new Date(permSub.fetched_at).toDateString();
+    }
+    let successfullyFetchedAtStr = "never";
+    if (permSub.successfully_fetched_at) {
+        successfullyFetchedAtStr = new Date(permSub.successfully_fetched_at).toDateString();
+    }
+    return (react_1.default.createElement("dl", { className: "info-list" },
+        react_1.default.createElement("div", { className: "info-list-entry" },
+            react_1.default.createElement("dt", null, "Permission type:"),
+            react_1.default.createElement("dd", { className: `permission-type ${permType}` },
+                react_1.default.createElement("i", { "aria-hidden": true, className: `fa fa-${permType === "allow" ? "check" : "close"}` }),
+                permType)),
+        react_1.default.createElement("div", { className: "info-list-entry" },
+            react_1.default.createElement("dt", null, "ID"),
+            react_1.default.createElement("dd", { className: "monospace" }, permSub.id)),
+        react_1.default.createElement("div", { className: "info-list-entry" },
+            react_1.default.createElement("dt", null, "Created"),
+            react_1.default.createElement("dd", null,
+                react_1.default.createElement("time", { dateTime: permSub.created_at }, created))),
+        react_1.default.createElement("div", { className: "info-list-entry" },
+            react_1.default.createElement("dt", null, "Created By"),
+            react_1.default.createElement("dd", null,
+                react_1.default.createElement(username_lozenge_1.default, { account: permSub.created_by, linkTo: `~/settings/moderation/accounts/${permSub.created_by}`, backLocation: `~${baseUrl}${location}` }))),
+        react_1.default.createElement("div", { className: "info-list-entry" },
+            react_1.default.createElement("dt", null, "Last fetch attempt:"),
+            react_1.default.createElement("dd", null, fetchedAtStr)),
+        react_1.default.createElement("div", { className: "info-list-entry" },
+            react_1.default.createElement("dt", null, "Last successful fetch:"),
+            react_1.default.createElement("dd", null, successfullyFetchedAtStr)),
+        react_1.default.createElement("div", { className: "info-list-entry" },
+            react_1.default.createElement("dt", null,
+                "Discovered ",
+                permSub.permission_type,
+                "s:"),
+            react_1.default.createElement("dd", null, permSub.count))));
+}
+function UpdateDomainPermSub({ permSub }) {
+    const [showPassword, setShowPassword] = (0, react_1.useState)(false);
+    const form = {
+        priority: (0, form_1.useNumberInput)("priority", { source: permSub }),
+        uri: (0, form_1.useTextInput)("uri", {
+            source: permSub,
+            validator: formvalidators_1.urlValidator,
+        }),
+        content_type: (0, form_1.useTextInput)("content_type", { source: permSub }),
+        title: (0, form_1.useTextInput)("title", { source: permSub }),
+        as_draft: (0, form_1.useBoolInput)("as_draft", { source: permSub }),
+        adopt_orphans: (0, form_1.useBoolInput)("adopt_orphans", { source: permSub }),
+        useBasicAuth: (0, form_1.useBoolInput)("useBasicAuth", {
+            defaultValue: (permSub.fetch_password !== undefined && permSub.fetch_password !== "") ||
+                (permSub.fetch_username !== undefined && permSub.fetch_username !== ""),
+            nosubmit: true
+        }),
+        fetch_username: (0, form_1.useTextInput)("fetch_username", {
+            source: permSub
+        }),
+        fetch_password: (0, form_1.useTextInput)("fetch_password", {
+            source: permSub
+        }),
+    };
+    const [submitUpdate, updateResult] = (0, submit_1.default)(form, (0, subscriptions_1.useUpdateDomainPermissionSubscriptionMutation)(), {
+        changedOnly: true,
+        customizeMutationArgs: (mutationData) => {
+            // Clear username + password if they were set,
+            // but user has selected to not use basic auth.
+            if (!form.useBasicAuth.value) {
+                if (permSub.fetch_username !== undefined && permSub.fetch_username !== "") {
+                    mutationData["fetch_username"] = "";
+                }
+                if (permSub.fetch_password !== undefined && permSub.fetch_password !== "") {
+                    mutationData["fetch_password"] = "";
+                }
+            }
+            // Remove useBasicAuth if included.
+            delete mutationData["useBasicAuth"];
+            // Modify mutation argument to
+            // include ID and permission type.
+            return {
+                id: permSub.id,
+                permType: permSub.permission_type,
+                formData: mutationData,
+            };
+        },
+        onFinish: res => {
+            // On a successful response that returns data,
+            // clear the fetch_username and fetch_password
+            // fields if they weren't set on the returned sub.
+            if (res.data) {
+                if (res.data.fetch_username === undefined || res.data.fetch_username === "") {
+                    form.fetch_username.setter("");
+                }
+                if (res.data.fetch_password === undefined || res.data.fetch_password === "") {
+                    form.fetch_password.setter("");
+                }
+            }
+        }
+    });
+    const submitDisabled = () => {
+        // If no basic auth, we don't care what
+        // fetch_password and fetch_username are.
+        if (!form.useBasicAuth.value) {
+            return false;
+        }
+        // Either of fetch_password or fetch_username must be set.
+        return !(form.fetch_password.value || form.fetch_username.value);
+    };
+    return (react_1.default.createElement("form", { className: "domain-permission-subscription-update", onSubmit: submitUpdate, 
+        // Prevent password managers
+        // trying to fill in fields.
+        autoComplete: "off" },
+        react_1.default.createElement("h2", null, "Edit Subscription"),
+        react_1.default.createElement(inputs_1.TextInput, { field: form.title, label: `Subscription title`, placeholder: `Some List of ${permSub.permission_type === "block" ? "Baddies" : "Goodies"}`, autoCapitalize: "words", spellCheck: "false" }),
+        react_1.default.createElement(inputs_1.NumberInput, { field: form.priority, label: `Subscription priority (0-255)`, type: "number", min: "0", max: "255" }),
+        react_1.default.createElement(inputs_1.TextInput, { field: form.uri, label: `Permission list URL (http or https)`, placeholder: "https://example.org/files/some_list_somewhere", autoCapitalize: "none", spellCheck: "false", type: "url" }),
+        react_1.default.createElement(inputs_1.Select, { field: form.content_type, label: "Content type", options: react_1.default.createElement(react_1.default.Fragment, null,
+                react_1.default.createElement("option", { value: "text/csv" }, "CSV"),
+                react_1.default.createElement("option", { value: "application/json" }, "JSON"),
+                react_1.default.createElement("option", { value: "text/plain" }, "Plain")) }),
+        react_1.default.createElement(inputs_1.Checkbox, { label: react_1.default.createElement(react_1.default.Fragment, null,
+                react_1.default.createElement(react_1.default.Fragment, null, "Use "),
+                react_1.default.createElement("a", { href: "https://en.wikipedia.org/wiki/Basic_access_authentication", target: "_blank", rel: "noreferrer" }, "basic auth"),
+                react_1.default.createElement(react_1.default.Fragment, null, " when fetching")), field: form.useBasicAuth }),
+        form.useBasicAuth.value &&
+            react_1.default.createElement(react_1.default.Fragment, null,
+                react_1.default.createElement(inputs_1.TextInput, { field: form.fetch_username, label: `Basic auth username`, autoCapitalize: "none", spellCheck: "false", autoComplete: "off", required: form.useBasicAuth.value && !form.fetch_password.value }),
+                react_1.default.createElement("div", { className: "password-show-hide" },
+                    react_1.default.createElement(inputs_1.TextInput, { field: form.fetch_password, label: `Basic auth password`, autoCapitalize: "none", spellCheck: "false", type: showPassword ? "" : "password", autoComplete: "off", required: form.useBasicAuth.value && !form.fetch_username.value }),
+                    react_1.default.createElement("button", { className: "password-show-hide-toggle", type: "button", title: !showPassword ? "Show password" : "Hide password", onClick: e => {
+                            e.preventDefault();
+                            setShowPassword(!showPassword);
+                        } }, !showPassword ? "Show" : "Hide"))),
+        react_1.default.createElement(inputs_1.Checkbox, { label: "Adopt orphan permissions", field: form.adopt_orphans }),
+        react_1.default.createElement(inputs_1.Checkbox, { label: "Create permissions as drafts", field: form.as_draft }),
+        !form.as_draft.value &&
+            react_1.default.createElement("div", { className: "info" },
+                react_1.default.createElement("i", { className: "fa fa-fw fa-exclamation-circle", "aria-hidden": "true" }),
+                react_1.default.createElement("b", null,
+                    "Unchecking \"create permissions as drafts\" means that permissions found on the subscribed list will be enforced immediately the next time the list is fetched.",
+                    react_1.default.createElement("br", null),
+                    "If you're subscribing to a block list, this means that blocks will be created automatically from the given list, potentially severing any existing follow relationships with accounts on the blocked domain.",
+                    react_1.default.createElement("br", null),
+                    "Before saving, make sure this is what you really want to do, and consider creating domain excludes for domains that you want to manage manually.")),
+        react_1.default.createElement(mutation_button_1.default, { label: "Save", result: updateResult, disabled: submitDisabled() })));
+}
+function DeleteDomainPermSub({ permSub, backLocation }) {
+    const permType = permSub.permission_type;
+    if (!permType) {
+        throw "permission_type was undefined";
+    }
+    const [_location, setLocation] = (0, wouter_1.useLocation)();
+    const [removeSub, result] = (0, subscriptions_1.useRemoveDomainPermissionSubscriptionMutation)();
+    const removeChildren = (0, form_1.useBoolInput)("remove_children", { defaultValue: false });
+    return (react_1.default.createElement("form", { className: "domain-permission-subscription-remove" },
+        react_1.default.createElement("h2", null, "Remove Subscription"),
+        react_1.default.createElement(inputs_1.Checkbox, { label: `Also remove any ${permType}s created by this subscription`, field: removeChildren }),
+        react_1.default.createElement(mutation_button_1.default, { label: `Remove`, title: `Remove`, type: "button", className: "button danger", onClick: (e) => {
+                e.preventDefault();
+                const id = permSub.id;
+                const remove_children = removeChildren.value;
+                removeSub({ id, remove_children }).then(res => {
+                    if ("data" in res) {
+                        setLocation(backLocation);
+                    }
+                });
+            }, disabled: false, showError: true, result: result })));
+}
+function TestDomainPermSub({ permSub }) {
+    var _a;
+    const permType = permSub.permission_type;
+    if (!permType) {
+        throw "permission_type was undefined";
+    }
+    const [testSub, testRes] = (0, subscriptions_1.useTestDomainPermissionSubscriptionMutation)();
+    const onSubmit = (e) => {
+        e.preventDefault();
+        testSub(permSub.id);
+    };
+    // Function to map an item to a list entry.
+    function itemToEntry(perm) {
+        return (react_1.default.createElement("span", { className: "text-cutoff entry perm-preview" },
+            react_1.default.createElement("strong", null, perm.domain),
+            perm.public_comment && react_1.default.createElement(react_1.default.Fragment, null,
+                "(",
+                perm.public_comment,
+                ")")));
+    }
+    return (react_1.default.createElement(react_1.default.Fragment, null,
+        react_1.default.createElement("form", { className: "domain-permission-subscription-test", onSubmit: onSubmit },
+            react_1.default.createElement("h2", null, "Test Subscription"),
+            "Click the \"test\" button to instruct your instance to do a test fetch and parse of the ",
+            permType,
+            " list at the subscription URI.",
+            react_1.default.createElement("br", null),
+            "If the fetch is successful, you will see a list of ",
+            permType,
+            "s (or ",
+            permType,
+            " drafts) that *would* be created by this subscription, along with the public comment for each ",
+            permType,
+            " (if applicable).",
+            react_1.default.createElement("br", null),
+            "The test does not actually create those ",
+            permType,
+            "s in your database.",
+            react_1.default.createElement(mutation_button_1.default, { disabled: false, label: "Test", result: testRes })),
+        testRes.data && "error" in testRes.data
+            ? react_1.default.createElement("div", { className: "info perm-issue" },
+                react_1.default.createElement("i", { className: "fa fa-fw fa-exclamation-circle", "aria-hidden": "true" }),
+                react_1.default.createElement("b", null,
+                    "The following issue was encountered when doing a fetch + parse:",
+                    react_1.default.createElement("br", null),
+                    react_1.default.createElement("code", null, testRes.data.error),
+                    react_1.default.createElement("br", null),
+                    "This may be due to a temporary outage at the remote URL, or you may wish to check your subscription settings and test again."))
+            : react_1.default.createElement(react_1.default.Fragment, null,
+                testRes.data && `${(_a = testRes.data) === null || _a === void 0 ? void 0 : _a.length} ${permType}s would be created by this subscription:`,
+                react_1.default.createElement(pageable_list_1.PageableList, { isLoading: testRes.isLoading, isSuccess: testRes.isSuccess, items: testRes.data, itemToEntry: itemToEntry, isError: testRes.isError, error: testRes.error, emptyMessage: react_1.default.createElement("b", null, "No entries!") }))));
+}
+
+},{"../../../../components/back-button":329,"../../../../components/form/inputs":333,"../../../../components/form/mutation-button":334,"../../../../components/pageable-list":337,"../../../../components/username-lozenge":341,"../../../../lib/form":351,"../../../../lib/form/form-with-data":349,"../../../../lib/form/submit":353,"../../../../lib/navigation/util":357,"../../../../lib/query/admin/domain-permissions/subscriptions":367,"../../../../lib/util/formvalidators":383,"react":198,"wouter":323}],437:[function(require,module,exports){
+"use strict";
+/*
+    GoToSocial
+    Copyright (C) GoToSocial Authors admin@gotosocial.org
+    SPDX-License-Identifier: AGPL-3.0-or-later
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const react_1 = __importDefault(require("react"));
+const wouter_1 = require("wouter");
+const form_with_data_1 = __importDefault(require("../../../lib/form/form-with-data"));
+const back_button_1 = __importDefault(require("../../../components/back-button"));
+const form_1 = require("../../../lib/form");
+const submit_1 = __importDefault(require("../../../lib/form/submit"));
+const inputs_1 = require("../../../components/form/inputs");
+const mutation_button_1 = __importDefault(require("../../../components/form/mutation-button"));
+const username_lozenge_1 = __importDefault(require("../../../components/username-lozenge"));
+const reports_1 = require("../../../lib/query/admin/reports");
+const util_1 = require("../../../lib/navigation/util");
+const util_2 = require("../../../lib/util");
+const status_1 = require("../../../components/status");
+function ReportDetail({}) {
+    var _a, _b;
+    const params = (0, wouter_1.useParams)();
+    const baseUrl = (0, util_1.useBaseUrl)();
+    const backLocation = (_b = (_a = history.state) === null || _a === void 0 ? void 0 : _a.backLocation) !== null && _b !== void 0 ? _b : `~${baseUrl}`;
+    return (react_1.default.createElement("div", { className: "report-detail" },
+        react_1.default.createElement("h1", null,
+            react_1.default.createElement(back_button_1.default, { to: backLocation }),
+            " Report Details"),
+        react_1.default.createElement(form_with_data_1.default, { dataQuery: reports_1.useGetReportQuery, queryArg: params.reportId, DataForm: ReportDetailForm, backLocation: backLocation })));
+}
+exports.default = ReportDetail;
+function ReportDetailForm({ data: report }) {
+    const [location] = (0, wouter_1.useLocation)();
+    const baseUrl = (0, util_1.useBaseUrl)();
+    return (react_1.default.createElement(react_1.default.Fragment, null,
+        react_1.default.createElement(ReportBasicInfo, { report: report, baseUrl: baseUrl, location: location }),
+        report.action_taken
+            && react_1.default.createElement(ReportHistory, { report: report, baseUrl: baseUrl, location: location }),
+        report.statuses &&
+            react_1.default.createElement(ReportStatuses, { report: report }),
+        !report.action_taken &&
+            react_1.default.createElement(ReportActionForm, { report: report })));
+}
+function ReportBasicInfo({ report, baseUrl, location }) {
+    const from = report.account;
+    const target = report.target_account;
+    const comment = report.comment;
+    const status = report.action_taken ? "Resolved" : "Unresolved";
+    const created = new Date(report.created_at).toLocaleString();
+    return (react_1.default.createElement("dl", { className: "info-list overview" },
+        react_1.default.createElement("div", { className: "info-list-entry" },
+            react_1.default.createElement("dt", null, "Reported account"),
+            react_1.default.createElement("dd", null,
+                react_1.default.createElement(username_lozenge_1.default, { account: target, linkTo: `~/settings/moderation/accounts/${target.id}`, backLocation: `~${baseUrl}${location}` }))),
+        react_1.default.createElement("div", { className: "info-list-entry" },
+            react_1.default.createElement("dt", null, "Reported by"),
+            react_1.default.createElement("dd", null,
+                react_1.default.createElement(username_lozenge_1.default, { account: from, linkTo: `~/settings/moderation/accounts/${from.id}`, backLocation: `~${baseUrl}${location}` }))),
+        react_1.default.createElement("div", { className: "info-list-entry" },
+            react_1.default.createElement("dt", null, "Status"),
+            react_1.default.createElement("dd", null, report.action_taken
+                ? react_1.default.createElement(react_1.default.Fragment, null, status)
+                : react_1.default.createElement("b", null, status))),
+        react_1.default.createElement("div", { className: "info-list-entry" },
+            react_1.default.createElement("dt", null, "Reason"),
+            react_1.default.createElement("dd", null, comment.length > 0
+                ? react_1.default.createElement(react_1.default.Fragment, null, comment)
+                : react_1.default.createElement("i", null, "none provided"))),
+        react_1.default.createElement("div", { className: "info-list-entry" },
+            react_1.default.createElement("dt", null, "Created"),
+            react_1.default.createElement("dd", null,
+                react_1.default.createElement("time", { dateTime: report.created_at }, created))),
+        react_1.default.createElement("div", { className: "info-list-entry" },
+            react_1.default.createElement("dt", null, "Category"),
+            react_1.default.createElement("dd", null, report.category)),
+        react_1.default.createElement("div", { className: "info-list-entry" },
+            react_1.default.createElement("dt", null, "Forwarded"),
+            react_1.default.createElement("dd", null, (0, util_2.yesOrNo)(report.forwarded)))));
+}
+function ReportHistory({ report, baseUrl, location }) {
+    var _a;
+    const handled_by = report.action_taken_by_account;
+    if (!handled_by) {
+        throw "report handled by action_taken_by_account undefined";
+    }
+    const handled = report.action_taken_at ? new Date(report.action_taken_at).toLocaleString() : "never";
+    return (react_1.default.createElement(react_1.default.Fragment, null,
+        react_1.default.createElement("h3", null, "Moderation History"),
+        react_1.default.createElement("dl", { className: "info-list" },
+            react_1.default.createElement("div", { className: "info-list-entry" },
+                react_1.default.createElement("dt", null, "Handled by"),
+                react_1.default.createElement("dd", null,
+                    react_1.default.createElement(username_lozenge_1.default, { account: handled_by, linkTo: `~/settings/moderation/accounts/${handled_by.id}`, backLocation: `~${baseUrl}${location}` }))),
+            react_1.default.createElement("div", { className: "info-list-entry" },
+                react_1.default.createElement("dt", null, "Handled"),
+                react_1.default.createElement("dd", null,
+                    react_1.default.createElement("time", { dateTime: report.action_taken_at }, handled))),
+            react_1.default.createElement("div", { className: "info-list-entry" },
+                react_1.default.createElement("dt", null, "Comment"),
+                react_1.default.createElement("dd", null, (_a = report.action_taken_comment) !== null && _a !== void 0 ? _a : "none")))));
+}
+function ReportActionForm({ report }) {
+    const form = {
+        id: (0, form_1.useValue)("id", report.id),
+        comment: (0, form_1.useTextInput)("action_taken_comment")
+    };
+    const [submit, result] = (0, submit_1.default)(form, (0, reports_1.useResolveReportMutation)(), { changedOnly: false });
+    return (react_1.default.createElement("form", { onSubmit: submit },
+        react_1.default.createElement("h3", null, "Resolve this report"),
+        react_1.default.createElement(react_1.default.Fragment, null,
+            "An optional comment can be included while resolving this report. This is useful for providing an explanation about what action was taken (if any) before the report was marked as resolved.",
+            react_1.default.createElement("br", null),
+            react_1.default.createElement("div", { className: "info" },
+                react_1.default.createElement("i", { className: "fa fa-fw fa-exclamation-triangle", "aria-hidden": "true" }),
+                react_1.default.createElement("b", null, "If the report was created by a local account, then any comment made here will be emailed to that account's user!"))),
+        react_1.default.createElement(inputs_1.TextArea, { field: form.comment, label: "Comment", autoCapitalize: "sentences" }),
+        react_1.default.createElement(mutation_button_1.default, { disabled: false, label: "Resolve", result: result })));
+}
+function ReportStatuses({ report }) {
+    if (report.statuses.length === 0) {
+        return null;
+    }
+    return (react_1.default.createElement("div", { className: "report-statuses" },
+        react_1.default.createElement("h3", null, "Reported Statuses"),
+        react_1.default.createElement("ul", { className: "thread" }, report.statuses.map((status) => {
+            return (react_1.default.createElement(status_1.Status, { key: status.id, status: status }));
+        }))));
+}
+
+},{"../../../components/back-button":329,"../../../components/form/inputs":333,"../../../components/form/mutation-button":334,"../../../components/status":339,"../../../components/username-lozenge":341,"../../../lib/form":351,"../../../lib/form/form-with-data":349,"../../../lib/form/submit":353,"../../../lib/navigation/util":357,"../../../lib/query/admin/reports":371,"../../../lib/util":384,"react":198,"wouter":323}],438:[function(require,module,exports){
+"use strict";
+/*
+    GoToSocial
+    Copyright (C) GoToSocial Authors admin@gotosocial.org
+    SPDX-License-Identifier: AGPL-3.0-or-later
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const react_1 = __importStar(require("react"));
+const reports_1 = require("../../../lib/query/admin/reports");
+const form_1 = require("../../../lib/form");
+const pageable_list_1 = require("../../../components/pageable-list");
+const inputs_1 = require("../../../components/form/inputs");
+const mutation_button_1 = __importDefault(require("../../../components/form/mutation-button"));
+const wouter_1 = require("wouter");
+const username_lozenge_1 = __importDefault(require("../../../components/username-lozenge"));
+function ReportsSearch() {
+    return (react_1.default.createElement("div", { className: "reports-view" },
+        react_1.default.createElement("h1", null, "Reports Search"),
+        react_1.default.createElement("span", null, "You can use the form below to search through reports created by, or directed towards, accounts on this instance."),
+        react_1.default.createElement(ReportSearchForm, null)));
+}
+exports.default = ReportsSearch;
+function ReportSearchForm() {
+    var _a, _b, _c, _d, _e;
+    const [location, setLocation] = (0, wouter_1.useLocation)();
+    const search = (0, wouter_1.useSearch)();
+    const urlQueryParams = (0, react_1.useMemo)(() => new URLSearchParams(search), [search]);
+    const hasParams = urlQueryParams.size != 0;
+    const [searchReports, searchRes] = (0, reports_1.useLazySearchReportsQuery)();
+    // Populate search form using values from
+    // urlQueryParams, to allow paging.
+    const resolved = (0, react_1.useMemo)(() => {
+        const resolvedRaw = urlQueryParams.get("resolved");
+        if (resolvedRaw !== null) {
+            return resolvedRaw;
+        }
+    }, [urlQueryParams]);
+    const form = {
+        resolved: (0, form_1.useTextInput)("resolved", { defaultValue: resolved }),
+        account_id: (0, form_1.useTextInput)("account_id", { defaultValue: (_a = urlQueryParams.get("account_id")) !== null && _a !== void 0 ? _a : "" }),
+        target_account_id: (0, form_1.useTextInput)("target_account_id", { defaultValue: (_b = urlQueryParams.get("target_account_id")) !== null && _b !== void 0 ? _b : "" }),
+        limit: (0, form_1.useTextInput)("limit", { defaultValue: (_c = urlQueryParams.get("limit")) !== null && _c !== void 0 ? _c : "20" })
+    };
+    const setResolved = form.resolved.setter;
+    // On mount, if urlQueryParams were provided,
+    // trigger the search. For example, if page
+    // was accessed at /search?origin=local&limit=20,
+    // then run a search with origin=local and
+    // limit=20 and immediately render the results.
+    //
+    // If no urlQueryParams set, use the default
+    // search (just show unresolved reports).
+    (0, react_1.useEffect)(() => {
+        if (hasParams) {
+            searchReports(Object.fromEntries(urlQueryParams));
+        }
+        else {
+            setResolved("false");
+            setLocation(location + "?resolved=false");
+        }
+    }, [
+        urlQueryParams,
+        hasParams,
+        searchReports,
+        location,
+        setLocation,
+        setResolved,
+    ]);
+    // Rather than triggering the search directly,
+    // the "submit" button changes the location
+    // based on form field params, and lets the
+    // useEffect hook above actually do the search.
+    function submitQuery(e) {
+        e.preventDefault();
+        // Parse query parameters.
+        const entries = Object.entries(form).map(([k, v]) => {
+            // Take only defined form fields.
+            if (v.value === undefined || v.value.length === 0 || v.value === "any") {
+                return null;
+            }
+            return [[k, v.value]];
+        }).flatMap(kv => {
+            // Remove any nulls.
+            return kv || [];
+        });
+        const searchParams = new URLSearchParams(entries);
+        setLocation(location + "?" + searchParams.toString());
+    }
+    // Location to return to when user clicks "back" on the detail view.
+    const backLocation = location + (hasParams ? `?${urlQueryParams}` : "");
+    // Function to map an item to a list entry.
+    function itemToEntry(report) {
+        return (react_1.default.createElement(ReportListEntry, { key: report.id, report: report, linkTo: `/${report.id}`, backLocation: backLocation }));
+    }
+    return (react_1.default.createElement(react_1.default.Fragment, null,
+        react_1.default.createElement("form", { onSubmit: submitQuery, 
+            // Prevent password managers
+            // trying to fill in fields.
+            autoComplete: "off" },
+            react_1.default.createElement(inputs_1.Select, { field: form.resolved, label: "Report status", options: react_1.default.createElement(react_1.default.Fragment, null,
+                    react_1.default.createElement("option", { value: "false" }, "Unresolved only"),
+                    react_1.default.createElement("option", { value: "true" }, "Resolved only"),
+                    react_1.default.createElement("option", { value: "" }, "Any")) }),
+            react_1.default.createElement(mutation_button_1.default, { disabled: false, label: "Search", result: searchRes })),
+        react_1.default.createElement(pageable_list_1.PageableList, { isLoading: searchRes.isLoading, isFetching: searchRes.isFetching, isSuccess: searchRes.isSuccess, items: (_d = searchRes.data) === null || _d === void 0 ? void 0 : _d.accounts, itemToEntry: itemToEntry, isError: searchRes.isError, error: searchRes.error, emptyMessage: react_1.default.createElement("b", null, "No reports found that match your query."), prevNextLinks: (_e = searchRes.data) === null || _e === void 0 ? void 0 : _e.links })));
+}
+function ReportListEntry({ report, linkTo, backLocation }) {
+    const [_location, setLocation] = (0, wouter_1.useLocation)();
+    const from = report.account;
+    const target = report.target_account;
+    const comment = report.comment;
+    const status = report.action_taken ? "Resolved" : "Unresolved";
+    const created = new Date(report.created_at).toLocaleString();
+    const title = `${status}. @${target.account.acct} was reported by @${from.account.acct} on ${created}. Reason: "${comment}"`;
+    return (react_1.default.createElement("span", { className: `pseudolink report entry${report.action_taken ? " resolved" : ""}`, "aria-label": title, title: title, onClick: () => {
+            // When clicking on a report, direct
+            // to the detail view for that report.
+            setLocation(linkTo, {
+                // Store the back location in history so
+                // the detail view can use it to return to
+                // this page (including query parameters).
+                state: { backLocation: backLocation }
+            });
+        }, role: "link", tabIndex: 0 },
+        react_1.default.createElement("dl", { className: "info-list" },
+            react_1.default.createElement("div", { className: "info-list-entry" },
+                react_1.default.createElement("dt", null, "Reported account:"),
+                react_1.default.createElement("dd", { className: "text-cutoff" },
+                    react_1.default.createElement(username_lozenge_1.default, { account: target, classNames: ["text-cutoff report-byline"] }))),
+            react_1.default.createElement("div", { className: "info-list-entry" },
+                react_1.default.createElement("dt", null, "Reported by:"),
+                react_1.default.createElement("dd", { className: "text-cutoff reported-by" },
+                    react_1.default.createElement(username_lozenge_1.default, { account: from }))),
+            react_1.default.createElement("div", { className: "info-list-entry" },
+                react_1.default.createElement("dt", null, "Status:"),
+                react_1.default.createElement("dd", { className: "text-cutoff" }, report.action_taken
+                    ? react_1.default.createElement(react_1.default.Fragment, null, status)
+                    : react_1.default.createElement("b", null, status))),
+            react_1.default.createElement("div", { className: "info-list-entry" },
+                react_1.default.createElement("dt", null, "Reason:"),
+                react_1.default.createElement("dd", { className: "text-cutoff" }, comment.length > 0
+                    ? react_1.default.createElement(react_1.default.Fragment, null, comment)
+                    : react_1.default.createElement("i", null, "none provided"))),
+            react_1.default.createElement("div", { className: "info-list-entry" },
+                react_1.default.createElement("dt", null, "Created:"),
+                react_1.default.createElement("dd", { className: "text-cutoff" },
+                    react_1.default.createElement("time", { dateTime: report.created_at }, created))))));
+}
+
+},{"../../../components/form/inputs":333,"../../../components/form/mutation-button":334,"../../../components/pageable-list":337,"../../../components/username-lozenge":341,"../../../lib/form":351,"../../../lib/query/admin/reports":371,"react":198,"wouter":323}],413:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -31934,7 +33790,297 @@ function LocalAccountDetails({ adminAcct }) {
                     react_1.default.createElement("dd", null, adminAcct.locale)))));
 }
 
-},{"../../../../components/back-button":329,"../../../../components/profile":338,"../../../../lib/form/form-with-data":349,"../../../../lib/navigation/util":357,"../../../../lib/query/admin":367,"../../../../lib/util":380,"./actions":408,"react":198,"wouter":323}],410:[function(require,module,exports){
+},{"../../../../components/back-button":329,"../../../../components/profile":338,"../../../../lib/form/form-with-data":349,"../../../../lib/navigation/util":357,"../../../../lib/query/admin":370,"../../../../lib/util":384,"./actions":412,"react":198,"wouter":323}],433:[function(require,module,exports){
+"use strict";
+/*
+    GoToSocial
+    Copyright (C) GoToSocial Authors admin@gotosocial.org
+    SPDX-License-Identifier: AGPL-3.0-or-later
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const react_1 = __importStar(require("react"));
+const form_1 = require("../../../../lib/form");
+const pageable_list_1 = require("../../../../components/pageable-list");
+const mutation_button_1 = __importDefault(require("../../../../components/form/mutation-button"));
+const wouter_1 = require("wouter");
+const subscriptions_1 = require("../../../../lib/query/admin/domain-permissions/subscriptions");
+const inputs_1 = require("../../../../components/form/inputs");
+const common_1 = require("./common");
+function DomainPermissionSubscriptionsSearch() {
+    return (react_1.default.createElement("div", { className: "domain-permission-subscriptions-view" },
+        react_1.default.createElement("div", { className: "form-section-docs" },
+            react_1.default.createElement("h1", null, "Domain Permission Subscriptions"),
+            react_1.default.createElement("p", null,
+                "You can use the form below to search through domain permission subscriptions, sorted by creation time (newer to older).",
+                react_1.default.createElement("br", null),
+                react_1.default.createElement(common_1.DomainPermissionSubscriptionHelpText, null)),
+            react_1.default.createElement(common_1.DomainPermissionSubscriptionDocsLink, null)),
+        react_1.default.createElement(DomainPermissionSubscriptionsSearchForm, null)));
+}
+exports.default = DomainPermissionSubscriptionsSearch;
+function DomainPermissionSubscriptionsSearchForm() {
+    var _a, _b, _c, _d;
+    const [location, setLocation] = (0, wouter_1.useLocation)();
+    const search = (0, wouter_1.useSearch)();
+    const urlQueryParams = (0, react_1.useMemo)(() => new URLSearchParams(search), [search]);
+    const hasParams = urlQueryParams.size != 0;
+    const [searchSubscriptions, searchRes] = (0, subscriptions_1.useLazySearchDomainPermissionSubscriptionsQuery)();
+    const form = {
+        permission_type: (0, form_1.useTextInput)("permission_type", { defaultValue: (_a = urlQueryParams.get("permission_type")) !== null && _a !== void 0 ? _a : "" }),
+        limit: (0, form_1.useTextInput)("limit", { defaultValue: (_b = urlQueryParams.get("limit")) !== null && _b !== void 0 ? _b : "20" })
+    };
+    // On mount, if urlQueryParams were provided,
+    // trigger the search. For example, if page
+    // was accessed at /search?origin=local&limit=20,
+    // then run a search with origin=local and
+    // limit=20 and immediately render the results.
+    //
+    // If no urlQueryParams set, trigger default
+    // search (first page, no filtering).
+    (0, react_1.useEffect)(() => {
+        if (hasParams) {
+            searchSubscriptions(Object.fromEntries(urlQueryParams));
+        }
+        else {
+            setLocation(location + "?limit=20");
+        }
+    }, [
+        urlQueryParams,
+        hasParams,
+        searchSubscriptions,
+        location,
+        setLocation,
+    ]);
+    // Rather than triggering the search directly,
+    // the "submit" button changes the location
+    // based on form field params, and lets the
+    // useEffect hook above actually do the search.
+    function submitQuery(e) {
+        e.preventDefault();
+        // Parse query parameters.
+        const entries = Object.entries(form).map(([k, v]) => {
+            // Take only defined form fields.
+            if (v.value === undefined || v.value.length === 0 || v.value === "any") {
+                return null;
+            }
+            return [[k, v.value]];
+        }).flatMap(kv => {
+            // Remove any nulls.
+            return kv || [];
+        });
+        const searchParams = new URLSearchParams(entries);
+        setLocation(location + "?" + searchParams.toString());
+    }
+    // Location to return to when user clicks "back" on the detail view.
+    const backLocation = location + (hasParams ? `?${urlQueryParams}` : "");
+    // Function to map an item to a list entry.
+    function itemToEntry(permSub) {
+        return (react_1.default.createElement(common_1.SubscriptionListEntry, { key: permSub.id, permSub: permSub, linkTo: `/subscriptions/${permSub.id}`, backLocation: backLocation }));
+    }
+    return (react_1.default.createElement(react_1.default.Fragment, null,
+        react_1.default.createElement("form", { onSubmit: submitQuery, 
+            // Prevent password managers
+            // trying to fill in fields.
+            autoComplete: "off" },
+            react_1.default.createElement(inputs_1.Select, { field: form.permission_type, label: "Permission type", options: react_1.default.createElement(react_1.default.Fragment, null,
+                    react_1.default.createElement("option", { value: "" }, "Any"),
+                    react_1.default.createElement("option", { value: "block" }, "Block"),
+                    react_1.default.createElement("option", { value: "allow" }, "Allow")) }),
+            react_1.default.createElement(inputs_1.Select, { field: form.limit, label: "Items per page", options: react_1.default.createElement(react_1.default.Fragment, null,
+                    react_1.default.createElement("option", { value: "20" }, "20"),
+                    react_1.default.createElement("option", { value: "50" }, "50"),
+                    react_1.default.createElement("option", { value: "100" }, "100")) }),
+            react_1.default.createElement(mutation_button_1.default, { disabled: false, label: "Search", result: searchRes })),
+        react_1.default.createElement(pageable_list_1.PageableList, { isLoading: searchRes.isLoading, isFetching: searchRes.isFetching, isSuccess: searchRes.isSuccess, items: (_c = searchRes.data) === null || _c === void 0 ? void 0 : _c.subs, itemToEntry: itemToEntry, isError: searchRes.isError, error: searchRes.error, emptyMessage: react_1.default.createElement("b", null, "No subscriptions found that match your query."), prevNextLinks: (_d = searchRes.data) === null || _d === void 0 ? void 0 : _d.links })));
+}
+
+},{"../../../../components/form/inputs":333,"../../../../components/form/mutation-button":334,"../../../../components/pageable-list":337,"../../../../lib/form":351,"../../../../lib/query/admin/domain-permissions/subscriptions":367,"./common":431,"react":198,"wouter":323}],434:[function(require,module,exports){
+"use strict";
+/*
+    GoToSocial
+    Copyright (C) GoToSocial Authors admin@gotosocial.org
+    SPDX-License-Identifier: AGPL-3.0-or-later
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const react_1 = __importStar(require("react"));
+const submit_1 = __importDefault(require("../../../../lib/form/submit"));
+const subscriptions_1 = require("../../../../lib/query/admin/domain-permissions/subscriptions");
+const form_1 = require("../../../../lib/form");
+const formvalidators_1 = require("../../../../lib/util/formvalidators");
+const mutation_button_1 = __importDefault(require("../../../../components/form/mutation-button"));
+const inputs_1 = require("../../../../components/form/inputs");
+const wouter_1 = require("wouter");
+const common_1 = require("./common");
+function DomainPermissionSubscriptionNew() {
+    const [_location, setLocation] = (0, wouter_1.useLocation)();
+    const useBasicAuth = (0, form_1.useBoolInput)("useBasicAuth", { defaultValue: false });
+    const form = {
+        priority: (0, form_1.useNumberInput)("priority", { defaultValue: 0 }),
+        uri: (0, form_1.useTextInput)("uri", {
+            validator: formvalidators_1.urlValidator,
+        }),
+        content_type: (0, form_1.useTextInput)("content_type", { defaultValue: "text/csv" }),
+        permission_type: (0, form_1.useTextInput)("permission_type", { defaultValue: "block" }),
+        title: (0, form_1.useTextInput)("title"),
+        as_draft: (0, form_1.useBoolInput)("as_draft", { defaultValue: true }),
+        adopt_orphans: (0, form_1.useBoolInput)("adopt_orphans", { defaultValue: false }),
+        fetch_username: (0, form_1.useTextInput)("fetch_username", {
+            nosubmit: !useBasicAuth.value
+        }),
+        fetch_password: (0, form_1.useTextInput)("fetch_password", {
+            nosubmit: !useBasicAuth.value
+        }),
+    };
+    const [showPassword, setShowPassword] = (0, react_1.useState)(false);
+    const [formSubmit, result] = (0, submit_1.default)(form, (0, subscriptions_1.useCreateDomainPermissionSubscriptionMutation)(), {
+        changedOnly: false,
+        onFinish: (res) => {
+            if (res.data) {
+                // Creation successful,
+                // redirect to subscription detail.
+                setLocation(`/subscriptions/${res.data.id}`);
+            }
+        },
+    });
+    const submitDisabled = () => {
+        // URI required.
+        if (!form.uri.value || !form.uri.valid) {
+            return true;
+        }
+        // If no basic auth, we don't care what
+        // fetch_password and fetch_username are.
+        if (!useBasicAuth.value) {
+            return false;
+        }
+        // Either of fetch_password or fetch_username must be set.
+        return !(form.fetch_password.value || form.fetch_username.value);
+    };
+    return (react_1.default.createElement("form", { className: "domain-permission-subscription-create", onSubmit: formSubmit, 
+        // Prevent password managers
+        // trying to fill in fields.
+        autoComplete: "off" },
+        react_1.default.createElement("div", { className: "form-section-docs" },
+            react_1.default.createElement("h2", null, "New Domain Permission Subscription"),
+            react_1.default.createElement("p", null,
+                react_1.default.createElement(common_1.DomainPermissionSubscriptionHelpText, null)),
+            react_1.default.createElement(common_1.DomainPermissionSubscriptionDocsLink, null)),
+        react_1.default.createElement(inputs_1.TextInput, { field: form.title, label: `Subscription title`, placeholder: `Some List of ${form.permission_type.value === "block" ? "Baddies" : "Goodies"}`, autoCapitalize: "words", spellCheck: "false" }),
+        react_1.default.createElement(inputs_1.NumberInput, { field: form.priority, label: `Subscription priority (0-255)`, type: "number", min: "0", max: "255" }),
+        react_1.default.createElement(inputs_1.Select, { field: form.permission_type, label: "Permission type", options: react_1.default.createElement(react_1.default.Fragment, null,
+                react_1.default.createElement("option", { value: "block" }, "Block"),
+                react_1.default.createElement("option", { value: "allow" }, "Allow")) }),
+        react_1.default.createElement(inputs_1.TextInput, { field: form.uri, label: `Permission list URL (http or https)`, placeholder: "https://example.org/files/some_list_somewhere", autoCapitalize: "none", spellCheck: "false", type: "url" }),
+        react_1.default.createElement(inputs_1.Select, { field: form.content_type, label: "Content type", options: react_1.default.createElement(react_1.default.Fragment, null,
+                react_1.default.createElement("option", { value: "text/csv" }, "CSV"),
+                react_1.default.createElement("option", { value: "application/json" }, "JSON"),
+                react_1.default.createElement("option", { value: "text/plain" }, "Plain")) }),
+        react_1.default.createElement(inputs_1.Checkbox, { label: react_1.default.createElement(react_1.default.Fragment, null,
+                react_1.default.createElement(react_1.default.Fragment, null, "Use "),
+                react_1.default.createElement("a", { href: "https://en.wikipedia.org/wiki/Basic_access_authentication", target: "_blank", rel: "noreferrer" }, "basic auth"),
+                react_1.default.createElement(react_1.default.Fragment, null, " when fetching")), field: useBasicAuth }),
+        useBasicAuth.value &&
+            react_1.default.createElement(react_1.default.Fragment, null,
+                react_1.default.createElement(inputs_1.TextInput, { field: form.fetch_username, label: `Basic auth username`, autoCapitalize: "none", spellCheck: "false", autoComplete: "off", required: useBasicAuth.value && !form.fetch_password.value }),
+                react_1.default.createElement("div", { className: "password-show-hide" },
+                    react_1.default.createElement(inputs_1.TextInput, { field: form.fetch_password, label: `Basic auth password`, autoCapitalize: "none", spellCheck: "false", type: showPassword ? "" : "password", autoComplete: "off", required: useBasicAuth.value && !form.fetch_username.value }),
+                    react_1.default.createElement("button", { className: "password-show-hide-toggle", type: "button", title: !showPassword ? "Show password" : "Hide password", onClick: e => {
+                            e.preventDefault();
+                            setShowPassword(!showPassword);
+                        } }, !showPassword ? "Show" : "Hide"))),
+        react_1.default.createElement(inputs_1.Checkbox, { label: "Adopt orphan permissions", field: form.adopt_orphans }),
+        react_1.default.createElement(inputs_1.Checkbox, { label: "Create permissions as drafts", field: form.as_draft }),
+        !form.as_draft.value &&
+            react_1.default.createElement("div", { className: "info" },
+                react_1.default.createElement("i", { className: "fa fa-fw fa-exclamation-circle", "aria-hidden": "true" }),
+                react_1.default.createElement("b", null,
+                    "Unchecking \"create permissions as drafts\" means that permissions found on the subscribed list will be enforced immediately the next time the list is fetched.",
+                    react_1.default.createElement("br", null),
+                    "If you're subscribing to a block list, this means that blocks will be created automatically from the given list, potentially severing any existing follow relationships with accounts on the blocked domain.",
+                    react_1.default.createElement("br", null),
+                    "Before saving, make sure this is what you really want to do, and consider creating domain excludes for domains that you want to manage manually.")),
+        react_1.default.createElement(mutation_button_1.default, { label: "Save", result: result, disabled: submitDisabled() })));
+}
+exports.default = DomainPermissionSubscriptionNew;
+
+},{"../../../../components/form/inputs":333,"../../../../components/form/mutation-button":334,"../../../../lib/form":351,"../../../../lib/form/submit":353,"../../../../lib/query/admin/domain-permissions/subscriptions":367,"../../../../lib/util/formvalidators":383,"./common":431,"react":198,"wouter":323}],435:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -31959,20 +34105,44 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importDefault(require("react"));
-const search_1 = require("./search");
-function AccountsSearch({}) {
-    return (react_1.default.createElement("div", { className: "accounts-view" },
+const form_1 = require("../../../../lib/form");
+const pageable_list_1 = require("../../../../components/pageable-list");
+const wouter_1 = require("wouter");
+const subscriptions_1 = require("../../../../lib/query/admin/domain-permissions/subscriptions");
+const inputs_1 = require("../../../../components/form/inputs");
+const common_1 = require("./common");
+function DomainPermissionSubscriptionsPreview() {
+    return (react_1.default.createElement("div", { className: "domain-permission-subscriptions-preview" },
         react_1.default.createElement("div", { className: "form-section-docs" },
-            react_1.default.createElement("h1", null, "Accounts Search"),
+            react_1.default.createElement("h1", null, "Domain Permission Subscriptions Preview"),
             react_1.default.createElement("p", null,
-                "You can perform actions on an account by clicking its name in a report, or by searching for the account using the form below and clicking on its name.",
+                "You can use the form below to view through domain permission subscriptions sorted by priority (high to low).",
                 react_1.default.createElement("br", null),
-                "All fields in the below form are optional.")),
-        react_1.default.createElement(search_1.AccountSearchForm, null)));
+                "This reflects the order in which they will actually be fetched by your instance, with higher-priority subscriptions creating permissions first, followed by lower-priority subscriptions."),
+            react_1.default.createElement(common_1.DomainPermissionSubscriptionDocsLink, null)),
+        react_1.default.createElement(DomainPermissionSubscriptionsPreviewForm, null)));
 }
-exports.default = AccountsSearch;
+exports.default = DomainPermissionSubscriptionsPreview;
+function DomainPermissionSubscriptionsPreviewForm() {
+    const [location, _setLocation] = (0, wouter_1.useLocation)();
+    const permType = (0, form_1.useTextInput)("permission_type", { defaultValue: "block" });
+    const { data: permSubs, isLoading, isFetching, isSuccess, isError, error, } = (0, subscriptions_1.useGetDomainPermissionSubscriptionsPreviewQuery)(permType.value);
+    // Function to map an item to a list entry.
+    function itemToEntry(permSub) {
+        return (react_1.default.createElement(common_1.SubscriptionListEntry, { key: permSub.id, permSub: permSub, linkTo: `/subscriptions/${permSub.id}`, backLocation: location }));
+    }
+    return (react_1.default.createElement(react_1.default.Fragment, null,
+        react_1.default.createElement("form", null,
+            react_1.default.createElement(inputs_1.Select, { field: permType, label: "Permission type", options: react_1.default.createElement(react_1.default.Fragment, null,
+                    react_1.default.createElement("option", { value: "block" }, "Block"),
+                    react_1.default.createElement("option", { value: "allow" }, "Allow")) })),
+        react_1.default.createElement(pageable_list_1.PageableList, { isLoading: isLoading, isFetching: isFetching, isSuccess: isSuccess, items: permSubs, itemToEntry: itemToEntry, isError: isError, error: error, emptyMessage: react_1.default.createElement("b", null,
+                "No ",
+                permType.value,
+                "list subscriptions found.") })));
+}
 
-},{"./search":412,"react":198}],396:[function(require,module,exports){
+},{"../../../../components/form/inputs":333,"../../../../components/pageable-list":337,"../../../../lib/form":351,"../../../../lib/query/admin/domain-permissions/subscriptions":367,"./common":431,"react":198,"wouter":323}],400:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -32114,7 +34284,7 @@ function EmojiPreview({ emoji }) {
     return (react_1.default.createElement("img", { onMouseEnter: () => { setAnimate(true); }, onMouseLeave: () => { setAnimate(false); }, src: animate ? emoji.url : emoji.static_url, alt: emoji.shortcode, title: emoji.shortcode, loading: "lazy" }));
 }
 
-},{"../../../../components/error":332,"../../../../components/form/inputs":333,"../../../../components/loading":336,"../../../../lib/form":351,"../../../../lib/query/admin/custom-emoji":359,"../category-select":393,"./new-emoji":395,"match-sorter":138,"react":198,"wouter":323}],434:[function(require,module,exports){
+},{"../../../../components/error":332,"../../../../components/form/inputs":333,"../../../../components/loading":336,"../../../../lib/form":351,"../../../../lib/query/admin/custom-emoji":359,"../category-select":397,"./new-emoji":399,"match-sorter":138,"react":198,"wouter":323}],451:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -32162,7 +34332,7 @@ function PostSettings() {
 }
 exports.default = PostSettings;
 
-},{"../../../components/error":332,"../../../components/loading":336,"../../../lib/query/oauth":370,"./basic-settings":433,"./interaction-policy-settings":436,"react":198}],422:[function(require,module,exports){
+},{"../../../components/error":332,"../../../components/loading":336,"../../../lib/query/oauth":373,"./basic-settings":450,"./interaction-policy-settings":453,"react":198}],414:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -32187,109 +34357,20 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importDefault(require("react"));
-const util_1 = require("../../lib/navigation/util");
-const wouter_1 = require("wouter");
-const search_1 = __importDefault(require("./reports/search"));
-const detail_1 = __importDefault(require("./reports/detail"));
-const error_1 = require("../../lib/navigation/error");
-const import_export_1 = __importDefault(require("./domain-permissions/import-export"));
-const overview_1 = __importDefault(require("./domain-permissions/overview"));
-const detail_2 = __importDefault(require("./domain-permissions/detail"));
-const accounts_1 = __importDefault(require("./accounts"));
-const pending_1 = __importDefault(require("./accounts/pending"));
-const detail_3 = __importDefault(require("./accounts/detail"));
-/*
-    EXPORTED COMPONENTS
-*/
-/**
- * - /settings/moderation/reports/overview
- * - /settings/moderation/reports/:reportId
- * - /settings/moderation/accounts/search
- * - /settings/moderation/accounts/pending
- * - /settings/moderation/accounts/:accountID
- * - /settings/moderation/domain-permissions/:permType
- * - /settings/moderation/domain-permissions/:permType/:domain
- * - /settings/moderation/domain-permissions/import-export
- * - /settings/moderation/domain-permissions/process
- */
-function ModerationRouter() {
-    const parentUrl = (0, util_1.useBaseUrl)();
-    const thisBase = "/moderation";
-    const absBase = parentUrl + thisBase;
-    const permissions = ["moderator"];
-    const moderator = (0, util_1.useHasPermission)(permissions);
-    if (!moderator) {
-        return null;
-    }
-    return (react_1.default.createElement(util_1.BaseUrlContext.Provider, { value: absBase },
-        react_1.default.createElement(wouter_1.Router, { base: thisBase },
-            react_1.default.createElement(ModerationReportsRouter, null),
-            react_1.default.createElement(ModerationAccountsRouter, null),
-            react_1.default.createElement(ModerationDomainPermsRouter, null))));
+const search_1 = require("./search");
+function AccountsSearch({}) {
+    return (react_1.default.createElement("div", { className: "accounts-view" },
+        react_1.default.createElement("div", { className: "form-section-docs" },
+            react_1.default.createElement("h1", null, "Accounts Search"),
+            react_1.default.createElement("p", null,
+                "You can perform actions on an account by clicking its name in a report, or by searching for the account using the form below and clicking on its name.",
+                react_1.default.createElement("br", null),
+                "All fields in the below form are optional.")),
+        react_1.default.createElement(search_1.AccountSearchForm, null)));
 }
-exports.default = ModerationRouter;
-/*
-    INTERNAL COMPONENTS
-*/
-/**
- * - /settings/moderation/reports/overview
- * - /settings/moderation/reports/:reportId
- */
-function ModerationReportsRouter() {
-    const parentUrl = (0, util_1.useBaseUrl)();
-    const thisBase = "/reports";
-    const absBase = parentUrl + thisBase;
-    return (react_1.default.createElement(util_1.BaseUrlContext.Provider, { value: absBase },
-        react_1.default.createElement(wouter_1.Router, { base: thisBase },
-            react_1.default.createElement(error_1.ErrorBoundary, null,
-                react_1.default.createElement(wouter_1.Switch, null,
-                    react_1.default.createElement(wouter_1.Route, { path: "/search", component: search_1.default }),
-                    react_1.default.createElement(wouter_1.Route, { path: "/:reportId", component: detail_1.default }),
-                    react_1.default.createElement(wouter_1.Route, null,
-                        react_1.default.createElement(wouter_1.Redirect, { to: "/search" })))))));
-}
-/**
- * - /settings/moderation/accounts/search
- * - /settings/moderation/accounts/pending
- * - /settings/moderation/accounts/:accountID
- */
-function ModerationAccountsRouter() {
-    const parentUrl = (0, util_1.useBaseUrl)();
-    const thisBase = "/accounts";
-    const absBase = parentUrl + thisBase;
-    return (react_1.default.createElement(util_1.BaseUrlContext.Provider, { value: absBase },
-        react_1.default.createElement(wouter_1.Router, { base: thisBase },
-            react_1.default.createElement(error_1.ErrorBoundary, null,
-                react_1.default.createElement(wouter_1.Switch, null,
-                    react_1.default.createElement(wouter_1.Route, { path: "/search", component: accounts_1.default }),
-                    react_1.default.createElement(wouter_1.Route, { path: "/pending", component: pending_1.default }),
-                    react_1.default.createElement(wouter_1.Route, { path: "/:accountID", component: detail_3.default }),
-                    react_1.default.createElement(wouter_1.Route, null,
-                        react_1.default.createElement(wouter_1.Redirect, { to: "/search" })))))));
-}
-/**
- * - /settings/moderation/domain-permissions/:permType
- * - /settings/moderation/domain-permissions/:permType/:domain
- * - /settings/moderation/domain-permissions/import-export
- * - /settings/moderation/domain-permissions/process
- */
-function ModerationDomainPermsRouter() {
-    const parentUrl = (0, util_1.useBaseUrl)();
-    const thisBase = "/domain-permissions";
-    const absBase = parentUrl + thisBase;
-    return (react_1.default.createElement(util_1.BaseUrlContext.Provider, { value: absBase },
-        react_1.default.createElement(wouter_1.Router, { base: thisBase },
-            react_1.default.createElement(error_1.ErrorBoundary, null,
-                react_1.default.createElement(wouter_1.Switch, null,
-                    react_1.default.createElement(wouter_1.Route, { path: "/import-export", component: import_export_1.default }),
-                    react_1.default.createElement(wouter_1.Route, { path: "/process", component: import_export_1.default }),
-                    react_1.default.createElement(wouter_1.Route, { path: "/:permType", component: overview_1.default }),
-                    react_1.default.createElement(wouter_1.Route, { path: "/:permType/:domain", component: detail_2.default }),
-                    react_1.default.createElement(wouter_1.Route, null,
-                        react_1.default.createElement(wouter_1.Redirect, { to: "/blocks" })))))));
-}
+exports.default = AccountsSearch;
 
-},{"../../lib/navigation/error":355,"../../lib/navigation/util":357,"./accounts":410,"./accounts/detail":409,"./accounts/pending":411,"./domain-permissions/detail":413,"./domain-permissions/import-export":416,"./domain-permissions/overview":417,"./reports/detail":420,"./reports/search":421,"react":198,"wouter":323}],407:[function(require,module,exports){
+},{"./search":416,"react":198}],411:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -32470,7 +34551,7 @@ function AdminDebugRouter() {
                         react_1.default.createElement(wouter_1.Redirect, { to: "/apurl" })))))));
 }
 
-},{"../../lib/navigation/error":355,"../../lib/navigation/util":357,"./actions/email":385,"./actions/keys":388,"./actions/media":390,"./debug/apurl":391,"./debug/caches":392,"./emoji/local/detail":394,"./emoji/local/overview":396,"./emoji/remote":398,"./http-header-permissions/detail":401,"./http-header-permissions/overview":402,"./instance/ruledetail":403,"./instance/rules":404,"./instance/settings":405,"react":198,"wouter":323}],439:[function(require,module,exports){
+},{"../../lib/navigation/error":355,"../../lib/navigation/util":357,"./actions/email":389,"./actions/keys":392,"./actions/media":394,"./debug/apurl":395,"./debug/caches":396,"./emoji/local/detail":398,"./emoji/local/overview":400,"./emoji/remote":402,"./http-header-permissions/detail":405,"./http-header-permissions/overview":406,"./instance/ruledetail":407,"./instance/rules":408,"./instance/settings":409,"react":198,"wouter":323}],456:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -32548,7 +34629,154 @@ function InteractionRequestsRouter() {
                     react_1.default.createElement(wouter_1.Redirect, { to: "/search" }))))));
 }
 
-},{"../../lib/navigation/error":355,"../../lib/navigation/util":357,"./emailpassword":423,"./export-import":426,"./interactions":428,"./interactions/detail":427,"./migration":432,"./posts":434,"./profile":438,"react":198,"wouter":323}],440:[function(require,module,exports){
+},{"../../lib/navigation/error":355,"../../lib/navigation/util":357,"./emailpassword":440,"./export-import":443,"./interactions":445,"./interactions/detail":444,"./migration":449,"./posts":451,"./profile":455,"react":198,"wouter":323}],439:[function(require,module,exports){
+"use strict";
+/*
+    GoToSocial
+    Copyright (C) GoToSocial Authors admin@gotosocial.org
+    SPDX-License-Identifier: AGPL-3.0-or-later
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const react_1 = __importDefault(require("react"));
+const util_1 = require("../../lib/navigation/util");
+const wouter_1 = require("wouter");
+const search_1 = __importDefault(require("./reports/search"));
+const detail_1 = __importDefault(require("./reports/detail"));
+const error_1 = require("../../lib/navigation/error");
+const import_export_1 = __importDefault(require("./domain-permissions/import-export"));
+const overview_1 = __importDefault(require("./domain-permissions/overview"));
+const detail_2 = __importDefault(require("./domain-permissions/detail"));
+const accounts_1 = __importDefault(require("./accounts"));
+const pending_1 = __importDefault(require("./accounts/pending"));
+const detail_3 = __importDefault(require("./accounts/detail"));
+const drafts_1 = __importDefault(require("./domain-permissions/drafts"));
+const new_1 = __importDefault(require("./domain-permissions/drafts/new"));
+const detail_4 = __importDefault(require("./domain-permissions/drafts/detail"));
+const detail_5 = __importDefault(require("./domain-permissions/excludes/detail"));
+const excludes_1 = __importDefault(require("./domain-permissions/excludes"));
+const new_2 = __importDefault(require("./domain-permissions/excludes/new"));
+const subscriptions_1 = __importDefault(require("./domain-permissions/subscriptions"));
+const new_3 = __importDefault(require("./domain-permissions/subscriptions/new"));
+const detail_6 = __importDefault(require("./domain-permissions/subscriptions/detail"));
+const preview_1 = __importDefault(require("./domain-permissions/subscriptions/preview"));
+/*
+    EXPORTED COMPONENTS
+*/
+/**
+ * - /settings/moderation/reports/overview
+ * - /settings/moderation/reports/:reportId
+ * - /settings/moderation/accounts/search
+ * - /settings/moderation/accounts/pending
+ * - /settings/moderation/accounts/:accountID
+ * - /settings/moderation/domain-permissions/:permType
+ * - /settings/moderation/domain-permissions/:permType/:domain
+ * - /settings/moderation/domain-permissions/import-export
+ * - /settings/moderation/domain-permissions/process
+ */
+function ModerationRouter() {
+    const parentUrl = (0, util_1.useBaseUrl)();
+    const thisBase = "/moderation";
+    const absBase = parentUrl + thisBase;
+    const permissions = ["moderator"];
+    const moderator = (0, util_1.useHasPermission)(permissions);
+    if (!moderator) {
+        return null;
+    }
+    return (react_1.default.createElement(util_1.BaseUrlContext.Provider, { value: absBase },
+        react_1.default.createElement(wouter_1.Router, { base: thisBase },
+            react_1.default.createElement(ModerationReportsRouter, null),
+            react_1.default.createElement(ModerationAccountsRouter, null),
+            react_1.default.createElement(ModerationDomainPermsRouter, null))));
+}
+exports.default = ModerationRouter;
+/*
+    INTERNAL COMPONENTS
+*/
+/**
+ * - /settings/moderation/reports/overview
+ * - /settings/moderation/reports/:reportId
+ */
+function ModerationReportsRouter() {
+    const parentUrl = (0, util_1.useBaseUrl)();
+    const thisBase = "/reports";
+    const absBase = parentUrl + thisBase;
+    return (react_1.default.createElement(util_1.BaseUrlContext.Provider, { value: absBase },
+        react_1.default.createElement(wouter_1.Router, { base: thisBase },
+            react_1.default.createElement(error_1.ErrorBoundary, null,
+                react_1.default.createElement(wouter_1.Switch, null,
+                    react_1.default.createElement(wouter_1.Route, { path: "/search", component: search_1.default }),
+                    react_1.default.createElement(wouter_1.Route, { path: "/:reportId", component: detail_1.default }),
+                    react_1.default.createElement(wouter_1.Route, null,
+                        react_1.default.createElement(wouter_1.Redirect, { to: "/search" })))))));
+}
+/**
+ * - /settings/moderation/accounts/search
+ * - /settings/moderation/accounts/pending
+ * - /settings/moderation/accounts/:accountID
+ */
+function ModerationAccountsRouter() {
+    const parentUrl = (0, util_1.useBaseUrl)();
+    const thisBase = "/accounts";
+    const absBase = parentUrl + thisBase;
+    return (react_1.default.createElement(util_1.BaseUrlContext.Provider, { value: absBase },
+        react_1.default.createElement(wouter_1.Router, { base: thisBase },
+            react_1.default.createElement(error_1.ErrorBoundary, null,
+                react_1.default.createElement(wouter_1.Switch, null,
+                    react_1.default.createElement(wouter_1.Route, { path: "/search", component: accounts_1.default }),
+                    react_1.default.createElement(wouter_1.Route, { path: "/pending", component: pending_1.default }),
+                    react_1.default.createElement(wouter_1.Route, { path: "/:accountID", component: detail_3.default }),
+                    react_1.default.createElement(wouter_1.Route, null,
+                        react_1.default.createElement(wouter_1.Redirect, { to: "/search" })))))));
+}
+/**
+ * - /settings/moderation/domain-permissions/:permType
+ * - /settings/moderation/domain-permissions/:permType/:domain
+ * - /settings/moderation/domain-permissions/import-export
+ * - /settings/moderation/domain-permissions/process
+ */
+function ModerationDomainPermsRouter() {
+    const parentUrl = (0, util_1.useBaseUrl)();
+    const thisBase = "/domain-permissions";
+    const absBase = parentUrl + thisBase;
+    return (react_1.default.createElement(util_1.BaseUrlContext.Provider, { value: absBase },
+        react_1.default.createElement(wouter_1.Router, { base: thisBase },
+            react_1.default.createElement(error_1.ErrorBoundary, null,
+                react_1.default.createElement(wouter_1.Switch, null,
+                    react_1.default.createElement(wouter_1.Route, { path: "/import-export", component: import_export_1.default }),
+                    react_1.default.createElement(wouter_1.Route, { path: "/process", component: import_export_1.default }),
+                    react_1.default.createElement(wouter_1.Route, { path: "/drafts/search", component: drafts_1.default }),
+                    react_1.default.createElement(wouter_1.Route, { path: "/drafts/new", component: new_1.default }),
+                    react_1.default.createElement(wouter_1.Route, { path: "/drafts/:permDraftId", component: detail_4.default }),
+                    react_1.default.createElement(wouter_1.Route, { path: "/excludes/search", component: excludes_1.default }),
+                    react_1.default.createElement(wouter_1.Route, { path: "/excludes/new", component: new_2.default }),
+                    react_1.default.createElement(wouter_1.Route, { path: "/excludes/:excludeId", component: detail_5.default }),
+                    react_1.default.createElement(wouter_1.Route, { path: "/subscriptions/search", component: subscriptions_1.default }),
+                    react_1.default.createElement(wouter_1.Route, { path: "/subscriptions/new", component: new_3.default }),
+                    react_1.default.createElement(wouter_1.Route, { path: "/subscriptions/preview", component: preview_1.default }),
+                    react_1.default.createElement(wouter_1.Route, { path: "/subscriptions/:permSubId", component: detail_6.default }),
+                    react_1.default.createElement(wouter_1.Route, { path: "/:permType", component: overview_1.default }),
+                    react_1.default.createElement(wouter_1.Route, { path: "/:permType/:domain", component: detail_2.default }),
+                    react_1.default.createElement(wouter_1.Route, null,
+                        react_1.default.createElement(wouter_1.Redirect, { to: "/blocks" })))))));
+}
+
+},{"../../lib/navigation/error":355,"../../lib/navigation/util":357,"./accounts":414,"./accounts/detail":413,"./accounts/pending":415,"./domain-permissions/detail":417,"./domain-permissions/drafts":420,"./domain-permissions/drafts/detail":419,"./domain-permissions/drafts/new":421,"./domain-permissions/excludes":424,"./domain-permissions/excludes/detail":423,"./domain-permissions/excludes/new":425,"./domain-permissions/import-export":428,"./domain-permissions/overview":429,"./domain-permissions/subscriptions":433,"./domain-permissions/subscriptions/detail":432,"./domain-permissions/subscriptions/new":434,"./domain-permissions/subscriptions/preview":435,"./reports/detail":437,"./reports/search":438,"react":198,"wouter":323}],457:[function(require,module,exports){
 "use strict";
 /*
     GoToSocial
@@ -32646,7 +34874,7 @@ const root = (0, client_1.createRoot)(document.getElementById("root"));
 root.render(react_1.default.createElement(react_1.StrictMode, null,
     react_1.default.createElement(Main, null)));
 
-},{"./components/authorization":327,"./components/loading":336,"./lib/navigation/error":355,"./lib/navigation/menu":356,"./lib/navigation/util":357,"./lib/query/gts-api":369,"./redux/store":383,"./style.css":384,"./views/admin/menu":406,"./views/admin/router":407,"./views/moderation/menu":419,"./views/moderation/router":422,"./views/user/menu":431,"./views/user/router":439,"react":198,"react-dom/client":161,"react-redux":181,"redux-persist/integration/react":206,"wouter":323}],124:[function(require,module,exports){
+},{"./components/authorization":327,"./components/loading":336,"./lib/navigation/error":355,"./lib/navigation/menu":356,"./lib/navigation/util":357,"./lib/query/gts-api":372,"./redux/store":387,"./style.css":388,"./views/admin/menu":410,"./views/admin/router":411,"./views/moderation/menu":436,"./views/moderation/router":439,"./views/user/menu":448,"./views/user/router":456,"react":198,"react-dom/client":161,"react-redux":181,"redux-persist/integration/react":206,"wouter":323}],124:[function(require,module,exports){
 "use strict";null;
 
-},{"insert-css":129}]},{},[440]);
+},{"insert-css":129}]},{},[457]);

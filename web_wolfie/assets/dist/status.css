@@ -960,11 +960,14 @@ main {
 				flex-wrap: wrap;
 				column-gap: 1rem;
 			}
+.status .status-info .status-stats .stats-grouping .edited-at {
+					font-size: smaller;
+				}
 .status .status-info .status-stats .stats-item {
 				display: flex;
 				gap: 0.4rem;
 			}
-.status .status-info .status-stats .stats-item:not(.published-at) {
+.status .status-info .status-stats .stats-item:not(.published-at):not(.edited-at) {
 				z-index: 1;
 				-webkit-user-select: none;
 				        user-select: none;
