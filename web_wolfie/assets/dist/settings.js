@@ -19777,7 +19777,7 @@ exports.DomainPermissionExcludeDocsLink = exports.DomainPermissionExcludeHelpTex
 const react_1 = __importDefault(require("react"));
 function DomainPermissionExcludeHelpText() {
     return (react_1.default.createElement(react_1.default.Fragment, null,
-        "Domain permission excludes prevent permissions for a domain (and all subdomains) from being auomatically managed by domain permission subscriptions.",
+        "Domain permission excludes prevent permissions for a domain (and all subdomains) from being automatically managed by domain permission subscriptions.",
         react_1.default.createElement("br", null),
         "For example, if you create an exclude entry for ",
         react_1.default.createElement("code", null, "example.org"),
