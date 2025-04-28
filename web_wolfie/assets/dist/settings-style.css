@@ -442,6 +442,12 @@ section.with-sidebar > div .select-wrapper::after, section.with-sidebar > form .
 	gap: 0.5rem;
 }
 
+.file-input-with-image-description .delete-header-button,
+	.file-input-with-image-description .delete-avatar-button {
+		margin-top: 0.5rem;
+		font-size: 1rem;
+	}
+
 /*
 	Normalize mock profile and make profile
 	header preview pop a bit nicer.
@@ -492,7 +498,6 @@ section.with-sidebar > div .select-wrapper::after, section.with-sidebar > form .
 .user-profile fieldset {
 		margin: 0;
 		padding: 0.5rem 1rem 1rem 1rem;
-		max-width: -webkit-fit-content;
 		max-width: -moz-fit-content;
 		max-width: fit-content;
 		border: 0.1rem solid var(--gray1);
@@ -521,7 +526,6 @@ section.with-sidebar > div .select-wrapper::after, section.with-sidebar > form .
 
 	background-color: var(--gray2);
 	padding: 1rem;
-	max-width: -webkit-fit-content;
 	max-width: -moz-fit-content;
 	max-width: fit-content;
 	border-radius: var(--br);
@@ -555,40 +559,35 @@ form {
 }
 
 .form-field.file {
-	display: grid;
-	grid-template-columns: auto 1fr;
-	grid-template-rows: auto auto;
-	grid-template-areas:
-		"label-label  label-label"
-		"label-button file-info"
-	;
+	display: flex;
+	position: relative;
+	overflow: hidden;
 }
 
-.form-field.file .label-label {
-		grid-area: label-label;
+.form-field.file .label-wrapper {
+		width: -moz-fit-content;
+		width: fit-content;
+		display: flex;
+		flex-direction: column;
 	}
 
-.form-field.file .label-button {
-		grid-area: label-button;
-	}
+.form-field.file .label-wrapper:focus-visible {
+			outline: 0.15rem dashed var(--button-focus-border);
+			outline-offset: -0.15rem;
+		}
 
 .form-field.file .form-info {
-		grid-area: file-info;
+		position: absolute;
+		font-weight: initial;
+		align-self: end;
+		margin-left: 4.25rem;
+		margin-bottom: 0.3rem;
 	}
 
 .form-field.file .form-info .error {
 			padding: 0.1rem;
-  			line-height: 1.4rem;
+			line-height: 1.4rem;
 		}
-
-span.form-info {
-	flex: 1 1 auto;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	padding: 0.3rem 0;
-	font-weight: initial;
-}
 
 .checkbox-list .header, .checkbox-list .entry {
 		display: grid;
@@ -609,6 +608,15 @@ span.form-info {
 .pageable-list .prev-next {
 		display: flex;
 		justify-content: space-between;
+	}
+
+section > div.domain-block,
+section > div.domain-allow {
+	height: 100%;
+}
+
+section > div.domain-block > a, section > div.domain-allow > a {
+		margin-top: auto;
 	}
 
 .domain-permissions-list p {
@@ -893,7 +901,6 @@ span.form-info {
 	}
 
 .mutation-button {
-	width: -webkit-fit-content;
 	width: -moz-fit-content;
 	width: fit-content;
 	display: flex;
@@ -918,7 +925,6 @@ button.with-padding {
 
 .tab-buttons {
 	display: flex;
-	max-width: -webkit-fit-content;
 	max-width: -moz-fit-content;
 	max-width: fit-content;
 	justify-content: space-between;
@@ -971,29 +977,29 @@ button.tab-button.active {
 }
 
 .domain-perm-import-list .checkbox-list-wrapper {
-		overflow-x: auto;
 		display: grid;
 		gap: 1rem;
 	}
 
+.domain-perm-import-list .checkbox-list {
+		overflow-x: auto;
+	}
+
+.domain-perm-import-list .checkbox-list .header {
+			align-items: center;
+		}
+
 .domain-perm-import-list .checkbox-list .header input[type="checkbox"] {
-				align-self: start;
 				height: 1.5rem;
 			}
 
 .domain-perm-import-list .checkbox-list .entry {
-			gap: 0;
-			width: 100%;
-			grid-template-columns: auto minmax(25ch, 2fr) minmax(40ch, 1fr);
-			grid-template-rows: auto 1fr;
+			grid-template-columns: auto max(50%, 14rem) 1fr;
+			column-gap: 1rem;
+			align-items: center;
 		}
 
-.domain-perm-import-list .checkbox-list .entry input[type="checkbox"] {
-				margin-right: 1rem;
-			}
-
 .domain-perm-import-list .checkbox-list .entry .domain-input {
-				margin-right: 0.5rem;
 				display: grid;
 				grid-template-columns: 1fr var(--fa-fw);
 				gap: 0.5rem;
@@ -1012,11 +1018,19 @@ button.tab-button.active {
 					}
 
 .domain-perm-import-list .checkbox-list .entry p {
-				align-self: center;
 				margin: 0;
-				grid-column: 4;
-				grid-row: 1 / span 2;
 			}
+
+.domain-perm-import-list .set-comment-checkbox {
+		display: flex;
+		flex-direction: column;
+		gap: 0.25rem;
+
+		padding: 0.5rem 1rem 1rem 1rem;
+		width: 100%;
+		border: 0.1rem solid var(--gray1);
+		border-radius: 0.1rem;
+	}
 
 .import-export p {
 		margin: 0;
@@ -1150,7 +1164,6 @@ button.tab-button.active {
 			}
 
 .reports-view .report .report-byline {
-			max-width: -webkit-fit-content;
 			max-width: -moz-fit-content;
 			max-width: fit-content;
 		}
@@ -1204,7 +1217,6 @@ button.tab-button.active {
 			align-items: center;
 			padding-top: 0;
 			padding-bottom: 0;
-			max-width: -webkit-fit-content;
 			max-width: -moz-fit-content;
 			max-width: fit-content;
 		}
@@ -1297,6 +1309,10 @@ button.tab-button.active {
 	cursor: pointer;
 	text-decoration: none;
 }
+
+.pseudolink:focus-visible {
+		outline: 0.15rem dotted var(--button-focus-border);
+	}
 
 .info-list {
 	border: 0.1rem solid var(--gray1);
@@ -1399,11 +1415,11 @@ button.tab-button.active {
 				line-height: 1rem;
 			}
 
-.domain-permission-draft-details .info-list, .domain-permission-exclude-details .info-list, .domain-permission-subscription-details .info-list {
+.domain-permission-details .info-list, .domain-permission-draft-details .info-list, .domain-permission-exclude-details .info-list, .domain-permission-subscription-details .info-list {
 		margin-top: 1rem;
 	}
 
-.domain-permission-drafts-view dd.permission-type, .domain-permission-draft-details dd.permission-type, .domain-permission-subscriptions-view dd.permission-type, .domain-permission-subscription-details dd.permission-type, .domain-permission-subscriptions-preview dd.permission-type {
+.domain-permission-details dd.permission-type, .domain-permission-drafts-view dd.permission-type, .domain-permission-draft-details dd.permission-type, .domain-permission-subscriptions-view dd.permission-type, .domain-permission-subscription-details dd.permission-type, .domain-permission-subscriptions-preview dd.permission-type {
 		display: flex;
 		gap: 0.35rem;
 		align-items: center;
@@ -1447,6 +1463,60 @@ button.tab-button.active {
 .domain-permission-subscription-test {
 	gap: 1rem;
 }
+
+.tokens-view .token-info .info-list {
+			border: none;
+			width: 100%;
+		}
+
+.tokens-view .token-info .info-list .info-list-entry {
+				background: none;
+				padding: 0;
+			}
+
+.tokens-view .token-info .action-buttons {
+			margin-top: 0.5rem;
+		}
+
+.tokens-view .token-info .action-buttons > .mutation-button
+			> button {
+				font-size: 1rem;
+				line-height: 1rem;
+			}
+
+.access-token-receive-form > .access-token-frame {
+		background-color: var(--gray2);
+		width: 100%;
+		padding: 0.25rem;
+		border-radius: var(--br-inner);
+		white-space: pre;
+		overflow-x: auto;
+		-webkit-overflow-scrolling: touch;
+	}
+
+.access-token-receive-form .closed {
+		text-align: center;
+	}
+
+.applications-view .application .info-list {
+			border: none;
+			width: 100%;
+		}
+
+.applications-view .application .info-list .info-list-entry {
+				background: none;
+				padding: 0;
+			}
+
+.application-details .info-list {
+		margin-top: 1rem;
+	}
+
+.application-details .info-list > .info-list-entry > dd > button {
+			font-size: medium;
+			padding-top: 0;
+			padding-bottom: 0;
+		}
 
 .instance-rules {
 	list-style-position: inside;
@@ -1523,17 +1593,12 @@ button.tab-button.active {
 			}
 
 .http-header-permissions .list .entries > .entry dd {
-				font-family: monospace;
-				font-size: large;
+				font-family: "Noto Sans Mono", monospace;
 			}
 
 .http-header-permission-details .info-list {
 		margin-top: 1rem;
 	}
-
-.http-header-permission-details .info-list > .info-list-entry > .monospace {
-			font-size: large;
-		}
 
 .admin-debug-apurl {
 	width: 100%;
@@ -1603,7 +1668,6 @@ button.tab-button.active {
 
 .export-data .export-buttons-wrapper {
 		display: grid;
-		max-width: -webkit-fit-content;
 		max-width: -moz-fit-content;
 		max-width: fit-content;
 		gap: 0.5rem;
@@ -1618,7 +1682,6 @@ button.tab-button.active {
 
 .export-data .export-buttons-wrapper .stats-and-button .mutation-button {
 				width: 100%;
-				overflow-x: hidden;
 			}
 
 .export-data .export-buttons-wrapper .stats-and-button .mutation-button button {
@@ -1716,7 +1779,7 @@ button.tab-button.active {
 }
 
 .monospace {
-	font-family: monospace;
+	font-family: "Noto Sans Mono", monospace;
 }
 
 

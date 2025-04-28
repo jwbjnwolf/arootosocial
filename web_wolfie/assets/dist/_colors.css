@@ -37,6 +37,7 @@
 	--button-bg: var(--blue2);
 	--button-fg: var(--gray1);
 	--button-hover-bg: var(--blue3);
+	--button-focus-border: var(--button-hover-bg);
 	--button-danger-bg: var(--error3);
 	--button-danger-fg: var(--white1);
 	--button-danger-hover-bg: var(--error2);
