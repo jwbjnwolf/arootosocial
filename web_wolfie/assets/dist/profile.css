@@ -306,6 +306,10 @@
 				width: 7rem;
 			}
 
+.profile .about-user .audio {
+		display: none;
+	}
+
 /*
 	RSS icon isn't really part of the profile header exactly,
 	but also it sort of is, and we want it styled the same for

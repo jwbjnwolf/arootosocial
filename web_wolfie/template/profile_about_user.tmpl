@@ -33,24 +33,8 @@
         <p>This GoToSocial user hasn't written a bio yet!</p>
         {{- end }}
     </div>
-    <h4 class="sr-only">Stats</h4>
-    <dl class="accountstats">
-        <div class="stats-item">
-            <dt class="joineddt text-cutoff">Joined</dt>
-            <dd class="joineddd text-cutoff"><time datetime="{{- .account.CreatedAt -}}">{{- .account.CreatedAt | timestampVague -}}</time></dd>
-        </div>
-        <div class="stats-item">
-            <dt class="postsdt text-cutoff">Posts</dt>
-            <dd class="postsdd text-cutoff">{{- .account.StatusesCount -}}</dd>
-        </div>
-        <div class="stats-item">
-            <dt class="followeddt text-cutoff">Followed by</dt>
-            <dd class="followeddd text-cutoff">{{- if .account.HideCollections -}}<i>hidden</i>{{- else -}}{{- .account.FollowersCount -}}{{- end -}}</dd>
-        </div>
-        <div class="stats-item">
-            <dt class="followingdt text-cutoff">Following</dt>
-            <dd class="followingdd text-cutoff">{{- if .account.HideCollections -}}<i>hidden</i>{{- else -}}{{- .account.FollowingCount -}}{{- end -}}</dd>
-        </div>
-    </dl>
+    <div class="audio">
+        <audio controls src="/~{{- .account.Username -}}/uploads/audio.mp3" type="audio/mp3"/>
+    </div>
 </section>
 {{- end }}
