@@ -64,7 +64,6 @@
 .what-is-this .about-section-contents .activitypub-logo-wrapper {
 	display: flex;
 	flex-direction: column;
-	max-width: -webkit-fit-content;
 	max-width: -moz-fit-content;
 	max-width: fit-content;
 	gap: 0.5rem;

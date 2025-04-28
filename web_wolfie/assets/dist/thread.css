@@ -74,9 +74,19 @@
 			margin-left: 2.5rem;
 		}
 
-.thread .status.indent-1 .status-link, .thread .status.indent-2 .status-link, .thread .status.indent-3 .status-link, .thread .status.indent-4 .status-link, .thread .status.indent-5 .status-link {
-				margin-left: -0.5rem;
+/*
+				Show a stripey line to the left of
+				indented statuses for better legibility.
+			*/
+
+.thread .status.indent-1::before, .thread .status.indent-2::before, .thread .status.indent-3::before, .thread .status.indent-4::before, .thread .status.indent-5::before {
+				content: "";
+				position: absolute;
+				left: 0;
+				top: 0;
+				height: 100%;
 				border-left: 0.15rem dashed var(--border-accent);
+				margin-left: -0.5rem;
 			}
 
 .thread .status {

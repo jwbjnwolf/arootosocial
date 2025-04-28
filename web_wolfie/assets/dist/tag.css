@@ -19,7 +19,7 @@
 */
 
 .thread #tag-name {
-        /* Ensure ridiculous length tags get wrapped */
-        word-wrap: anywhere; 
-    }
+		/* Ensure ridiculous length tags get wrapped */
+		word-wrap: anywhere; 
+	}
 
